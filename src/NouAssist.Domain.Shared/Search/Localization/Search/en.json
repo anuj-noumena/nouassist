@@ -1,0 +1,8 @@
+{
+  "culture": "en",
+  "texts": {
+    "Search:InvalidQualityScore": "Quality score must be between 0.0 and 1.0.",
+    "Search:QueryTooLong": "Search query exceeds maximum length of {0} characters.",
+    "Search:TooManySavedSearches": "Maximum number of saved searches ({0}) exceeded."
+  }
+}

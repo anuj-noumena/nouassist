@@ -1,0 +1,362 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell } from 'recharts';
+import { DollarSign, Receipt, TrendingUp, Bot, Home, Settings, Bell, PlusCircle, Book, Target } from 'lucide-react';
+
+// Mock Data based on the Financial Management DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  accounts: [
+      { id: 'A-1', name: 'Business Checking', type: 'Asset', balance: 52340.75, currency: 'USD' },
+      { id: 'A-2', name: 'Savings Account', type: 'Asset', balance: 120500.00, currency: 'USD' },
+      { id: 'A-3', name: 'Accounts Payable', type: 'Liability', balance: -12500.50, currency: 'USD' },
+      { id: 'A-4', name: 'Accounts Receivable', type: 'Asset', balance: 25780.00, currency: 'USD' },
+      { id: 'A-5', name: 'Sales Revenue', type: 'Revenue', balance: 150000.00, currency: 'USD' },
+      { id: 'A-6', name: 'Office Supplies', type: 'Expense', balance: 5200.00, currency: 'USD' },
+  ],
+  bills: [
+      { id: 'B-1', vendor: 'Cloud Services Inc.', amount: 1500.00, dueDate: '2025-07-15', status: 'Open' },
+      { id: 'B-2', vendor: 'Office Supplies Co.', amount: 350.50, dueDate: '2025-07-20', status: 'Open' },
+      { id: 'B-3', vendor: 'Marketing Agency', amount: 4500.00, dueDate: '2025-06-20', status: 'Overdue' },
+      { id: 'B-4', vendor: 'Legal Consultants', amount: 6150.00, dueDate: '2025-06-10', status: 'Paid' },
+  ],
+  invoices: [
+      { id: 'I-1', customer: 'Innovate Corp', amount: 12000.00, dueDate: '2025-07-10', status: 'Sent' },
+      { id: 'I-2', customer: 'Tech Solutions Ltd.', amount: 8500.00, dueDate: '2025-07-25', status: 'Sent' },
+      { id: 'I-3', customer: 'Global Exports', amount: 5280.00, dueDate: '2025-06-15', status: 'Overdue' },
+      { id: 'I-4', customer: 'Startup Hub', amount: 10000.00, dueDate: '2025-06-01', status: 'Paid' },
+  ],
+  budget: {
+      total: 50000,
+      spent: 37500,
+      categories: [
+          { name: 'Marketing', budget: 15000, spent: 12500 },
+          { name: 'R&D', budget: 20000, spent: 18000 },
+          { name: 'Operations', budget: 10000, spent: 7000 },
+      ]
+  },
+  analytics: {
+      cashFlow: [
+          { month: 'Jan', Inflow: 45000, Outflow: 32000 },
+          { month: 'Feb', Inflow: 55000, Outflow: 40000 },
+          { month: 'Mar', Inflow: 62000, Outflow: 45000 },
+          { month: 'Apr', Inflow: 58000, Outflow: 42000 },
+          { month: 'May', Inflow: 75000, Outflow: 50000 },
+          { month: 'Jun', Inflow: 68000, Outflow: 48000 },
+      ],
+      expenseDistribution: [
+          { name: 'Salaries', value: 45, fill: '#3b82f6' },
+          { name: 'Marketing', value: 25, fill: '#8b5cf6' },
+          { name: 'Software', value: 15, fill: '#10b981' },
+          { name: 'Office', value: 10, fill: '#f97316' },
+          { name: 'Other', value: 5, fill: '#64748b' },
+      ]
+  }
+};
+
+// --- Helper Components ---
+function formatCurrency(value, currency = 'USD') {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(value);
+}
+
+function StatusPill({ status }) {
+    const styles = {
+        'Open': 'bg-blue-100 text-blue-800',
+        'Sent': 'bg-blue-100 text-blue-800',
+        'Overdue': 'bg-red-100 text-red-800',
+        'Paid': 'bg-green-100 text-green-800',
+    };
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+}
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Dashboard', icon: Home },
+    { name: 'General Ledger', icon: Book },
+    { name: 'Accounts Payable', icon: Receipt },
+    { name: 'Accounts Receivable', icon: DollarSign },
+    { name: 'Planning & Budgets', icon: Target },
+    { name: 'Reports', icon: TrendingUp },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Bot size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">FinanceAI</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
+            <PlusCircle size={16} /> New Transaction
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function DashboardView() {
+    const cashBalance = mockData.accounts.find(a => a.name === 'Business Checking').balance;
+    const profitLoss = mockData.analytics.cashFlow[5].Inflow - mockData.analytics.cashFlow[5].Outflow;
+    const accountsPayable = mockData.accounts.find(a => a.name === 'Accounts Payable').balance;
+    const accountsReceivable = mockData.accounts.find(a => a.name === 'Accounts Receivable').balance;
+    
+    return (
+        <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="text-sm font-medium text-gray-500">Cash Balance</h3>
+                    <p className="text-3xl font-bold text-gray-900 mt-2">{formatCurrency(cashBalance)}</p>
+                </div>
+                 <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="text-sm font-medium text-gray-500">Profit & Loss (Jun)</h3>
+                    <p className={`text-3xl font-bold mt-2 ${profitLoss > 0 ? 'text-green-600' : 'text-red-600'}`}>{formatCurrency(profitLoss)}</p>
+                </div>
+                 <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="text-sm font-medium text-gray-500">Accounts Payable</h3>
+                    <p className="text-3xl font-bold text-gray-900 mt-2">{formatCurrency(Math.abs(accountsPayable))}</p>
+                </div>
+                 <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="text-sm font-medium text-gray-500">Accounts Receivable</h3>
+                    <p className="text-3xl font-bold text-gray-900 mt-2">{formatCurrency(accountsReceivable)}</p>
+                </div>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+                <div className="lg:col-span-3 bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Cash Flow</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                         <BarChart data={mockData.analytics.cashFlow}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false}/>
+                            <XAxis dataKey="month" tick={{fontSize: 12}} />
+                            <YAxis tickFormatter={(value) => `$${value/1000}k`} tick={{fontSize: 12}}/>
+                            <Tooltip formatter={(value) => formatCurrency(value)}/>
+                            <Legend/>
+                            <Bar dataKey="Inflow" fill="#34d399" radius={[4, 4, 0, 0]}/>
+                            <Bar dataKey="Outflow" fill="#fb7185" radius={[4, 4, 0, 0]}/>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Expense Distribution</h3>
+                     <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie data={mockData.analytics.expenseDistribution} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={2}>
+                                {mockData.analytics.expenseDistribution.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
+                            </Pie>
+                            <Tooltip formatter={(value) => `${value}%`}/>
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function LedgerView() {
+    return(
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Chart of Accounts</h3>
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Account Name</th>
+                            <th className="p-3">Type</th>
+                            <th className="p-3 text-right">Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.accounts.map(account => (
+                            <tr key={account.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{account.name}</td>
+                                <td className="p-3 text-gray-600">{account.type}</td>
+                                <td className={`p-3 text-right font-mono ${account.balance >= 0 ? 'text-gray-800' : 'text-red-600'}`}>{formatCurrency(account.balance)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function AccountsPayableView() {
+    return(
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Bills to Pay</h3>
+                 <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Vendor</th>
+                            <th className="p-3">Due Date</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3 text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.bills.map(bill => (
+                            <tr key={bill.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{bill.vendor}</td>
+                                <td className="p-3 text-gray-600">{bill.dueDate}</td>
+                                <td className="p-3"><StatusPill status={bill.status}/></td>
+                                <td className="p-3 text-right font-mono">{formatCurrency(bill.amount)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function AccountsReceivableView() {
+    return(
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Outstanding Invoices</h3>
+                 <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Customer</th>
+                            <th className="p-3">Due Date</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3 text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.invoices.map(invoice => (
+                            <tr key={invoice.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{invoice.customer}</td>
+                                <td className="p-3 text-gray-600">{invoice.dueDate}</td>
+                                <td className="p-3"><StatusPill status={invoice.status}/></td>
+                                <td className="p-3 text-right font-mono">{formatCurrency(invoice.amount)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function PlanningView() {
+    const { total, spent, categories } = mockData.budget;
+    const spentPercentage = (spent / total) * 100;
+    return(
+         <div className="p-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Monthly Budget vs. Actual</h3>
+                <div className="mb-6">
+                    <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm font-semibold text-gray-700">Total Spending</span>
+                        <span className="text-sm font-semibold text-gray-500">{formatCurrency(spent)} / {formatCurrency(total)}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-4">
+                        <div className="bg-blue-600 h-4 rounded-full" style={{ width: `${spentPercentage}%` }}></div>
+                    </div>
+                </div>
+                <div className="space-y-4">
+                    {categories.map(cat => {
+                        const catPercentage = (cat.spent / cat.budget) * 100;
+                        return (
+                            <div key={cat.name}>
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="text-sm font-semibold text-gray-700">{cat.name}</span>
+                                    <span className="text-sm font-semibold text-gray-500">{formatCurrency(cat.spent)} / {formatCurrency(cat.budget)}</span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                    <div className={`h-2 rounded-full ${catPercentage > 100 ? 'bg-red-500' : 'bg-green-500'}`} style={{ width: `${Math.min(catPercentage, 100)}%` }}></div>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function ReportsView() {
+     return(
+        <div className="p-6 text-center">
+            <p className="text-gray-500">Financial Reports section coming soon.</p>
+        </div>
+     );
+}
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'General Ledger':
+        return <LedgerView/>;
+      case 'Accounts Payable':
+          return <AccountsPayableView/>;
+      case 'Accounts Receivable':
+          return <AccountsReceivableView/>;
+      case 'Planning & Budgets':
+          return <PlanningView/>;
+      case 'Reports':
+          return <ReportsView/>
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

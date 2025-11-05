@@ -1,0 +1,328 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { Briefcase, Users, FileText, LayoutGrid, Bot, Home, Settings, Bell, PlusCircle, Check, ArrowRight, Mail, Phone } from 'lucide-react';
+
+// Mock Data based on the Business Operations DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  freelanceProjects: [
+    { id: 'FP-1', title: 'E-commerce Website Redesign', client: 'Innovate Corp', status: 'Active', billingType: 'Hourly', rate: 75 },
+    { id: 'FP-2', title: 'Mobile App API Development', client: 'Tech Solutions Ltd.', status: 'Active', billingType: 'Fixed', budget: 15000 },
+    { id: 'FP-3', title: 'Content Strategy for Q3', client: 'Global Exports', status: 'Completed', billingType: 'Fixed', budget: 5000 },
+    { id: 'FP-4', title: 'Upwork: Logo Design', client: 'Startup Hub', status: 'Invoiced', billingType: 'Milestone', budget: 1200 },
+  ],
+  crm: {
+    leads: [
+        { id: 'L-1', name: 'John Smith', company: 'New Ventures LLC', source: 'Web Form', status: 'New' },
+        { id: 'L-2', name: 'Maria Garcia', company: 'Creative Solutions', source: 'Referral', status: 'New' },
+    ],
+    qualified: [
+        { id: 'L-3', name: 'Kenji Tanaka', company: 'Data Systems', source: 'Cold Call', status: 'Qualified', score: 85 },
+    ],
+    proposals: [
+        { id: 'L-4', name: 'Sophie Dubois', company: 'Luxe Interiors', source: 'Referral', status: 'Proposal', value: 25000 },
+    ]
+  },
+  contracts: [
+      { id: 'C-1', title: 'Master Service Agreement', client: 'Innovate Corp', status: 'Active', expiryDate: '2026-12-31'},
+      { id: 'C-2', title: 'Project SOW - API Dev', client: 'Tech Solutions Ltd.', status: 'Active', expiryDate: '2025-09-30'},
+      { id: 'C-3', title: 'Retainer Agreement', client: 'Marketing Pro', status: 'Pending Renewal', expiryDate: '2025-07-31'},
+      { id: 'C-4', title: 'NDA', client: 'Stealth Startup', status: 'Expired', expiryDate: '2025-01-01'},
+  ],
+  portfolio: {
+      items: [
+          { name: 'Active Projects', value: 4, type: 'Project'},
+          { name: 'Active Contracts', value: 2, type: 'Contract' },
+          { name: 'Open Leads', value: 3, type: 'CRM' }
+      ],
+      healthScore: 88
+  },
+  analytics: {
+      projectRevenue: [
+          { month: 'Jan', revenue: 12000 }, { month: 'Feb', revenue: 15000 },
+          { month: 'Mar', revenue: 13500 }, { month: 'Apr', revenue: 18000 },
+          { month: 'May', revenue: 22000 }, { month: 'Jun', revenue: 25000 },
+      ],
+      leadSourceDistribution: [
+          { name: 'Web Form', value: 40, fill: '#3b82f6' },
+          { name: 'Referral', value: 30, fill: '#8b5cf6' },
+          { name: 'Cold Outreach', value: 20, fill: '#10b981' },
+          { name: 'Advertisement', value: 10, fill: '#f97316' },
+      ]
+  }
+};
+
+// --- Helper Components ---
+function StatusPill({ status }) {
+    const styles = {
+        'Active': 'bg-green-100 text-green-800',
+        'Completed': 'bg-gray-100 text-gray-700',
+        'Invoiced': 'bg-blue-100 text-blue-800',
+        'Pending Renewal': 'bg-yellow-100 text-yellow-800',
+        'Expired': 'bg-red-100 text-red-800',
+    };
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+}
+
+function LeadStatusPill({ status }) {
+     const styles = {
+        'New': 'bg-blue-100 text-blue-800',
+        'Qualified': 'bg-yellow-100 text-yellow-800',
+        'Proposal': 'bg-purple-100 text-purple-800',
+    };
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+}
+
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Dashboard', icon: Home },
+    { name: 'Freelance Projects', icon: Briefcase },
+    { name: 'CRM', icon: Users },
+    { name: 'Contracts', icon: FileText },
+    { name: 'Portfolio', icon: LayoutGrid },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Bot size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">OpsAI</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
+            <PlusCircle size={16} /> New Project
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function DashboardView() {
+    const { projectRevenue, leadSourceDistribution } = mockData.analytics;
+    const expiringSoon = mockData.contracts.filter(c => c.status === 'Pending Renewal');
+
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-3 space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Project Revenue Trend</h3>
+                    <ResponsiveContainer width="100%" height={250}>
+                        <LineChart data={projectRevenue}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                            <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                            <YAxis tickFormatter={(value) => `$${value/1000}k`} tick={{fontSize: 12}}/>
+                            <Tooltip formatter={(value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value)}/>
+                            <Line type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={2} />
+                        </LineChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+            <div className="lg:col-span-2 space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Lead Sources</h3>
+                     <ResponsiveContainer width="100%" height={250}>
+                        <PieChart>
+                            <Pie data={leadSourceDistribution} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100}>
+                                {leadSourceDistribution.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
+                            </Pie>
+                            <Tooltip formatter={(value) => `${value}%`}/>
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Contracts Expiring Soon</h3>
+                    {expiringSoon.map(contract => (
+                        <div key={contract.id} className="flex justify-between items-center p-2 rounded hover:bg-gray-50">
+                           <span className="text-sm font-medium text-gray-700">{contract.title} ({contract.client})</span>
+                           <span className="text-sm text-yellow-600 font-semibold">{contract.expiryDate}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function FreelanceProjectsView() {
+    return(
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Project Title</th>
+                            <th className="p-3">Client</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3">Billing</th>
+                            <th className="p-3 text-right">Rate/Budget</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.freelanceProjects.map(p => (
+                            <tr key={p.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{p.title}</td>
+                                <td className="p-3 text-gray-600">{p.client}</td>
+                                <td className="p-3"><StatusPill status={p.status}/></td>
+                                <td className="p-3 text-gray-600">{p.billingType}</td>
+                                <td className="p-3 text-right font-mono">
+                                    {p.billingType === 'Hourly' ? `${new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(p.rate)}/hr` : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(p.budget)}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function CRMView() {
+    const { leads, qualified, proposals } = mockData.crm;
+    const stages = [
+        { title: 'New Leads', data: leads, color: 'border-blue-500' },
+        { title: 'Qualified', data: qualified, color: 'border-yellow-500' },
+        { title: 'Proposal Sent', data: proposals, color: 'border-purple-500' },
+    ];
+    return (
+        <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+            {stages.map(stage => (
+                <div key={stage.title} className={`bg-gray-50 rounded-xl p-4 border-t-4 ${stage.color}`}>
+                    <h3 className="font-bold text-gray-800 mb-4">{stage.title}</h3>
+                    <div className="space-y-4">
+                        {stage.data.map(lead => (
+                            <div key={lead.id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <p className="font-semibold text-gray-800 text-sm">{lead.name}</p>
+                                <p className="text-xs text-gray-500">{lead.company}</p>
+                                <div className="mt-2 flex justify-between items-center">
+                                    <span className="text-xs font-medium text-gray-500">{lead.source}</span>
+                                    {lead.score && <span className="text-xs font-bold text-yellow-600">Score: {lead.score}</span>}
+                                    {lead.value && <span className="text-xs font-bold text-purple-600">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(lead.value)}</span>}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function ContractsView() {
+     return(
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Contract Title</th>
+                            <th className="p-3">Client</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3">Expiry Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.contracts.map(c => (
+                            <tr key={c.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{c.title}</td>
+                                <td className="p-3 text-gray-600">{c.client}</td>
+                                <td className="p-3"><StatusPill status={c.status}/></td>
+                                <td className="p-3 text-gray-600">{c.expiryDate}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function PortfolioView() {
+    const { healthScore } = mockData.portfolio;
+    return(
+        <div className="p-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200 text-center">
+                <h3 className="font-bold text-lg text-gray-800 mb-2">Portfolio Health Score</h3>
+                <div className="text-6xl font-bold text-green-600">{healthScore}</div>
+                 <p className="text-sm text-gray-500">out of 100</p>
+            </div>
+        </div>
+    );
+}
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'Freelance Projects':
+        return <FreelanceProjectsView/>;
+      case 'CRM':
+        return <CRMView/>;
+      case 'Contracts':
+        return <ContractsView/>;
+      case 'Portfolio':
+        return <PortfolioView/>;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -1,0 +1,395 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, PolarAngleAxis, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { BrainCircuit, Target, ShieldCheck, TrendingUp, Bot, Home, Settings, Bell, PlusCircle, Lightbulb, HelpCircle, GitBranch } from 'lucide-react';
+
+// Mock Data based on the Intelligence & Strategic Management DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  intelligenceProfile: {
+    cognitiveLoad: { level: 'Medium', value: 55 },
+    workPatterns: [
+        { type: 'Peak Productivity', detail: 'Most focused work between 9 AM - 11 AM.'},
+        { type: 'Context Switching', detail: 'High frequency of switching between coding and meetings on Wednesdays.'}
+    ],
+    recommendations: [
+        { id: 'REC-1', type: 'ScheduleOptimization', content: 'Block 9-11 AM for deep work tomorrow to leverage your peak focus time.', priority: 'High'},
+        { id: 'REC-2', type: 'WorkloadAdjustment', content: 'Your cognitive load is trending high. Consider deferring non-critical tasks.', priority: 'Medium'},
+        { id: 'REC-3', type: 'TaskSuggestion', content: 'Based on Project Phoenix goals, start drafting the API specification.', priority: 'Medium'}
+    ],
+    predictions: [
+        { id: 'PRED-1', type: 'TaskDuration', content: 'Task "Develop Auth Module" is predicted to take 8 hours (± 1.5 hours).', confidence: 0.85 }
+    ]
+  },
+  decisionSupport: {
+      models: [
+          { id: 'DM-1', title: 'Select New Frontend Framework', status: 'Completed', recommendation: 'React', createdAt: '2025-05-10'},
+          { id: 'DM-2', title: 'Q4 Cloud Provider Evaluation', status: 'In Progress', criteria: ['Cost', 'Scalability', 'Security'], alternatives: ['AWS', 'GCP', 'Azure'], createdAt: '2025-06-20'}
+      ],
+      initiatives: [
+          { id: 'SI-1', title: 'Adopt Microservices Architecture for Core API', status: 'Approved', proposerId: 'U-2' },
+          { id: 'SI-2', title: 'Develop Native Mobile Application', status: 'Under Review', proposerId: 'U-1' },
+      ]
+  },
+  strategicPlanning: {
+      goals: [
+          { id: 'SG-1', description: 'Increase Market Share by 15% in 2026', theme: 'Growth', horizon: 'H2', progress: 45 },
+          { id: 'SG-2', description: 'Achieve Carbon Neutrality by 2028', theme: 'Sustainability', horizon: 'H3', progress: 20 },
+          { id: 'SG-3', description: 'Improve Customer Retention by 10%', theme: 'Customer Success', horizon: 'H1', progress: 75 },
+      ],
+      crisisPlans: [
+        { id: 'CP-1', name: 'Data Breach Response Protocol', scenario: 'Major data breach' }
+      ]
+  },
+  analytics: {
+      cognitiveLoadHistory: [
+        { day: 'Mon', load: 45 }, { day: 'Tue', load: 60 }, { day: 'Wed', load: 75 },
+        { day: 'Thu', load: 70 }, { day: 'Fri', load: 50 }, { day: 'Sat', load: 20 }, { day: 'Sun', load: 15 }
+      ],
+      recommendationAcceptance: [
+        { name: 'Accepted', value: 78, fill: '#82ca9d' },
+        { name: 'Rejected', value: 22, fill: '#ff8042' },
+      ]
+  }
+};
+
+// --- Helper Components ---
+function StatusPill({ status, size = 'xs' }) {
+    const styles = {
+        'Published': 'bg-green-100 text-green-800', 'Completed': 'bg-green-100 text-green-800',
+        'Draft': 'bg-yellow-100 text-yellow-800',
+        'Archived': 'bg-gray-100 text-gray-800',
+        'Pending': 'bg-blue-100 text-blue-800', 'Under Review': 'bg-blue-100 text-blue-800',
+        'In Progress': 'bg-orange-100 text-orange-800',
+        'Approved': 'bg-purple-100 text-purple-800',
+    };
+    return <span className={`px-2 py-1 text-${size} font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+}
+
+function PriorityPill({ priority }) {
+    const styles = {
+        'High': 'bg-red-100 text-red-800',
+        'Medium': 'bg-yellow-100 text-yellow-800',
+        'Low': 'bg-blue-100 text-blue-800',
+    };
+    return <span className={`px-2 py-1 text-xs font-medium rounded-full ${styles[priority]}`}>{priority}</span>;
+}
+
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Dashboard', icon: Home },
+    { name: 'Intelligence Hub', icon: BrainCircuit },
+    { name: 'Decision Support', icon: HelpCircle },
+    { name: 'Strategic Planning', icon: Target },
+    { name: 'Analytics', icon: TrendingUp },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Bot size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">StrategyAI</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
+            <PlusCircle size={16} /> New Initiative
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function DashboardView() {
+    const { goals } = mockData.strategicPlanning;
+    const { recommendations } = mockData.intelligenceProfile;
+    
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Strategic Goal Progress</h3>
+                    <div className="space-y-4">
+                        {goals.map(goal => (
+                            <div key={goal.id}>
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="text-sm font-semibold text-gray-700">{goal.description}</span>
+                                    <span className="text-sm font-semibold text-gray-500">{goal.progress}%</span>
+                                </div>
+                                <div className="w-full bg-gray-200 rounded-full h-2">
+                                    <div className="bg-purple-600 h-2 rounded-full" style={{ width: `${goal.progress}%` }}></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <div className="lg:col-span-1 space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Top Recommendations</h3>
+                    <div className="space-y-3">
+                    {recommendations.slice(0,3).map(rec => (
+                        <div key={rec.id} className="p-3 rounded-lg bg-blue-50 border border-blue-200">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-sm font-semibold text-blue-800">{rec.type}</span>
+                                <PriorityPill priority={rec.priority} />
+                            </div>
+                            <p className="text-sm text-blue-700">{rec.content}</p>
+                        </div>
+                    ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function IntelligenceHubView() {
+    const { cognitiveLoad, workPatterns, recommendations } = mockData.intelligenceProfile;
+    const cognitiveLoadData = [{ name: 'Cognitive Load', value: cognitiveLoad.value }];
+    
+    return (
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Real-time Cognitive Load</h3>
+                    <ResponsiveContainer width="100%" height={200}>
+                        <RadialBarChart 
+                            cx="50%" cy="70%" 
+                            innerRadius="80%" outerRadius="100%" 
+                            barSize={20} data={cognitiveLoadData} startAngle={180} endAngle={0}
+                        >
+                            <PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
+                            <RadialBar background clockWise dataKey="value" cornerRadius={10} fill="#1f2937" />
+                            <text x="50%" y="70%" textAnchor="middle" dominantBaseline="middle" className="text-4xl font-bold fill-gray-800">
+                                {cognitiveLoad.value}%
+                            </text>
+                             <text x="50%" y="85%" textAnchor="middle" dominantBaseline="middle" className="text-lg font-medium fill-gray-500">
+                                {cognitiveLoad.level}
+                            </text>
+                        </RadialBarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Detected Work Patterns</h3>
+                    <div className="space-y-3">
+                        {workPatterns.map((pattern, i) => (
+                             <div key={i} className="flex items-start gap-3">
+                                <GitBranch className="text-purple-600 mt-1" size={16}/>
+                                <div>
+                                    <p className="text-sm font-semibold text-gray-800">{pattern.type}</p>
+                                    <p className="text-sm text-gray-500">{pattern.detail}</p>
+                                </div>
+                             </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+             <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">AI Recommendations</h3>
+                <div className="space-y-3">
+                {recommendations.map(rec => (
+                        <div key={rec.id} className="p-3 rounded-lg bg-gray-50">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-sm font-semibold text-gray-700">{rec.type}</span>
+                                <PriorityPill priority={rec.priority} />
+                            </div>
+                            <p className="text-sm text-gray-600">{rec.content}</p>
+                            <div className="flex gap-2 mt-2">
+                                <button className="text-xs font-semibold text-green-600 hover:underline">Accept</button>
+                                <button className="text-xs font-semibold text-red-600 hover:underline">Dismiss</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function DecisionSupportView() {
+    const { models, initiatives } = mockData.decisionSupport;
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Active Decision Models</h3>
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Title</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3">Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {models.map(model => (
+                            <tr key={model.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{model.title}</td>
+                                <td className="p-3"><StatusPill status={model.status} /></td>
+                                <td className="p-3">{model.createdAt}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Strategic Initiative Proposals</h3>
+                 <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Title</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3">Proposer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {initiatives.map(item => (
+                            <tr key={item.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{item.title}</td>
+                                <td className="p-3"><StatusPill status={item.status} /></td>
+                                <td className="p-3">{item.proposerId}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function StrategicPlanningView() {
+    const { goals } = mockData.strategicPlanning;
+    return (
+        <div className="p-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-6">High-Level Strategic Goals</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {goals.map(goal => (
+                        <div key={goal.id} className="p-4 border border-gray-200 rounded-lg">
+                            <div className="flex justify-between items-center mb-2">
+                                <span className="text-xs font-bold text-purple-700 bg-purple-100 px-2 py-1 rounded">{goal.theme}</span>
+                                <span className="text-xs font-bold text-gray-500">{goal.horizon}</span>
+                            </div>
+                            <p className="font-semibold text-gray-800 mb-4">{goal.description}</p>
+                             <div className="flex justify-between items-center mb-1">
+                                <span className="text-xs font-semibold text-gray-500">Progress</span>
+                                <span className="text-sm font-bold text-gray-700">{goal.progress}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div className="bg-purple-600 h-2 rounded-full" style={{ width: `${goal.progress}%` }}></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function AnalyticsView() {
+    const { cognitiveLoadHistory, recommendationAcceptance } = mockData.analytics;
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-3 bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Cognitive Load This Week</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={cognitiveLoadHistory}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="load" name="Cognitive Load (%)" stroke="#1f2937" strokeWidth={2} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+            <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200 flex flex-col items-center">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Recommendation Acceptance Rate</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                        <Pie data={recommendationAcceptance} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} label>
+                            {recommendationAcceptance.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
+                        </Pie>
+                        <Tooltip/>
+                        <Legend/>
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+}
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'Intelligence Hub':
+        return <IntelligenceHubView />;
+      case 'Decision Support':
+        return <DecisionSupportView />;
+      case 'Strategic Planning':
+        return <StrategicPlanningView />;
+      case 'Analytics':
+        return <AnalyticsView />;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

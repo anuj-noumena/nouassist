@@ -1,0 +1,463 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell, RadialBarChart, RadialBar, PolarAngleAxis } from 'recharts';
+import { ChevronDown, Search, Bell, Settings, PlusCircle, Filter, BookOpen, Target, TrendingUp, Sparkles, BrainCircuit, NotebookText, Star, LayoutGrid, Award, Flame } from 'lucide-react';
+
+// Mock Data based on the Learning & Personal Development DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  skills: [
+    { SkillId: 'S-1', SkillName: 'React Development', SkillCategory: 'Technical', currentProficiency: 'Intermediate', progress: 65 },
+    { SkillId: 'S-2', SkillName: 'Public Speaking', SkillCategory: 'Soft', currentProficiency: 'Beginner', progress: 30 },
+    { SkillId: 'S-3', SkillName: 'UI/UX Design', SkillCategory: 'Creative', currentProficiency: 'Intermediate', progress: 75 },
+    { SkillId: 'S-4', SkillName: 'Python for Data Science', SkillCategory: 'Technical', currentProficiency: 'Advanced', progress: 85 },
+  ],
+  learningPlans: [
+    { PlanId: 'LP-1', PlanName: 'Master React Hooks', PlanStatus: 'Active', progress: 50, TargetSkillId: 'S-1' },
+    { PlanId: 'LP-2', PlanName: 'Confident Public Speaking Course', PlanStatus: 'Active', progress: 20, TargetSkillId: 'S-2' },
+    { PlanId: 'LP-3', PlanName: 'Data Science with Python Bootcamp', PlanStatus: 'Completed', progress: 100, TargetSkillId: 'S-4'},
+  ],
+  goals: [
+    { GoalId: 'G-1', GoalTitle: 'Launch a side project', GoalCategory: 'Professional', progress: 40, TargetDate: '2025-12-31' },
+    { GoalId: 'G-2', GoalTitle: 'Read 20 books', GoalCategory: 'Personal', progress: 70, TargetDate: '2025-12-31' },
+    { GoalId: 'G-3', GoalTitle: 'Run a 5k marathon', GoalCategory: 'Health', progress: 85, TargetDate: '2025-09-30'},
+  ],
+  habits: [
+      { HabitId: 'H-1', HabitName: 'Daily Coding Practice', currentStreak: 14, longestStreak: 25, category: 'Learning' },
+      { HabitId: 'H-2', HabitName: 'Morning Meditation', currentStreak: 32, longestStreak: 32, category: 'Mindfulness' },
+      { HabitId: 'H-3', HabitName: 'Workout 3x a week', currentStreak: 5, longestStreak: 12, category: 'Health' },
+  ],
+  journal: [
+      { JournalId: 'J-1', content: 'Had a breakthrough on the state management problem for my side project. Realized a simpler approach is better.', entryDate: '2025-06-23', tags: ['Side Project', 'React'] },
+      { JournalId: 'J-2', content: 'Felt a bit of impostor syndrome today when looking at job descriptions. Need to focus on my learning plan and trust the process.', entryDate: '2025-06-21', tags: ['Career', 'Mindset'] },
+  ],
+  gamification: {
+    points: 1250,
+    level: 8,
+    achievements: [
+        { name: 'Consistent Coder', date: '2025-06-20' },
+        { name: 'Perfect Week', date: '2025-06-15' },
+        { name: 'First Goal Achieved', date: '2025-05-30' },
+    ]
+  },
+  analytics: {
+    skillProgressOverTime: [
+      { date: 'Jan', React: 20, Speaking: 10, Design: 40 },
+      { date: 'Feb', React: 30, Speaking: 15, Design: 50 },
+      { date: 'Mar', React: 45, Speaking: 15, Design: 60 },
+      { date: 'Apr', React: 50, Speaking: 20, Design: 65 },
+      { date: 'May', React: 60, Speaking: 25, Design: 70 },
+      { date: 'Jun', React: 65, Speaking: 30, Design: 75 },
+    ],
+    habitConsistency: [
+      { name: 'Coding', consistency: 85, fill: '#8884d8' },
+      { name: 'Meditation', consistency: 95, fill: '#82ca9d' },
+      { name: 'Workout', consistency: 70, fill: '#ffc658' },
+    ]
+  }
+};
+
+// --- Helper Components ---
+
+function ProficiencyPill({ level }) {
+  const styles = {
+    'Beginner': 'bg-blue-100 text-blue-800',
+    'Intermediate': 'bg-green-100 text-green-800',
+    'Advanced': 'bg-purple-100 text-purple-800',
+    'Expert': 'bg-red-100 text-red-800',
+  };
+  return <span className={`px-2 py-1 text-xs font-medium rounded-full ${styles[level]}`}>{level}</span>;
+}
+
+function CategoryBadge({ category }) {
+    const styles = {
+        'Technical': 'bg-gray-200 text-gray-800',
+        'Soft': 'bg-indigo-100 text-indigo-800',
+        'Creative': 'bg-pink-100 text-pink-800',
+        'Health': 'bg-teal-100 text-teal-800',
+        'Professional': 'bg-sky-100 text-sky-800',
+        'Personal': 'bg-amber-100 text-amber-800',
+        'Learning': 'bg-blue-100 text-blue-800',
+        'Mindfulness': 'bg-green-100 text-green-800',
+    };
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[category] || 'bg-gray-100 text-gray-800'}`}>{category}</span>;
+}
+
+
+function Avatar({ src, alt = "avatar" }) {
+  return <img className="h-8 w-8 rounded-full object-cover" src={src} alt={alt} />;
+}
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Dashboard', icon: LayoutGrid },
+    { name: 'Skills', icon: BrainCircuit },
+    { name: 'Learning Plans', icon: BookOpen },
+    { name: 'Goals & Habits', icon: Target },
+    { name: 'Journal', icon: NotebookText },
+    { name: 'Analytics', icon: TrendingUp },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Sparkles size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">Growth</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <div className="p-4 bg-gray-100 rounded-lg text-center">
+            <div className="flex justify-center items-center gap-2">
+                <Avatar src={mockData.user.avatarUrl}/>
+                <h4 className="font-bold text-sm text-gray-800">{mockData.user.name}</h4>
+            </div>
+            <p className="text-sm font-bold text-gray-800 mt-2">Level {mockData.gamification.level}</p>
+            <p className="text-xs text-yellow-600 font-semibold">{mockData.gamification.points} Points</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView, user }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+          <p className="text-sm text-gray-500">Let's make today a productive day, {user.name.split(' ')[0]}!</p>
+        </div>
+        <div className="flex items-center gap-4">
+          <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-semibold hover:bg-gray-700">
+            <PlusCircle size={16} /> Create
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function DashboardView() {
+  const { learningPlans, goals, habits } = mockData;
+  return (
+    <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Main Column */}
+      <div className="lg:col-span-2 space-y-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Active Learning Plans</h3>
+          <div className="space-y-4">
+              {learningPlans.filter(p=>p.PlanStatus === 'Active').map(plan => (
+                <div key={plan.PlanId}>
+                    <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm font-semibold text-gray-700">{plan.PlanName}</span>
+                        <span className="text-sm font-semibold text-gray-500">{plan.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-gray-800 h-2 rounded-full" style={{ width: `${plan.progress}%` }}></div>
+                    </div>
+                </div>
+              ))}
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Active Goals</h3>
+           <div className="space-y-4">
+              {goals.map(goal => (
+                <div key={goal.GoalId}>
+                    <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm font-semibold text-gray-700">{goal.GoalTitle}</span>
+                        <span className="text-sm font-semibold text-gray-500">{goal.progress}%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-purple-600 h-2 rounded-full" style={{ width: `${goal.progress}%` }}></div>
+                    </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Side Column */}
+      <div className="lg:col-span-1 space-y-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Habit Streaks</h3>
+           <div className="space-y-4">
+              {habits.map(habit => (
+                <div key={habit.HabitId} className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Flame className="text-orange-500" size={20}/>
+                        <span className="text-sm font-medium text-gray-700">{habit.HabitName}</span>
+                    </div>
+                    <span className="text-sm font-bold text-gray-800">{habit.currentStreak} days</span>
+                </div>
+              ))}
+           </div>
+        </div>
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Recent Achievements</h3>
+          <div className="space-y-3">
+            {mockData.gamification.achievements.slice(0, 3).map(ach => (
+                <div key={ach.name} className="flex items-center gap-3 p-3 bg-yellow-50 rounded-lg">
+                    <Award className="text-yellow-600" size={20}/>
+                    <div>
+                        <p className="text-sm font-semibold text-yellow-800">{ach.name}</p>
+                        <p className="text-xs text-yellow-700">Unlocked on {ach.date}</p>
+                    </div>
+                </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SkillsView() {
+    return (
+        <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {mockData.skills.map(skill => (
+                    <div key={skill.SkillId} className="bg-white p-6 rounded-lg border border-gray-200">
+                        <div className="flex justify-between items-start mb-4">
+                            <h3 className="font-bold text-lg text-gray-800">{skill.SkillName}</h3>
+                            <ProficiencyPill level={skill.currentProficiency} />
+                        </div>
+                        <CategoryBadge category={skill.SkillCategory}/>
+                        <div className="mt-6">
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-xs font-semibold text-gray-500">Progress</span>
+                                <span className="text-sm font-bold text-gray-700">{skill.progress}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${skill.progress}%` }}></div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function LearningPlansView() {
+    return (
+        <div className="p-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {mockData.learningPlans.map(plan => (
+                <div key={plan.PlanId} className="bg-white p-6 rounded-lg border border-gray-200 flex flex-col">
+                    <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-bold text-lg text-gray-800">{plan.PlanName}</h3>
+                        <span className={`px-2 py-1 text-xs font-semibold rounded-md ${plan.PlanStatus === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>{plan.PlanStatus}</span>
+                    </div>
+                    <p className="text-sm text-gray-500 flex-grow mb-4">Target Skill: {mockData.skills.find(s=>s.SkillId === plan.TargetSkillId).SkillName}</p>
+                    <div className="mb-4">
+                        <div className="flex justify-between items-center mb-1">
+                            <span className="text-xs font-semibold text-gray-500">Progress</span>
+                            <span className="text-sm font-bold text-gray-700">{plan.progress}%</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-green-600 h-2 rounded-full" style={{ width: `${plan.progress}%` }}></div>
+                        </div>
+                    </div>
+                    <button className="mt-2 w-full text-center text-sm font-semibold text-white bg-gray-800 py-2 rounded-lg hover:bg-gray-700">View Plan</button>
+                </div>
+            ))}
+          </div>
+        </div>
+    );
+}
+
+
+function GoalsAndHabitsView() {
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">My Goals</h3>
+                <div className="space-y-4">
+                  {mockData.goals.map(goal => (
+                    <div key={goal.GoalId}>
+                        <div className="flex justify-between items-center mb-1">
+                            <span className="text-sm font-semibold text-gray-700">{goal.GoalTitle}</span>
+                            <span className="text-sm font-semibold text-gray-500">{goal.progress}%</span>
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div className="bg-purple-600 h-2 rounded-full" style={{ width: `${goal.progress}%` }}></div>
+                        </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">My Habits</h3>
+                <div className="space-y-3">
+                    {mockData.habits.map(habit => (
+                        <div key={habit.HabitId} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                            <div className="flex items-center gap-3">
+                                <CategoryBadge category={habit.category} />
+                                <span className="font-medium text-sm text-gray-700">{habit.HabitName}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="text-sm font-semibold text-orange-600 flex items-center gap-1"><Flame size={14}/> {habit.currentStreak}</span>
+                                <span className="text-xs text-gray-500">Longest: {habit.longestStreak}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function JournalView() {
+    return (
+        <div className="p-6">
+            <div className="max-w-4xl mx-auto">
+                <div className="mb-6">
+                    <textarea 
+                        className="w-full p-4 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-800 shadow-sm"
+                        rows="4"
+                        placeholder="What's on your mind? Capture a new insight or reflection..."
+                    ></textarea>
+                    <div className="flex justify-end mt-2">
+                        <button className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-semibold hover:bg-gray-700">
+                            Add Entry
+                        </button>
+                    </div>
+                </div>
+                <div className="space-y-4">
+                    {mockData.journal.map(entry => (
+                        <div key={entry.JournalId} className="bg-white p-4 rounded-lg border border-gray-200">
+                            <p className="text-sm text-gray-700 mb-3">{entry.content}</p>
+                            <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2">
+                                    {entry.tags.map(tag => (
+                                        <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">{tag}</span>
+                                    ))}
+                                </div>
+                                <span className="text-xs text-gray-400">{new Date(entry.entryDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+function AnalyticsView() {
+    const { skillProgressOverTime, habitConsistency } = mockData.analytics;
+
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-3 bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Skill Progress Over Time</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={skillProgressOverTime}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="React" stroke="#8884d8" strokeWidth={2} />
+                        <Line type="monotone" dataKey="Speaking" stroke="#82ca9d" strokeWidth={2} />
+                        <Line type="monotone" dataKey="Design" stroke="#ffc658" strokeWidth={2} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+            <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Habit Consistency</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <RadialBarChart 
+                        cx="50%" 
+                        cy="50%" 
+                        innerRadius="20%" 
+                        outerRadius="80%" 
+                        barSize={20} 
+                        data={habitConsistency}
+                        startAngle={90}
+                        endAngle={-270}
+                    >
+                        <PolarAngleAxis
+                            type="number"
+                            domain={[0, 100]}
+                            angleAxisId={0}
+                            tick={false}
+                        />
+                        <RadialBar
+                            background
+                            dataKey="consistency"
+                            angleAxisId={0} 
+                        />
+                        <Legend iconSize={10} layout="vertical" verticalAlign="middle" align="right" />
+                        <Tooltip />
+                    </RadialBarChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+}
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'Skills':
+        return <SkillsView />;
+      case 'Learning Plans':
+        return <LearningPlansView />;
+      case 'Goals & Habits':
+        return <GoalsAndHabitsView />;
+      case 'Journal':
+        return <JournalView />;
+      case 'Analytics':
+        return <AnalyticsView />;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} user={mockData.user} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

@@ -1,0 +1,324 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { Bot, Home, Settings, Bell, PlusCircle, Target, Lightbulb, Beaker, TrendingUp, DollarSign, UserCheck, FileText, CheckCircle, XCircle, Clock } from 'lucide-react';
+
+// Mock Data based on the Startup Lifecycle Management DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  fundraising: {
+    round: { name: 'Seed Round', target: 750000, raised: 250000 },
+    pipeline: [
+        { id: 'P-1', name: 'Momentum Ventures', stage: 'Identified', score: 80 },
+        { id: 'P-2', name: 'Growth Capital', stage: 'Identified', score: 75 },
+        { id: 'P-3', name: 'Innovate Fund', stage: 'Contacted', score: 90 },
+        { id: 'P-4', name: 'Future Forward', stage: 'Due Diligence', score: 88 },
+        { id: 'P-5', name: 'SeedSyndicate', stage: 'Committed', amount: 250000 },
+    ]
+  },
+  validation: {
+      hypotheses: [
+        { id: 'H-1', statement: 'SMBs will pay $50/mo for an automated accounting tool.', status: 'Validated', confidence: 0.9 },
+        { id: 'H-2', statement: 'Users prefer a mobile-first interface for project management.', status: 'Testing', confidence: 0.6 },
+        { id: 'H-3', statement: 'A freemium model will lead to a 5% conversion rate.', status: 'Invalidated', confidence: 0.8 },
+      ],
+      prototypes: [
+          { id: 'PR-1', name: 'Onboarding Flow v2', type: 'Clickable', status: 'Testing' },
+          { id: 'PR-2', name: 'AI Analytics Dashboard', type: 'MVP', status: 'Development' },
+      ]
+  },
+  performance: {
+    kpis: [
+      { name: 'MRR', value: 12500, target: 15000, trend: 'up' },
+      { name: 'CAC', value: 250, target: 200, trend: 'down' },
+      { name: 'LTV', value: 1800, target: 2000, trend: 'up' },
+      { name: 'Burn Rate', value: 18000, target: 15000, trend: 'stable' },
+    ],
+    cashFlow: [
+      { month: 'Jan', net: -20000 }, { month: 'Feb', net: -18000 },
+      { month: 'Mar', net: -15000 }, { month: 'Apr', net: -12000 },
+      { month: 'May', net: -8000 }, { month: 'Jun', net: -5500 },
+    ]
+  },
+  growth: {
+      experiments: [
+        { id: 'GE-1', name: 'New Signup Button Color', status: 'Concluded', result: '15% increase in signups' },
+        { id: 'GE-2', name: 'Pricing Page Layout Test', status: 'Running', hypothesis: 'A 3-tier layout will increase "Pro" plan selections.' },
+        { id: 'GE-3', name: 'Email Onboarding Sequence', status: 'Design', hypothesis: 'A 5-day email sequence will improve user activation rates.'}
+      ]
+  }
+};
+
+// --- Helper Components ---
+function StatusPill({ status }) {
+    const styles = {
+        'Validated': 'bg-green-100 text-green-800',
+        'Invalidated': 'bg-red-100 text-red-800',
+        'Testing': 'bg-yellow-100 text-yellow-800',
+        'Concluded': 'bg-gray-100 text-gray-700',
+        'Running': 'bg-blue-100 text-blue-800',
+        'Design': 'bg-purple-100 text-purple-800',
+        'Development': 'bg-indigo-100 text-indigo-800',
+    };
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+}
+
+const formatCurrency = (value) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(value);
+
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Dashboard', icon: Home },
+    { name: 'Fundraising', icon: DollarSign },
+    { name: 'Validation', icon: UserCheck },
+    { name: 'Performance', icon: TrendingUp },
+    { name: 'Growth', icon: Beaker },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Bot size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">FounderAI</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
+            <PlusCircle size={16} /> New Hypothesis
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function DashboardView() {
+    const { round } = mockData.fundraising;
+    const { kpis } = mockData.performance;
+    const progress = (round.raised / round.target) * 100;
+    
+    return (
+        <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                 {kpis.map(kpi => (
+                     <div key={kpi.name} className="bg-white p-6 rounded-lg border border-gray-200">
+                         <h3 className="text-sm font-medium text-gray-500">{kpi.name}</h3>
+                         <p className="text-3xl font-bold text-gray-900 mt-2">{formatCurrency(kpi.value)}</p>
+                         <p className="text-xs text-gray-400 mt-1">Target: {formatCurrency(kpi.target)}</p>
+                     </div>
+                 ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200">
+                     <h3 className="font-bold text-lg text-gray-800 mb-4">Cash Flow & Burn Rate</h3>
+                     <ResponsiveContainer width="100%" height={250}>
+                        <LineChart data={mockData.performance.cashFlow}>
+                             <CartesianGrid strokeDasharray="3 3" vertical={false}/>
+                             <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                             <YAxis tickFormatter={(value) => `$${value/1000}k`} tick={{fontSize: 12}}/>
+                             <Tooltip formatter={(value) => formatCurrency(value)}/>
+                             <Line type="monotone" dataKey="net" name="Net Cash Flow" stroke="#ef4444" strokeWidth={2} />
+                        </LineChart>
+                     </ResponsiveContainer>
+                </div>
+                 <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">{round.name} Progress</h3>
+                    <div className="flex justify-between items-center mb-1">
+                        <span className="text-sm font-semibold text-gray-700">{formatCurrency(round.raised)}</span>
+                        <span className="text-sm font-semibold text-gray-500">{formatCurrency(round.target)}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-4">
+                        <div className="bg-blue-600 h-4 rounded-full text-white text-xs flex items-center justify-center" style={{ width: `${progress}%` }}>{progress.toFixed(0)}%</div>
+                    </div>
+                    <div className="mt-4">
+                        <h4 className="font-semibold text-sm mb-2">Committed</h4>
+                        {mockData.fundraising.pipeline.filter(p => p.stage === 'Committed').map(p=>(
+                            <div key={p.id} className="flex justify-between text-sm">
+                                <span>{p.name}</span>
+                                <span className="font-semibold">{formatCurrency(p.amount)}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function FundraisingView() {
+    const pipeline = mockData.fundraising.pipeline;
+    const stages = ['Identified', 'Contacted', 'Due Diligence', 'Committed'];
+    return (
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {stages.map(stage => (
+                <div key={stage} className="bg-gray-50 rounded-xl p-4">
+                    <h3 className="font-bold text-gray-800 mb-4">{stage}</h3>
+                    <div className="space-y-4">
+                        {pipeline.filter(p => p.stage === stage).map(prospect => (
+                            <div key={prospect.id} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                                <p className="font-semibold text-gray-800 text-sm">{prospect.name}</p>
+                                {prospect.score && <p className="text-xs text-gray-500">Score: {prospect.score}</p>}
+                                {prospect.amount && <p className="text-sm font-bold text-green-600 mt-2">{formatCurrency(prospect.amount)}</p>}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function ValidationView() {
+    const { hypotheses, prototypes } = mockData.validation;
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Problem Hypotheses</h3>
+                <div className="space-y-3">
+                    {hypotheses.map(h => (
+                        <div key={h.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                            <span className="text-sm text-gray-700 flex-1">{h.statement}</span>
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs font-mono text-gray-500">Conf: {(h.confidence*100).toFixed(0)}%</span>
+                                <StatusPill status={h.status}/>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+             <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Solution Prototypes</h3>
+                 <div className="space-y-3">
+                    {prototypes.map(p => (
+                        <div key={p.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                            <span className="text-sm text-gray-700 flex-1">{p.name} ({p.type})</span>
+                             <StatusPill status={p.status}/>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function PerformanceView() {
+     const { kpis } = mockData.performance;
+     return (
+        <div className="p-6">
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                 {kpis.map(kpi => (
+                     <div key={kpi.name} className="bg-white p-6 rounded-lg border border-gray-200">
+                         <h3 className="text-sm font-medium text-gray-500">{kpi.name}</h3>
+                         <p className="text-3xl font-bold text-gray-900 mt-2">{formatCurrency(kpi.value)}</p>
+                         <p className="text-xs text-gray-400 mt-1">Target: {formatCurrency(kpi.target)}</p>
+                     </div>
+                 ))}
+            </div>
+        </div>
+     );
+}
+
+
+function GrowthView() {
+     const { experiments } = mockData.growth;
+    return(
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Growth Experiments</h3>
+                 <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Experiment Name</th>
+                            <th className="p-3">Hypothesis</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3">Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {experiments.map(exp => (
+                            <tr key={exp.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{exp.name}</td>
+                                <td className="p-3 text-gray-600 text-xs">{exp.hypothesis}</td>
+                                <td className="p-3"><StatusPill status={exp.status}/></td>
+                                <td className="p-3 text-sm font-semibold text-green-700">{exp.result}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'Fundraising':
+        return <FundraisingView />;
+      case 'Validation':
+        return <ValidationView />;
+      case 'Performance':
+        return <PerformanceView />;
+      case 'Growth':
+        return <GrowthView />;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

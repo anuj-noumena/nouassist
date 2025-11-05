@@ -1,0 +1,357 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadialBarChart, RadialBar, PolarAngleAxis, LineChart, Line, AreaChart, Area, PieChart, Pie, Cell } from 'recharts';
+import { HeartPulse, Brain, Zap, Moon, Apple, ShieldCheck, TrendingUp, Bot, Home, Settings, Bell, PlusCircle, Activity, Smile, BookOpen } from 'lucide-react';
+
+// Mock Data based on the Health, Wellness, and Cognitive Performance DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  wellnessProfile: {
+    wellnessScore: 82,
+    metrics: [
+        { name: 'Heart Rate', value: '65 bpm', status: 'Normal' },
+        { name: 'Sleep', value: '7h 45m', status: 'Good' },
+        { name: 'Activity', value: '8,200 steps', status: 'Normal' },
+    ],
+    goals: [
+        { id: 'WG-1', type: 'Exercise', description: 'Run 15km a week', progress: 60 },
+        { id: 'WG-2', type: 'Nutrition', description: '5 servings of vegetables daily', progress: 85 },
+    ]
+  },
+  cognitivePerformance: {
+    cognitiveLoad: { level: 'Low', value: 35 },
+    energyLevel: { level: 'High', value: 80 },
+    focusSessions: [
+        { id: 'FS-1', objective: 'Draft Q3 Report', duration: '90 min', productivityScore: 92 },
+    ],
+    recommendations: [
+        { id: 'CR-1', content: 'Your energy levels are high. It\'s a great time to tackle a complex task.', type: 'Energy' },
+        { id: 'CR-2', content: 'You had deep sleep last night. Expect improved focus today.', type: 'Sleep' },
+    ]
+  },
+  analytics: {
+      heartRateHistory: [
+        { time: '6 AM', rate: 60 }, { time: '9 AM', rate: 75 }, { time: '12 PM', rate: 80 },
+        { time: '3 PM', rate: 72 }, { time: '6 PM', rate: 85 }, { time: '9 PM', rate: 68 },
+      ],
+      sleepStages: [
+        { name: 'Deep', value: 25, fill: '#1e3a8a' },
+        { name: 'Light', value: 50, fill: '#3b82f6' },
+        { name: 'REM', value: 20, fill: '#93c5fd' },
+        { name: 'Awake', value: 5, fill: '#eab308' },
+      ],
+      cognitiveLoadTrend: [
+          { day: 'Mon', load: 40 }, { day: 'Tue', load: 65 }, { day: 'Wed', load: 55 },
+          { day: 'Thu', load: 70 }, { day: 'Fri', load: 45 }
+      ]
+  },
+  mindfulness: {
+      sessions: [
+          {id: 'MS-1', type: 'Meditation', duration: '10 min', completedAt: '2025-06-24T08:00:00Z'},
+          {id: 'MS-2', type: 'Breathing', duration: '5 min', completedAt: '2025-06-24T14:00:00Z'}
+      ],
+      moodHistory: [
+          { mood: 'Happy', count: 12 },
+          { mood: 'Calm', count: 8 },
+          { mood: 'Stressed', count: 3 },
+          { mood: 'Tired', count: 5 },
+      ]
+  }
+};
+
+// --- Helper Components ---
+function MetricStatusIndicator({ status }) {
+    const styles = {
+        'Normal': 'bg-green-500',
+        'Good': 'bg-green-500',
+        'High': 'bg-yellow-500',
+        'Low': 'bg-blue-500'
+    };
+    return <div className={`w-2 h-2 rounded-full ${styles[status]}`}></div>;
+}
+
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Dashboard', icon: Home },
+    { name: 'Health & Wellness', icon: HeartPulse },
+    { name: 'Cognitive Performance', icon: Brain },
+    { name: 'Mindfulness', icon: Smile },
+    { name: 'Analytics', icon: TrendingUp },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Bot size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">WellnessAI</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
+            <PlusCircle size={16} /> Log Activity
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function DashboardView() {
+    const { wellnessScore, metrics } = mockData.wellnessProfile;
+    const { recommendations } = mockData.cognitivePerformance;
+    
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-white p-6 rounded-lg border border-gray-200 flex flex-col items-center justify-center">
+                        <h3 className="font-bold text-lg text-gray-800 mb-2">Wellness Score</h3>
+                        <div className="text-5xl font-bold text-blue-600">{wellnessScore}</div>
+                        <p className="text-sm text-gray-500">out of 100</p>
+                    </div>
+                    {metrics.map(metric => (
+                        <div key={metric.name} className="bg-white p-6 rounded-lg border border-gray-200">
+                             <h3 className="font-bold text-lg text-gray-800 mb-2">{metric.name}</h3>
+                             <p className="text-3xl font-bold text-gray-900">{metric.value}</p>
+                             <div className="flex items-center gap-2 mt-2">
+                                <MetricStatusIndicator status={metric.status}/>
+                                <span className="text-sm text-gray-500">{metric.status}</span>
+                             </div>
+                        </div>
+                    ))}
+                 </div>
+                 <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Today's Heart Rate</h3>
+                    <ResponsiveContainer width="100%" height={250}>
+                        <AreaChart data={mockData.analytics.heartRateHistory}>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false}/>
+                            <XAxis dataKey="time" tick={{fontSize: 12}}/>
+                            <YAxis domain={[50, 100]} tick={{fontSize: 12}}/>
+                            <Tooltip/>
+                            <Area type="monotone" dataKey="rate" stroke="#1d4ed8" fill="#dbeafe" strokeWidth={2}/>
+                        </AreaChart>
+                    </ResponsiveContainer>
+                 </div>
+            </div>
+            <div className="lg:col-span-1 space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">AI Insights</h3>
+                    <div className="space-y-3">
+                    {recommendations.slice(0,3).map(rec => (
+                        <div key={rec.id} className="p-3 rounded-lg bg-blue-50 border border-blue-200">
+                            <p className="text-sm text-blue-700">{rec.content}</p>
+                        </div>
+                    ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function HealthWellnessView() {
+    const { goals } = mockData.wellnessProfile;
+    const { sleepStages } = mockData.analytics;
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Active Wellness Goals</h3>
+                <div className="space-y-4">
+                    {goals.map(goal => (
+                        <div key={goal.id}>
+                            <div className="flex justify-between items-center mb-1">
+                                <span className="text-sm font-semibold text-gray-700">{goal.description}</span>
+                                <span className="text-sm font-semibold text-gray-500">{goal.progress}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                                <div className="bg-green-600 h-2 rounded-full" style={{ width: `${goal.progress}%` }}></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg border border-gray-200 flex flex-col items-center">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Last Night's Sleep Stages</h3>
+                <ResponsiveContainer width="100%" height={250}>
+                    <PieChart>
+                        <Pie data={sleepStages} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={60} outerRadius={100} paddingAngle={5} label>
+                            {sleepStages.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
+                        </Pie>
+                        <Tooltip/>
+                        <Legend/>
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+}
+
+function CognitivePerformanceView() {
+    const { cognitiveLoad, energyLevel, focusSessions } = mockData.cognitivePerformance;
+    const cognitiveLoadData = [{ name: 'Cognitive Load', value: cognitiveLoad.value }];
+    const energyLevelData = [{ name: 'Energy Level', value: energyLevel.value }];
+
+    return (
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Cognitive Load</h3>
+                    <ResponsiveContainer width="100%" height={150}>
+                        <BarChart data={cognitiveLoadData} layout="vertical" margin={{left: 30}}>
+                           <XAxis type="number" domain={[0, 100]} hide/>
+                           <YAxis type="category" dataKey="name" hide/>
+                           <Bar dataKey="value" fill="#fb923c" barSize={30} radius={[0, 10, 10, 0]} background={{ fill: '#f1f5f9', radius: 10 }}/>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Energy Level</h3>
+                    <ResponsiveContainer width="100%" height={150}>
+                        <BarChart data={energyLevelData} layout="vertical" margin={{left: 30}}>
+                           <XAxis type="number" domain={[0, 100]} hide/>
+                           <YAxis type="category" dataKey="name" hide/>
+                           <Bar dataKey="value" fill="#34d399" barSize={30} radius={[0, 10, 10, 0]} background={{ fill: '#f1f5f9', radius: 10 }}/>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Recent Focus Sessions</h3>
+                {focusSessions.map(session => (
+                    <div key={session.id} className="p-4 rounded-lg bg-gray-50">
+                        <p className="font-semibold text-gray-800">{session.objective}</p>
+                        <div className="flex justify-between items-center mt-2">
+                           <span className="text-sm text-gray-500">{session.duration}</span>
+                           <span className="text-sm font-bold text-green-600">Productivity: {session.productivityScore}%</span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
+function MindfulnessView() {
+    const { sessions, moodHistory } = mockData.mindfulness;
+    return(
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Recent Mindfulness Sessions</h3>
+                <div className="space-y-3">
+                    {sessions.map(s => (
+                        <div key={s.id} className="flex justify-between p-3 bg-gray-50 rounded-lg">
+                            <span className="font-medium text-gray-700">{s.type}</span>
+                            <span className="text-sm text-gray-500">{s.duration}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+             <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Mood Analysis</h3>
+                 <ResponsiveContainer width="100%" height={250}>
+                    <BarChart data={moodHistory} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false}/>
+                        <XAxis dataKey="mood" tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip />
+                        <Bar dataKey="count" fill="#8b5cf6" barSize={30} radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+}
+
+function AnalyticsView() {
+    return (
+        <div className="p-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Cognitive Load Trend (Last 5 Days)</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={mockData.analytics.cognitiveLoadTrend}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="load" name="Cognitive Load (%)" stroke="#f97316" strokeWidth={2} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+}
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'Health & Wellness':
+        return <HealthWellnessView />;
+      case 'Cognitive Performance':
+        return <CognitivePerformanceView />;
+      case 'Mindfulness':
+        return <MindfulnessView />;
+      case 'Analytics':
+        return <AnalyticsView />;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

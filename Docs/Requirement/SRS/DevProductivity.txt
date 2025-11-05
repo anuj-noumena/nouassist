@@ -1,0 +1,148 @@
+Namespace: NouAssist.DevProductivity.VersionControlIntegration.GitRepositories
+Features:
+ - SD-1.1: Integrate Git Repositories: Allows users to connect and manage Git repositories directly within the platform. Supports cloning, committing, pushing, and pulling changes.
+ - Connect to remote Git repos.
+ - Clone/pull/push commits.
+
+Namespace: NouAssist.DevProductivity.VersionControlIntegration.BranchManagement
+Features:
+ - SD-1.2: Branch Management: Enables users to create, merge, and delete branches within connected Git repositories. Supports visualization of branch structures and merge conflicts resolution.
+ - Create, merge, delete branches.
+ - Visualize branch history.
+
+Namespace: NouAssist.DevProductivity.VersionControlIntegration.PullRequestManagement
+Features:
+ - SD-1.3: Pull Request Management: Provides tools for creating, reviewing, and approving pull requests. Integrates with code review workflows and supports inline commenting and approval processes.
+ - Open, review, approve pull requests.
+ - Inline commenting.
+
+Namespace: NouAssist.DevProductivity.VersionControlIntegration.CommitHistoryVisualization
+Features:
+ - SD-1.4: Commit History Visualization: Displays a visual history of commits, including commit messages, authors, timestamps, and changes made. Supports filtering and searching commit logs.
+ - Display commit graph.
+ - Filter commits by author or date.
+
+Namespace: NouAssist.DevProductivity.VersionControlIntegration.CodeReview
+Features:
+ - SD-FR014: Implement code review features with commenting and approval workflows.
+
+Namespace: NouAssist.DevProductivity.IssueTracking.CreateUpdateDeleteIssues
+Features:
+ - SD-2.1: Create Issues: Allows users to create new issues or bugs with details such as title, description, priority, status, and assigned developer.
+ - SD-2.2: Update Issues: Enables users to update issue details, including changing status, priority, and assignees. Supports adding comments and attachments to issues.
+ - SD-2.3: Delete Issues: Permits users to delete issues from the system with proper confirmation to prevent accidental deletions.
+ - Basic CRUD for issues.
+ - Assign priorities, statuses.
+
+Namespace: NouAssist.DevProductivity.IssueTracking.IssueLinking
+Features:
+ - SD-2.5: Issue Linking: Allows users to link related issues, such as dependencies or duplicates, to provide better context and traceability.
+ - Link related issues.
+ - Mark duplicates or dependencies.
+
+Namespace: NouAssist.DevProductivity.IssueTracking.IssueSearchFilter
+Features:
+ - SD-2.4: Search and Filter Issues: Provides search and filtering capabilities to find issues based on criteria such as status, priority, assignee, and tags.
+ - Advanced query builder.
+ - Sort or filter by date, status, priority.
+
+Namespace: NouAssist.DevProductivity.IssueTracking.BulkIssueOperations
+Features:
+ - SD-2.7: Bulk Issue Operations: Enables users to perform bulk operations on multiple issues simultaneously, such as updating status, assigning to a different developer, or deleting.
+ - Update or assign multiple issues at once.
+ - Bulk transition statuses.
+
+Namespace: NouAssist.DevProductivity.IssueTracking.IssueHistoryLogs
+Features:
+ - SD-2.6: Issue History Logs: Maintains a history of all changes made to issues, including status updates, reassignments, and comments.
+
+Namespace: NouAssist.DevProductivity.CICDIntegration.ConfigurePipelines
+Features:
+ - SD-3.1: Configure CI/CD Pipelines: Allows users to set up and configure CI/CD pipelines for automated building, testing, and deployment of applications.
+ - Create pipeline definitions (YAML or GUI).
+ - Store pipeline configs in code.
+
+Namespace: NouAssist.DevProductivity.CICDIntegration.AutomatedTesting
+Features:
+ - SD-3.2: Automated Testing: Integrates automated testing frameworks to run tests as part of the CI/CD pipeline. Supports unit tests, integration tests, and end-to-end tests.
+ - Integrate with testing frameworks (NUnit, xUnit).
+ - Run unit/integration/e2e tests on each commit.
+
+Namespace: NouAssist.DevProductivity.CICDIntegration.DeploymentAutomation
+Features:
+ - SD-3.3: Deployment Automation: Automates the deployment process to various environments (e.g., staging, production) based on pipeline configurations.
+ - Deploy to staging/production automatically.
+ - Manage environment variables.
+
+Namespace: NouAssist.DevProductivity.CICDIntegration.PipelineMonitoring
+Features:
+ - SD-3.4: Pipeline Monitoring: Provides real-time monitoring and visualization of CI/CD pipelines, displaying build statuses, test results, and deployment progress.
+ - Real-time pipeline status dashboards.
+ - Collect logs, test artifacts.
+
+Namespace: NouAssist.DevProductivity.CICDIntegration.RollbackMechanism
+Features:
+ - SD-3.5: Rollback Mechanism: Enables automatic or manual rollback of deployments in case of failures or issues detected post-deployment.
+ - Automated or manual rollback triggers.
+ - Keep rollback history.
+
+Namespace: NouAssist.DevProductivity.CollaborationTools.CodeSnippetSharing
+Features:
+ - SD-4.1: Code Snippet Sharing: Allows users to share code snippets within the platform, supporting syntax highlighting and formatting for various programming languages.
+ - Share code blocks with syntax highlighting.
+ - Manage snippet library.
+
+Namespace: NouAssist.DevProductivity.CollaborationTools.RealTimeCollaboration
+Features:
+ - SD-4.2: Real-Time Collaboration: Enables multiple users to collaborate on code, documents, and projects in real-time, supporting simultaneous editing and commenting.
+ - Co-edit code or documents in real time.
+ - Resolve merge-like conflicts on the fly.
+
+Namespace: NouAssist.DevProductivity.CollaborationTools.IntegratedChat
+Features:
+ - SD-4.3: Integrated Chat: Provides an integrated chat system for team communication, supporting both direct messages and group chats.
+ - Direct or group messaging for dev teams.
+ - Link messages to code commits.
+
+Namespace: NouAssist.DevProductivity.CollaborationTools.TaskAssignment
+Features:
+ - SD-4.4: Task Assignment within Projects: Allows users to assign tasks to team members directly within projects, tracking task ownership and progress.
+ - Assign tasks or issues directly from code reviews.
+ - Track developer ownership.
+
+Namespace: NouAssist.DevProductivity.DocumentationManagement.CodeDocs
+Features:
+ - Auto-generate API docs from code comments.
+ - Link doc sections to code lines.
+
+Namespace: NouAssist.DevProductivity.DocumentationManagement.VersionControl
+Features:
+ - Keep doc versions in sync with code versions.
+ - Revert doc changes if needed.
+
+Namespace: NouAssist.DevProductivity.DocumentationManagement.SearchDocumentation
+Features:
+ - Full-text or advanced search of doc content.
+ - Filter by tags, code references.
+
+Namespace: NouAssist.DevProductivity.DocumentationManagement.AutomatedDocGeneration
+Features:
+ - SD-5.1: Create Documentation: Enables users to create detailed documentation for projects, APIs, and software components using rich text editors and support for embedding images and links.
+ - SD-5.2: Edit Documentation: Allows users to edit existing documentation with version control, ensuring that all changes are tracked and previous versions can be restored if needed.
+ - SD-5.3: Delete Documentation: Permits users to delete documentation entries with proper confirmation to prevent accidental deletions.
+ - SD-5.4: Search Documentation: Provides a search functionality to find documentation by title, content, tags, or related projects.
+ - SD-5.5: Link Documentation to Code: Allows users to link documentation directly to code repositories, enabling easy access and context for developers.
+ - TK-02-FR035: Implement automated code documentation generation.
+ - Integrate doc generation tools (Doxygen, DocFX).
+ - Generate user guides from code annotations.
+
+Namespace: NouAssist.DevProductivity.DocumentationManagement.IDEIntegration
+Features:
+ - TK-02-FR034: Integrate with popular IDEs.
+ - Access tasks, issues, docs from within the IDE.
+ - Provide quick links to code references.
+
+Namespace: NouAssist.DevProductivity.DocumentationManagement.CodeReview
+Features:
+ - Provide doc review in pull requests.
+ - Merge doc changes upon approval.

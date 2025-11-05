@@ -1,0 +1,112 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.BasicTheme": {
+      "version": "9.3.6",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/03/2025 13:45:36 +00:00"
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/03/2025 13:45:36 +00:00"
+    },
+    "Volo.Abp.Identity": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/03/2025 13:45:36 +00:00"
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/03/2025 13:45:36 +00:00"
+    },
+    "Volo.Abp.SettingManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/03/2025 13:45:36 +00:00"
+    },
+    "Volo.Abp.PermissionManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/03/2025 13:45:36 +00:00"
+    },
+    "Volo.Abp.FeatureManagement": {
+      "version": "9.3.6",
+      "isInstalled": true,
+      "creationTime": "11/03/2025 13:45:36 +00:00"
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Application": {
+      "path": "src/NouAssist.Application/NouAssist.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Application.Tests": {
+      "path": "test/NouAssist.Application.Tests/NouAssist.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Domain.Shared": {
+      "path": "src/NouAssist.Domain.Shared/NouAssist.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Application.Contracts": {
+      "path": "src/NouAssist.Application.Contracts/NouAssist.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.HttpApi": {
+      "path": "src/NouAssist.HttpApi/NouAssist.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.HttpApi.Client": {
+      "path": "src/NouAssist.HttpApi.Client/NouAssist.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Web": {
+      "path": "src/NouAssist.Web/NouAssist.Web.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Web.Tests": {
+      "path": "test/NouAssist.Web.Tests/NouAssist.Web.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.EntityFrameworkCore.Tests/NouAssist.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.EntityFrameworkCore": {
+      "path": "src/NouAssist.EntityFrameworkCore/NouAssist.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TestBase": {
+      "path": "test/NouAssist.TestBase/NouAssist.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Domain.Tests": {
+      "path": "test/NouAssist.Domain.Tests/NouAssist.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/NouAssist.HttpApi.Client.ConsoleTestApp/NouAssist.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.DbMigrator": {
+      "path": "src/NouAssist.DbMigrator/NouAssist.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Domain": {
+      "path": "src/NouAssist.Domain/NouAssist.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}

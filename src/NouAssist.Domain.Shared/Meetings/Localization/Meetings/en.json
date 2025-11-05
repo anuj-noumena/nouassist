@@ -1,0 +1,14 @@
+{
+  "culture": "en",
+  "texts": {
+    "Meetings:DescriptionTooLong": "Description cannot exceed 2000 characters",
+    "Meetings:InvalidSchedule": "Invalid meeting schedule",
+    "Meetings:CannotScheduleInPast": "Cannot schedule meeting in the past",
+    "Meetings:CanOnlyStartScheduledMeetings": "Can only start scheduled meetings",
+    "Meetings:AlreadyCompleted": "Meeting is already completed",
+    "Meetings:AttendeeAlreadyAdded": "Attendee is already added to this meeting",
+    "Meetings:AttendeeNotFound": "Attendee not found",
+    "Meetings:ActionItemNotFound": "Action item not found",
+    "Meetings:NotRecurringMeeting": "This is not a recurring meeting"
+  }
+}

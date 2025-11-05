@@ -1,0 +1,352 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { Bot, Home, Settings, Bell, PlusCircle, FileText, CheckSquare, GitPullRequest, Milestone, Search, ListFilter } from 'lucide-react';
+
+// Mock Data based on the Requirements Management DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  requirements: [
+    { id: 'REQ-001', identifier: 'USR-LOGIN', text: 'As a user, I want to log in with my email and password.', type: 'Functional', status: 'Approved', objectiveId: 'BO-1' },
+    { id: 'REQ-002', identifier: 'PERF-LOAD', text: 'The system must support 1000 concurrent users with a response time under 2 seconds.', type: 'Non-Functional', status: 'Approved', objectiveId: 'BO-2' },
+    { id: 'REQ-003', identifier: 'API-PAYMENT', text: 'The system shall integrate with the Stripe payment gateway API.', type: 'Interface', status: 'In Review', objectiveId: 'BO-3' },
+    { id: 'REQ-004', identifier: 'DATA-USER', text: 'User profile data must be encrypted at rest.', type: 'Data', status: 'Draft', objectiveId: 'BO-4' },
+    { id: 'REQ-005', identifier: 'USR-PROFILE', text: 'As a user, I should be able to edit my profile information.', type: 'Functional', status: 'Implemented', objectiveId: 'BO-1' },
+  ],
+  testCases: [
+      { id: 'TC-001', requirementId: 'REQ-001', title: 'Test valid user login', status: 'Pass' },
+      { id: 'TC-002', requirementId: 'REQ-001', title: 'Test invalid user login', status: 'Pass' },
+      { id: 'TC-003', requirementId: 'REQ-003', title: 'Test successful payment transaction', status: 'Fail' },
+      { id: 'TC-004', requirementId: 'REQ-005', title: 'Test profile update', status: 'Not Executed' },
+  ],
+  changeRequests: [
+      { id: 'CR-001', requirementId: 'REQ-002', rationale: 'Initial performance target is too high for MVP.', status: 'Submitted' },
+      { id: 'CR-002', requirementId: 'REQ-001', rationale: 'Add support for social login (Google/Facebook).', status: 'Approved' },
+  ],
+  baselines: [
+      { id: 'BSL-001', name: 'MVP Release v1.0', createdDate: '2025-05-01', status: 'Active', reqCount: 15 },
+      { id: 'BSL-002', name: 'Post-Launch Hotfix', createdDate: '2025-06-15', status: 'Archived', reqCount: 18 },
+  ],
+  analytics: {
+      reqStatusDistribution: [
+          { name: 'Approved', value: 25, fill: '#10b981' },
+          { name: 'In Review', value: 10, fill: '#f97316' },
+          { name: 'Draft', value: 5, fill: '#3b82f6' },
+          { name: 'Implemented', value: 60, fill: '#8b5cf6' },
+      ],
+      testExecutionSummary: [
+          { name: 'Pass', value: 55 },
+          { name: 'Fail', value: 8 },
+          { name: 'Blocked', value: 3 },
+          { name: 'Not Executed', value: 12 },
+      ]
+  }
+};
+
+// --- Helper Components ---
+function StatusPill({ status }) {
+    const styles = {
+        'Approved': 'bg-green-100 text-green-800',
+        'Implemented': 'bg-purple-100 text-purple-800',
+        'In Review': 'bg-yellow-100 text-yellow-800',
+        'Draft': 'bg-blue-100 text-blue-800',
+        'Submitted': 'bg-orange-100 text-orange-800',
+        'Pass': 'bg-green-100 text-green-800',
+        'Fail': 'bg-red-100 text-red-800',
+        'Blocked': 'bg-gray-200 text-gray-700',
+        'Not Executed': 'bg-gray-100 text-gray-500',
+        'Active': 'bg-blue-100 text-blue-800',
+        'Archived': 'bg-gray-100 text-gray-700',
+    };
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+}
+
+function RequirementTypePill({ type }) {
+    const styles = {
+        'Functional': 'bg-sky-100 text-sky-800',
+        'Non-Functional': 'bg-amber-100 text-amber-800',
+        'Interface': 'bg-teal-100 text-teal-800',
+        'Data': 'bg-rose-100 text-rose-800',
+    };
+     return <span className={`px-2 py-1 text-xs font-medium rounded-full ${styles[type]}`}>{type}</span>;
+}
+
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Dashboard', icon: Home },
+    { name: 'Requirements', icon: FileText },
+    { name: 'Validation & Tests', icon: CheckSquare },
+    { name: 'Change Requests', icon: GitPullRequest },
+    { name: 'Baselines', icon: Milestone },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Bot size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">ReqsAI</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
+            <PlusCircle size={16} /> New Requirement
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function DashboardView() {
+    const { reqStatusDistribution, testExecutionSummary } = mockData.analytics;
+    const pendingChanges = mockData.changeRequests.filter(cr => cr.status === 'Submitted');
+
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Requirement Status Distribution</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                        <Pie data={reqStatusDistribution} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={100} labelLine={false} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}>
+                            {reqStatusDistribution.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.fill} />)}
+                        </Pie>
+                        <Tooltip formatter={(value) => `${value}%`}/>
+                        <Legend />
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Test Execution Summary</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={testExecutionSummary} layout="vertical" margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false}/>
+                        <XAxis type="number"/>
+                        <YAxis dataKey="name" type="category"/>
+                        <Tooltip />
+                        <Bar dataKey="value" fill="#8884d8" barSize={20}>
+                             {testExecutionSummary.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.name === 'Pass' ? '#10b981' : entry.name === 'Fail' ? '#ef4444' : '#64748b'} />
+                            ))}
+                        </Bar>
+                    </BarChart>
+                </ResponsiveContainer>
+            </div>
+            <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200">
+                 <h3 className="font-bold text-lg text-gray-800 mb-4">Pending Change Requests</h3>
+                 {pendingChanges.length > 0 ? (
+                     <div className="space-y-2">
+                         {pendingChanges.map(cr => (
+                            <div key={cr.id} className="flex justify-between items-center p-2 rounded-lg bg-gray-50">
+                               <p className="text-sm">
+                                   <span className="font-semibold text-gray-800">{cr.requirementId}</span>
+                                   <span className="text-gray-500 ml-2">{cr.rationale}</span>
+                               </p>
+                               <StatusPill status={cr.status}/>
+                            </div>
+                         ))}
+                     </div>
+                 ) : <p className="text-sm text-gray-500">No pending change requests.</p>}
+            </div>
+        </div>
+    );
+}
+
+function RequirementsView() {
+    return(
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <div className="flex justify-between items-center mb-4 p-2">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16}/>
+                        <input type="text" placeholder="Search requirements..." className="pl-9 pr-3 py-2 border rounded-lg text-sm w-80"/>
+                    </div>
+                    <button className="flex items-center gap-2 px-3 py-2 border rounded-lg text-sm"><ListFilter size={16}/> Filter</button>
+                </div>
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">ID</th>
+                            <th className="p-3">Description</th>
+                            <th className="p-3">Type</th>
+                            <th className="p-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.requirements.map(req => (
+                            <tr key={req.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-mono text-xs text-gray-600">{req.identifier}</td>
+                                <td className="p-3 font-medium text-gray-800">{req.text}</td>
+                                <td className="p-3"><RequirementTypePill type={req.type} /></td>
+                                <td className="p-3"><StatusPill status={req.status}/></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function ValidationView() {
+    return(
+         <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Test Cases</h3>
+                 <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Test Case ID</th>
+                            <th className="p-3">Title</th>
+                            <th className="p-3">Requirement</th>
+                            <th className="p-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.testCases.map(tc => (
+                            <tr key={tc.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-mono text-xs text-gray-600">{tc.id}</td>
+                                <td className="p-3 font-medium text-gray-800">{tc.title}</td>
+                                <td className="p-3 font-mono text-xs text-blue-600">{tc.requirementId}</td>
+                                <td className="p-3"><StatusPill status={tc.status}/></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function ChangeRequestsView() {
+    return (
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                 <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Change Requests</h3>
+                 <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">CR ID</th>
+                            <th className="p-3">Requirement</th>
+                            <th className="p-3">Rationale</th>
+                            <th className="p-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.changeRequests.map(cr => (
+                            <tr key={cr.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-mono text-xs text-gray-600">{cr.id}</td>
+                                <td className="p-3 font-mono text-xs text-blue-600">{cr.requirementId}</td>
+                                <td className="p-3 text-gray-700">{cr.rationale}</td>
+                                <td className="p-3"><StatusPill status={cr.status}/></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function BaselinesView() {
+    return (
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                 <h3 className="font-bold text-lg text-gray-800 p-2 mb-2">Requirement Baselines</h3>
+                 <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Baseline Name</th>
+                            <th className="p-3"># Requirements</th>
+                            <th className="p-3">Creation Date</th>
+                            <th className="p-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.baselines.map(b => (
+                            <tr key={b.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{b.name}</td>
+                                <td className="p-3 text-gray-600">{b.reqCount}</td>
+                                <td className="p-3 text-gray-600">{b.createdDate}</td>
+                                <td className="p-3"><StatusPill status={b.status}/></td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'Requirements':
+        return <RequirementsView />;
+      case 'Validation & Tests':
+        return <ValidationView />;
+      case 'Change Requests':
+        return <ChangeRequestsView />;
+      case 'Baselines':
+        return <BaselinesView />;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

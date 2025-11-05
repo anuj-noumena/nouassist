@@ -1,0 +1,164 @@
+You are an AI coding assistant. I am developing a `.NET 9` Web API following **Clean Architecture** and **Domain-Driven Design (DDD)** principles. The **Presentation Layer** exposes **REST endpoints** for tasks, projects, time tracking, etc., and includes **SignalR Hubs** for real-time notifications. The key components and technologies used in the Presentation Layer include:
+
+- **ASP.NET Core Web API** for building RESTful services.
+- **SignalR** for real-time client-server communication.
+- **MediatR** for handling requests by interacting with the Application Layer.
+- **FluentValidation** for request validation.
+- **Serilog** for logging.
+- **Swagger** for API documentation.
+- **Dependency Injection** for managing service lifetimes and dependencies.
+
+---
+### **Context**
+
+The Interface Layer is responsible for handling HTTP requests, interacting with the Application Layer via MediatR, and communicating real-time updates to clients through SignalR Hubs. It includes:
+
+- **Controllers**: Such as `TasksController`, `ProjectsController`.
+- **DTOs** or **API Models**: For request and response payloads.
+- **SignalR Hubs**: For broadcasting changes and real-time notifications to clients.
+- **Program.cs**: Configuring services, middleware, Swagger, SignalR, Serilog, and external authentication.
+- **Validation**: Using **FluentValidation** for request validation or **ModelState** as placeholders.
+
+---
+### **Goal**
+
+Generate the **Interface Layer** code for all namespaces mentioned under the Functional Requirements. The generated code should include:
+
+1. **Controllers**
+   - Implement RESTful endpoints (e.g., `CreateTask`, `GetTaskById`) that interact with the Application Layer via MediatR.
+   
+2. **DTOs / API Models**
+   - Define request and response models for each API endpoint to encapsulate the data transferred between client and server.
+   
+3. **SignalR Hubs**
+   - Create hubs for real-time communication, enabling the server to broadcast updates to connected clients.
+   
+4. **Program.cs and Configuration**
+   - Set up the application’s entry point with configurations for Swagger, SignalR, Serilog, and external authentication.
+   
+5. **Validation**
+   - Implement request validation using **FluentValidation** or utilize **ModelState** as placeholders for validation logic.
+
+---
+### **Interface Project Structure & Naming**
+
+- The main Interface project: `src/Interface/`
+- Mirror the domain and application namespaces for folder organization. Examples:
+  - `src/Interface/Controllers/TasksController.cs`
+  - `src/Interface/Controllers/ProjectsController.cs`
+  - `src/Interface/DTOs/CreateTaskDto.cs`
+  - `src/Interface/DTOs/TaskDto.cs`
+  - `src/Interface/SignalR/NotificationHub.cs`
+  - `src/Interface/Program.cs`
+  - `src/Interface/Validators/CreateTaskDtoValidator.cs`
+  - etc.
+
+---
+### **Output Format (Generate Code in Batches)**
+
+1. **Batch Output**
+   - Please generate the Interface layer files **in batches** to ensure clarity and manageability.
+   - Each batch can contain related sets of files (e.g., Controllers, DTOs, SignalR Hubs, Configuration).
+
+2. **For Each File**
+   - **Full File Path**: Provide the complete path relative to the project root (e.g., `src/Interface/Controllers/TasksController.cs`).
+   - **File Content**: Include all necessary `using` statements, `namespace` declarations, and complete class definitions.
+
+**Important**:
+- Use **PascalCase** for file and class names (e.g., `TasksController.cs`, `ProjectsController.cs`).
+- Maintain **best practices** for `.NET 9` and **ASP.NET Core** usage.
+- Ensure **Dependency Injection** is properly configured for controllers, services, and hubs.
+- Focus on **Interface concerns** without embedding business logic.
+- Leverage **C# 9** features such as records and pattern matching where applicable.
+
+---
+### **Functional Requirements**
+
+*(Please ensure that all the following Functional Requirements are addressed in the Interface Layer code generation. Replace this placeholder with your actual Functional Requirements.)*
+
+1. **Task Management**
+   - **Endpoints**:
+     - `POST /api/tasks`: Create a new task.
+     - `GET /api/tasks/{id}`: Retrieve a task by its ID.
+     - `PUT /api/tasks/{id}`: Update an existing task.
+     - `DELETE /api/tasks/{id}`: Delete a task.
+     - `POST /api/tasks/{id}/complete`: Mark a task as complete.
+   - **Real-Time Notifications**:
+     - Notify clients when a task is created, updated, completed, or deleted.
+
+2. **Project Management**
+   - **Endpoints**:
+     - `POST /api/projects`: Create a new project.
+     - `GET /api/projects/{id}`: Retrieve a project by its ID.
+     - `PUT /api/projects/{id}`: Update an existing project.
+     - `DELETE /api/projects/{id}`: Delete a project.
+   - **Real-Time Notifications**:
+     - Notify clients when a project is created, updated, or deleted.
+
+3. **Time Tracking**
+   - **Endpoints**:
+     - `POST /api/timetracking`: Start time tracking for a task.
+     - `PUT /api/timetracking/{id}/stop`: Stop time tracking for a task.
+     - `GET /api/timetracking/{id}`: Retrieve time tracking details.
+   - **Real-Time Notifications**:
+     - Notify clients when time tracking starts or stops for a task.
+
+4. **User Management**
+   - **Endpoints**:
+     - `POST /api/users`: Register a new user.
+     - `GET /api/users/{id}`: Retrieve user details.
+     - `PUT /api/users/{id}`: Update user information.
+     - `DELETE /api/users/{id}`: Delete a user.
+   - **Real-Time Notifications**:
+     - Notify clients when user profiles are created, updated, or deleted.
+
+5. **Authentication & Authorization**
+   - **Endpoints**:
+     - `POST /api/auth/login`: Authenticate a user and issue a JWT.
+     - `POST /api/auth/register`: Register a new user.
+   - **Real-Time Notifications**:
+     - Handle authentication events as needed.
+
+6. **Other Requirements**
+   - **Swagger Integration**:
+     - Document all API endpoints with Swagger for easy testing and integration.
+   - **Serilog Integration**:
+     - Implement logging across all controllers and services.
+   - **External Authentication**:
+     - Configure external authentication providers (e.g., Google, Microsoft).
+
+---
+### **Additional Notes**
+
+- **Swagger Integration**: Ensure that Swagger is set up to generate comprehensive API documentation, including request and response models.
+- **Serilog Integration**: Configure Serilog in `Program.cs` for structured logging, capturing important events and errors.
+- **SignalR Integration**: Set up SignalR Hubs to handle real-time notifications, ensuring they are correctly registered and configured within the application.
+- **FluentValidation Integration**: All request DTOs should have corresponding validators to enforce business rules and data integrity.
+- **Ardalis.GuardClauses Usage**: Employ guard clauses in controller actions or service methods to validate arguments and enforce invariants.
+- **C# 9 Features**: Utilize modern C# features such as records for immutable DTOs and pattern matching in controllers where appropriate.
+- **Dependency Injection**: Ensure all controllers, services, and hubs are registered correctly in the Dependency Injection container.
+
+---
+### **Prompt Execution**
+
+**Task**: Using all the guidelines above, generate **a complete set of Interface layer files** for the entire `.NET 9` Web API application. Each file should include:
+
+1. **File Path**
+2. **Usings + Namespace**
+3. **Class Declaration** with necessary properties, constructors, and methods
+4. **Relevant Code** that demonstrates:
+   - RESTful controller actions interacting with the Application Layer via MediatR.
+   - DTOs or API Models for requests and responses.
+   - SignalR Hubs for real-time notifications.
+   - Program.cs configuration for Swagger, SignalR, Serilog, and external authentication.
+   - FluentValidation for request validation.
+   - Ardalis.GuardClauses for argument validation.
+   - Dependency Injection configurations.
+   - C# 9 features such as records and pattern matching where applicable.
+
+**Important**:
+- Please output the generated Interface layer code **in batches**, each batch containing a related subset of the files, to avoid an overly large single response.
+- Within each batch, provide each file in a separate code block or well-formatted section.
+- Ensure that the code is **self-contained** and follows best practices for the Interface Layer in a Clean Architecture and DDD setup.
+
+**End of Prompt**

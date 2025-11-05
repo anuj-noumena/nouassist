@@ -1,0 +1,149 @@
+You are an AI coding assistant. I am developing a `.NET 9` application following **Clean Architecture** and **Domain-Driven Design (DDD)** principles. The **Application Layer** orchestrates use cases by interacting with domain entities, services, and repositories. The key components and technologies used in the Application Layer include:
+
+- **MediatR** for implementing the Command and Query patterns.
+- **FluentValidation** for validating commands and queries.
+- **Ardalis.GuardClauses** for argument validation.
+- **AutoMapper** for mapping domain entities to Data Transfer Objects (DTOs).
+- **Dependency Injection** for managing service lifetimes and dependencies.
+
+---
+### **Context**
+
+The Application Layer is responsible for handling **use cases** by coordinating interactions between the Presentation Layer and the Domain Layer. It includes:
+
+- **Commands & Queries (MediatR)**: Such as `CreateTaskCommand`, `GetTaskByIdQuery`.
+- **Notifications** or **Events**: Such as `TaskCreatedNotification`.
+- **Handlers**: For each command/query, such as `CreateTaskCommandHandler`.
+- **Behaviors (MediatR Pipeline)**: Such as `ValidationBehavior`, `LoggingBehavior`.
+- **DTOs**: Minimal View Models used internally by the Application Layer.
+- **Interfaces**: For application-level services, such as `INotificationService`.
+- **Application Services**: Services that coordinate domain objects, such as `TaskAppService`.
+
+---
+### **Goal**
+
+Generate the **Application Layer** code for all namespaces mentioned under the Functional Requirements. The generated code should include:
+
+1. **Commands & Queries (MediatR)**
+   - Define command and query classes representing use cases (e.g., `CreateTaskCommand`, `GetTaskByIdQuery`).
+   
+2. **Handlers**
+   - Implement handlers for each command and query that interact with the Domain Layer.
+   
+3. **Notifications/Events**
+   - Define notification classes that the Application Layer might raise (e.g., `TaskCreatedNotification`).
+   
+4. **Behaviors (MediatR Pipeline)**
+   - Implement pipeline behaviors such as `ValidationBehavior` and `LoggingBehavior` to handle cross-cutting concerns.
+   
+5. **DTOs**
+   - Create Data Transfer Objects or minimal View Models used internally by the Application Layer.
+   
+6. **Interfaces for Application-Level Services**
+   - Define interfaces like `INotificationService` to abstract application-level operations.
+   
+7. **Application Services**
+   - Implement services that coordinate domain objects and orchestrate use cases (e.g., `TaskAppService`).
+   
+8. **Integrations**
+   - Integrate **FluentValidation** for command/query validation.
+   - Utilize **Ardalis.GuardClauses** for argument validation.
+   - Use **AutoMapper** for mapping between domain entities and DTOs.
+
+---
+### **Application Project Structure & Naming**
+
+- The main application project: `src/Application/`
+- Mirror the domain namespaces for folder organization. Examples:
+  - `src/Application/Productivity/Tasks/Commands/CreateTaskCommand.cs`
+  - `src/Application/Productivity/Tasks/Queries/GetTaskByIdQuery.cs`
+  - `src/Application/Productivity/Tasks/Handlers/CreateTaskCommandHandler.cs`
+  - `src/Application/Productivity/Tasks/Notifications/TaskCreatedNotification.cs`
+  - `src/Application/Productivity/Tasks/Behaviors/ValidationBehavior.cs`
+  - `src/Application/Productivity/Tasks/DTOs/TaskDto.cs`
+  - `src/Application/Productivity/Tasks/Interfaces/INotificationService.cs`
+  - `src/Application/Productivity/Tasks/Services/TaskAppService.cs`
+  - etc.
+
+---
+### **Output Format (Generate Code in Batches)**
+
+1. **Batch Output**
+   - Please generate the application layer files **in batches** to ensure clarity and manageability.
+   - Each batch can contain related sets of files (e.g., Commands & Queries, Handlers, Behaviors, DTOs, Services).
+
+2. **For Each File**
+   - **Full File Path**: Provide the complete path relative to the project root (e.g., `src/Application/Productivity/Tasks/Commands/CreateTaskCommand.cs`).
+   - **File Content**: Include all necessary `using` statements, `namespace` declarations, and complete class definitions.
+
+**Important**:
+- Use **PascalCase** for file and class names (e.g., `CreateTaskCommand.cs`, `TaskAppService.cs`).
+- Maintain **best practices** for `.NET 9` and **MediatR** usage.
+- Ensure **Dependency Injection** is properly configured for services, handlers, and behaviors.
+- Focus on **application concerns** without embedding business logic.
+- Leverage **C# 9** features such as records and pattern matching where applicable.
+
+---
+### **Functional Requirements**
+
+*(Please ensure that all the following Functional Requirements are addressed in the Application Layer code generation. Replace this placeholder with your actual Functional Requirements.)*
+
+1. **Commands & Queries (MediatR)**
+   - Define commands and queries for all use cases (e.g., creating, updating, retrieving tasks).
+
+2. **Handlers**
+   - Implement handlers that process each command and query, interacting with the Domain Layer as needed.
+
+3. **Notifications/Events**
+   - Create notifications that are raised upon certain actions (e.g., task creation).
+
+4. **Behaviors (MediatR Pipeline)**
+   - Implement pipeline behaviors for validation, logging, and other cross-cutting concerns.
+
+5. **DTOs**
+   - Design DTOs that represent the data structures used by the Application Layer and exposed to the Presentation Layer.
+
+6. **Interfaces for Application-Level Services**
+   - Define interfaces that abstract application-level operations (e.g., sending notifications).
+
+7. **Application Services**
+   - Develop services that encapsulate use case logic, coordinating interactions between commands, queries, and the Domain Layer.
+
+8. **Integrations**
+   - Set up FluentValidation validators for commands and queries.
+   - Configure AutoMapper profiles for mapping between domain entities and DTOs.
+   - Utilize Ardalis.GuardClauses within command and query constructors or handlers for argument validation.
+
+---
+### **Additional Notes**
+
+- **FluentValidation Integration**: All commands and queries should have corresponding validators to enforce business rules and data integrity.
+- **Ardalis.GuardClauses Usage**: Employ guard clauses in constructors and methods to validate arguments and enforce invariants.
+- **AutoMapper Configuration**: Set up AutoMapper profiles to handle mapping between domain entities and DTOs efficiently.
+- **MediatR Best Practices**: Follow MediatR conventions for naming and structuring commands, queries, and handlers.
+- **Dependency Injection**: Ensure all handlers, services, and behaviors are registered correctly in the Dependency Injection container.
+- **C# 9 Features**: Utilize modern C# features such as records for immutable DTOs and pattern matching in handlers where appropriate.
+
+---
+### **Prompt Execution**
+
+**Task**: Using all the guidelines above, generate **a complete set of application layer files** for the entire `.NET 9` application. Each file should include:
+
+1. **File Path**
+2. **Usings + Namespace**
+3. **Class Declaration** with necessary properties, constructors, and methods
+4. **Relevant Code** that demonstrates:
+   - MediatR Commands and Queries
+   - Handlers interacting with the Domain Layer
+   - FluentValidation for validation
+   - Ardalis.GuardClauses for argument validation
+   - AutoMapper for DTO mappings
+   - Dependency Injection configurations
+   - MediatR Behaviors for validation and logging
+
+**Important**:
+- Please output the generated application layer code **in batches**, each batch containing a related subset of the files, to avoid an overly large single response.
+- Within each batch, provide each file in a separate code block or well-formatted section.
+- Ensure that the code is **self-contained** and follows best practices for the Application Layer in a Clean Architecture and DDD setup.
+
+**End of Prompt**

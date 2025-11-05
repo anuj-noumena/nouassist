@@ -1,0 +1,18 @@
+{
+  "culture": "en",
+  "texts": {
+    "Team:DescriptionTooLong": "Description cannot exceed 2000 characters",
+    "Team:CannotBeOwnParent": "Team cannot be its own parent",
+    "Team:UserNotMember": "User is not a member of this team",
+    "Team:MaxMembersBelowCurrentCount": "Maximum members cannot be less than current member count",
+    "Team:UserAlreadyMember": "User is already a member of this team",
+    "Team:MaxMembersReached": "Maximum members limit reached",
+    "Team:MemberNotFound": "Member not found",
+    "Team:CannotRemoveLastAdmin": "Cannot remove the last admin",
+    "Team:CanOnlyAcceptInvitedStatus": "Can only accept invitations with invited status",
+    "Team:CannotModifySystemRole": "Cannot modify system roles",
+    "Team:CannotDeactivateSystemRole": "Cannot deactivate system roles",
+    "Team:RoleNotActive": "Role is not active",
+    "Team:ExpiryDateInPast": "Expiry date cannot be in the past"
+  }
+}

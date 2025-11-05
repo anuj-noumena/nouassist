@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Project and WBS Manager (Vue 3 & Vuetify 3)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+
+    <!-- Vuetify 3 and Material Design Icons CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/vuetify@3.8.9/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/vuetify@3.8.9/dist/vuetify-labs.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.8.1/github-markdown.min.css"
+        integrity="sha512-BrOPA520KmDMqieeM7XFe6a3u3Sb3F1JBaQnrIAmWg3EYrciJ+Qqe6ZcKCdfPv26rGcgTrJnZ/IdQEct8h3Zhw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/dark.min.css">
+
+    <style>
+        /* Custom styling for centering placeholder content */
+        .welcome-center {
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
+
+        .kanban-column {
+            min-height: 400px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body class="bg-grey-lighten-4">
+
+    <!-- The main application container -->
+    <div id="app"></div>
+
+    <!-- ES Module Shims for CDN imports -->
+    <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js",
+            "vuetify": "https://unpkg.com/vuetify@3.8.9/dist/vuetify.esm.js",
+            "vuetify/labs": "https://unpkg.com/vuetify@3.8.9/dist/vuetify-labs.esm.js",
+            "firebase/app": "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js",
+            "firebase/storage": "https://www.gstatic.com/firebasejs/9.22.2/firebase-storage.js",
+            "markdown-it": "https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/+esm",
+            "mermaid": "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs",
+            "@markslides/markdown-it-mermaid": "https://cdn.jsdelivr.net/npm/@markslides/markdown-it-mermaid@0.3.6/dist/index.mjs"
+        }
+    }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.11.1/languages/csharp.min.js"></script>
+    <script src="https://unpkg.com/@highlightjs/cdn-assets@11.11.1/languages/xml.min.js"></script>
+    <!-- ============================================= -->
+    <!-- COMPONENT TEMPLATES (Simulating .vue files) -->
+    <!-- ============================================= -->
+
+    <!-- App.vue Template -->
+    <script type="text/x-template" id="app-template">
+        <v-app>
+            <v-app-bar app color="primary">
+                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                <v-toolbar-title>Project & WBS Manager</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn v-if="!user" @click="loginDialog = true" variant="text">
+                    <v-icon start>mdi-login</v-icon> Login
+                </v-btn>
+                <v-btn v-else @click="logout" variant="text">
+                    <v-icon start>mdi-logout</v-icon> Logout
+                </v-btn>
+            </v-app-bar>
+
+            <v-navigation-drawer v-model="drawer" app>
+                <project-list 
+                    v-if="user" 
+                    :projects="projects" 
+                    :user="user"
+                    @select-project="onProjectSelected" 
+                    @project-added="showSnackbar('Project added!', 'success')"
+                    @error="showSnackbar($event, 'error')"
+                />
+            </v-navigation-drawer>
+
+            <v-main>
+                <v-container fluid>
+                    <div v-if="!user" class="welcome-center">
+                        <h1 class="text-h4">Welcome!</h1>
+                        <p class="mt-4">Please log in or sign up to manage your projects.</p>
+                    </div>
+                     <project-detail-view
+                        v-else 
+                        :project="selectedProject" 
+                        :user="user"
+                        @update-wbs="(msg) => showSnackbar(msg || 'WBS updated!', 'success')"
+                        @update-docs="msg => showSnackbar(msg || 'Documents updated!', 'success')"
+                        @error="showSnackbar($event, 'error')"
+                    />
+                </v-container>
+            </v-main>
+            
+            <login-dialog v-model="loginDialog" @login-success="onLoginSuccess" @login-error="onLoginError" />
+
+            <v-snackbar v-model="snackbar.visible" :timeout="snackbar.timeout" :color="snackbar.color">
+                {{ snackbar.text }}
+                <template #actions>
+                    <v-btn color="white" variant="text" @click="snackbar.visible = false">Close</v-btn>
+                </template>
+            </v-snackbar>
+        </v-app>
+    </script>
+
+    <!-- ProjectList.vue Template -->
+    <script type="text/x-template" id="project-list-template">
+        <div>
+            <v-list-item>
+                <v-list-item-title class="text-h6">Projects</v-list-item-title>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list density="compact" nav>
+                <v-list-item v-for="project in projects" :key="project.id" @click="$emit('select-project', project)" :title="project.name">
+                     <template v-slot:prepend>
+                        <v-icon>mdi-folder</v-icon>
+                    </template>
+                </v-list-item>
+            </v-list>
+            <div class="pa-2">
+                <v-btn block color="primary" @click="dialog = true">New Project</v-btn>
+            </div>
+            <v-dialog v-model="dialog" persistent max-width="600px">
+                <v-card>
+                    <v-card-title><span class="text-h5">New Project</span></v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-text-field label="Project Name*" v-model="newProject.name" required></v-text-field>
+                            <v-textarea label="Description" v-model="newProject.description"></v-textarea>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue-darken-1" variant="text" @click="closeDialog">Close</v-btn>
+                        <v-btn color="blue-darken-1" variant="text" @click="saveProject">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </div>
+    </script>
+
+    <!-- ProjectDetailView.vue Template -->
+    <script type="text/x-template" id="project-detail-view-template">
+        <div>
+            <div v-if="!project" class="welcome-center">
+                <h1 class="text-h4">Select a Project</h1>
+                <p class="mt-4">Choose a project from the left panel to begin.</p>
+            </div>
+            <v-card v-else>
+                 <v-card-title>
+                    <div class="d-flex align-center">
+                        <div>
+                            <div class="text-h5">{{ project.name }}</div>
+                            <div class="text-caption font-weight-regular">{{ project.description }}</div>
+                        </div>
+                    </div>
+                </v-card-title>
+                <v-tabs v-model="tab" bg-color="primary">
+                    <v-tab value="wbs">WBS</v-tab>
+                    <v-tab value="documents">Documents</v-tab>
+                    <v-tab value="kanban">Working Mode</v-tab>
+                </v-tabs>
+                <v-card-text>
+                    <v-window v-model="tab">
+                        <v-window-item value="wbs">
+                           <wbs-view :project="project" :user="user" @wbs-updated="$event => $emit('update-wbs', $event)" @error="$emit('error', $event)"/>
+                        </v-window-item>
+                        <v-window-item value="documents">
+                            <document-list :project="project" :user="user" @docs-updated="$event => $emit('update-docs', $event)" @error="$emit('error', $event)"/>
+                        </v-window-item>
+                        <v-window-item value="kanban">
+                            <kanban-view :project="project" :user="user" @error="$emit('error', $event)"></kanban-view>
+                        </v-window-item>
+                    </v-window>
+                </v-card-text>
+            </v-card>
+        </div>
+    </script>
+
+    <!-- WbsView.vue Template -->
+    <script type="text/x-template" id="wbs-view-template">
+        <div>
+            <div class="d-flex justify-end mb-4">
+                 <v-btn color="primary" @click="openWbsDialog()"><v-icon start>mdi-plus</v-icon>Add WBS Item</v-btn>
+                 <v-btn color="secondary" @click="importDialog = true" class="ml-2"><v-icon start>mdi-upload</v-icon>Import WBS</v-btn>
+            </div>
+            <v-treeview :items="wbsTree" activatable item-value="id">
+                 <template #prepend="{ item }">
+                    <v-icon>{{ item.children && item.children.length > 0 ? 'mdi-folder' : 'mdi-file-outline' }}</v-icon>
+                </template>
+                 <template v-slot:title="{ item }">
+                    <span :class="{'text-decoration-line-through': item.status === 'completed', 'text-success': item.status === 'completed', 'text-orange': item.status === 'in-progress'}">
+                        <strong>{{ item.key }}</strong> {{ item.name }}
+                    </span>
+                </template>
+                 <template #append="{ item }">
+                    <v-select
+                        v-if="!item.children || item.children.length === 0"
+                        :items="wbsStatus"
+                        item-title="name"
+                        item-value="id"
+                        v-model="item.status"
+                        class="ml-2"
+                        @change="updateWbsItem(item)">
+                    </v-select>
+                    <v-btn icon="mdi-pencil" size="small" variant="text" @click.stop="openWbsDialog(item)"></v-btn>
+                    <v-btn icon="mdi-delete" size="small" variant="text" @click.stop="deleteItem(item)"></v-btn>
+                </template>
+            </v-treeview>
+            <v-skeleton-loader v-if="isLoading" type="card"></v-skeleton-loader>
+            <v-dialog v-model="wbsDialog" persistent max-width="600px">
+                <v-card>
+                    <v-card-title><span class="text-h5">{{ editingWbs ? 'Edit' : 'New' }} WBS Item</span></v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-text-field label="WBS Item Key*" v-model="wbsItem.key" required></v-text-field>
+                            <v-text-field label="WBS Item Name*" v-model="wbsItem.name" required></v-text-field>
+                             <v-select
+                                :items="wbsStatus"
+                                item-title="name"
+                                item-value="id"
+                                v-model="wbsItem.status"
+                                label="Status"
+                            ></v-select>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue-darken-1" variant="text" @click="closeWbsDialog">Close</v-btn>
+                        <v-btn color="blue-darken-1" variant="text" @click="saveWbsItem">Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
+            <v-dialog v-model="importDialog" persistent max-width="800px">
+                <v-card>
+                    <v-card-title><span class="text-h5">Import WBS from JSON</span></v-card-title>
+                    <v-card-text>
+                        <v-container>
+                             <p class="mb-2 text-body-2 text-grey-darken-1">Paste a JSON array of WBS items below. Each item must have 'key' and 'name' properties. The 'status' property is optional and defaults to 'pending'.</p>
+                             <p class="mb-4 text-body-2">Example: <code>[{"key": "1.1", "name": "Task One"}, {"key": "1.2", "name": "Task Two", "status": "in-progress"}]</code></p>
+                            <v-textarea
+                                label="JSON Array of WBS Items"
+                                v-model="jsonInput"
+                                rows="15"
+                                auto-grow
+                                :rules="[v => !!v || 'JSON input is required']"
+                            ></v-textarea>
+                        </v-container>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="grey" variant="text" @click="closeImportDialog">Close</v-btn>
+                        <v-btn color="primary" variant="text" @click="importWbs" :loading="importing">Import</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="kanban-view-template">
+        <div class="kanban-board">
+            <v-container fluid>
+                <v-row>
+                    <v-col cols="12" md="3">
+                        <v-card class="kanban-column" @drop="onDrop($event, 'pending')" @dragover.prevent @dragenter.prevent>
+                            <v-card-title class="text-subtitle-1 grey lighten-2">Pending</v-card-title>
+                            <v-card-text>
+                                <div v-if="isLoading" class="text-center pa-4"><v-progress-circular indeterminate></v-progress-circular></div>
+                                <div v-else>
+                                    <v-card v-for="item in groupedWbs.pending" :key="item.id" class="mb-3" elevation="2">
+                                        <v-card-text :draggable="true" @dragstart="startDrag($event, item)">
+                                            <div class="font-weight-bold">{{ item.key }}</div>
+                                            <div>{{ item.name }}</div>
+                                        </v-card-text>
+                                    </v-card>
+                                    <div v-if="!groupedWbs.pending || groupedWbs.pending.length === 0" class="text-grey text-center pa-4">No items</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                        <v-card class="kanban-column" @drop="onDrop($event, 'in-sprint')" @dragover.prevent @dragenter.prevent>
+                            <v-card-title class="text-subtitle-1 blue lighten-4">In Sprint</v-card-title>
+                            <v-card-text>
+                                <div v-if="isLoading" class="text-center pa-4"><v-progress-circular indeterminate></v-progress-circular></div>
+                                <div v-else>
+                                    <v-card v-for="item in groupedWbs['in-sprint']" :key="item.id" class="mb-3" elevation="2">
+                                        <v-card-text @dragstart="startDrag($event, item)" :draggable="true">
+                                            <div class="font-weight-bold">{{ item.key }}</div>
+                                            <div>{{ item.name }}</div>
+                                        </v-card-text>
+                                    </v-card>
+                                    <div v-if="!groupedWbs['in-sprint'] || groupedWbs['in-sprint'].length === 0" class="text-grey text-center pa-4">No items</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                        <v-card class="kanban-column" @drop="onDrop($event, 'in-progress')" @dragover.prevent @dragenter.prevent>
+                            <v-card-title class="text-subtitle-1 blue lighten-4">In Progress</v-card-title>
+                            <v-card-text>
+                                <div v-if="isLoading" class="text-center pa-4"><v-progress-circular indeterminate></v-progress-circular></div>
+                                <div v-else>
+                                    <v-card v-for="item in groupedWbs['in-progress']" :key="item.id" class="mb-3" elevation="2">
+                                        <v-card-text @dragstart="startDrag($event, item)" :draggable="true">
+                                            <div class="font-weight-bold">{{ item.key }}</div>
+                                            <div>{{ item.name }}</div>
+                                        </v-card-text>
+                                    </v-card>
+                                    <div v-if="!groupedWbs['in-progress'] || groupedWbs['in-progress'].length === 0" class="text-grey text-center pa-4">No items</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+
+                    <v-col cols="12" md="3">
+                        <v-card class="kanban-column" @drop="onDrop($event, 'completed')" @dragover.prevent @dragenter.prevent>
+                            <v-card-title class="text-subtitle-1 green lighten-4">Completed</v-card-title>
+                            <v-card-text>
+                                <div v-if="isLoading" class="text-center pa-4"><v-progress-circular indeterminate></v-progress-circular></div>
+                                <div v-else>
+                                    <v-card v-for="item in groupedWbs.completed" :key="item.id" class="mb-3" elevation="2">
+                                        <v-card-text @dragstart="startDrag($event, item)" :draggable="true">
+                                            <div class="font-weight-bold text-decoration-line-through">{{ item.key }}</div>
+                                            <div class="text-decoration-line-through">{{ item.name }}</div>
+                                        </v-card-text>
+                                    </v-card>
+                                    <div v-if="!groupedWbs.completed || groupedWbs.completed.length === 0" class="text-grey text-center pa-4">No items</div>
+                                </div>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </div>
+    </script>
+
+    <script type="text/x-template" id="document-list-template">
+       <div>
+            <div class="d-flex justify-end mb-4">
+                <v-btn color="primary" @click="documentDialog = true"><v-icon start>mdi-plus</v-icon>Add Document</v-btn>
+            </div>
+            <v-list lines="two">
+                <v-list-item
+                    v-for="doc in documents"
+                    :key="doc.id"
+                    :title="doc.name"
+                    :subtitle="doc.description"
+                >
+                    <template v-slot:prepend>
+                        <v-icon>mdi-language-markdown-outline</v-icon>
+                    </template>
+                    <template v-slot:append>
+                        <v-btn color="primary" variant="text" @click="viewDocument(doc)">View</v-btn>
+                        <v-btn color="error" variant="text" @click="promptDelete(doc)">Delete</v-btn>
+                    </template>
+                </v-list-item>
+                 <v-list-item v-if="documents.length === 0">
+                    <v-list-item-title class="text-center text-grey">No documents found.</v-list-item-title>
+                </v-list-item>
+            </v-list>
+            
+            <document-dialog 
+                v-model="documentDialog"
+                :project="project"
+                :user="user"
+                @document-added="msg => $emit('docs-updated', msg)"
+                @error="$emit('error', $event)"
+            />
+            <markdown-viewer 
+                v-model="viewer.visible"
+                :content="viewer.content"
+                :title="viewer.title"
+            />
+             <v-dialog v-model="deleteDialog.visible" persistent max-width="400px">
+                <v-card>
+                    <v-card-title class="text-h5">Confirm Deletion</v-card-title>
+                    <v-card-text>
+                        Are you sure you want to delete the document <strong>"{{ deleteDialog.docName }}"</strong>? This action cannot be undone.
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="grey" variant="text" @click="closeDeleteDialog">Cancel</v-btn>
+                        <v-btn color="error" variant="text" @click="confirmDelete" :loading="isDeleting">Delete</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+       </div>
+    </script>
+
+    <!-- DocumentDialog.vue Template -->
+    <script type="text/x-template" id="document-dialog-template">
+        <v-dialog :model-value="modelValue" @update:modelValue="$emit('update:modelValue', $event)" persistent max-width="600px">
+            <v-card>
+                <v-card-title><span class="text-h5">New Document</span></v-card-title>
+                <v-card-text>
+                    <v-container>
+                        <v-text-field label="Document Name*" v-model="doc.name" required></v-text-field>
+                        <v-textarea label="Description" v-model="doc.description"></v-textarea>
+                        <v-file-input
+                            label="Markdown File*"
+                            v-model="doc.file"
+                            accept=".md, .markdown"
+                            required
+                        ></v-file-input>
+                    </v-container>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="grey" variant="text" @click="close">Cancel</v-btn>
+                    <v-btn color="primary" variant="text" @click="saveDocument" :loading="loading">Save</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+     </script>
+
+    <!-- MarkdownViewer.vue Template -->
+    <script type="text/x-template" id="markdown-viewer-template">
+         <v-dialog :model-value="modelValue" @update:modelValue="$emit('update:modelValue', $event)" fullscreen transition="dialog-bottom-transition">
+            <v-card>
+                <v-toolbar color="primary">
+                    <v-toolbar-title>{{ title }}</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-btn icon @click="$emit('update:modelValue', false)">
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                </v-toolbar>
+                <div v-html="text" class="markdown-body"></div>
+            </v-card>
+        </v-dialog>
+    </script>
+
+    <!-- LoginDialog.vue Template -->
+    <script type="text/x-template" id="login-dialog-template">
+        <v-dialog :model-value="modelValue" @update:modelValue="$emit('update:modelValue', $event)" persistent max-width="400px">
+            <v-card>
+                <v-card-title>
+                    <span class="text-h5">{{ isSignUp ? 'Sign Up' : 'Login' }}</span>
+                </v-card-title>
+                <v-card-text>
+                     <v-form @submit.prevent="handleAuth">
+                        <v-container>
+                             <v-text-field
+                                v-model="email"
+                                label="Email"
+                                type="email"
+                                required
+                                prepend-inner-icon="mdi-email-outline"
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="password"
+                                label="Password"
+                                type="password"
+                                required
+                                prepend-inner-icon="mdi-lock-outline"
+                            ></v-text-field>
+                             <v-btn
+                                type="submit"
+                                block
+                                color="primary"
+                                :loading="loading"
+                            >
+                                {{ isSignUp ? 'Sign Up' : 'Login' }}
+                            </v-btn>
+                            <v-btn
+                                block
+                                variant="text"
+                                class="mt-2"
+                                @click="isSignUp = !isSignUp"
+                            >
+                                {{ isSignUp ? 'Already have an account? Login' : "Don't have an account? Sign Up" }}
+                            </v-btn>
+                        </v-container>
+                     </v-form>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="grey" variant="text" @click="$emit('update:modelValue', false)">Cancel</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+    </script>
+
+    <!-- ============================================= -->
+    <!-- SCRIPT (main.js and Component Definitions)  -->
+    <!-- ============================================= -->
+    <script type="module">
+        // Import from Vue, Vuetify, and Firebase via import map
+        import { createApp, ref, reactive, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue';
+        import { createVuetify } from 'vuetify';
+        import { initializeApp } from 'firebase/app';
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
+        import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, writeBatch } from 'firebase/firestore';
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+        import markdownit from 'markdown-it'
+        import markdownItMermaid from '@markslides/markdown-it-mermaid';
+        import mermaid from 'mermaid';
+
+        mermaid.initialize({ startOnLoad: false, theme: 'dark' });
+
+        import { components as VuetifyLabsComponents } from 'vuetify/labs'
+        const { VTreeview } = VuetifyLabsComponents;
+
+        const md = markdownit(
+            {
+                highlight: function (str, lang) {
+                    if (lang && hljs.getLanguage(lang)) {
+                        try {
+                            return hljs.highlight(str, { language: lang }).value;
+                        } catch (__) { }
+                    }
+
+                    return ''; // use external default escaping
+                }
+
+            }
+        ).use(markdownItMermaid, {
+            theme: 'default',
+            mermaidOptions: {
+                theme: 'default',
+                flowchart: { curve: 'linear' }
+            }
+        });
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBAz5NDF1o8IxiJj-RULYjt5fCOV3xytwk",
+            authDomain: "productify-6689a.firebaseapp.com",
+            databaseURL: "https://productify-6689a.firebaseio.com",
+            projectId: "productify-6689a",
+            storageBucket: "productify-6689a.appspot.com",
+            messagingSenderId: "321147125484",
+            appId: "1:321147125484:web:4b83199c4f5893f939efc9",
+            measurementId: "G-MJK89JM7Z5"
+        };
+
+        // --- Initialize Firebase & Services ---
+        const firebaseApp = initializeApp(firebaseConfig);
+        const auth = getAuth(firebaseApp);
+        const db = getFirestore(firebaseApp);
+        const storage = getStorage(firebaseApp);
+
+        // --- Component: LoginDialog ---
+        const LoginDialog = {
+            template: '#login-dialog-template',
+            props: ['modelValue'],
+            emits: ['update:modelValue', 'login-success', 'login-error'],
+            setup(props, { emit }) {
+                const loading = ref(false);
+                const isSignUp = ref(false);
+                const email = ref('');
+                const password = ref('');
+
+                const handleAuth = async () => {
+                    if (!email.value || !password.value) {
+                        emit('login-error', 'Email and password are required.');
+                        return;
+                    }
+                    loading.value = true;
+                    try {
+                        if (isSignUp.value) {
+                            await createUserWithEmailAndPassword(auth, email.value, password.value);
+                            emit('login-success', 'Account created successfully!');
+                        } else {
+                            await signInWithEmailAndPassword(auth, email.value, password.value);
+                            emit('login-success', 'Logged in successfully!');
+                        }
+                    } catch (error) {
+                        let message = 'An error occurred.';
+                        switch (error.code) {
+                            case 'auth/invalid-email':
+                                message = 'Please enter a valid email address.';
+                                break;
+                            case 'auth/user-not-found':
+                                message = 'No account found with that email. Please sign up.';
+                                break;
+                            case 'auth/wrong-password':
+                                message = 'Incorrect password. Please try again.';
+                                break;
+                            case 'auth/email-already-in-use':
+                                message = 'An account already exists with this email address.';
+                                break;
+                            case 'auth/weak-password':
+                                message = 'Password should be at least 6 characters.';
+                                break;
+                            default:
+                                message = error.message;
+                        }
+                        emit('login-error', message);
+                    } finally {
+                        loading.value = false;
+                    }
+                };
+
+                return { loading, isSignUp, email, password, handleAuth };
+            }
+        };
+
+        // --- Component: ProjectList ---
+        const ProjectList = {
+            template: '#project-list-template',
+            props: ['projects', 'user'],
+            emits: ['select-project', 'project-added', 'error'],
+            setup(props, { emit }) {
+                const dialog = ref(false);
+                const newProject = reactive({ name: '', description: '' });
+
+                const closeDialog = () => {
+                    dialog.value = false;
+                    newProject.name = '';
+                    newProject.description = '';
+                };
+
+                const saveProject = async () => {
+                    if (!newProject.name) {
+                        emit('error', 'Project name is required.');
+                        return;
+                    }
+                    try {
+                        const projectsCol = collection(db, 'users', props.user.uid, 'projects');
+                        await addDoc(projectsCol, { ...newProject });
+                        emit('project-added');
+                        closeDialog();
+                    } catch (error) {
+                        emit('error', `Error adding project: ${error.message}`);
+                    }
+                };
+
+                return { dialog, newProject, closeDialog, saveProject };
+            }
+        };
+
+        // --- Component: ProjectDetailView ---
+        const ProjectDetailView = {
+            template: '#project-detail-view-template',
+            props: ['project', 'user'],
+            emits: ['update-wbs', 'update-docs', 'error'],
+            setup() {
+                const tab = ref('wbs');
+                return { tab };
+            }
+        };
+
+        // --- Component: WbsView ---
+        const WbsView = {
+            template: '#wbs-view-template',
+            props: ['project', 'user'],
+            emits: ['wbs-updated', 'error'],
+            components: { VTreeview },
+            methods: {
+                updateWbsItem(item) {
+                    // Update the WBS item in Firestore
+                    const itemDoc = doc(this.wbsCollection, item.id);
+                    updateDoc(itemDoc, { status: item.status })
+                        .then(() => this.$emit('wbs-updated', 'WBS item updated successfully!'))
+                        .catch(error => this.$emit('error', `Error updating WBS item: ${error.message}`));
+                }
+            },
+            setup(props, { emit }) {
+                const isLoading = ref(true);
+                const wbs = ref([]);
+                const wbsDialog = ref(false);
+                const editingWbs = ref(null);
+                const wbsItem = reactive({ name: '', key: '', status: 'pending' });
+                const wbsStatus = ref([{ name: 'Pending', id: 'pending' }, { name: 'Sprint', id: 'in-sprint' }, { name: 'In Progress', id: 'in-progress' }, { name: 'Completed', id: 'completed' }]);
+
+                const importDialog = ref(false);
+                const importing = ref(false);
+                const jsonInput = ref('');
+
+                let wbsUnsubscribe = null;
+
+                const wbsCollection = computed(() => {
+                    if (!props.project || !props.user) return null;
+                    return collection(db, 'users', props.user.uid, 'projects', props.project.id, 'wbs');
+                });
+
+                watch(() => props.project, (newProject) => {
+                    wbs.value = [];
+                    isLoading.value = true;
+                    if (wbsUnsubscribe) wbsUnsubscribe();
+                    if (newProject) {
+                        wbsUnsubscribe = onSnapshot(wbsCollection.value, snapshot => {
+                            wbs.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            isLoading.value = false;
+                        }, error => {
+                            emit('error', `Failed to fetch WBS: ${error.message}`);
+                            isLoading.value = false;
+                        });
+                    } else {
+                        wbs.value = [];
+                        isLoading.value = false;
+                    }
+                }, { immediate: true });
+
+                const wbsTree = computed(() => {
+                    // Get a deep copy to avoid mutating the original state.
+                    const items = JSON.parse(JSON.stringify(wbs.value || []));
+                    if (!items || items.length === 0) return [];
+
+                    // 2. Use the highly optimized native `localeCompare` for natural sorting.
+                    // This avoids manual string splitting in the comparison function.
+                    items.sort((a, b) => a.key.localeCompare(b.key, undefined, { numeric: true }));
+                    const itemMap = new Map();
+                    items.forEach(item => itemMap.set(item.key, item));
+                    const tree = [];
+
+                    items.forEach(item => {
+                        const parts = item.key.split('.');
+                        let parentKey = null;
+
+                        // Determine the parent's key based on the current item's key structure.
+                        if (parts.length > 2) {
+                            // For keys like "1.1.1", the parent is "1.1".
+                            parentKey = parts.slice(0, -1).join('.');
+                        } else if (parts.length === 2 && parts[1] !== '0') {
+                            // For keys like "1.1" or "1.2", the parent is "1.0".
+                            parentKey = `${parts[0]}.0`;
+                        }
+
+                        // Find the parent in the map and push the current item to its children.
+                        if (parentKey && itemMap.has(parentKey)) {
+                            const parentItem = itemMap.get(parentKey);
+                            if (!parentItem.children) parentItem.children = [];
+                            parentItem.children.push(item);
+                        } else {
+                            // If an item has no parent, it's a root-level node.
+                            tree.push(item);
+                        }
+                    });
+
+                    return tree;
+                });
+
+                const closeWbsDialog = () => {
+                    wbsDialog.value = false;
+                    editingWbs.value = null;
+                    Object.assign(wbsItem, { name: '', key: '', status: 'pending' });
+                };
+
+                const openWbsDialog = (itemToEdit = null) => {
+                    if (itemToEdit) {
+                        editingWbs.value = itemToEdit;
+                        Object.assign(wbsItem, itemToEdit);
+                    } else {
+                        editingWbs.value = null;
+                        Object.assign(wbsItem, { name: '', key: '', status: 'pending' });
+                    }
+                    wbsDialog.value = true;
+                };
+
+                const saveWbsItem = async () => {
+                    if (!wbsItem.name) {
+                        emit('error', 'WBS item name is required.');
+                        return;
+                    }
+                    try {
+                        const dataToSave = JSON.parse(JSON.stringify(wbsItem));
+                        if (editingWbs.value) {
+                            const itemDoc = doc(wbsCollection.value, editingWbs.value.id);
+                            await updateDoc(itemDoc, dataToSave);
+                        } else {
+                            await addDoc(wbsCollection.value, dataToSave);
+                        }
+                        emit('wbs-updated', 'WBS item saved successfully!');
+                        closeWbsDialog();
+                    } catch (error) {
+                        emit('error', `Error saving WBS item: ${error.message}`);
+                    }
+                };
+
+                const deleteItem = async (item) => {
+                    if (confirm(`Are you sure you want to delete "${item.name}"? This might break the tree structure.`)) {
+                        try {
+                            const itemDoc = doc(wbsCollection.value, item.id);
+                            await deleteDoc(itemDoc);
+                            emit('wbs-updated', 'WBS item deleted.');
+                        } catch (error) {
+                            emit('error', `Error deleting item: ${error.message}`);
+                        }
+                    }
+                };
+
+                const closeImportDialog = () => {
+                    importDialog.value = false;
+                    jsonInput.value = '';
+                    importing.value = false;
+                }
+
+                const importWbs = async () => {
+                    if (!jsonInput.value) {
+                        emit('error', 'JSON input cannot be empty.');
+                        return;
+                    }
+                    importing.value = true;
+                    try {
+                        const items = JSON.parse(jsonInput.value);
+                        if (!Array.isArray(items)) {
+                            throw new Error("Input is not a valid JSON array.");
+                        }
+
+                        const batch = writeBatch(db);
+                        items.forEach(item => {
+                            if (!item.key || !item.name) {
+                                throw new Error('Each item in the array must have a "key" and a "name".');
+                            }
+                            const docRef = doc(wbsCollection.value);
+                            batch.set(docRef, {
+                                key: item.key,
+                                name: item.name,
+                                status: item.status || 'pending'
+                            });
+                        });
+
+                        await batch.commit();
+                        emit('wbs-updated', 'WBS items imported successfully!');
+                        closeImportDialog();
+                    } catch (error) {
+                        emit('error', `Import failed: ${error.message}`);
+                    } finally {
+                        importing.value = false;
+                    }
+                };
+
+                onBeforeUnmount(() => {
+                    if (wbsUnsubscribe) wbsUnsubscribe();
+                });
+
+                return { wbs, isLoading, wbsDialog, editingWbs, wbsItem, wbsStatus, wbsTree, closeWbsDialog, openWbsDialog, saveWbsItem, deleteItem, importDialog, importing, jsonInput, closeImportDialog, importWbs };
+            }
+        };
+
+        // --- Component: KanbanView ---
+        const KanbanView = {
+            template: '#kanban-view-template',
+            props: ['project', 'user'],
+            emits: ['error'],
+            methods: {
+                startDrag(evt, item) {
+                    evt.dataTransfer.dropEffect = 'move';
+                    evt.dataTransfer.effectAllowed = 'move';
+                    evt.dataTransfer.setData('itemID', item.key);
+                    evt.dataTransfer.setData('itemStatus', item.status);
+
+                },
+                onDrop(evt, list) {
+                    const itemID = evt.dataTransfer.getData('itemID');
+                    const itemStatus = evt.dataTransfer.getData('itemStatus');
+                    if( !itemID || !itemStatus) {
+                        this.$emit('error', 'Invalid item data.');
+                        return;
+                    }
+                    if(itemStatus == list) {
+                        console.log(`Item ${itemID} is already in the ${list} list.`);
+                        return;
+                    }
+                    const item = this.wbs.find((item => item.key === itemID));
+                    if (!item) {
+                        this.$emit('error', `Item with ID ${itemID} not found.`);
+                        return;
+                    }
+                    const itemDoc = doc(this.wbsCollection, item.id);
+                    updateDoc(itemDoc, { status: list });
+                    console.log(`Item dropped: ${itemID} into list: ${list}`);
+                    // const item = this.items.find((item) => item.key == itemID)
+                    // item.list = list
+                },
+            },
+            setup(props, { emit }) {
+                const isLoading = ref(true);
+                const wbs = ref([]);
+                let wbsUnsubscribe = null;
+
+                const wbsCollection = computed(() => {
+                    if (!props.project || !props.user) return null;
+                    return collection(db, 'users', props.user.uid, 'projects', props.project.id, 'wbs');
+                });
+
+                watch(() => props.project, (newProject) => {
+                    wbs.value = [];
+                    isLoading.value = true;
+                    if (wbsUnsubscribe) wbsUnsubscribe();
+                    if (newProject) {
+                        wbsUnsubscribe = onSnapshot(wbsCollection.value, snapshot => {
+                            wbs.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                            isLoading.value = false;
+                        }, error => {
+                            emit('error', `Failed to fetch WBS for Kanban: ${error.message}`);
+                            isLoading.value = false;
+                        });
+                    } else {
+                        wbs.value = [];
+                        isLoading.value = false;
+                    }
+                }, { immediate: true });
+
+                const groupedWbs = computed(() => {
+                    const groups = {
+                        pending: [],
+                        'in-sprint': [],
+                        'in-progress': [],
+                        completed: []
+                    };
+
+                    const sortedWbs = [...wbs.value].sort((a, b) => a.key.localeCompare(b.key, undefined, { numeric: true }));
+
+                    sortedWbs.forEach((item, index) => {
+                        if (item.key.endsWith('.0')) {
+                            // Skip items that are root-level (e.g., "1.0", "2.0")
+                            return;
+                        }
+
+                        const nextItem = sortedWbs[index + 1];
+                        const hasChildren = nextItem ? nextItem.key.startsWith(item.key + '.') : false;
+
+                        // Only add the item to a group if it does NOT have children.
+                        if (!hasChildren) {
+                            if (groups[item.status]) {
+                                groups[item.status].push(item);
+                            } else {
+                                groups.pending.push(item); // Default to pending if status is invalid
+                            }
+                        }
+                    });
+                    return groups;
+                });
+
+                onBeforeUnmount(() => {
+                    if (wbsUnsubscribe) wbsUnsubscribe();
+                });
+
+                return { isLoading, groupedWbs, wbs, wbsCollection };
+            }
+        };
+
+        // --- Component: DocumentList ---
+        const DocumentList = {
+            template: '#document-list-template',
+            props: ['project', 'user'],
+            emits: ['docs-updated', 'error'],
+            setup(props, { emit }) {
+                const documents = ref([]);
+                const documentDialog = ref(false);
+                const viewer = reactive({ visible: false, content: '', title: '' });
+                const deleteDialog = reactive({ visible: false, doc: null, docName: '' });
+                const isDeleting = ref(false);
+                let docsUnsubscribe = null;
+
+                const docsCollection = computed(() => {
+                    if (!props.project || !props.user) return null;
+                    return collection(db, 'users', props.user.uid, 'projects', props.project.id, 'documents');
+                });
+
+                watch(() => props.project, (newProject) => {
+                    if (docsUnsubscribe) docsUnsubscribe();
+                    if (newProject) {
+                        docsUnsubscribe = onSnapshot(docsCollection.value, (snapshot) => {
+                            documents.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        });
+                    } else {
+                        documents.value = [];
+                    }
+                }, { immediate: true });
+
+                const viewDocument = async (doc) => {
+                    try {
+                        const response = await fetch(doc.url);
+                        if (!response.ok) throw new Error('Failed to fetch document content.');
+                        viewer.content = await response.text();
+                        viewer.title = doc.name;
+                        viewer.visible = true;
+                    } catch (error) {
+                        emit('error', error.message);
+                    }
+                };
+
+                const promptDelete = (doc) => {
+                    deleteDialog.doc = doc;
+                    deleteDialog.docName = doc.name;
+                    deleteDialog.visible = true;
+                };
+
+                const closeDeleteDialog = () => {
+                    deleteDialog.visible = false;
+                    deleteDialog.doc = null;
+                    deleteDialog.docName = '';
+                };
+
+                const confirmDelete = async () => {
+                    if (!deleteDialog.doc) return;
+                    isDeleting.value = true;
+                    try {
+                        const fileRef = storageRef(storage, deleteDialog.doc.storagePath);
+                        await deleteObject(fileRef);
+
+                        const docRef = doc(docsCollection.value, deleteDialog.doc.id);
+                        await deleteDoc(docRef);
+
+                        emit('docs-updated', 'Document deleted successfully!');
+                    } catch (error) {
+                        emit('error', `Failed to delete document: ${error.message}`);
+                    } finally {
+                        isDeleting.value = false;
+                        closeDeleteDialog();
+                    }
+                };
+
+                onBeforeUnmount(() => {
+                    if (docsUnsubscribe) docsUnsubscribe();
+                });
+
+                return {
+                    documents,
+                    documentDialog,
+                    viewer,
+                    viewDocument,
+                    deleteDialog,
+                    isDeleting,
+                    promptDelete,
+                    closeDeleteDialog,
+                    confirmDelete
+                };
+            }
+        };
+
+        // --- Component: DocumentDialog ---
+        const DocumentDialog = {
+            template: '#document-dialog-template',
+            props: ['modelValue', 'project', 'user'],
+            emits: ['update:modelValue', 'document-added', 'error'],
+            setup(props, { emit }) {
+                const loading = ref(false);
+                const doc = reactive({ name: '', description: '', file: null });
+
+                const close = () => {
+                    Object.assign(doc, { name: '', description: '', file: null });
+                    emit('update:modelValue', false);
+                };
+
+                const saveDocument = async () => {
+                    if (!doc.name || !doc.file || doc.file.length === 0) {
+                        emit('error', 'Document name and file are required.');
+                        return;
+                    }
+                    loading.value = true;
+                    try {
+                        const file = doc.file;
+                        const filePath = `users/${props.user.uid}/projects/${props.project.id}/documents/${Date.now()}_${file.name}`;
+                        const fileRef = storageRef(storage, filePath);
+
+                        const snapshot = await uploadBytes(fileRef, file);
+                        const downloadURL = await getDownloadURL(snapshot.ref);
+
+                        const docsCol = collection(db, 'users', props.user.uid, 'projects', props.project.id, 'documents');
+                        await addDoc(docsCol, {
+                            name: doc.name,
+                            description: doc.description,
+                            url: downloadURL,
+                            storagePath: filePath,
+                            createdAt: new Date(),
+                        });
+
+                        emit('document-added', 'Document added successfully!');
+                        close();
+                    } catch (error) {
+                        emit('error', `Failed to upload document: ${error.message}`);
+                    } finally {
+                        loading.value = false;
+                    }
+                };
+
+                return { loading, doc, close, saveDocument };
+            }
+        };
+
+        // --- Component: MarkdownViewer ---
+        const MarkdownViewer = {
+            template: '#markdown-viewer-template',
+            props: ['modelValue', 'content', 'title'],
+            emits: ['update:modelValue'],
+            updated() {
+                nextTick(() => {
+                    mermaid.run();
+                });
+            },
+            setup(props) {
+                const text = ref(props.content || '');
+                watch(() => props.content, (newContent) => {
+                    text.value = md.render(newContent || '');
+                });
+                return { text };
+            }
+        };
+
+        // --- Root Component: App ---
+        const App = {
+            template: '#app-template',
+            components: { ProjectList, ProjectDetailView, LoginDialog },
+            setup() {
+                const drawer = ref(true);
+                const user = ref(null);
+                const projects = ref([]);
+                const selectedProject = ref(null);
+                const loginDialog = ref(false);
+                const snackbar = reactive({ visible: false, text: '', color: '', timeout: 3000 });
+                let projectUnsubscribe = null;
+
+                const showSnackbar = (text, color = 'success') => {
+                    snackbar.text = text;
+                    snackbar.color = color;
+                    snackbar.visible = true;
+                };
+
+                onMounted(() => {
+                    onAuthStateChanged(auth, (currentUser) => {
+                        user.value = currentUser;
+                        if (currentUser) {
+                            if (projectUnsubscribe) projectUnsubscribe();
+                            const projectsCol = collection(db, 'users', currentUser.uid, 'projects');
+                            projectUnsubscribe = onSnapshot(projectsCol, snapshot => {
+                                projects.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })).sort((a, b) => a.name.localeCompare(b.name));
+
+                            }, error => {
+                                showSnackbar(`Error fetching projects: ${error.message}`, 'error');
+                            });
+                        } else {
+                            if (projectUnsubscribe) projectUnsubscribe();
+                            projects.value = [];
+                            selectedProject.value = null;
+                        }
+                    });
+                });
+
+                onBeforeUnmount(() => {
+                    if (projectUnsubscribe) projectUnsubscribe();
+                });
+
+                const logout = () => signOut(auth).then(() => showSnackbar('Logged out.'));
+                const onLoginSuccess = (message) => {
+                    loginDialog.value = false;
+                    showSnackbar(message, 'success');
+                };
+                const onLoginError = (errorMessage) => showSnackbar(errorMessage, 'error');
+                const onProjectSelected = (project) => {
+                    if (selectedProject.value?.id !== project.id) {
+                        selectedProject.value = project;
+                    }
+                };
+
+                return { drawer, user, projects, selectedProject, loginDialog, snackbar, showSnackbar, logout, onLoginSuccess, onLoginError, onProjectSelected };
+            }
+        };
+
+        // --- Vue Instance Initialization ---
+        const vuetify = createVuetify();
+        const app = createApp(App);
+        // Register components globally
+        app.component('ProjectDetailView', ProjectDetailView);
+        app.component('WbsView', WbsView);
+        app.component('KanbanView', KanbanView);
+        app.component('DocumentList', DocumentList);
+        app.component('DocumentDialog', DocumentDialog);
+        app.component('MarkdownViewer', MarkdownViewer);
+
+        app.use(vuetify);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

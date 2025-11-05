@@ -1,0 +1,27 @@
+using {{package}}.Domain.Shared;
+using Volo.Abp.Domain;
+using Volo.Abp.Modularity;
+
+namespace {{package}}.Domain;
+
+[DependsOn(
+    typeof(AbpDddDomainModule),
+    typeof({{module}}DomainSharedModule) // Make sure this exists and contains shared items (enums, constants, etc.)
+)]
+public class {{module}}DomainModule : AbpModule
+{
+    // You can add domain-specific configurations here, if needed.
+    // For example, if you have domain events, you could configure
+    // the event bus here.  However, for a basic setup, you
+    // often don't need to add anything to this module.
+
+    // Example (if you had domain event handlers in this project):
+    //public override void ConfigureServices(ServiceConfigurationContext context)
+    //{
+    //    Configure<AbpDistributedEntityEventOptions>(options =>
+    //    {
+    //        options.AutoEventSelectors.Add<MyAggregateRoot>(); // Auto-subscribe to events for this aggregate
+    //        // Add more selectors as needed
+    //    });
+    //}
+}

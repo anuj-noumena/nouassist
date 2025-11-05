@@ -1,0 +1,127 @@
+You are an AI coding assistant. I am developing a `.NET 9` application following Domain-Driven Design (DDD) and Clean Architecture principles. The **Infrastructure Layer** of this application integrates with various technologies and is abstracted behind domain and application interfaces. The key technologies and components used in the Infrastructure Layer include:
+
+- **Entity Framework Core (EF Core)** with **PostgreSQL** via **Npgsql** for data access.
+- **SignalR** for real-time notifications.
+- **Dependency Injection** for managing service lifetimes and dependencies.
+- **EF Core Migrations** for database schema management.
+- **Fluent API** configurations for EF Core entities.
+
+---
+### **Context**
+
+The Infrastructure Layer implements the technical details required by the application, adhering to the following structure:
+
+- **EF Core DbContext** (e.g., `AppDbContext`)
+- **Repository Implementations** that implement domain repository interfaces (e.g., `TaskRepository : ITaskRepository`)
+- **Migrations** for managing database schema changes
+- **SignalR Hubs** and **Notification Services** for real-time communication
+- **Configuration Classes** for EF Core entities using Fluent API
+
+---
+### **Goal**
+
+Generate the **Infrastructure Layer** code for all namespaces mentioned under the Functional Requirements. The generated code should include:
+
+1. **EF Core DbContext**
+   - Define `AppDbContext` with DbSet properties for each aggregate and entity.
+   - Configure entity relationships and constraints using Fluent API.
+
+2. **Repository Implementations**
+   - Implement repository classes that inherit from domain repository interfaces.
+   - Provide CRUD operations and any additional query methods required by the domain.
+
+3. **Migrations**
+   - Generate initial migration scripts for setting up the database schema based on the DbContext configurations.
+
+4. **SignalR Hubs and Notification Services**
+   - Create SignalR Hub classes for handling real-time communication.
+   - Implement notification services that interact with SignalR Hubs to send updates to clients.
+
+5. **Configuration Classes**
+   - Create separate configuration classes for each EF Core entity to encapsulate Fluent API configurations.
+
+---
+### **Test Project Structure & Naming**
+
+- The main infrastructure project: `src/Infrastructure/`
+- Mirror the domain namespaces for folder organization. Examples:
+  - `src/Infrastructure/Data/AppDbContext.cs`
+  - `src/Infrastructure/Data/Repositories/TaskRepository.cs`
+  - `src/Infrastructure/Migrations/20250124_InitialCreate.cs`
+  - `src/Infrastructure/SignalR/NotificationHub.cs`
+  - `src/Infrastructure/SignalR/NotificationService.cs`
+  - `src/Infrastructure/Configurations/TaskConfiguration.cs`
+  - etc.
+
+---
+### **Output Format (Generate Code in Batches)**
+
+1. **Batch Output**
+   - Please generate the infrastructure files **in batches** to ensure clarity and manageability.
+   - Each batch can contain related sets of files (e.g., DbContext and Configurations, Repository Implementations, SignalR components, Migrations).
+
+2. **For Each File**
+   - **Full File Path**: Provide the complete path relative to the project root (e.g., `src/Infrastructure/Data/AppDbContext.cs`).
+   - **File Content**: Include all necessary `using` statements, `namespace` declarations, and complete class definitions.
+
+**Important**:
+- Use **PascalCase** for file and class names (e.g., `AppDbContext.cs`, `TaskRepository.cs`).
+- Utilize **C# 9** features such as records and pattern matching where applicable.
+- Ensure **Dependency Injection** is properly configured for services, repositories, and hubs.
+- Focus on **infrastructure concerns** without embedding business logic.
+- Apply **Fluent API** for configuring EF Core entities to maintain separation of concerns.
+
+---
+### **Functional Requirements**
+
+*(Please ensure that all the following Functional Requirements are addressed in the Infrastructure Layer code generation. Replace this placeholder with your actual Functional Requirements.)*
+
+1. **EF Core DbContext**
+   - Define DbSet properties for all aggregates and entities.
+   - Configure entity relationships, keys, and constraints using Fluent API.
+
+2. **Repository Implementations**
+   - Implement all domain repository interfaces with concrete classes.
+   - Ensure methods like `Add`, `Update`, `Delete`, and `Get` are properly defined and interact with `AppDbContext`.
+
+3. **Migrations**
+   - Generate migration files to create and update the database schema based on the current model.
+
+4. **SignalR Hubs and Notification Services**
+   - Create hubs for handling real-time communication with clients.
+   - Implement services that utilize these hubs to send notifications based on domain events.
+
+5. **Configuration Classes**
+   - Create separate classes for configuring each EF Core entity using Fluent API.
+   - Ensure configurations are applied in `AppDbContext`.
+
+---
+### **Additional Notes**
+
+- **EF Core with Fluent API**: All entity configurations should use the Fluent API within separate configuration classes to promote modularity and maintainability.
+- **Dependency Injection**: Register all services, repositories, and hubs in the Dependency Injection container to manage their lifetimes and dependencies effectively.
+- **PostgreSQL via Npgsql**: Configure `AppDbContext` to use PostgreSQL as the database provider with Npgsql.
+- **SignalR Integration**: Set up SignalR hubs to handle real-time notifications, ensuring they are correctly registered and configured within the application.
+- **C# 9 Features**: Leverage modern C# features to write concise and efficient code where appropriate.
+
+---
+### **Prompt Execution**
+
+**Task**: Using all the guidelines above, generate **a complete set of infrastructure layer files** for the entire `.NET 9` application. Each file should include:
+
+1. **File Path**
+2. **Usings + Namespace**
+3. **Class Declaration** with necessary methods and configurations
+4. **Relevant Code** that demonstrates:
+   - EF Core DbContext setup with Fluent API configurations
+   - Repository implementation adhering to domain interfaces
+   - SignalR Hub and Notification Service implementations
+   - Dependency Injection registrations
+   - Migration scripts for database schema management
+
+**Important**:
+- Please output the generated infrastructure code **in batches**, each batch containing a related subset of the files, to avoid an overly large single response.
+- Within each batch, provide each file in a separate code block or well-formatted section.
+- Ensure that the code is **self-contained** and follows best practices for the Infrastructure Layer in a DDD/Clean Architecture setup.
+
+**End of Prompt**

@@ -1,0 +1,37 @@
+I don't have a system to dump my thoughts
+I need to dump my thoughts to have clarity
+So that I can organize it
+Which will lead to execute things in order
+So that I can keep track of it and review it
+
+I want my thoughts to be writen down
+Dragged around, reorderd, categorized, linked
+Thought needs to be dumped fast.
+
+InboxItemCaptured
+InboxItemProcessed
+InboxItemDiscarded
+
+Task created
+Action step added to Task
+Action step updated in a task
+Next action asigned to task
+Task Delegated
+Task delegation accepted
+Task delegation rejected
+Task delegation status changed
+Task dependency added
+Task dependency updated
+Task dependency deleted
+Task dependency status changed
+
+Task notification seting changed
+Task reminder set
+Task reminder removed
+Task reminder updated
+Task reminder sent
+
+
+Task was commented
+Task comment was commented
+Task user mentioned

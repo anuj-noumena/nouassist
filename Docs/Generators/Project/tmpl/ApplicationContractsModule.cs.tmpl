@@ -1,0 +1,29 @@
+using Volo.Abp.Modularity;
+using Volo.Abp.Localization; // If you're using ABP's localization
+using Volo.Abp.Domain; // For AbpDddDomainSharedModule
+
+namespace {{package}}.Domain.Shared
+{
+    [DependsOn(
+        typeof(AbpDddDomainSharedModule)
+    )]
+    public class {{module}}DomainSharedModule : AbpModule
+    {
+        public override void ConfigureServices(ServiceConfigurationContext context)
+        {
+            // Configure localization resources, if needed.  This is only necessary if
+            // you're using ABP's localization system AND you have localized strings
+            // within your Domain.Shared project (e.g., in exception messages).
+
+            //Configure<AbpLocalizationOptions>(options =>
+            //{
+            //    options.Resources
+            //        .Add<TaskManagementResource>("en") // "en" is the default language
+            //        .AddBaseTypes(typeof(AbpValidationResource)) // If using data annotations
+            //        .AddVirtualJson("/Localization/TaskManagement"); // Path to JSON files
+            //});
+
+            // You can add other configurations here, if needed by your Domain.Shared project.
+        }
+    }
+}

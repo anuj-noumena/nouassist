@@ -1,0 +1,50 @@
+using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
+using Volo.Abp.Modularity;
+using Volo.Abp.Testing;
+using Volo.Abp.Autofac;  // Import for Autofac integration
+using Volo.Abp.Domain;
+using Volo.Abp;
+using Volo.Abp.Timing;
+using Microsoft.Extensions.Configuration;
+
+namespace {{package}}.Domain.Tests
+{
+    [DependsOn(
+        typeof(AbpAutofacModule), // Use Autofac
+        typeof(AbpTestBaseModule), // Base class for ABP tests
+        typeof(AbpDddDomainModule), // Required for domain layer
+        typeof({{module}}DomainModule) // Our domain module
+    )]
+    public class {{module}}TestModule : AbpModule
+    {
+      public override void ConfigureServices(ServiceConfigurationContext context)
+        {
+            // Mock IClock
+            var mockClock = Substitute.For<IClock>();
+            mockClock.Now.Returns(DateTime.UtcNow); // Consistent time for tests
+            context.Services.AddSingleton(mockClock);
+
+            // Configure InMemory repository (if needed for some integration tests *within* Domain.Tests)
+            // context.Services.AddSingleton(typeof(IRepository<,>), typeof(BasicRepository<,>));
+            // This line registers InMemory repositories for *all* aggregate roots and primary key types.
+            // Only needed if you have some tests in Domain.Tests that require it.  For pure unit tests
+            // with mocks, this isn't strictly needed.
+
+            // Mock any other dependencies, if any, that the services require at the domain layer.
+            // For example you might want to configure the current tenant.
+            // context.Services.AddSingleton(Substitute.For<ICurrentTenant>());
+
+            // The key idea here is that you should *not* be registering your *real*
+            // EF Core or other infrastructure implementations in the Domain test module.
+            // You should mock the repositories.
+
+            // Configuration, If the domain services use IOptions or IConfiguration
+            var configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true) // If needed
+            .Build();
+            context.Services.AddSingleton<IConfiguration>(configuration);
+        }
+
+    }
+}

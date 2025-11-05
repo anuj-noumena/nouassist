@@ -1,0 +1,17 @@
+--2025-09-27 16:55:58--  http://get/
+Resolving get (get)... failed: Temporary failure in name resolution.
+wget: unable to resolve host address ‘get’
+--2025-09-27 16:55:58--  https://www.googleapis.com/books/v1/volumes?q=intitle%3AIndustrial%20Automation%20and%20Robotics%3A%20An%20Introduction%2Binauthor%3AA.K.%20Gupta%2C%20S.K.%20Arora
+Resolving www.googleapis.com (www.googleapis.com)... 142.250.183.74, 142.251.220.42, 142.251.222.106, ...
+Connecting to www.googleapis.com (www.googleapis.com)|142.250.183.74|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: unspecified [application/json]
+Saving to: ‘volumes?q=intitle:Industrial Automation and Robotics: An Introduction+inauthor:A.K. Gupta, S.K. Arora’
+
+          volumes?q     [<=>                 ]       0  --.-KB/s               volumes?q=intitle:I     [ <=>                ]  12.75K  --.-KB/s    in 0.002s  
+
+2025-09-27 16:56:00 (7.30 MB/s) - ‘volumes?q=intitle:Industrial Automation and Robotics: An Introduction+inauthor:A.K. Gupta, S.K. Arora’ saved [13061]
+
+FINISHED --2025-09-27 16:56:00--
+Total wall clock time: 1.4s
+Downloaded: 1 files, 13K in 0.002s (7.30 MB/s)

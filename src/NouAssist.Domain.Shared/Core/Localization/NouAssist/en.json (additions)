@@ -1,0 +1,16 @@
+{
+  "culture": "en",
+  "texts": {
+    // ... existing entries ...
+    
+    "Users:InvalidPomodoroTime": "Pomodoro time must be between 1 and 60 minutes.",
+    "Users:InvalidBreakTime": "Break time must be between 1 and 30 minutes.",
+    "Users:InvalidThreshold": "Threshold must be between 0 and 1.",
+    
+    "Core:EmailRequired": "Email is required.",
+    "Core:InvalidEmail": "Invalid email format.",
+    
+    "GTD:InvalidAlignmentStrength": "Alignment strength must be between 1 and 5.",
+    "GTD:InvalidInterestLevel": "Interest level must be between 1 and 5."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "culture": "en",
+  "texts": {
+    "Core:InvalidImportanceScore": "Importance score must be between 0 and 1.",
+    "Core:InvalidUrgencyScore": "Urgency score must be between 0 and 1.",
+    "Core:InvalidRecurrenceInterval": "Interval must be greater than 0.",
+    "Core:InvalidRecurrenceRule": "Cannot specify both 'until' and 'count'.",
+    "Core:CannotModifyProcessedItem": "Cannot modify an already processed inbox item.",
+    "Core:ItemAlreadyProcessed": "Inbox item is already processed.",
+    "Core:CannotSetSelfAsParent": "An area cannot be its own parent.",
+    
+    "Goals:InvalidProgress": "Progress must be between 0 and 100.",
+    "Goals:AlreadyAchieved": "Goal is already achieved.",
+    "Goals:CanOnlyPauseActive": "Can only pause active goals.",
+    "Goals:CanOnlyResumeOnHold": "Can only resume on-hold goals.",
+    "Goals:DuplicateMilestone": "A milestone with this title already exists.",
+    "Goals:InvalidAchievementPoints": "Achievement points must be between 1 and 1000.",
+    
+    "GTD:HorizonAlreadyPublished": "Horizon is already published.",
+    "GTD:ItemAlreadyPromoted": "Item is already promoted.",
+    "GTD:ItemAlreadyProcessed": "Item is already processed."
+  }
+}

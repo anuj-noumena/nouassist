@@ -1,0 +1,379 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, Line } from 'recharts';
+import { Search, Bell, Settings, PlusCircle, Filter, BookOpen, Share2, ClipboardCheck, FileText, Bot, Folder, Tag, Home, GitMerge, FileCheck, Clock } from 'lucide-react';
+
+// Mock Data based on the Knowledge Management DDD Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  knowledgeItems: [
+    { id: 'KI-1', title: 'React State Management Patterns', content: '...', categoryId: 'C-2', tags: ['T-1', 'T-3'], stage: 'Published', authorId: 'U-1', updatedAt: '2025-06-23' },
+    { id: 'KI-2', title: 'Domain-Driven Design Principles', content: '...', categoryId: 'C-1', tags: ['T-2'], stage: 'Published', authorId: 'U-2', updatedAt: '2025-06-22' },
+    { id: 'KI-3', title: 'Introduction to Semantic Search', content: '...', categoryId: 'C-3', tags: ['T-4', 'T-5'], stage: 'Published', authorId: 'U-1', updatedAt: '2025-06-20' },
+    { id: 'KI-4', title: 'Q3 Marketing Strategy', content: '...', categoryId: 'C-4', tags: ['T-6'], stage: 'Draft', authorId: 'U-3', updatedAt: '2025-06-24' },
+    { id: 'KI-5', title: 'Onboarding Guide for New Engineers', content: '...', categoryId: 'C-5', tags: ['T-7'], stage: 'Archived', authorId: 'U-2', updatedAt: '2024-01-15' },
+    { id: 'KI-6', title: 'Vector Databases Comparison', content: '...', categoryId: 'C-3', tags: ['T-4', 'T-5'], stage: 'Published', authorId: 'U-1', updatedAt: '2025-05-10' },
+  ],
+  categories: [
+    { id: 'C-1', name: 'Software Architecture', parentId: null },
+    { id: 'C-2', name: 'Frontend Development', parentId: 'C-1' },
+    { id: 'C-3', name: 'AI & Machine Learning', parentId: null },
+    { id: 'C-4', name: 'Business Strategy', parentId: null },
+    { id: 'C-5', name: 'Human Resources', parentId: null },
+  ],
+  tags: [
+    { id: 'T-1', name: 'React' }, { id: 'T-2', name: 'DDD' }, { id: 'T-3', name: 'State Management' },
+    { id: 'T-4', name: 'AI' }, { id: 'T-5', name: 'Search' }, { id: 'T-6', name: 'Marketing' }, { id: 'T-7', name: 'Onboarding' }
+  ],
+  knowledgeGraph: {
+    nodes: [
+        { id: 'KI-1', x: 100, y: 200, z: 200 },
+        { id: 'KI-2', x: 250, y: 150, z: 250 },
+        { id: 'KI-3', x: 280, y: 300, z: 180 },
+        { id: 'KI-6', x: 400, y: 250, z: 220 },
+    ],
+    links: [
+        { source: 'KI-1', target: 'KI-2' }, // React state management relates to DDD
+        { source: 'KI-3', target: 'KI-6' }, // Semantic search relates to vector DBs
+        { source: 'KI-2', target: 'KI-3' }, // DDD relates to semantic search concepts
+    ],
+  },
+  curation: {
+      reviews: [
+        { id: 'R-1', knowledgeItemId: 'KI-4', type: 'Accuracy', status: 'Pending', reviewerId: 'U-1' },
+        { id: 'R-2', knowledgeItemId: 'KI-1', type: 'Relevance', status: 'Completed', reviewerId: 'U-2' },
+      ],
+      tasks: [
+        { id: 'CT-1', title: 'Archive outdated marketing content', type: 'Lifecycle', status: 'Open', priority: 'Medium' },
+        { id: 'CT-2', title: 'Merge duplicate articles on "State Management"', type: 'Merge', status: 'In Progress', priority: 'High', assigneeId: 'U-1' }
+      ]
+  },
+  documents: [
+      { id: 'D-1', title: 'Q2 Financial Report.pdf', type: 'PDF', size: '2.5 MB', uploadedBy: 'U-4', lastModified: '2025-06-15' },
+      { id: 'D-2', title: 'Project Phoenix - Kickoff.docx', type: 'Word', size: '1.2 MB', uploadedBy: 'U-3', lastModified: '2025-06-20' },
+  ]
+};
+
+// --- Helper Components ---
+function CategoryBadge({ categoryName }) {
+    if(!categoryName) return null;
+    const colors = ['bg-blue-100 text-blue-800', 'bg-green-100 text-green-800', 'bg-yellow-100 text-yellow-800', 'bg-purple-100 text-purple-800', 'bg-pink-100 text-pink-800'];
+    const hash = categoryName.split('').reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
+    const color = colors[Math.abs(hash) % colors.length];
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${color}`}>{categoryName}</span>;
+}
+
+function TagPill({ tagName }) {
+    if(!tagName) return null;
+    return <span className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600">{tagName}</span>;
+}
+
+function StatusPill({ status }) {
+    const styles = {
+        'Published': 'bg-green-100 text-green-800',
+        'Draft': 'bg-yellow-100 text-yellow-800',
+        'Archived': 'bg-gray-100 text-gray-800',
+        'Pending': 'bg-blue-100 text-blue-800',
+        'Completed': 'bg-purple-100 text-purple-800',
+        'Open': 'bg-gray-200 text-gray-800',
+        'In Progress': 'bg-orange-100 text-orange-800',
+    };
+    return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+}
+
+// --- Main UI Components ---
+
+function Sidebar({ activeView, setActiveView }) {
+  const navItems = [
+    { name: 'Home', icon: Home },
+    { name: 'Knowledge Base', icon: BookOpen },
+    { name: 'Graph View', icon: Share2 },
+    { name: 'Documents', icon: FileText },
+    { name: 'Curation Hub', icon: ClipboardCheck },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Bot size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">KnowledgeAI</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">
+            <PlusCircle size={16} /> New Knowledge
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function Header({ activeView, user }) {
+  return (
+      <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+        <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+        <div className="flex items-center gap-4 flex-1 max-w-xl">
+          <div className="relative w-full">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              placeholder="Semantic Search: What is the marketing strategy for Q3?"
+              className="w-full pl-12 pr-4 py-2.5 bg-gray-100 border border-transparent rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Bell size={20} className="text-gray-600" />
+          </button>
+          <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+            <Settings size={20} className="text-gray-600" />
+          </button>
+        </div>
+      </header>
+  );
+}
+
+// --- View Components ---
+
+function HomeView() {
+    const recentItems = [...mockData.knowledgeItems].sort((a,b) => new Date(b.updatedAt) - new Date(a.updatedAt)).slice(0, 4);
+    const pendingReviews = mockData.curation.reviews.filter(r => r.status === 'Pending');
+
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-2 space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Recently Updated Knowledge</h3>
+                    <div className="space-y-3">
+                    {recentItems.map(item => (
+                        <div key={item.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-200">
+                            <div className="flex items-center gap-3">
+                                <BookOpen size={16} className="text-gray-500"/>
+                                <span className="font-medium text-sm text-gray-700">{item.title}</span>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className="text-xs text-gray-500">{new Date(item.updatedAt).toLocaleDateString()}</span>
+                                <CategoryBadge categoryName={mockData.categories.find(c => c.id === item.categoryId)?.name} />
+                            </div>
+                        </div>
+                    ))}
+                    </div>
+                </div>
+            </div>
+            <div className="lg:col-span-1 space-y-6">
+                <div className="bg-white p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-bold text-lg text-gray-800 mb-4">Pending Reviews</h3>
+                    {pendingReviews.length > 0 ? (
+                        <div className="space-y-3">
+                        {pendingReviews.map(review => (
+                            <div key={review.id} className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
+                                <FileCheck size={20} className="text-blue-600"/>
+                                <div>
+                                    <p className="text-sm font-semibold text-blue-800">{mockData.knowledgeItems.find(i=>i.id===review.knowledgeItemId).title}</p>
+                                    <p className="text-xs text-blue-700">{review.type} Review</p>
+                                </div>
+                            </div>
+                        ))}
+                        </div>
+                    ) : <p className="text-sm text-gray-500">No pending reviews.</p>}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+function KnowledgeBaseView() {
+    return (
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Title</th>
+                            <th className="p-3">Category</th>
+                            <th className="p-3">Tags</th>
+                            <th className="p-3">Status</th>
+                            <th className="p-3">Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.knowledgeItems.map(item => (
+                            <tr key={item.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800">{item.title}</td>
+                                <td className="p-3"><CategoryBadge categoryName={mockData.categories.find(c => c.id === item.categoryId)?.name} /></td>
+                                <td className="p-3 flex flex-wrap gap-1">
+                                    {item.tags.map(tagId => <TagPill key={tagId} tagName={mockData.tags.find(t=>t.id===tagId)?.name}/>)}
+                                </td>
+                                <td className="p-3"><StatusPill status={item.stage} /></td>
+                                <td className="p-3 text-gray-500">{new Date(item.updatedAt).toLocaleDateString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function GraphView() {
+    const { nodes, links } = mockData.knowledgeGraph;
+    const nodeMap = nodes.reduce((acc, node) => ({...acc, [node.id]: node}), {});
+    const lines = links.map(link => ({
+        source: nodeMap[link.source],
+        target: nodeMap[link.target],
+    }));
+
+    return (
+        <div className="p-6">
+             <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Knowledge Graph Visualization</h3>
+                <ResponsiveContainer width="100%" height={500}>
+                    <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
+                        <XAxis type="number" dataKey="x" hide />
+                        <YAxis type="number" dataKey="y" hide />
+                        <ZAxis type="number" dataKey="z" range={[100, 500]} name="size"/>
+                        <Tooltip 
+                            cursor={{ strokeDasharray: '3 3' }} 
+                            content={({ payload }) => {
+                                if (payload && payload.length > 0) {
+                                    const { id } = payload[0].payload;
+                                    const item = mockData.knowledgeItems.find(i => i.id === id);
+                                    return <div className="bg-white p-2 border rounded shadow-lg text-sm"><strong>{item.title}</strong></div>
+                                }
+                                return null;
+                            }}
+                        />
+                        {lines.map((line, i) => (
+                           <Line key={i} points={[{x: line.source.x, y: line.source.y}, {x: line.target.x, y: line.target.y}]} stroke="#e2e8f0" strokeWidth={2}/>
+                        ))}
+                        <Scatter name="Knowledge Items" data={nodes} fill="#1f2937">
+                        </Scatter>
+                    </ScatterChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+}
+
+function DocumentsView() {
+    return (
+        <div className="p-6">
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <table className="w-full text-sm">
+                    <thead>
+                        <tr className="border-b text-left text-gray-500 font-medium">
+                            <th className="p-3">Title</th>
+                            <th className="p-3">Type</th>
+                            <th className="p-3">Size</th>
+                            <th className="p-3">Uploaded By</th>
+                            <th className="p-3">Last Modified</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {mockData.documents.map(doc => (
+                            <tr key={doc.id} className="border-b hover:bg-gray-50">
+                                <td className="p-3 font-semibold text-gray-800 flex items-center gap-2">
+                                    <FileText size={16} />{doc.title}
+                                </td>
+                                <td className="p-3">{doc.type}</td>
+                                <td className="p-3">{doc.size}</td>
+                                <td className="p-3 text-gray-500">{doc.uploadedBy}</td>
+                                <td className="p-3 text-gray-500">{new Date(doc.lastModified).toLocaleDateString()}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+}
+
+function CurationHubView() {
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Pending Reviews</h3>
+                <div className="space-y-3">
+                    {mockData.curation.reviews.map(review => (
+                        <div key={review.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                            <span className="font-medium text-sm text-gray-700">{mockData.knowledgeItems.find(i=>i.id===review.knowledgeItemId).title}</span>
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs text-gray-500">{review.type}</span>
+                                <StatusPill status={review.status}/>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Open Curation Tasks</h3>
+                <div className="space-y-3">
+                    {mockData.curation.tasks.map(task => (
+                        <div key={task.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+                            <span className="font-medium text-sm text-gray-700">{task.title}</span>
+                            <div className="flex items-center gap-2">
+                                <span className="text-xs text-gray-500">{task.type}</span>
+                                <StatusPill status={task.status}/>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Home');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Home':
+        return <HomeView />;
+      case 'Knowledge Base':
+        return <KnowledgeBaseView />;
+      case 'Graph View':
+        return <GraphView />;
+      case 'Documents':
+        return <DocumentsView />;
+      case 'Curation Hub':
+        return <CurationHubView />;
+      default:
+        return <HomeView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} user={mockData.user} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

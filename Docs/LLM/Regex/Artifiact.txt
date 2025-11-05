@@ -1,0 +1,40 @@
+```\n+#+.*\n+```csharp
+
+```\n+```csharp
+
+```\n+#+.*\n+#+.*\n+```csharp
+
+```\n+.*\n+```csharp
+
+</antArtifact>([\s\S]*?)<antArtifact\b[^>]*>\n
+
+</antArtifact>\n+<antArtifact\b[^>]*>
+
+based on "ABP Framework Domain Layer Development Guide" implement complete domain layer for "Task Management Bounded Context"
+
+check if domain layer is complete then implement complete infrastructure layer based on "ABP Framework v9+ Infrastructure Layer Development Guide"
+
+check if infrastructure layer are complete then implement complete application layer based on "ABP Framework v9+ Application Layer Development Guide"
+
+check if application, infrastructure and domain layer are complete
+
+Based on the provided application layer code an  Avalonia UI Layer Development Guide, please create complete UI layer for the "Work Management (GTD) Feature Slices"
+
+list all pending feature slices and implement them
+
+find . -type f -name "*.csproj"  -exec dotnet sln add {} --in-root \;
+
+
+```\n+#+.*\n+```(csharp|xml|xaml|axaml)
+
+```\n+```(csharp|xml|xaml|axaml)
+
+```\n+#+.*\n+#+.*\n+```(csharp|xml|xaml|axaml)
+
+```\n+.*\n+```(csharp|xml|xaml|axaml)
+
+^<!-- (.*) -->
+
+\n^---\n
+
+^// (?!s)

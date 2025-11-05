@@ -1,0 +1,521 @@
+import React, { useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
+import { ChevronDown, Search, Bell, Settings, PlusCircle, Filter, Calendar as CalendarIcon, LayoutGrid, CheckSquare, Inbox, Clock, BarChart2, MoreVertical, GripVertical, Star, ChevronLeft, ChevronRight, User, Folder, Tag } from 'lucide-react';
+
+// Mock Data based on the provided Domain-Driven Design Specification
+const mockData = {
+  user: {
+    name: 'Alex Doe',
+    avatarUrl: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AD',
+  },
+  tasks: [
+    { TaskId: 'T-1', TaskTitle: 'Design the new dashboard UI', description: 'Create mockups in Figma based on the new design system.', DueDate: '2025-06-25', Priority: 'Critical', TaskStatus: 'In Progress', ProjectId: 'P-1', tags: ['UI', 'Design'] },
+    { TaskId: 'T-2', TaskTitle: 'Develop API for user authentication', description: 'Implement JWT-based authentication endpoints.', DueDate: '2025-06-26', Priority: 'High', TaskStatus: 'In Progress', ProjectId: 'P-2', tags: ['Backend', 'Security'] },
+    { TaskId: 'T-3', TaskTitle: 'Setup CI/CD pipeline', description: 'Configure GitHub Actions for automated testing and deployment.', DueDate: '2025-06-28', Priority: 'High', TaskStatus: 'To Do', ProjectId: 'P-2', tags: ['DevOps'] },
+    { TaskId: 'T-4', TaskTitle: 'Write documentation for the API', description: 'Use Swagger/OpenAPI for documentation.', DueDate: '2025-07-01', Priority: 'Medium', TaskStatus: 'To Do', ProjectId: 'P-2', tags: ['Docs'] },
+    { TaskId: 'T-5', TaskTitle: 'Client feedback meeting', description: 'Discuss the prototype and gather feedback.', DueDate: '2025-06-24', Priority: 'Critical', TaskStatus: 'Done', ProjectId: 'P-1', tags: ['Meeting'] },
+    { TaskId: 'T-6', TaskTitle: 'Fix login button styling on mobile', description: 'The button is misaligned on screens smaller than 375px.', DueDate: '2025-06-24', Priority: 'High', TaskStatus: 'Done', ProjectId: 'P-1', tags: ['Frontend', 'Bug'] },
+    { TaskId: 'T-7', TaskTitle: 'Research state management libraries', description: 'Evaluate Zustand, Redux Toolkit, and others for the new project.', DueDate: '2025-07-05', Priority: 'Low', TaskStatus: 'To Do', ProjectId: 'P-3', tags: ['Research'] },
+  ],
+  projects: [
+    { ProjectId: 'P-1', ProjectName: 'Productivity Platform UI', ProjectStatus: 'Active', progress: 75, team: [1,2,3], description: 'A comprehensive productivity management platform.' },
+    { ProjectId: 'P-2', ProjectName: 'Core API Services', ProjectStatus: 'Active', progress: 40, team: [1,4,5], description: 'Backend services for the main application.'},
+    { ProjectId: 'P-3', ProjectName: 'Mobile App Initiative', ProjectStatus: 'Planning', progress: 10, team: [1,2,6], description: 'New native mobile application for iOS and Android.'},
+    { ProjectId: 'P-4', ProjectName: 'Marketing Website Redesign', ProjectStatus: 'On Hold', progress: 90, team: [2,7], description: 'Redesigning the public-facing marketing site.'},
+  ],
+  gtd: {
+    inbox: [
+      { InboxItemId: 'I-1', content: 'Email from John about Q3 budget', source: 'Email', captureTime: '2025-06-24T09:00:00Z' },
+      { InboxItemId: 'I-2', content: 'Idea: Gamify the onboarding process', source: 'Manual', captureTime: '2025-06-24T11:23:00Z' },
+      { InboxItemId: 'I-3', content: 'Voice note: Remember to buy milk', source: 'Voice', captureTime: '2025-06-24T14:05:00Z' },
+    ],
+    nextActions: [
+      { ActionId: 'A-1', description: 'Draft response to John\'s email', context: '@Computer' },
+      { ActionId: 'A-2', description: 'Call the dentist to schedule appointment', context: '@Phone' },
+    ]
+  },
+  schedule: [
+    { EventId: 'E-1', title: 'Daily Standup', startTime: '2025-06-25T09:00', endTime: '2025-06-25T09:15', type: 'Meeting', calendar: 'Work' },
+    { EventId: 'E-2', title: 'Focus Block: API Development', startTime: '2025-06-25T09:30', endTime: '2025-06-25T12:00', type: 'Focus', calendar: 'Work', taskId: 'T-2' },
+    { EventId: 'E-3', title: 'Team Lunch', startTime: '2025-06-25T12:30', endTime: '2025-06-25T13:30', type: 'Break', calendar: 'Personal' },
+    { EventId: 'E-4', title: '1-on-1 with Sarah', startTime: '2025-06-25T15:00', endTime: '2025-06-25T15:30', type: 'Meeting', calendar: 'Work' },
+    { EventId: 'E-5', title: 'Project Planning: Mobile App', startTime: '2025-06-26T10:00', endTime: '2025-06-26T11:30', type: 'Meeting', calendar: 'Work', projectId: 'P-3' },
+  ],
+  analytics: {
+    tasksCompleted: [
+      { date: 'Jun 18', count: 3 }, { date: 'Jun 19', count: 5 }, { date: 'Jun 20', count: 2 },
+      { date: 'Jun 21', count: 4 }, { date: 'Jun 22', count: 6 }, { date: 'Jun 23', count: 3 },
+      { date: 'Jun 24', count: 7 },
+    ],
+    projectProgress: [
+      { name: 'UI', value: 75, color: '#8884d8' },
+      { name: 'API', value: 40, color: '#82ca9d' },
+      { name: 'Mobile', value: 10, color: '#ffc658' },
+      { name: 'Marketing', value: 90, color: '#ff8042' },
+    ]
+  }
+};
+
+// --- Helper Components ---
+
+const PriorityPill = ({ priority }) => {
+  const styles = {
+    'Critical': 'bg-red-100 text-red-800',
+    'High': 'bg-yellow-100 text-yellow-800',
+    'Medium': 'bg-blue-100 text-blue-800',
+    'Low': 'bg-green-100 text-green-800',
+  };
+  return <span className={`px-2 py-1 text-xs font-medium rounded-full ${styles[priority]}`}>{priority}</span>;
+};
+
+const StatusBadge = ({ status }) => {
+  const styles = {
+    'Active': 'bg-green-100 text-green-800',
+    'Planning': 'bg-blue-100 text-blue-800',
+    'On Hold': 'bg-gray-100 text-gray-800',
+    'Completed': 'bg-purple-100 text-purple-800',
+  };
+  return <span className={`px-2 py-1 text-xs font-semibold rounded-md ${styles[status]}`}>{status}</span>;
+};
+
+const Avatar = ({ src, alt = "avatar" }) => (
+  <img className="h-8 w-8 rounded-full object-cover" src={src} alt={alt} />
+);
+
+// --- Main UI Components ---
+
+const Sidebar = ({ activeView, setActiveView }) => {
+  const navItems = [
+    { name: 'Dashboard', icon: LayoutGrid },
+    { name: 'My Tasks', icon: CheckSquare },
+    { name: 'Projects', icon: Folder },
+    { name: 'Inbox', icon: Inbox },
+    { name: 'Schedule', icon: CalendarIcon },
+    { name: 'Analytics', icon: BarChart2 },
+  ];
+
+  return (
+    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col p-4">
+      <div className="flex items-center gap-2 mb-8">
+        <div className="bg-gray-800 text-white p-2 rounded-lg">
+          <Star size={24} />
+        </div>
+        <h1 className="text-xl font-bold text-gray-800">Productivity</h1>
+      </div>
+      <nav className="flex-grow">
+        <ul>
+          {navItems.map(item => (
+            <li key={item.name}>
+              <button
+                onClick={() => setActiveView(item.name)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  activeView === item.name ? 'bg-gray-800 text-white' : 'text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                <item.icon size={18} />
+                <span>{item.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="mt-auto">
+        <div className="p-4 bg-gray-100 rounded-lg">
+          <h4 className="font-bold text-sm text-gray-800">Upgrade to Pro</h4>
+          <p className="text-xs text-gray-500 mt-1 mb-3">Get access to unlimited projects, AI features, and more.</p>
+          <button className="w-full bg-gray-800 text-white text-sm font-semibold py-2 rounded-lg hover:bg-gray-700 transition-colors">
+            Upgrade
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Header = ({ activeView, user }) => (
+  <header className="flex items-center justify-between p-6 bg-white border-b border-gray-200">
+    <div>
+      <h2 className="text-2xl font-bold text-gray-800">{activeView}</h2>
+      <p className="text-sm text-gray-500">Welcome back, {user.name.split(' ')[0]}!</p>
+    </div>
+    <div className="flex items-center gap-4">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+        <input
+          type="text"
+          placeholder="Search..."
+          className="w-64 pl-10 pr-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-800"
+        />
+      </div>
+      <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+        <Bell size={20} className="text-gray-600" />
+      </button>
+      <button className="p-2 rounded-full hover:bg-gray-100 transition-colors">
+        <Settings size={20} className="text-gray-600" />
+      </button>
+      <div className="flex items-center gap-2">
+        <Avatar src={user.avatarUrl} alt={user.name} />
+        <span className="text-sm font-medium text-gray-700">{user.name}</span>
+        <ChevronDown size={16} className="text-gray-500" />
+      </div>
+    </div>
+  </header>
+);
+
+// --- View Components ---
+
+const DashboardView = () => {
+  const { tasks, projects, analytics } = mockData;
+  const today = new Date('2025-06-25');
+  
+  const upcomingTasks = tasks
+    .filter(t => t.TaskStatus !== 'Done' && new Date(t.DueDate) >= today)
+    .sort((a, b) => new Date(a.DueDate) - new Date(b.DueDate))
+    .slice(0, 4);
+
+  return (
+    <div className="p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Main Column */}
+      <div className="lg:col-span-2 space-y-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Today's Focus</h3>
+          <div className="space-y-3">
+            {tasks.filter(t => t.DueDate === '2025-06-25' && t.TaskStatus !== 'Done').map(task => (
+                <div key={task.TaskId} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-200 hover:border-gray-800 transition-colors">
+                    <div className="flex items-center gap-3">
+                        <button className="w-5 h-5 border-2 border-gray-300 rounded-md"></button>
+                        <span className="font-medium text-sm text-gray-700">{task.TaskTitle}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-xs text-gray-500">{mockData.projects.find(p=>p.ProjectId === task.ProjectId)?.ProjectName}</span>
+                        <PriorityPill priority={task.Priority} />
+                    </div>
+                </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Tasks Completed This Week</h3>
+          <ResponsiveContainer width="100%" height={250}>
+            <BarChart data={analytics.tasksCompleted} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" vertical={false} />
+              <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
+              <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '0.5rem' }} />
+              <Legend wrapperStyle={{fontSize: "14px"}} />
+              <Bar dataKey="count" fill="#1f2937" name="Tasks" barSize={30} radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* Side Column */}
+      <div className="lg:col-span-1 space-y-6">
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Upcoming Deadlines</h3>
+           <div className="space-y-3">
+              {upcomingTasks.map(task => (
+                <div key={task.TaskId} className="flex items-start gap-3">
+                  <div className="text-sm font-semibold text-gray-700 w-16">
+                    {new Date(task.DueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-gray-800">{task.TaskTitle}</p>
+                    <p className="text-xs text-gray-500">{mockData.projects.find(p => p.ProjectId === task.ProjectId)?.ProjectName}</p>
+                  </div>
+                </div>
+              ))}
+           </div>
+        </div>
+        
+        <div className="bg-white p-6 rounded-lg border border-gray-200">
+          <h3 className="font-bold text-lg text-gray-800 mb-4">Active Projects</h3>
+          <div className="space-y-4">
+              {projects.filter(p => p.ProjectStatus === 'Active').map(proj => (
+                <div key={proj.ProjectId}>
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-semibold text-gray-700">{proj.ProjectName}</span>
+                    <span className="text-sm font-semibold text-gray-500">{proj.progress}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div className="bg-gray-800 h-2 rounded-full" style={{ width: `${proj.progress}%` }}></div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TasksView = () => {
+    const { tasks, projects } = mockData;
+    const statuses = ['To Do', 'In Progress', 'Done'];
+
+    const tasksByStatus = statuses.map(status => ({
+        status,
+        tasks: tasks.filter(t => t.TaskStatus === status)
+    }));
+
+    return (
+        <div className="p-6">
+            <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center gap-2">
+                    <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50">
+                        <Filter size={16} /> Filter
+                    </button>
+                    {/* Add more filters if needed */}
+                </div>
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-semibold hover:bg-gray-700">
+                    <PlusCircle size={16} /> New Task
+                </button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {tasksByStatus.map(({ status, tasks }) => (
+                    <div key={status} className="bg-gray-50 rounded-xl p-4">
+                        <h3 className="font-bold text-gray-800 mb-4 flex justify-between items-center">
+                            <span>{status}</span>
+                            <span className="text-sm font-medium text-gray-400 bg-gray-200 rounded-full px-2 py-0.5">{tasks.length}</span>
+                        </h3>
+                        <div className="space-y-4">
+                            {tasks.map(task => (
+                                <div key={task.TaskId} className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h4 className="font-semibold text-sm text-gray-800">{task.TaskTitle}</h4>
+                                        <MoreVertical size={18} className="text-gray-400"/>
+                                    </div>
+                                    <p className="text-xs text-gray-500 mb-3">{task.description}</p>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-xs font-medium text-gray-500 flex items-center gap-1">
+                                                <CalendarIcon size={12}/> {new Date(task.DueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                            </span>
+                                            <span className="text-xs font-bold text-blue-600">
+                                                {projects.find(p=>p.ProjectId === task.ProjectId)?.ProjectName}
+                                            </span>
+                                        </div>
+                                        <PriorityPill priority={task.Priority} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const ProjectsView = () => {
+  const { projects, user } = mockData;
+  return (
+    <div className="p-6">
+        <div className="flex justify-end mb-6">
+            <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-semibold hover:bg-gray-700">
+                <PlusCircle size={16} /> New Project
+            </button>
+        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projects.map(proj => (
+          <div key={proj.ProjectId} className="bg-white p-6 rounded-lg border border-gray-200 flex flex-col">
+            <div className="flex justify-between items-start mb-4">
+                <h3 className="font-bold text-lg text-gray-800">{proj.ProjectName}</h3>
+                <StatusBadge status={proj.ProjectStatus} />
+            </div>
+            <p className="text-sm text-gray-500 flex-grow mb-4">{proj.description}</p>
+            <div className="mb-4">
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-xs font-semibold text-gray-500">Progress</span>
+                <span className="text-sm font-bold text-gray-700">{proj.progress}%</span>
+              </div>
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="bg-gray-800 h-2 rounded-full" style={{ width: `${proj.progress}%` }}></div>
+              </div>
+            </div>
+            <div className="flex justify-between items-center">
+                <div className="flex -space-x-2">
+                    <Avatar src="https://placehold.co/100x100/E2E8F0/4A5568?text=AD" />
+                    <Avatar src="https://placehold.co/100x100/C6F6D5/2F855A?text=BE" />
+                    <Avatar src="https://placehold.co/100x100/BEE3F8/2B6CB0?text=CF" />
+                </div>
+              <button className="text-sm font-semibold text-gray-800 hover:text-gray-600">View Project</button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const InboxView = () => {
+    const { inbox, nextActions } = mockData.gtd;
+    return (
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Inbox ({inbox.length})</h3>
+                <div className="mb-4">
+                    <input type="text" placeholder="Capture a new thought..." className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-800"/>
+                </div>
+                <div className="space-y-3">
+                    {inbox.map(item => (
+                        <div key={item.InboxItemId} className="p-3 rounded-lg border border-gray-200 bg-gray-50">
+                            <p className="text-sm text-gray-800 mb-2">{item.content}</p>
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs text-gray-500">Captured via {item.source}</span>
+                                <div className="flex gap-2">
+                                    <button className="text-xs font-semibold text-blue-600 hover:underline">Process</button>
+                                    <button className="text-xs font-semibold text-red-600 hover:underline">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <div className="bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Next Actions</h3>
+                 <div className="space-y-3">
+                    {nextActions.map(action => (
+                        <div key={action.ActionId} className="flex items-center gap-3 p-3 rounded-lg border border-gray-200">
+                            <button className="w-5 h-5 border-2 border-gray-300 rounded-md"></button>
+                            <span className="flex-grow text-sm font-medium text-gray-700">{action.description}</span>
+                            <span className="text-xs bg-blue-100 text-blue-800 font-semibold px-2 py-1 rounded-full">{action.context}</span>
+                        </div>
+                    ))}
+                 </div>
+            </div>
+        </div>
+    );
+};
+
+const ScheduleView = () => {
+    const { schedule } = mockData;
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const currentWeek = [22, 23, 24, 25, 26, 27, 28];
+    const today = 25;
+
+    const getEventsForDay = (day) => {
+        return schedule.filter(e => new Date(e.startTime).getDate() === day);
+    }
+    
+    const eventColors = {
+        Meeting: 'bg-blue-500',
+        Focus: 'bg-purple-500',
+        Break: 'bg-green-500'
+    };
+
+    return (
+        <div className="p-6 bg-white rounded-lg border border-gray-200 m-6">
+            <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center gap-4">
+                    <h3 className="text-lg font-bold">June 2025</h3>
+                    <div className="flex gap-1">
+                        <button className="p-2 rounded-md hover:bg-gray-100"><ChevronLeft size={18} /></button>
+                        <button className="p-2 rounded-md hover:bg-gray-100"><ChevronRight size={18} /></button>
+                    </div>
+                </div>
+                <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg text-sm font-semibold hover:bg-gray-700">
+                    New Event
+                </button>
+            </div>
+            <div className="grid grid-cols-7 border-t border-l border-gray-200">
+                {days.map((day, index) => (
+                    <div key={day} className={`p-2 border-b border-r border-gray-200 text-center ${currentWeek[index] === today ? 'bg-blue-50' : ''}`}>
+                        <p className="text-xs text-gray-500">{day}</p>
+                        <p className={`font-bold text-lg ${currentWeek[index] === today ? 'text-blue-600' : 'text-gray-800'}`}>{currentWeek[index]}</p>
+                        <div className="mt-2 space-y-1">
+                            {getEventsForDay(currentWeek[index]).map(event => (
+                                <div key={event.EventId} className={`p-1 rounded text-white text-xs ${eventColors[event.type]}`}>
+                                    {event.title}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+
+const AnalyticsView = () => {
+    const { tasksCompleted, projectProgress } = mockData.analytics;
+
+    return (
+        <div className="p-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <div className="lg:col-span-3 bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Task Completion Trend</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={tasksCompleted}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="date" tick={{ fontSize: 12 }} />
+                        <YAxis tick={{ fontSize: 12 }} />
+                        <Tooltip />
+                        <Legend />
+                        <Line type="monotone" dataKey="count" name="Tasks Completed" stroke="#1f2937" strokeWidth={2} activeDot={{ r: 8 }} />
+                    </LineChart>
+                </ResponsiveContainer>
+            </div>
+            <div className="lg:col-span-2 bg-white p-6 rounded-lg border border-gray-200">
+                <h3 className="font-bold text-lg text-gray-800 mb-4">Project Progress Distribution</h3>
+                <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                        <Pie
+                            data={projectProgress}
+                            cx="50%"
+                            cy="50%"
+                            labelLine={false}
+                            outerRadius={120}
+                            fill="#8884d8"
+                            dataKey="value"
+                            nameKey="name"
+                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                        >
+                            {projectProgress.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} />
+                            ))}
+                        </Pie>
+                        <Tooltip />
+                    </PieChart>
+                </ResponsiveContainer>
+            </div>
+        </div>
+    );
+};
+
+
+export default function App() {
+  const [activeView, setActiveView] = useState('Dashboard');
+
+  const renderView = () => {
+    switch (activeView) {
+      case 'Dashboard':
+        return <DashboardView />;
+      case 'My Tasks':
+        return <TasksView />;
+      case 'Projects':
+        return <ProjectsView />;
+      case 'Inbox':
+        return <InboxView />;
+      case 'Schedule':
+        return <ScheduleView />;
+      case 'Analytics':
+        return <AnalyticsView />;
+      default:
+        return <DashboardView />;
+    }
+  };
+
+  return (
+    <div className="flex h-screen bg-gray-100 font-sans">
+      <Sidebar activeView={activeView} setActiveView={setActiveView} />
+      <main className="flex-1 flex flex-col h-screen">
+        <Header activeView={activeView} user={mockData.user} />
+        <div className="flex-1 overflow-y-auto">
+          {renderView()}
+        </div>
+      </main>
+    </div>
+  );
+}

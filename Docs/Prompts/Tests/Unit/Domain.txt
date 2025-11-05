@@ -1,0 +1,150 @@
+You are an AI coding assistant. I have a .NET 9 domain codebase following Domain-Driven Design (DDD) and Clean Architecture principles. It includes:
+
+- **Aggregates** (Root Entities + Child Entities)
+- **Entities** (Core Business Objects)
+- **Value Objects** (Immutable Components)
+- **Domain Services** (Interfaces + Implementations)
+- **Domain Events** (Event Classes)
+- **Exceptions** (Domain-Specific)
+- **Repository Interfaces**
+- **Specifications** (Query Criteria)
+- **Enumerations** (e.g., TaskStatus, Priority)
+- **Additional Concepts** (Factories, Policies, Strategies, etc.)
+
+We use:
+- **FluentValidation** to implement business rule validations.
+- **Ardalis.GuardClauses** for constructor/argument validation.
+- **C# 9** features like records, pattern matching, etc.
+- **xUnit** as our test framework (feel free to adapt if necessary).
+
+---
+
+### **Goal**
+
+Create a **complete test suite** for the entire domain layer, organized in a test project named `MyApp.Domain.Tests`. Each domain class (Aggregate, Entity, Value Object, etc.) should have a corresponding test class that validates:
+
+1. **Constructor Validations**  
+   - Ensuring Guard Clauses throw exceptions for invalid inputs.
+   - Checking FluentValidation rules for business constraints (e.g., a due date must be after the start date).
+
+2. **Business Logic Methods**  
+   - Confirming correct behavior for both **success (happy path)** scenarios and **failure** scenarios that should trigger domain exceptions or validation errors.
+   - Testing interactions between aggregate roots and their child entities.
+
+3. **Domain Events**  
+   - Verifying events are raised under the correct conditions with the correct data.
+   - (Optional) Demonstrating how to test event handlers if they are part of the domain layer.
+
+4. **Exception Handling**  
+   - Ensuring domain-specific exceptions are thrown when rules are violated.
+   - Checking that exception messages/properties are accurate.
+
+5. **Value Objects**  
+   - Testing immutability and invariants (e.g., `DateRange` end date > start date).
+   - Verifying equality comparisons, `Equals` and `GetHashCode`.
+
+6. **Domain Services**  
+   - Mocking repository interfaces or other dependencies (using a mocking framework like Moq or NSubstitute).
+   - Validating complex business rules or orchestrations across multiple entities.
+
+7. **Repository Interfaces**  
+   - (Optional) Creating **contract tests** or **in-memory fakes** to validate any domain logic relying on repository operations (e.g., `GetTaskByIdAsync`, `AddTaskAsync`).
+
+8. **Specifications**  
+   - Verifying that custom query logic (e.g., filtering tasks due today, high-priority tasks) works correctly using in-memory data sets.
+
+9. **Enumerations**  
+   - Ensuring custom enumerations or typed `enum` classes (like `Priority`, `TaskStatus`) behave as expected and align with business rules.
+
+---
+
+### **Test Project Structure & Naming**
+
+- The main test project: `tests/MyApp.Domain.Tests/`
+- Mirror the domain namespaces for folder organization. Examples:
+  - `tests/MyApp.Domain.Tests/Productivity/Tasks/Aggregates/TaskAggregateTests.cs`
+  - `tests/MyApp.Domain.Tests/Productivity/Tasks/Entities/SubTaskTests.cs`
+  - `tests/MyApp.Domain.Tests/Common/ValueObjects/EmailValueObjectTests.cs`
+  - `tests/MyApp.Domain.Tests/Productivity/Tasks/Services/TaskSchedulingServiceTests.cs`
+  - `tests/MyApp.Domain.Tests/Productivity/Tasks/Events/TaskCompletedEventTests.cs`
+  - `tests/MyApp.Domain.Tests/Productivity/Tasks/Exceptions/TaskNotFoundExceptionTests.cs`
+  - `tests/MyApp.Domain.Tests/Productivity/Tasks/Specifications/TasksDueTodaySpecificationTests.cs`
+  - etc.
+
+---
+
+### **Output Format (Generate Code in Batches)**
+
+1. **Batch Output**  
+   - Please generate the test files **in batches** so that the output is not too large in a single response.  
+   - Each batch can contain a reasonable set of files (e.g., start with Entities, then Aggregates, and so forth).
+
+2. **For Each File**  
+   - Provide the **full file path** (e.g., `tests/MyApp.Domain.Tests/Productivity/Tasks/Entities/SubTaskTests.cs`).
+   - Provide **complete file content** that includes:
+     - `using` statements
+     - `namespace` declaration
+     - A `public class XYZTests` with `[Fact]` and/or `[Theory]` methods
+     - Sample test methods demonstrating:
+       - Constructor validation (Ardalis.GuardClauses, FluentValidation)
+       - Business logic methods
+       - Exception throwing (using `Assert.Throws`)
+       - Domain event checks (if applicable)
+       - Mocking for domain services (if applicable)
+       - In-memory checks for specifications
+       - Value object equality/immutability
+       - Any other domain logic
+
+---
+
+### **Example Tests to Include** (Non-Exhaustive)
+
+1. **Aggregates**  
+   - Constructor guard checks.  
+   - Methods that orchestrate child entities.  
+   - Domain events raised on specific actions.
+
+2. **Entities**  
+   - Constructor validations.  
+   - Methods that modify entity state and trigger domain events/exceptions.
+
+3. **Value Objects**  
+   - Immutability and validation (e.g., `Email` must have valid format).  
+   - Equality checks (`Equals`, `GetHashCode`).
+
+4. **Domain Services**  
+   - Mocking dependent repositories or other services.  
+   - Verifying complex business rules.
+
+5. **Domain Events**  
+   - Checking event raising conditions and event payload.
+
+6. **Exceptions**  
+   - Verifying correct exception type is thrown with `Assert.Throws<>()`.  
+   - Checking exception messages and properties.
+
+7. **Repository Interfaces**  
+   - Contract tests or in-memory fakes to validate expected repository behavior.
+
+8. **Specifications**  
+   - Tests using in-memory collections to ensure filtering logic is correct.
+
+9. **Enumerations**  
+   - Ensuring enumeration classes or records behave correctly.
+
+---
+
+### **Prompt Execution**
+
+**Task**: Using all guidelines above, generate **a complete set of unit test files** for the entire `.NET 9` domain layer. Each test file should include:
+
+1. **File path**  
+2. **Usings + namespace**  
+3. **Test class declaration** with `[Fact]` and/or `[Theory]` test methods  
+4. **Relevant test code** that demonstrates the domain logic being tested
+
+**Important**:  
+- Please output the generated test code **in batches**, each batch containing a subset of the test files, to avoid an overly large single response.  
+- Within each batch, provide each test file in a separate code block or well-formatted section.  
+
+**End of Prompt**  

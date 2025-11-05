@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NouAssist.Workflow.Aggregates;
+using NouAssist.Workflow.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -7,9 +9,13 @@ namespace NouAssist.Workflow.EntityFrameworkCore;
 [ConnectionStringName(WorkflowDbProperties.ConnectionStringName)]
 public class WorkflowDbContext : AbpDbContext<WorkflowDbContext>, IWorkflowDbContext
 {
-    /* Add DbSet for each Aggregate Root here. Example:
-     * public DbSet<Question> Questions { get; set; }
-     */
+    public DbSet<Aggregates.Workflow> Workflows { get; set; }
+    public DbSet<WorkflowScheme> WorkflowSchemes { get; set; }
+    public DbSet<WorkflowCustomField> WorkflowCustomFields { get; set; }
+    public DbSet<WorkflowStatus> WorkflowStatuses { get; set; }
+    public DbSet<WorkflowTransition> WorkflowTransitions { get; set; }
+    public DbSet<WorkflowAction> WorkflowActions { get; set; }
+    public DbSet<WorkflowSchemeMapping> WorkflowSchemeMappings { get; set; }
 
     public WorkflowDbContext(DbContextOptions<WorkflowDbContext> options)
         : base(options)

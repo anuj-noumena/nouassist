@@ -9,7 +9,7 @@ using NouAssist.Tasks.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.EntityFrameworkCore.Tasks.EntityFrameworkCore.Repositories
+namespace NouAssist.Tasks.EntityFrameworkCore.Repositories
 {
     public class EfCoreTaskTypeRepository 
         : EfCoreRepository<ITasksDbContext, TaskType, Guid>, ITaskTypeRepository

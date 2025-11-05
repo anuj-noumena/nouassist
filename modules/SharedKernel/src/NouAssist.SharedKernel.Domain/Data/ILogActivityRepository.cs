@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Core.Aggregates;
+using NouAssist.SharedKernel.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Core.Data
+namespace NouAssist.SharedKernel.Data
 {
     public interface ILogActivityRepository : IRepository<LogActivity, Guid>
     {

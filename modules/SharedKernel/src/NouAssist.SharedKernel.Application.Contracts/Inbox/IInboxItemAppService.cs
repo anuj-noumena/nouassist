@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Core.Dtos;
+using NouAssist.SharedKernel.Tags.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Core.Inbox
+namespace NouAssist.SharedKernel.Inbox
 {
     public interface IInboxItemAppService : IApplicationService
     {

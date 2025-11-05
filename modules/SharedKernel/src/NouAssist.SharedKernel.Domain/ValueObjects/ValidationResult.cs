@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Core.ValueObjects
+namespace NouAssist.SharedKernel.ValueObjects
 {
     public class ValidationResult : ValueObject
     {

@@ -11,7 +11,7 @@ using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.EntityFrameworkCore.Tasks.EntityFrameworkCore.Repositories
+namespace NouAssist.Tasks.EntityFrameworkCore.Repositories
 {
     public class EfCoreTaskInstanceRepository 
         : EfCoreRepository<ITasksDbContext, TaskInstance, Guid>, ITaskInstanceRepository

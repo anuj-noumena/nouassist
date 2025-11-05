@@ -1,6 +1,6 @@
 using Volo.Abp.Localization;
 
-namespace NouAssist.Core.Localization
+namespace NouAssist.SharedKernel.Localization
 {
     [LocalizationResourceName("NouAssist")]
     public class NouAssistResource { }

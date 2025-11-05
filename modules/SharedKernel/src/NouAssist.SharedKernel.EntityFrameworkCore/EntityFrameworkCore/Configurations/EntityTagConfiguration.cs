@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Core.Entities;
+using NouAssist.SharedKernel.Entities;
 
-namespace NouAssist.Core.EntityFrameworkCore.Configurations
+namespace NouAssist.SharedKernel.EntityFrameworkCore.Configurations
 {
     public class EntityTagConfiguration : IEntityTypeConfiguration<EntityTag>
     {

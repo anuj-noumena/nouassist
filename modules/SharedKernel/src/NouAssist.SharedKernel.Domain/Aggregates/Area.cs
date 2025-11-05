@@ -4,7 +4,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Core.Aggregates
+namespace NouAssist.SharedKernel.Aggregates
 {
     public class Area : FullAuditedAggregateRoot<Guid>, IMultiTenant, ISoftDelete
     {

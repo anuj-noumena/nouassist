@@ -16,7 +16,7 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 using System.Linq.Dynamic.Core;
-using NouAssist.Core.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using Task = System.Threading.Tasks.Task;
 
 namespace NouAssist.Tasks.Tasks

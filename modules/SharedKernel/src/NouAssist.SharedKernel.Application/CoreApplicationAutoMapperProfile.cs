@@ -1,8 +1,9 @@
 using AutoMapper;
-using NouAssist.Core.Aggregates;
-using NouAssist.Core.Dtos;
+using NouAssist.SharedKernel.Aggregates;
+using NouAssist.SharedKernel.Logs.Dtos;
+using NouAssist.SharedKernel.Tags.Dtos;
 
-namespace NouAssist.Core
+namespace NouAssist.SharedKernel
 {
     public class CoreApplicationAutoMapperProfile : Profile
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Core.Aggregates;
+using NouAssist.SharedKernel.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Core.Specifications
+namespace NouAssist.SharedKernel.Specifications
 {
     public class UnprocessedInboxItemsSpecification : Specification<InboxItem>
     {

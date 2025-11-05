@@ -19,9 +19,9 @@ namespace NouAssist.Tasks.Services
                 result.AddError("Title is required");
             }
 
-            if (task.Title?.Length > NouAssistConsts.MaxTitleLength)
+            if (task.Title?.Length > TasksConsts.MaxTitleLength)
             {
-                result.AddError($"Title cannot exceed {NouAssistConsts.MaxTitleLength} characters");
+                result.AddError($"Title cannot exceed {TasksConsts.MaxTitleLength} characters");
             }
 
             if (task.DefaultImportance < 0 || task.DefaultImportance > 1)
@@ -43,12 +43,12 @@ namespace NouAssist.Tasks.Services
         {
             var result = new ValidationResult();
 
-            if (instance.IsCompleted)
+            if (instance.Schedule.IsCompleted)
             {
                 result.AddError("Task is already completed");
             }
 
-            if (instance.IsBlocked)
+            if (instance.BlockingInfo.IsBlocked)
             {
                 result.AddError("Cannot complete a blocked task");
             }

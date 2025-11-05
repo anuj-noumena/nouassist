@@ -1,9 +1,9 @@
 using System;
-using NouAssist.Core.Enums;
-using NouAssist.Core.ValueObjects;
+using NouAssist.SharedKernel.Enums;
+using NouAssist.SharedKernel.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Core.Services
+namespace NouAssist.SharedKernel.Services
 {
     public class EisenhowerMatrixService : DomainService
     {

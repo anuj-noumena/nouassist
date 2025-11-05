@@ -1,4 +1,4 @@
-namespace NouAssist.Core.Config
+namespace NouAssist.SharedKernel.Config
 {
     public static class DomainConstants
     {

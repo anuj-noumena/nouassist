@@ -20,7 +20,7 @@ namespace NouAssist.Tasks.Aggregates
     {
         public Guid TaskId { get; private set; }
         public Guid ProjectId { get; private set; }
-        public Guid WorkflowStatusId { get; private set; }
+
         public Guid OwnerId { get; private set; }
         public Guid? AssigneeId { get; private set; }
         public Guid? ReporterId { get; private set; }
@@ -28,12 +28,11 @@ namespace NouAssist.Tasks.Aggregates
         public Guid? TenantId { get; private set; }
 
         // Approval
-        public Guid? ApprovalRequestId { get; set; }
-        public bool RequiresApproval { get; set; }
+        public TaskApproval Approval { get; internal set; }
 
         // Status
-        public WorkflowStatusCategory TaskStatus { get; private set; }
-        public double ProgressPercent { get; private set; }
+        
+        public TaskProgress Progress { get; internal set; }
 
         // Importance/Urgency
         public ImportanceUrgencyMatrix PriorityMatrix { get; private set; }
@@ -42,37 +41,23 @@ namespace NouAssist.Tasks.Aggregates
         public DelegationInfo? DelegationInfo { get; private set; }
 
         // Dates
-        public DateTime? PlannedStartDate { get; set; }
-        public DateTime? PlannedDueDate { get; set; }
-        public DateTime? ActualStartDate { get; private set; }
-        public DateTime? ActualDueDate { get; set; }
-        public DateTime? CompletedAt { get; private set; }
+        public TaskSchedule Schedule { get; internal set; }
 
         // Time Tracking
         public TimeTrackingInfo TimeTracking { get; private set; } = TimeTrackingInfo.None;
 
         // Hierarchy
-        public int OrderInParent { get; set; }
-        public Guid? ParentInstanceId { get; set; }
-        public int SubtasksCount { get; private set; }
-        public int SubtasksDoneCount { get; private set; }
+        public TaskHierarchy Hierarchy { get; internal set; }
 
         // Collaboration
-        public int CommentsCount { get; private set; }
-        public int AttachmentsCount { get; private set; }
-        private readonly List<Guid> _watchers = new();
-        public IReadOnlyCollection<Guid> Watchers => _watchers.AsReadOnly();
-        public bool IsDiscussionLocked { get; private set; }
-
-        // Workflow
-        public bool IsNextAction { get; private set; }
+        public TaskDiscussion Discussion { get; internal set; }
 
         public BlockingInfo BlockingInfo { get; private set; } = BlockingInfo.NotBlocked;
 
         public FlagInfo FlagInfo { get; private set; } = FlagInfo.NotFlagged;
 
         // Resolution
-        public ResolutionInfo ResolutionInfo { get; private set; } = ResolutionInfo.Unresolved;
+        public ResolutionInfo Resolution { get; private set; } = ResolutionInfo.Unresolved;
 
         // Custom Fields & Labels
         public Dictionary<string, object> CustomFieldValues { get; private set; }
@@ -133,42 +118,26 @@ namespace NouAssist.Tasks.Aggregates
         }
 
         // Properties
-        public bool HasSubtasks => SubtasksCount > 0;
-
-        public bool IsOverdue => ActualDueDate.HasValue &&
-                                 DateTime.UtcNow > ActualDueDate.Value && !IsCompleted;
-
-        public bool IsCompleted => CompletedAt.HasValue;
-        public bool IsCancelled => TaskStatus == WorkflowStatusCategory.Cancelled;
-        public bool IsInProgress => TaskStatus == WorkflowStatusCategory.InProgress;
-        public bool HasStarted => ActualStartDate.HasValue;
+        
         public bool IsDelegated => DelegationInfo != null;
 
         public bool IsWaitingOnDelegation => IsDelegated &&
                                              DelegationInfo?.Status == DelegationStatus.Delegated;
 
-        public TimeSpan? TimeRemaining => ActualDueDate.HasValue && !IsCompleted
-            ? ActualDueDate.Value - DateTime.UtcNow
-            : null;
-
-        public double SubtaskCompletionRate => SubtasksCount == 0
-            ? 0.0
-            : (double)SubtasksDoneCount / SubtasksCount;
-
+        public bool IsCancelled => TaskStatus == WorkflowStatusCategory.Cancelled;
+        public bool IsInProgress => TaskStatus == WorkflowStatusCategory.InProgress;
+        
         // State Transitions
-        public void Start(Guid startedBy)
+        public void Start(ITaskStartPolicy startPolicy, Guid startedBy)
         {
-            if (HasStarted)
+            var policyCheck = startPolicy.Check(this);
+            if (!policyCheck.CanStart)
             {
-                throw new BusinessException("Tasks:AlreadyStarted");
+                throw new BusinessException(policyCheck.FailureReason);
             }
 
-            if (IsBlocked)
-            {
-                throw new BusinessException("Tasks:CannotStartBlockedTask");
-            }
-
-            ActualStartDate = DateTime.UtcNow;
+            var startDate = DateTime.UtcNow;
+            Schedule = Schedule.WithActualDates(startDate, Schedule.PlannedDueDate);
             TaskStatus = WorkflowStatusCategory.InProgress;
 
             AddDistributedEvent(new TaskStartedEto
@@ -176,7 +145,7 @@ namespace NouAssist.Tasks.Aggregates
                 TaskInstanceId = Id,
                 TenantId = TenantId,
                 StartedBy = startedBy,
-                StartedAt = ActualStartDate.Value
+                StartedAt = startDate
             });
         }
 
@@ -208,55 +177,46 @@ namespace NouAssist.Tasks.Aggregates
         public void ResetStatus()
         {
             TaskStatus = WorkflowStatusCategory.InProgress;
-            CompletedAt = null;
-            ResolutionInfo = ResolutionInfo.Unresolved; // Use the default state
+            Schedule = Schedule.MarkIncompleted();
+            Resolution = ResolutionInfo.Unresolved; // Use the default state
         }
 
         public void Complete(Guid completedBy, ITaskCompletionPolicy completionPolicy, string resolution = null,
             string resolutionNote = null)
         {
-            if (IsCompleted)
-            {
-                throw new BusinessException("Tasks:AlreadyCompleted");
-            }
-
-            if (IsCompleted)
-            {
-                throw new BusinessException("Tasks:AlreadyCompleted");
-            }
-
             // Delegate the rule check to the policy
             var policyCheck = completionPolicy.Check(this);
             if (!policyCheck.CanComplete)
             {
                 throw new BusinessException(policyCheck.FailureReason);
             }
-
-            CompletedAt = DateTime.UtcNow;
+            var completedAt = DateTime.UtcNow;
+            Schedule = Schedule.MarkCompleted(completedAt);
+            
             TaskStatus = WorkflowStatusCategory.Done;
             ProgressPercent = 100.0;
-            ResolutionInfo = ResolutionInfo.Create(resolution, resolutionNote);
+            Resolution = ResolutionInfo.Create(resolution, resolutionNote);
             
             AddDistributedEvent(new TaskCompletedEto
             {
                 TaskInstanceId = Id,
                 TenantId = TenantId,
                 CompletedBy = completedBy,
-                CompletedAt = CompletedAt.Value,
+                CompletedAt = completedAt,
                 ActualMinutes = TimeTracking.ActualMinutes,
-                Resolution = ResolutionInfo.Resolution
+                Resolution = Resolution.Resolution
             });
         }
 
         public void Cancel(string reason)
         {
-            if (IsCompleted)
+            if (Schedule.IsCompleted)
             {
                 throw new BusinessException("Tasks:CannotCancelCompleted");
             }
 
             TaskStatus = WorkflowStatusCategory.Cancelled;
-            ResolutionInfo = ResolutionInfo.Create("Cancelled", reason);
+            Resolution = ResolutionInfo.Create("Cancelled", reason);
         }
 
         // Delegation
@@ -530,12 +490,6 @@ namespace NouAssist.Tasks.Aggregates
             
         }
 
-        public void UpdatePriority(double importance, double urgency)
-        {
-            PriorityMatrix = new ImportanceUrgencyMatrix(importance, urgency);
-            
-        }
-
         public void IncrementCommentsCount()
         {
             CommentsCount++;
@@ -544,6 +498,12 @@ namespace NouAssist.Tasks.Aggregates
         public void IncrementAttachmentsCount()
         {
             AttachmentsCount++;
+        }
+
+        public void UpdatePriority(double importance, double urgency)
+        {
+            PriorityMatrix = new ImportanceUrgencyMatrix(importance, urgency);
+            
         }
 
         public void UpdateFlag(bool isFlagged, string flaggedReason)
@@ -565,45 +525,12 @@ namespace NouAssist.Tasks.Aggregates
             DelegationInfo = null;
             AssigneeId = OwnerId;
         }
-
-        public void AddSubTask()
-        {
-            SubtasksCount++;
-        }
-
-        public void RemoveSubTask()
-        {
-            SubtasksCount++;
-        }
-
+        
         public void MoveToProject(Guid projectId, Guid workflowStatusId)
         {
             ProjectId = projectId;
             WorkflowStatusId = workflowStatusId;
         }
-
-        public void UpdateTaskWorkflow(Guid? assigneeId = null, Guid? workflowStatusId = null, Guid? projectId = null,
-            bool? isFlagged = null)
-        {
-            if (assigneeId.HasValue)
-            {
-                AssigneeId = AssigneeId.Value;
-            }
-
-            if (workflowStatusId.HasValue)
-            {
-                WorkflowStatusId = workflowStatusId.Value;
-            }
-
-            if (projectId.HasValue)
-            {
-                ProjectId = projectId.Value;
-            }
-
-            if (isFlagged.HasValue)
-            {
-                IsFlagged = isFlagged.Value;
-            }
-        }
+        
     }
 }

@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Core.Aggregates;
-using NouAssist.Core.Data;
-using NouAssist.Core.Dtos;
-using NouAssist.Core.Enums;
+using NouAssist.SharedKernel.Aggregates;
+using NouAssist.SharedKernel.Data;
+using NouAssist.SharedKernel.Enums;
+using NouAssist.SharedKernel.Tags.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Core.Inbox
+namespace NouAssist.SharedKernel.Inbox
 {
     [Authorize]
     public class InboxItemAppService : ApplicationService, IInboxItemAppService

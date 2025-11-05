@@ -4,6 +4,8 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using NouAssist.Tasks.Aggregates;
 using NouAssist.Tasks.Enums;
+using NouAssist.Tasks.Policies;
+using NouAssist.Tasks.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
@@ -15,9 +17,12 @@ namespace NouAssist.Tasks.Services
     public class TaskInstanceProcessingService : DomainService
     {
         private readonly ILogger<TaskInstanceProcessingService> _logger;
+        private readonly ITaskCompletionPolicy _taskCompleteionPolicy;
 
-        public TaskInstanceProcessingService(ILogger<TaskInstanceProcessingService> logger)
+        public TaskInstanceProcessingService(ITaskCompletionPolicy taskCompleteionPolicy,
+            ILogger<TaskInstanceProcessingService> logger)
         {
+            _taskCompleteionPolicy = taskCompleteionPolicy;
             _logger = logger;
         }
 
@@ -41,7 +46,7 @@ namespace NouAssist.Tasks.Services
                 }
 
                 // Complete the task instance
-                taskInstance.Complete(completedBy, resolution, resolutionNote);
+                taskInstance.Complete(completedBy, _taskCompleteionPolicy, resolution, resolutionNote);
 
                 result.ProcessedTaskInstance = taskInstance;
                 result.IsSuccessful = true;
@@ -85,8 +90,7 @@ namespace NouAssist.Tasks.Services
                 assigneeId);
 
             // Apply default due date from blueprint if not provided
-            instance.PlannedDueDate = plannedDueDate ?? taskBlueprint.DefaultDueDate;
-
+            instance.Schedule = instance.Schedule.WithPlannedDates(due: plannedDueDate ?? taskBlueprint.DefaultDueDate);
             // Initialize step completions from blueprint action steps
             var actionStepIds = taskBlueprint.ActionSteps.Select(s => s.Id).ToList();
             instance.InitializeStepCompletions(actionStepIds);
@@ -135,12 +139,12 @@ namespace NouAssist.Tasks.Services
         {
             var result = new ValidationResult();
 
-            if (taskInstance.IsCompleted)
+            if (taskInstance.Schedule.IsCompleted)
             {
                 result.AddError("Task is already completed");
             }
 
-            if (taskInstance.IsBlocked)
+            if (taskInstance.BlockingInfo.IsBlocked)
             {
                 result.AddError("Cannot complete a blocked task");
             }

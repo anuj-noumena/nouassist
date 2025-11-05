@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Core.Utils;
+using NouAssist.SharedKernel.Utils;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Core.Entities
+namespace NouAssist.SharedKernel.Entities
 {
     public class EntityTag : Entity
     {

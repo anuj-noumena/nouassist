@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Core.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.Tasks.Aggregates;
 using NouAssist.Tasks.Data;
 using NouAssist.Tasks.Managers;

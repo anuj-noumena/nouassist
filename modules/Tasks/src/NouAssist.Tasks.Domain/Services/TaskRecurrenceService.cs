@@ -85,8 +85,8 @@ namespace NouAssist.Tasks.Services
             // Check if an instance already exists for this date
             var existingForDate = existingInstances.Any(ti =>
                 ti.TaskId == taskBlueprint.Id &&
-                ti.PlannedStartDate.HasValue &&
-                ti.PlannedStartDate.Value.Date == checkDate.Date);
+                ti.Schedule.PlannedStartDate.HasValue &&
+                ti.Schedule.PlannedStartDate.Value.Date == checkDate.Date);
 
             if (existingForDate)
             {

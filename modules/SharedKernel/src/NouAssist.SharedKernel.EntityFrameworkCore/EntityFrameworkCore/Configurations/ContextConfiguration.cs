@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Core.Aggregates;
+using NouAssist.SharedKernel.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Core.EntityFrameworkCore.Configurations
+namespace NouAssist.SharedKernel.EntityFrameworkCore.Configurations
 {
     public class ContextConfiguration : IEntityTypeConfiguration<Context>
     {

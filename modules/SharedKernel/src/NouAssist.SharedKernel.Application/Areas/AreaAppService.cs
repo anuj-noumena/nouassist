@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Core.Aggregates;
-using NouAssist.Core.Data;
-using NouAssist.Core.Dtos;
+using NouAssist.SharedKernel.Aggregates;
+using NouAssist.SharedKernel.Data;
+using NouAssist.SharedKernel.Tags.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Core.Areas
+namespace NouAssist.SharedKernel.Areas
 {
     [Authorize]
     public class AreaAppService : ApplicationService, IAreaAppService

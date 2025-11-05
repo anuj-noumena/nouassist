@@ -1,4 +1,4 @@
-namespace NouAssist.Core.Enums
+namespace NouAssist.SharedKernel.Enums
 {
     public enum GoalStatus : byte
     {

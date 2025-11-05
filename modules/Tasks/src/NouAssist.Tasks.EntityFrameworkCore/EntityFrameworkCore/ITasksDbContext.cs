@@ -3,7 +3,7 @@ using NouAssist.Tasks.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.EntityFrameworkCore.Tasks.EntityFrameworkCore
+namespace NouAssist.Tasks.EntityFrameworkCore
 {
     [ConnectionStringName(TasksDbProperties.ConnectionStringName)]
     public interface ITasksDbContext : IEfCoreDbContext

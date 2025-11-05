@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Core.Aggregates;
-using NouAssist.Core.Data;
+using NouAssist.SharedKernel.Aggregates;
+using NouAssist.SharedKernel.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Core.EntityFrameworkCore.Repositories
+namespace NouAssist.SharedKernel.EntityFrameworkCore.Repositories
 {
     public class EfCoreAreaRepository 
         : EfCoreRepository<ICoreDbContext, Area, Guid>, IAreaRepository

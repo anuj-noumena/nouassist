@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Core.Aggregates
+namespace NouAssist.SharedKernel.Aggregates
 {
     public class LogActivity : Entity<Guid>, IMultiTenant
     {

@@ -1,11 +1,11 @@
 using System;
-using NouAssist.Core.Enums;
-using NouAssist.Core.Events;
+using NouAssist.SharedKernel.Enums;
+using NouAssist.SharedKernel.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Core.Aggregates
+namespace NouAssist.SharedKernel.Aggregates
 {
     public class InboxItem : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

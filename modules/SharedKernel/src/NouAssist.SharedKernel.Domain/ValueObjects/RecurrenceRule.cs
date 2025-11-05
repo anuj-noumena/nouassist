@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Core.ValueObjects
+namespace NouAssist.SharedKernel.ValueObjects
 {
     public enum RecurrenceFrequency
     {

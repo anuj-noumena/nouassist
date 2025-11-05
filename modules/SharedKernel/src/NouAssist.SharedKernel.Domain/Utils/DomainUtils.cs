@@ -2,7 +2,7 @@ using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace NouAssist.Core.Utils
+namespace NouAssist.SharedKernel.Utils
 {
     public static class DomainUtils
     {

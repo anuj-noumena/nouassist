@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Core.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.Tasks.Aggregates;
 using NouAssist.Tasks.Enums;
 using Volo.Abp.Specifications;
@@ -10,7 +10,7 @@ namespace NouAssist.Tasks.Specifications
     public class ActiveTaskInstancesSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => !ti.IsDeleted && !ti.IsCompleted && !ti.IsCancelled;
+            ti => !ti.IsDeleted && !ti.Schedule.IsCompleted && !ti.IsCancelled;
     }
 
     public class OverdueTaskInstancesSpecification : BaseSpecification<TaskInstance>
@@ -23,9 +23,9 @@ namespace NouAssist.Tasks.Specifications
         }
 
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.ActualDueDate.HasValue &&
-                  ti.ActualDueDate.Value < _now &&
-                  !ti.IsCompleted &&
+            ti => ti.Schedule.ActualDueDate.HasValue &&
+                  ti.Schedule.ActualDueDate.Value < _now &&
+                  !ti.Schedule.IsCompleted &&
                   !ti.IsCancelled;
     }
 
@@ -39,26 +39,26 @@ namespace NouAssist.Tasks.Specifications
         }
 
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.AssigneeId == _assigneeId && !ti.IsCompleted && !ti.IsDeleted;
+            ti => ti.AssigneeId == _assigneeId && !ti.Schedule.IsCompleted && !ti.IsDeleted;
     }
 
     public class HighPriorityTaskInstancesSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
             ti => ti.PriorityMatrix.Quadrant == EisenhowerQuadrant.Q1DoFirst &&
-                  !ti.IsCompleted;
+                  !ti.Schedule.IsCompleted;
     }
 
     public class BlockedTaskInstancesSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.IsBlocked && !ti.IsCompleted;
+            ti => ti.BlockingInfo.IsBlocked && !ti.Schedule.IsCompleted;
     }
 
     public class NextActionTasksSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.IsNextAction && !ti.IsCompleted && !ti.IsBlocked;
+            ti => ti.IsNextAction && !ti.Schedule.IsCompleted && !ti.BlockingInfo.IsBlocked;
     }
 
     public class DelegatedTasksSpecification : BaseSpecification<TaskInstance>
@@ -88,9 +88,9 @@ namespace NouAssist.Tasks.Specifications
         }
 
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.IsCompleted &&
-                  ti.CompletedAt.HasValue &&
-                  ti.CompletedAt.Value >= _startDate &&
-                  ti.CompletedAt.Value <= _endDate;
+            ti => ti.Schedule.IsCompleted &&
+                  ti.Schedule.CompletedAt.HasValue &&
+                  ti.Schedule.CompletedAt.Value >= _startDate &&
+                  ti.Schedule.CompletedAt.Value <= _endDate;
     }
 }

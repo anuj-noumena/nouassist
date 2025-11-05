@@ -55,8 +55,8 @@ namespace NouAssist.Tasks.Managers
                 title,
                 CurrentTenant.Id,
                 projectId,
-                defaultImportance ?? NouAssistConsts.DefaultImportance,
-                defaultUrgency ?? NouAssistConsts.DefaultUrgency);
+                defaultImportance ?? TasksConsts.DefaultImportance,
+                defaultUrgency ?? TasksConsts.DefaultUrgency);
 
             task.Description = description;
 

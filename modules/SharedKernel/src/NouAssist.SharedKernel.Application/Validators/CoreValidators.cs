@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.Core.Dtos;
+using NouAssist.SharedKernel.Tags.Dtos;
 
-namespace NouAssist.Core.Validators
+namespace NouAssist.SharedKernel.Validators
 {
     public class CreateTagDtoValidator : AbstractValidator<CreateTagDto>
     {

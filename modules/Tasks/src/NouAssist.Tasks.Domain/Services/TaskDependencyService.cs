@@ -35,12 +35,12 @@ namespace NouAssist.Tasks.Services
                 switch (dependency.DependencyType)
                 {
                     case DependencyType.FinishToStart:
-                        if (!dependentInstance.IsCompleted)
+                        if (!dependentInstance.Schedule.IsCompleted)
                             return false;
                         break;
 
                     case DependencyType.StartToStart:
-                        if (!dependentInstance.HasStarted)
+                        if (!dependentInstance.Schedule.HasStarted)
                             return false;
                         break;
 
@@ -85,13 +85,13 @@ namespace NouAssist.Tasks.Services
                 switch (dependency.DependencyType)
                 {
                     case DependencyType.FinishToStart:
-                        constraintDate = dependentInstance.ActualDueDate ?? 
-                                       dependentInstance.PlannedDueDate;
+                        constraintDate = dependentInstance.Schedule.ActualDueDate ?? 
+                                         dependentInstance.Schedule.PlannedDueDate;
                         break;
 
                     case DependencyType.StartToStart:
-                        constraintDate = dependentInstance.ActualStartDate ?? 
-                                       dependentInstance.PlannedStartDate;
+                        constraintDate = dependentInstance.Schedule.ActualStartDate ?? 
+                                         dependentInstance.Schedule.PlannedStartDate;
                         break;
                 }
 

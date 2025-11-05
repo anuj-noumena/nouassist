@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Core.Aggregates;
-using NouAssist.Core.Dtos;
+using NouAssist.SharedKernel.Aggregates;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Core.Tags
+namespace NouAssist.SharedKernel.Tags
 {
     [Authorize]
     public class TagCategoryAppService : ApplicationService, ITagCategoryAppService

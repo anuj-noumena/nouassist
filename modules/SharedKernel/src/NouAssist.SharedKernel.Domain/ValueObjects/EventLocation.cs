@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Core.ValueObjects
+namespace NouAssist.SharedKernel.ValueObjects
 {
     public class EventLocation : ValueObject
     {

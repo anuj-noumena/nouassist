@@ -1,6 +1,6 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Core.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.Tasks.Aggregates;
 using Volo.Abp.Specifications;
 

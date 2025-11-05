@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.Tasks.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.EntityFrameworkCore.Tasks.EntityFrameworkCore.Configurations
+namespace NouAssist.Tasks.EntityFrameworkCore.Configurations
 {
     public class TaskTypeAggregateConfiguration : IEntityTypeConfiguration<TaskType>
     {

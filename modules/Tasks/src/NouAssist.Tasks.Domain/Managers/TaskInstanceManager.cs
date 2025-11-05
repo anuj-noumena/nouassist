@@ -7,6 +7,7 @@ using NouAssist.Tasks.Aggregates;
 using NouAssist.Tasks.Data;
 using NouAssist.Tasks.Entities;
 using NouAssist.Tasks.Exceptions;
+using NouAssist.Tasks.Policies;
 using NouAssist.Tasks.Services;
 using NouAssist.Tasks.ValueObjects;
 using Volo.Abp.Domain.Services;
@@ -22,6 +23,7 @@ namespace NouAssist.Tasks.Managers
         private readonly ITaskInstanceRepository _taskInstanceRepository;
         private readonly TaskInstanceProcessingService _processingService;
         private readonly TaskDependencyService _dependencyService;
+        private readonly ITaskStartPolicy _taskStartPolicy;
         private readonly ILogger<TaskInstanceManager> _logger;
 
         public TaskInstanceManager(
@@ -29,12 +31,14 @@ namespace NouAssist.Tasks.Managers
             ITaskInstanceRepository taskInstanceRepository,
             TaskInstanceProcessingService processingService,
             TaskDependencyService dependencyService,
+            ITaskStartPolicy taskStartPolicy,
             ILogger<TaskInstanceManager> logger)
         {
             _taskRepository = taskRepository;
             _taskInstanceRepository = taskInstanceRepository;
             _processingService = processingService;
             _dependencyService = dependencyService;
+            _taskStartPolicy = taskStartPolicy;
             _logger = logger;
         }
 
@@ -83,7 +87,7 @@ namespace NouAssist.Tasks.Managers
                     "Cannot start task due to unmet dependencies.");
             }
 
-            instance.Start(startedBy);
+            instance.Start(_taskStartPolicy, startedBy);
             await _taskInstanceRepository.UpdateAsync(instance);
 
             return instance;

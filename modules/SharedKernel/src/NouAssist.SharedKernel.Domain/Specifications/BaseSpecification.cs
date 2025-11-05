@@ -2,7 +2,7 @@ using System;
 using System.Linq.Expressions;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Core.Specifications;
+namespace NouAssist.SharedKernel.Specifications;
 
 public class BaseSpecification<T> : Specification<T>
 {

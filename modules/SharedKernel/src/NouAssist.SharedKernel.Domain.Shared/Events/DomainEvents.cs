@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Core.Events
+namespace NouAssist.SharedKernel.Events
 {
     [EventName("NouAssist.Goals.Achieved")]
     public class GoalAchievedEto : IMultiTenant

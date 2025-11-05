@@ -7,6 +7,11 @@ public class DefaultCompletionPolicy : ITaskCompletionPolicy
 {
     public (bool CanComplete, string FailureReason) Check(TaskInstance taskInstance)
     {
+        if (taskInstance.Schedule.IsCompleted)
+        {
+            return (false, "Tasks:AlreadyCompleted");
+        }
+
         if (taskInstance.StepCompletions.Any(sc => !sc.IsDone))
         {
             return (false, "Tasks:RequiredStepsNotCompleted");

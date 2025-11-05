@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Core.Aggregates;
-using NouAssist.Core.Entities;
+using NouAssist.SharedKernel.Aggregates;
+using NouAssist.SharedKernel.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Core.EntityFrameworkCore
+namespace NouAssist.SharedKernel.EntityFrameworkCore
 {
     [ConnectionStringName(CoreDbProperties.ConnectionStringName)]
     public class CoreDbContext : AbpDbContext<CoreDbContext>, ICoreDbContext

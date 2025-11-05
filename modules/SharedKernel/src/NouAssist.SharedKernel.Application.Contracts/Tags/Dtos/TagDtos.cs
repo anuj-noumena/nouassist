@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Core.Dtos
+namespace NouAssist.SharedKernel.Tags.Dtos
 {
     public class TagDto : FullAuditedEntityDto<Guid>
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NouAssist.Core.Aggregates;
+namespace NouAssist.SharedKernel.Aggregates;
 
 /// <summary>
 /// Aggregate for calculating user productivity metrics across all domains

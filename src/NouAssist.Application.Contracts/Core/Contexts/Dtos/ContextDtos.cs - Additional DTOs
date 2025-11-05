@@ -1,0 +1,12 @@
+namespace NouAssist.Core.Dtos
+{
+    public class UpdateContextDto
+    {
+        public string? Title { get; set; }
+        public string? Notes { get; set; }
+        public string? Icon { get; set; }
+        public string? Color { get; set; }
+        public string? Location { get; set; }
+        public int? EnergyLevel { get; set; }
+    }
+}

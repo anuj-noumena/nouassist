@@ -1,0 +1,28 @@
+namespace NouAssist.Core.Dtos
+{
+    public class UpdateTagDto
+    {
+        public string? Title { get; set; }
+        public string? Color { get; set; }
+        public Guid? CategoryId { get; set; }
+    }
+
+    public class TagCategoryDto : FullAuditedEntityDto<Guid>
+    {
+        public Guid OwnerId { get; set; }
+        public string Name { get; set; }
+        public string? Color { get; set; }
+    }
+
+    public class CreateTagCategoryDto
+    {
+        public string Name { get; set; }
+        public string? Color { get; set; }
+    }
+
+    public class UpdateTagCategoryDto
+    {
+        public string? Name { get; set; }
+        public string? Color { get; set; }
+    }
+}

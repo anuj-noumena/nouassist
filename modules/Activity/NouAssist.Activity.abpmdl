@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Activity.Domain": {
+      "path": "src/NouAssist.Activity.Domain/NouAssist.Activity.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Activity.Application.Contracts": {
+      "path": "src/NouAssist.Activity.Application.Contracts/NouAssist.Activity.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Activity.Application": {
+      "path": "src/NouAssist.Activity.Application/NouAssist.Activity.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Activity.EntityFrameworkCore": {
+      "path": "src/NouAssist.Activity.EntityFrameworkCore/NouAssist.Activity.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Activity.HttpApi": {
+      "path": "src/NouAssist.Activity.HttpApi/NouAssist.Activity.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Activity.HttpApi.Client": {
+      "path": "src/NouAssist.Activity.HttpApi.Client/NouAssist.Activity.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Activity.TestBase": {
+      "path": "test/NouAssist.Activity.TestBase/NouAssist.Activity.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Activity.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Activity.EntityFrameworkCore.Tests/NouAssist.Activity.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Activity.Domain.Tests": {
+      "path": "test/NouAssist.Activity.Domain.Tests/NouAssist.Activity.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Activity.Application.Tests": {
+      "path": "test/NouAssist.Activity.Application.Tests/NouAssist.Activity.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Activity.Domain.Shared": {
+      "path": "src/NouAssist.Activity.Domain.Shared/NouAssist.Activity.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Activity.Installer": {
+       "path": "src/NouAssist.Activity.Installer/NouAssist.Activity.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

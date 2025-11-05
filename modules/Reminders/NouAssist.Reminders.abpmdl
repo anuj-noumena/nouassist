@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Reminders.Domain": {
+      "path": "src/NouAssist.Reminders.Domain/NouAssist.Reminders.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reminders.Application.Contracts": {
+      "path": "src/NouAssist.Reminders.Application.Contracts/NouAssist.Reminders.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reminders.Application": {
+      "path": "src/NouAssist.Reminders.Application/NouAssist.Reminders.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reminders.EntityFrameworkCore": {
+      "path": "src/NouAssist.Reminders.EntityFrameworkCore/NouAssist.Reminders.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reminders.HttpApi": {
+      "path": "src/NouAssist.Reminders.HttpApi/NouAssist.Reminders.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reminders.HttpApi.Client": {
+      "path": "src/NouAssist.Reminders.HttpApi.Client/NouAssist.Reminders.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reminders.TestBase": {
+      "path": "test/NouAssist.Reminders.TestBase/NouAssist.Reminders.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reminders.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Reminders.EntityFrameworkCore.Tests/NouAssist.Reminders.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reminders.Domain.Tests": {
+      "path": "test/NouAssist.Reminders.Domain.Tests/NouAssist.Reminders.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reminders.Application.Tests": {
+      "path": "test/NouAssist.Reminders.Application.Tests/NouAssist.Reminders.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reminders.Domain.Shared": {
+      "path": "src/NouAssist.Reminders.Domain.Shared/NouAssist.Reminders.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reminders.Installer": {
+       "path": "src/NouAssist.Reminders.Installer/NouAssist.Reminders.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

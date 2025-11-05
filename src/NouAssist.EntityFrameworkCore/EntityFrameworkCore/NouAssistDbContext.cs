@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Tasks.Aggregates;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -55,10 +54,6 @@ public class NouAssistDbContext :
     // Tenant Management
     public DbSet<Tenant> Tenants { get; set; }
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
-
-    public DbSet<Task> Tasks { get; set; }
-    public DbSet<TaskInstance> TaskInstances { get; set; }
-    public DbSet<TaskType> TaskTypes { get; set; }
     
     #endregion
 

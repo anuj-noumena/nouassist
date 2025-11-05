@@ -1,13 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using NouAssist.Activity.BackgroundWorkers;
 using NouAssist.Localization;
 using NouAssist.MultiTenancy;
-using NouAssist.Notifications.BackgroundWorkers;
-using NouAssist.Reminders.BackgroundWorkers;
-using NouAssist.Resources.BackgroundWorkers;
-using NouAssist.Search.BackgroundWorkers;
 using Volo.Abp;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;
@@ -53,11 +48,11 @@ public class NouAssistDomainModule : AbpModule
         {
             options.IsEnabled = MultiTenancyConsts.IsEnabled;
         });
-        var configuration = context.Services.GetConfiguration();
-        context.Services.AddAbpHangfire(hangfire =>
-        {
-            hangfire.UsePostgreSqlStorage(configuration.GetConnectionString("Hangfire"));
-        });
+        // var configuration = context.Services.GetConfiguration();
+        // context.Services.AddAbpHangfire(hangfire =>
+        // {
+        //     hangfire.UsePostgreSqlStorage(configuration.GetConnectionString("Hangfire"));
+        // });
 
 
 #if DEBUG
@@ -67,13 +62,13 @@ public class NouAssistDomainModule : AbpModule
     
     public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
     {
-        await context.AddBackgroundWorkerAsync<AuditLogArchiveWorker>();
-        await context.AddBackgroundWorkerAsync<ExpiredNotificationCleanupWorker>();
-        await context.AddBackgroundWorkerAsync<NotificationRetryWorker>();
-        await context.AddBackgroundWorkerAsync<ReminderProcessingWorker>();
-        await context.AddBackgroundWorkerAsync<InventoryMaintenanceReminderWorker>();
-        await context.AddBackgroundWorkerAsync<SearchIndexOptimizationWorker>();
-        await context.AddBackgroundWorkerAsync<SearchAnalyticsAggregationWorker>();
+        // await context.AddBackgroundWorkerAsync<AuditLogArchiveWorker>();
+        // await context.AddBackgroundWorkerAsync<ExpiredNotificationCleanupWorker>();
+        // await context.AddBackgroundWorkerAsync<NotificationRetryWorker>();
+        // await context.AddBackgroundWorkerAsync<ReminderProcessingWorker>();
+        // await context.AddBackgroundWorkerAsync<InventoryMaintenanceReminderWorker>();
+        // await context.AddBackgroundWorkerAsync<SearchIndexOptimizationWorker>();
+        // await context.AddBackgroundWorkerAsync<SearchAnalyticsAggregationWorker>();
     }
 
 }

@@ -1,7 +1,5 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.EntityFrameworkCore.Tasks.EntityFrameworkCore.Repositories;
-using NouAssist.Tasks.Aggregates;
 using Volo.Abp.Uow;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -46,10 +44,6 @@ public class NouAssistEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<NouAssistDbContext>(options =>
         {
-            options.AddRepository<Task, EfCoreTaskRepository>();
-            options.AddRepository<TaskInstance, EfCoreTaskInstanceRepository>();
-            options.AddRepository<TaskType, EfCoreTaskTypeRepository>();
-
             // Enable default repositories for aggregate roots
             options.AddDefaultRepositories(includeAllEntities: false);
                 /* Remove "includeAllEntities: true" to create

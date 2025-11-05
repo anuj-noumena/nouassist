@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Users.Domain": {
+      "path": "src/NouAssist.Users.Domain/NouAssist.Users.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Users.Application.Contracts": {
+      "path": "src/NouAssist.Users.Application.Contracts/NouAssist.Users.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Users.Application": {
+      "path": "src/NouAssist.Users.Application/NouAssist.Users.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Users.EntityFrameworkCore": {
+      "path": "src/NouAssist.Users.EntityFrameworkCore/NouAssist.Users.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Users.HttpApi": {
+      "path": "src/NouAssist.Users.HttpApi/NouAssist.Users.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Users.HttpApi.Client": {
+      "path": "src/NouAssist.Users.HttpApi.Client/NouAssist.Users.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Users.TestBase": {
+      "path": "test/NouAssist.Users.TestBase/NouAssist.Users.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Users.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Users.EntityFrameworkCore.Tests/NouAssist.Users.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Users.Domain.Tests": {
+      "path": "test/NouAssist.Users.Domain.Tests/NouAssist.Users.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Users.Application.Tests": {
+      "path": "test/NouAssist.Users.Application.Tests/NouAssist.Users.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Users.Domain.Shared": {
+      "path": "src/NouAssist.Users.Domain.Shared/NouAssist.Users.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Users.Installer": {
+       "path": "src/NouAssist.Users.Installer/NouAssist.Users.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

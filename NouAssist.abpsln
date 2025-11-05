@@ -10,6 +10,18 @@
   "modules": {
     "NouAssist": {
       "path": "NouAssist.abpmdl"
+    },
+    "NouAssist.Search": {
+      "path": "modules/Search/NouAssist.Search.abpmdl"
+    },
+    "NouAssist.Team": {
+      "path": "modules/Team/NouAssist.Team.abpmdl"
+    },
+    "NouAssist.Users": {
+      "path": "modules/Users/NouAssist.Users.abpmdl"
+    },
+    "NouAssist.Workflow": {
+      "path": "modules/Workflow/NouAssist.Workflow.abpmdl"
     }
   },
   "runProfiles": {
@@ -19,9 +31,7 @@
   },
   "options": {
     "httpRequests": {
-      "ignoredUrls": [
-      
-      ]
+      "ignoredUrls": []
     }
   },
   "creatingStudioConfiguration": {
@@ -44,10 +54,30 @@
     "theme": "basic",
     "themeStyle": "",
     "themeMenuPlacement": "",
-    "mobileFramework": "none",
     "publicWebsite": "false",
     "socialLogin": "true",
-    "selectedLanguages": ["English", "Arabic", "Chinese (Simplified)", "Chinese (Traditional)", "Czech", "English (United Kingdom)", "Finnish", "French", "German (Germany)", "Hindi ", "Hungarian", "Icelandic", "Italian", "Portuguese (Brazil)", "Romanian (Romania)", "Russian", "Slovak", "Spanish", "Swedish", "Turkish", ],
+    "selectedLanguages": [
+      "English",
+      "Arabic",
+      "Chinese (Simplified)",
+      "Chinese (Traditional)",
+      "Czech",
+      "English (United Kingdom)",
+      "Finnish",
+      "French",
+      "German (Germany)",
+      "Hindi ",
+      "Hungarian",
+      "Icelandic",
+      "Italian",
+      "Portuguese (Brazil)",
+      "Romanian (Romania)",
+      "Russian",
+      "Slovak",
+      "Spanish",
+      "Swedish",
+      "Turkish"
+    ],
     "defaultLanguage": "English",
     "createCommand": "abp new NouAssist -t app --ui-framework mvc --database-provider ef --database-management-system postgresql --theme basic --without-cms-kit --dont-run-bundling -no-file-management"
   }

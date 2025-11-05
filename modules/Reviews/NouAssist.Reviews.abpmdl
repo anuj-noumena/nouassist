@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Reviews.Domain": {
+      "path": "src/NouAssist.Reviews.Domain/NouAssist.Reviews.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reviews.Application.Contracts": {
+      "path": "src/NouAssist.Reviews.Application.Contracts/NouAssist.Reviews.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reviews.Application": {
+      "path": "src/NouAssist.Reviews.Application/NouAssist.Reviews.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reviews.EntityFrameworkCore": {
+      "path": "src/NouAssist.Reviews.EntityFrameworkCore/NouAssist.Reviews.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reviews.HttpApi": {
+      "path": "src/NouAssist.Reviews.HttpApi/NouAssist.Reviews.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reviews.HttpApi.Client": {
+      "path": "src/NouAssist.Reviews.HttpApi.Client/NouAssist.Reviews.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reviews.TestBase": {
+      "path": "test/NouAssist.Reviews.TestBase/NouAssist.Reviews.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reviews.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Reviews.EntityFrameworkCore.Tests/NouAssist.Reviews.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reviews.Domain.Tests": {
+      "path": "test/NouAssist.Reviews.Domain.Tests/NouAssist.Reviews.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reviews.Application.Tests": {
+      "path": "test/NouAssist.Reviews.Application.Tests/NouAssist.Reviews.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Reviews.Domain.Shared": {
+      "path": "src/NouAssist.Reviews.Domain.Shared/NouAssist.Reviews.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Reviews.Installer": {
+       "path": "src/NouAssist.Reviews.Installer/NouAssist.Reviews.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

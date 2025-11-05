@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Comments.Domain": {
+      "path": "src/NouAssist.Comments.Domain/NouAssist.Comments.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Comments.Application.Contracts": {
+      "path": "src/NouAssist.Comments.Application.Contracts/NouAssist.Comments.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Comments.Application": {
+      "path": "src/NouAssist.Comments.Application/NouAssist.Comments.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Comments.EntityFrameworkCore": {
+      "path": "src/NouAssist.Comments.EntityFrameworkCore/NouAssist.Comments.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Comments.HttpApi": {
+      "path": "src/NouAssist.Comments.HttpApi/NouAssist.Comments.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Comments.HttpApi.Client": {
+      "path": "src/NouAssist.Comments.HttpApi.Client/NouAssist.Comments.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Comments.TestBase": {
+      "path": "test/NouAssist.Comments.TestBase/NouAssist.Comments.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Comments.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Comments.EntityFrameworkCore.Tests/NouAssist.Comments.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Comments.Domain.Tests": {
+      "path": "test/NouAssist.Comments.Domain.Tests/NouAssist.Comments.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Comments.Application.Tests": {
+      "path": "test/NouAssist.Comments.Application.Tests/NouAssist.Comments.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Comments.Domain.Shared": {
+      "path": "src/NouAssist.Comments.Domain.Shared/NouAssist.Comments.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Comments.Installer": {
+       "path": "src/NouAssist.Comments.Installer/NouAssist.Comments.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

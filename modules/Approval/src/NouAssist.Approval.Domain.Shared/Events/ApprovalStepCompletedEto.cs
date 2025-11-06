@@ -16,16 +16,4 @@ namespace NouAssist.Approval.Events
         public bool IsLastStep { get; set; }
         public List<Guid> DecisionMakers { get; set; }
     }
-
-    [EventName("NouAssist.Approval.RequestCreated")]
-    public class ApprovalRequestCreatedEto : IMultiTenant
-    {
-        public Guid RequestId { get; set; }
-        public Guid WorkflowId { get; set; }
-        public string EntityType { get; set; }
-        public Guid EntityId { get; set; }
-        public Guid RequestedBy { get; set; }
-        public Guid? TenantId { get; set; }
-        public DateTime CreatedAt { get; set; }
-    }
 }

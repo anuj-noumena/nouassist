@@ -9,15 +9,12 @@ using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Microsoft.Extensions.Logging;
 using NouAssist.Approval.Events;
+using Volo.Abp.EventBus.Distributed;
 
 namespace NouAssist.Approval.Services
 {
-    public class ApprovalWorkflowEngine : DomainService
+    public class ApprovalWorkflowEngine(IDistributedEventBus distributedEventBus) : DomainService
     {
-        public ApprovalWorkflowEngine()
-        {
-        }
-
         public WorkflowExecutionResult ProcessDecision(
             ApprovalRequest request,
             ApprovalWorkflow workflow,
@@ -83,7 +80,7 @@ namespace NouAssist.Approval.Services
                 result.IsApproved = true;
                 result.Message = "Request approved";
 
-                request.AddDistributedEvent(new ApprovalWorkflowCompletedEto
+                distributedEventBus.PublishAsync(new ApprovalWorkflowCompletedEto
                 {
                     RequestId = request.Id,
                     WorkflowId = workflow.Id,

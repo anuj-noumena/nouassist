@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.Approval.Aggregates;
+using NouAssist.Approval.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.Approval.EntityFrameworkCore.Configurations

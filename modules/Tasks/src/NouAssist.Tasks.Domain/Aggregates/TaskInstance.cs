@@ -20,6 +20,7 @@ namespace NouAssist.Tasks.Aggregates
     {
         public Guid TaskId { get; private set; }
         public Guid ProjectId { get; private set; }
+        public Guid WorkflowId { get; private set; }
 
         public Guid OwnerId { get; private set; }
         public Guid? AssigneeId { get; private set; }
@@ -90,6 +91,7 @@ namespace NouAssist.Tasks.Aggregates
             Guid id,
             Guid taskId,
             Guid projectId,
+            Guid workflowId,
             Guid workflowStatusId,
             Guid ownerId,
             double importance,
@@ -99,14 +101,13 @@ namespace NouAssist.Tasks.Aggregates
         {
             TaskId = Check.NotNull(taskId, nameof(taskId));
             ProjectId = Check.NotNull(projectId, nameof(projectId));
-            WorkflowStatusId = Check.NotNull(workflowStatusId, nameof(workflowStatusId));
+            WorkflowId = Check.NotNull(workflowId, nameof(workflowId));
             OwnerId = Check.NotNull(ownerId, nameof(ownerId));
             AssigneeId = assigneeId;
             TenantId = tenantId;
 
             PriorityMatrix = new ImportanceUrgencyMatrix(importance, urgency);
-            TaskStatus = WorkflowStatusCategory.Todo;
-            ProgressPercent = 0.0;
+            Progress = TaskProgress.NotStarted(workflowStatusId);
             CustomFieldValues = new Dictionary<string, object>();
 
             // Add creation history entry

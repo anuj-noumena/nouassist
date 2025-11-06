@@ -5,18 +5,28 @@ using System.Threading.Tasks;
 using NouAssist.Workflow.Aggregates;
 using NouAssist.Workflow.Entities;
 using NouAssist.Workflow.Events;
+using NouAssist.Workflow.Services.Conditions;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.Workflow.Services
 {
+    /// <summary>
+    /// Service for managing workflow transitions with condition evaluation.
+    /// Follows Single Responsibility Principle - handles transition coordination
+    /// Follows Dependency Inversion Principle - depends on abstractions
+    /// </summary>
     public class WorkflowTransitionService : DomainService
     {
         private readonly WorkflowActionExecutorService _actionExecutor;
+        private readonly WorkflowConditionEvaluationService _conditionEvaluationService;
 
-        public WorkflowTransitionService(WorkflowActionExecutorService actionExecutor)
+        public WorkflowTransitionService(
+            WorkflowActionExecutorService actionExecutor,
+            WorkflowConditionEvaluationService conditionEvaluationService)
         {
             _actionExecutor = actionExecutor;
+            _conditionEvaluationService = conditionEvaluationService;
         }
 
         public async Task<TransitionExecutionResult> ExecuteTransitionAsync(
@@ -25,12 +35,14 @@ namespace NouAssist.Workflow.Services
             WorkflowTransition transition,
             Guid currentUserId,
             List<string> userRoles,
+            Dictionary<string, object> taskCustomFields = null,
             string comment = null)
         {
             var result = new TransitionExecutionResult { IsSuccessful = true };
 
-            // Validate transition
-            var validationResult = ValidateTransition(workflow, transition, currentUserId, userRoles, comment);
+            // Validate transition (includes condition evaluation)
+            var validationResult = await ValidateTransitionAsync(
+                workflow, transition, currentUserId, userRoles, taskCustomFields, comment);
             if (!validationResult.IsValid)
             {
                 result.IsSuccessful = false;
@@ -75,11 +87,12 @@ namespace NouAssist.Workflow.Services
             return result;
         }
 
-        public TransitionValidationResult ValidateTransition(
+        public async Task<TransitionValidationResult> ValidateTransitionAsync(
             Aggregates.Workflow workflow,
             WorkflowTransition transition,
             Guid currentUserId,
             List<string> userRoles,
+            Dictionary<string, object> taskCustomFields = null,
             string comment = null)
         {
             var result = new TransitionValidationResult { IsValid = true };
@@ -107,6 +120,26 @@ namespace NouAssist.Workflow.Services
             {
                 result.IsValid = false;
                 result.Errors.Add("Target status does not exist.");
+            }
+
+            // Evaluate transition conditions
+            if (transition.HasConditions)
+            {
+                var conditionContext = new WorkflowConditionContext
+                {
+                    CurrentUserId = currentUserId,
+                    UserRoles = userRoles,
+                    CustomFieldValues = taskCustomFields ?? new Dictionary<string, object>()
+                };
+
+                var conditionResult = await _conditionEvaluationService.EvaluateAllAsync(
+                    transition.Conditions, conditionContext);
+
+                if (!conditionResult.AllSatisfied)
+                {
+                    result.IsValid = false;
+                    result.Errors.AddRange(conditionResult.FailureReasons);
+                }
             }
 
             return result;

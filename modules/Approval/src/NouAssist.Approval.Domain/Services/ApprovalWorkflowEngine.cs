@@ -91,7 +91,9 @@ namespace NouAssist.Approval.Services
                     IsApproved = true,
                     CompletedAt = Clock.Now,
                     TotalSteps = workflow.GetTotalSteps(),
-                    CompletedSteps = request.CompletedStepIds.Count
+                    CompletedSteps = request.CompletedStepIds.Count,
+                    EntityType = request.EntityType,
+                    EntityId = request.EntityId
                 });
             }
 

@@ -16,7 +16,8 @@ public class WorkflowDbContext : AbpDbContext<WorkflowDbContext>, IWorkflowDbCon
     public DbSet<WorkflowTransition> WorkflowTransitions { get; set; }
     public DbSet<WorkflowAction> WorkflowActions { get; set; }
     public DbSet<WorkflowSchemeMapping> WorkflowSchemeMappings { get; set; }
-
+    public DbSet<TransitionPermissionPolicy> TransitionPermissionPolicies { get; set; }
+    
     public WorkflowDbContext(DbContextOptions<WorkflowDbContext> options)
         : base(options)
     {

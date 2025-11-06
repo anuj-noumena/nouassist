@@ -26,16 +26,21 @@ namespace NouAssist.Tasks.Services
         private readonly WorkflowTransitionService _workflowTransitionService;
         private readonly IDistributedEventBus _distributedEventBus;
 
+        private readonly ITransitionPermissionPolicyRepository _permissionPolicyRepository;
+
+
         public TaskTransitionOrchestrator(
             ITaskInstanceRepository taskInstanceRepository,
             IWorkflowRepository workflowRepository,
             WorkflowTransitionService workflowTransitionService,
-            IDistributedEventBus distributedEventBus)
+            IDistributedEventBus distributedEventBus,
+            ITransitionPermissionPolicyRepository permissionPolicyRepository)
         {
             _taskInstanceRepository = taskInstanceRepository;
             _workflowRepository = workflowRepository;
             _workflowTransitionService = workflowTransitionService;
             _distributedEventBus = distributedEventBus;
+            _permissionPolicyRepository = permissionPolicyRepository;
         }
 
         /// <summary>
@@ -86,6 +91,7 @@ namespace NouAssist.Tasks.Services
                     transition,
                     currentUserId,
                     userRoles,
+                    taskInstance.ProjectId, // Pass project context for permission checking
                     taskInstance.CustomFieldValues,
                     comment);
 
@@ -151,18 +157,29 @@ namespace NouAssist.Tasks.Services
 
             foreach (var transition in transitions)
             {
-                // Check user permissions
-                if (transition.HasRestrictions && !transition.CanUserPerform(currentUserId, userRoles))
+                // Check user permissions using the new permission policy aggregate
+
+                var hasPermission = await CheckUserPermissionAsync(
+                    transition.Id,
+                    currentUserId,
+                    userRoles,
+                    taskInstance.ProjectId);
+
+
+                if (!hasPermission)
                 {
                     continue;
                 }
 
+
                 // Validate transition (including conditions)
+
                 var validationResult = await _workflowTransitionService.ValidateTransitionAsync(
                     workflow,
                     transition,
                     currentUserId,
                     userRoles,
+                    taskInstance.ProjectId, // Pass project context
                     taskInstance.CustomFieldValues);
 
                 availableTransitions.Add(new AvailableTransition
@@ -181,6 +198,32 @@ namespace NouAssist.Tasks.Services
             }
 
             return availableTransitions;
+        }
+
+
+        /// <summary>
+        /// Checks if a user has permission to perform a transition based on permission policies.
+        /// Returns true if no policy exists (allow all) or if user matches policy criteria.
+        /// </summary>
+        private async Task<bool> CheckUserPermissionAsync(
+            Guid transitionId,
+            Guid userId,
+            List<string> userRoles,
+            Guid projectId)
+        {
+            var policy = await _permissionPolicyRepository.GetApplicablePolicyAsync(
+                transitionId,
+                projectId);
+
+            // No policy = allow all (default behavior)
+            if (policy == null)
+            {
+                return true;
+            }
+
+
+            // Use policy's permission checking logic
+            return policy.CanUserPerform(userId, userRoles);
         }
     }
 

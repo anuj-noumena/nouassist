@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NouAssist.Workflow.Aggregates;
 using NouAssist.Workflow.Entities;
+using NouAssist.Workflow.Permissions.Dtos;
 using NouAssist.Workflow.Workflows.Dtos;
 
 namespace NouAssist.Workflow;
@@ -25,8 +26,6 @@ public class WorkflowApplicationAutoMapperProfile : Profile
 
         // WorkflowTransition Entity
         CreateMap<WorkflowTransition, WorkflowTransitionDto>()
-            .ForMember(dest => dest.AllowedRoles, opt => opt.MapFrom(src => src.AllowedRoles))
-            .ForMember(dest => dest.AllowedUserIds, opt => opt.MapFrom(src => src.AllowedUserIds))
             .ForMember(dest => dest.HasConditions, opt => opt.MapFrom(src => src.HasConditions))
             .ForMember(dest => dest.HasValidators, opt => opt.MapFrom(src => src.HasValidators))
             .ForMember(dest => dest.HasRestrictions, opt => opt.MapFrom(src => src.HasRestrictions))
@@ -45,6 +44,14 @@ public class WorkflowApplicationAutoMapperProfile : Profile
 
         // WorkflowCustomField Entity
         CreateMap<WorkflowCustomField, WorkflowCustomFieldDto>();
+        
+        // TransitionPermissionPolicy Aggregate
+
+        CreateMap<TransitionPermissionPolicy, TransitionPermissionPolicyDto>()
+            .ForMember(dest => dest.HasRestrictions, opt => opt.MapFrom(src => src.HasRestrictions));
+        
+        CreateMap<CreateTransitionPermissionPolicyDto, TransitionPermissionPolicy>();
+        CreateMap<UpdateTransitionPermissionPolicyDto, TransitionPermissionPolicy>();
     }
 }
 

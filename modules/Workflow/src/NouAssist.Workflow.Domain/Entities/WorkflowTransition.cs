@@ -15,12 +15,6 @@ namespace NouAssist.Workflow.Entities
         public string Description { get; set; }
         public Guid FromStatusId { get; private set; }
         public Guid ToStatusId { get; private set; }
-
-        private readonly List<string> _allowedRoles = new();
-        public IReadOnlyCollection<string> AllowedRoles => _allowedRoles.AsReadOnly();
-
-        private readonly List<Guid> _allowedUserIds = new();
-        public IReadOnlyCollection<Guid> AllowedUserIds => _allowedUserIds.AsReadOnly();
         public TransitionPurpose Purpose { get; private set; } = TransitionPurpose.Standard;  // New: Default to Standard
         
         public bool RequiresComment { get; set; }
@@ -69,38 +63,6 @@ namespace NouAssist.Workflow.Entities
             Check.NotNull(action, nameof(action));
             _actions.Add(action);
         }
-
-        public void AddAllowedRole(string role)
-        {
-            if (!_allowedRoles.Contains(role))
-            {
-                _allowedRoles.Add(role);
-            }
-        }
-
-        public void AddAllowedUser(Guid userId)
-        {
-            if (!_allowedUserIds.Contains(userId))
-            {
-                _allowedUserIds.Add(userId);
-            }
-        }
-
-        public bool CanUserPerform(Guid userId, List<string> userRoles)
-        {
-            if (!_allowedRoles.Any() && !_allowedUserIds.Any())
-            {
-                return true;
-            }
-
-            if (_allowedUserIds.Contains(userId))
-            {
-                return true;
-            }
-
-            return _allowedRoles.Any(role => userRoles.Contains(role));
-        }
-
         public void SetCondition(WorkflowCondition condition)
         {
             _conditions ??= new List<WorkflowCondition>();
@@ -125,7 +87,5 @@ namespace NouAssist.Workflow.Entities
 
         public bool HasConditions => _conditions?.Any() ?? false;
         public bool HasValidators => _validators?.Any() ?? false;
-
-        public bool HasRestrictions => _allowedRoles.Any() || _allowedUserIds.Any();
     }
 }

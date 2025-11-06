@@ -47,16 +47,6 @@ namespace NouAssist.Workflow.EntityFrameworkCore.Configurations
                 .HasMaxLength(20);
 
             // Collections stored as JSON
-            builder.OwnsMany(x => x.AllowedRoles, rolesBuilder =>
-            {
-                rolesBuilder.ToJson();
-            });
-
-            builder.OwnsMany(x => x.AllowedUserIds, userIdsBuilder =>
-            {
-                userIdsBuilder.ToJson();
-            });
-
             builder.OwnsOne(x => x.Conditions, conditionsBuilder =>
             {
                 conditionsBuilder.ToJson();

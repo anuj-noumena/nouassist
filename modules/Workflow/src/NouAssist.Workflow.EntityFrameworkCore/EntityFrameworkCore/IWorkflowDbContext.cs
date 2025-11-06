@@ -16,4 +16,5 @@ public interface IWorkflowDbContext : IEfCoreDbContext
     DbSet<WorkflowTransition> WorkflowTransitions { get; }
     DbSet<WorkflowAction> WorkflowActions { get; }
     DbSet<WorkflowSchemeMapping> WorkflowSchemeMappings { get; }
+    DbSet<TransitionPermissionPolicy> TransitionPermissionPolicies { get; }
 }

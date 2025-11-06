@@ -2,14 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Workflow.Aggregates;
+using NouAssist.Workflow.Data;
 using NouAssist.Workflow.Entities;
 using NouAssist.Workflow.Events;
 using NouAssist.Workflow.Services.Conditions;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
+
 
 namespace NouAssist.Workflow.Services
+
 {
     /// <summary>
     /// Service for managing workflow transitions with condition evaluation.
@@ -17,16 +21,26 @@ namespace NouAssist.Workflow.Services
     /// Follows Dependency Inversion Principle - depends on abstractions
     /// </summary>
     public class WorkflowTransitionService : DomainService
+
     {
         private readonly WorkflowActionExecutorService _actionExecutor;
+
         private readonly WorkflowConditionEvaluationService _conditionEvaluationService;
+
+        private readonly ITransitionPermissionPolicyRepository _permissionPolicyRepository;
+
 
         public WorkflowTransitionService(
             WorkflowActionExecutorService actionExecutor,
-            WorkflowConditionEvaluationService conditionEvaluationService)
+            WorkflowConditionEvaluationService conditionEvaluationService,
+            ITransitionPermissionPolicyRepository permissionPolicyRepository)
+
         {
             _actionExecutor = actionExecutor;
+
             _conditionEvaluationService = conditionEvaluationService;
+
+            _permissionPolicyRepository = permissionPolicyRepository;
         }
 
         public async Task<TransitionExecutionResult> ExecuteTransitionAsync(
@@ -35,14 +49,18 @@ namespace NouAssist.Workflow.Services
             WorkflowTransition transition,
             Guid currentUserId,
             List<string> userRoles,
+            Guid? projectId = null,
             Dictionary<string, object> taskCustomFields = null,
             string comment = null)
+
         {
             var result = new TransitionExecutionResult { IsSuccessful = true };
 
+
             // Validate transition (includes condition evaluation)
+
             var validationResult = await ValidateTransitionAsync(
-                workflow, transition, currentUserId, userRoles, taskCustomFields, comment);
+                workflow, transition, currentUserId, userRoles, projectId, taskCustomFields, comment);
             if (!validationResult.IsValid)
             {
                 result.IsSuccessful = false;
@@ -92,13 +110,22 @@ namespace NouAssist.Workflow.Services
             WorkflowTransition transition,
             Guid currentUserId,
             List<string> userRoles,
+            Guid? projectId = null,
             Dictionary<string, object> taskCustomFields = null,
             string comment = null)
+
         {
             var result = new TransitionValidationResult { IsValid = true };
 
-            // Validate user permissions
-            if (!transition.CanUserPerform(currentUserId, userRoles))
+            // Validate user permissions using the new permission policy aggregate
+            var hasPermission = await CheckUserPermissionAsync(
+                transition.Id,
+                currentUserId,
+                userRoles,
+                projectId);
+
+
+            if (!hasPermission)
             {
                 result.IsValid = false;
                 result.Errors.Add("User does not have permission to perform this transition.");
@@ -173,6 +200,31 @@ namespace NouAssist.Workflow.Services
                 .Where(a => a.IsEnabled)
                 .OrderBy(a => a.OrderIndex)
                 .ToList();
+        }
+
+
+        /// <summary>
+        /// Checks if a user has permission to perform a transition based on permission policies.
+        /// Returns true if no policy exists (allow all) or if user matches policy criteria.
+        /// </summary>
+        private async Task<bool> CheckUserPermissionAsync(
+            Guid transitionId,
+            Guid userId,
+            List<string> userRoles,
+            Guid? projectId)
+        {
+            var policy = await _permissionPolicyRepository.GetApplicablePolicyAsync(
+                transitionId,
+                projectId);
+            
+            // No policy = allow all (default behavior)
+            if (policy == null)
+            {
+                return true;
+            }
+            
+            // Use policy's permission checking logic
+            return policy.CanUserPerform(userId, userRoles);
         }
     }
 

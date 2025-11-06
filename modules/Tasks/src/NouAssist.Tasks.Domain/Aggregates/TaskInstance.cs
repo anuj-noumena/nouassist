@@ -63,8 +63,38 @@ namespace NouAssist.Tasks.Aggregates
         // Custom Fields & Labels
         public Dictionary<string, object> CustomFieldValues { get; private set; }
 
-        
+
         public int EntityVersion { get; }
+
+        // Convenience properties that delegate to value objects
+        public WorkflowStatusCategory TaskStatus
+        {
+            get => Progress.TaskStatus;
+            internal set => Progress = Progress.ChangeStatus(Progress.WorkflowStatusId, value);
+        }
+
+        public double ProgressPercent
+        {
+            get => Progress.ProgressPercent;
+            internal set => Progress = Progress.UpdateProgress(value);
+        }
+
+        public bool IsNextAction
+        {
+            get => Progress.IsNextAction;
+            internal set => Progress = Progress.MarkAsNextAction(value);
+        }
+
+        public Guid WorkflowStatusId
+        {
+            get => Progress.WorkflowStatusId;
+            internal set => Progress = Progress.ChangeStatus(value, Progress.TaskStatus);
+        }
+
+        public int CommentsCount => Discussion.CommentsCount;
+        public int AttachmentsCount => Discussion.AttachmentsCount;
+        public bool IsDiscussionLocked => Discussion.IsDiscussionLocked;
+        public IReadOnlyCollection<Guid> Watchers => Discussion.Watchers;
 
         // Child entities
         private readonly List<TaskActionStepCompletion> _stepCompletions = new();
@@ -108,6 +138,10 @@ namespace NouAssist.Tasks.Aggregates
 
             PriorityMatrix = new ImportanceUrgencyMatrix(importance, urgency);
             Progress = TaskProgress.NotStarted(workflowStatusId);
+            Approval = TaskApproval.NoApprovalRequired();
+            Schedule = new TaskSchedule(null, null);
+            Hierarchy = new TaskHierarchy(0, null);
+            Discussion = TaskDiscussion.Empty();
             CustomFieldValues = new Dictionary<string, object>();
 
             // Add creation history entry
@@ -510,12 +544,7 @@ namespace NouAssist.Tasks.Aggregates
         // Watchers
         public void AddWatcher(Guid userId)
         {
-            if (_watchers.Contains(userId))
-            {
-                return;
-            }
-
-            _watchers.Add(userId);
+            Discussion = Discussion.AddWatcher(userId);
 
             AddSimpleHistoryEntry(
                 TaskHistoryChangeType.WatcherAdded,
@@ -524,7 +553,7 @@ namespace NouAssist.Tasks.Aggregates
 
         public void RemoveWatcher(Guid userId)
         {
-            _watchers.Remove(userId);
+            Discussion = Discussion.RemoveWatcher(userId);
 
             AddSimpleHistoryEntry(
                 TaskHistoryChangeType.WatcherRemoved,
@@ -603,7 +632,7 @@ namespace NouAssist.Tasks.Aggregates
 
         public void LockDiscussion()
         {
-            IsDiscussionLocked = true;
+            Discussion = Discussion.LockDiscussion();
 
             AddSimpleHistoryEntry(
                 TaskHistoryChangeType.DiscussionLocked,
@@ -612,7 +641,7 @@ namespace NouAssist.Tasks.Aggregates
 
         public void UnlockDiscussion()
         {
-            IsDiscussionLocked = false;
+            Discussion = Discussion.UnlockDiscussion();
 
             AddSimpleHistoryEntry(
                 TaskHistoryChangeType.DiscussionUnlocked,
@@ -621,7 +650,7 @@ namespace NouAssist.Tasks.Aggregates
 
         public void IncrementCommentsCount()
         {
-            CommentsCount++;
+            Discussion = Discussion.AddComment();
 
             AddSimpleHistoryEntry(
                 TaskHistoryChangeType.CommentAdded,
@@ -630,7 +659,7 @@ namespace NouAssist.Tasks.Aggregates
 
         public void IncrementAttachmentsCount()
         {
-            AttachmentsCount++;
+            Discussion = Discussion.AddAttachment();
 
             AddSimpleHistoryEntry(
                 TaskHistoryChangeType.AttachmentAdded,

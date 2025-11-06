@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NouAssist.Approval.Enums;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Values;
 

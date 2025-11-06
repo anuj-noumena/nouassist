@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using NouAssist.Workflow.Aggregates;
 using NouAssist.Workflow.Entities;
 using NouAssist.Workflow.Enums;
+using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Microsoft.Extensions.Logging;
 
@@ -58,55 +59,41 @@ namespace NouAssist.Workflow.Services
         {
             switch (action.ActionType)
             {
-                case WorkflowActionType.DelegateTask: // New enum value
+                case WorkflowActionType.DelegateTask:
                 {
-                    var targetUserId = (Guid)action.Configuration["targetUserId"];
-                    var reason = (string)action.Configuration.GetValueOrDefault("reason", "No reason provided");
-                    var notifyOriginal = (bool?)action.Configuration.GetValueOrDefault("notifyOriginal", true) ?? true;
-
-                    // Load task (assume Task in new Task module)
-                    var taskRepo = LazyServiceProvider.LazyGetRequiredService<ITaskRepository>();
-                    var task = await taskRepo.GetAsync(context.TaskId);
-                    if (task.AssigneeId != context.ExecutedBy)
-                        throw new BusinessException("Workflow:NotAssignedToYou");
-
-                    // Reassign
-                    var oldAssignee = task.AssigneeId;
-                    task.AssigneeId = targetUserId;
-                    task.AddHistoryEntry(new TaskHistoryEntry( /* ... */,
-                        $"Delegated to {targetUserId} by {context.ExecutedBy}: {reason}"));
-
-                    // Optional Approval tie-in (if configured)
-                    var approvalWorkflowId = (Guid?)action.Configuration["approvalWorkflowId"];
-                    if (approvalWorkflowId.HasValue)
+                    // Extract configuration
+                    var targetUserIdObj = action.Configuration.GetValueOrDefault("targetUserId");
+                    if (targetUserIdObj == null)
                     {
-                        // Use Approval module
-                        var engine = LazyServiceProvider.LazyGetRequiredService<ApprovalWorkflowEngine>();
-                        var request = engine.InitiateApprovalRequest(approvalWorkflowId.Value, "TaskDelegation",
-                            context.TaskId, context.ExecutedBy, CurrentTenant.Id);
-                        // Pause task until approved (set task.Status to "PendingDelegation")
-                        task.CurrentStatus = new TaskStatus("PendingDelegation", ...);
+                        throw new BusinessException("Workflow:DelegateTask:TargetUserIdRequired");
                     }
 
-                    // Notifications
-                    await _notificationService.SendAsync(targetUserId,
-                        $"Task '{task.Title}' delegated to you from {oldAssignee}");
-                    if (notifyOriginal)
-                        await _notificationService.SendAsync(oldAssignee,
-                            $"Your task '{task.Title}' delegated to {targetUserId}: {reason}");
+                    var targetUserId = Guid.Parse(targetUserIdObj.ToString());
+                    var note = action.Configuration.GetValueOrDefault("note")?.ToString();
 
-                    // Raise shared event
-                    await DistributedEventBus.PublishAsync(new TaskDelegatedEto
+                    // Load task instance from Tasks module
+                    var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<NouAssist.Tasks.Data.ITaskInstanceRepository>();
+                    var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
+
+                    // Validate current user is the assignee
+                    if (taskInstance.AssigneeId != context.ExecutedBy)
                     {
-                        TaskId = context.TaskId,
-                        FromUserId = oldAssignee,
-                        ToUserId = targetUserId,
-                        Reason = reason,
-                        ViaWorkflow = true // Flag for hybrid tracking
-                    });
+                        throw new BusinessException("Workflow:NotAssignedToYou",
+                            $"Task must be assigned to you to delegate it. Current assignee: {taskInstance.AssigneeId}");
+                    }
 
-                    Logger.LogInformation("Integrated delegation: Task {TaskId} from {Old} to {New}", context.TaskId,
-                        oldAssignee, targetUserId);
+                    var oldAssignee = taskInstance.AssigneeId;
+
+                    // Perform delegation using TaskInstance domain method
+                    taskInstance.Delegate(context.ExecutedBy, targetUserId, note);
+
+                    // Update task instance
+                    await taskInstanceRepo.UpdateAsync(taskInstance);
+
+                    Logger.LogInformation(
+                        "Workflow delegation: TaskInstance {TaskInstanceId} from {OldAssignee} to {NewAssignee}",
+                        context.TaskInstanceId, oldAssignee, targetUserId);
+
                     break;
                 }
                 case WorkflowActionType.InitiateApproval:
@@ -136,7 +123,8 @@ namespace NouAssist.Workflow.Services
 
     public class WorkflowActionContext
     {
-        public Guid TaskId { get; set; }
+        public Guid TaskInstanceId { get; set; }
+        public Guid WorkflowId { get; set; }
         public Guid TransitionId { get; set; }
         public Guid ExecutedBy { get; set; }
         public string Comment { get; set; }

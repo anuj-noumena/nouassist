@@ -31,6 +31,7 @@ namespace NouAssist.Tasks.TaskInstances
         
         // Delegation
         Task<TaskInstanceDto> DelegateAsync(Guid id, DelegateTaskDto input);
+        Task<TaskInstanceDto> DelegateViaWorkflowAsync(Guid id, DelegateTaskViaWorkflowDto input);
         Task<TaskInstanceDto> AcceptDelegationAsync(Guid id, AcceptDelegationDto input);
         Task<TaskInstanceDto> DeclineDelegationAsync(Guid id, DeclineDelegationDto input);
         Task<TaskInstanceDto> RevokeDelegationAsync(Guid id);

@@ -78,8 +78,9 @@ namespace NouAssist.Tasks.Aggregates
 
         private readonly List<TaskDependency> _dependencies = new();
         public IReadOnlyCollection<TaskDependency> Dependencies => _dependencies.AsReadOnly();
-        
-        public List<TaskHistoryEntry> History { get; private set; } = new();
+
+        private readonly List<TaskHistoryEntry> _history = new();
+        public IReadOnlyCollection<TaskHistoryEntry> History => _history.AsReadOnly();
 
         protected TaskInstance()
         {
@@ -107,6 +108,12 @@ namespace NouAssist.Tasks.Aggregates
             TaskStatus = WorkflowStatusCategory.Todo;
             ProgressPercent = 0.0;
             CustomFieldValues = new Dictionary<string, object>();
+
+            // Add creation history entry
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.Created,
+                "Task instance created",
+                ownerId);
 
             AddDistributedEvent(new TaskInstanceCreatedEto
             {
@@ -142,6 +149,11 @@ namespace NouAssist.Tasks.Aggregates
             Schedule = Schedule.WithActualDates(startDate, Schedule.PlannedDueDate);
             TaskStatus = WorkflowStatusCategory.InProgress;
 
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.Started,
+                "Task started",
+                startedBy);
+
             AddDistributedEvent(new TaskStartedEto
             {
                 TaskInstanceId = Id,
@@ -153,7 +165,20 @@ namespace NouAssist.Tasks.Aggregates
 
         public void Assign(Guid assigneeId, Guid assignedBy)
         {
+            var oldAssigneeId = AssigneeId;
             AssigneeId = Check.NotNull(assigneeId, nameof(assigneeId));
+
+            var changeType = oldAssigneeId.HasValue ? TaskHistoryChangeType.Reassigned : TaskHistoryChangeType.Assigned;
+            var description = oldAssigneeId.HasValue
+                ? $"Reassigned from {oldAssigneeId} to {assigneeId}"
+                : $"Assigned to {assigneeId}";
+
+            AddFieldChangeHistoryEntry(
+                changeType,
+                "AssigneeId",
+                oldAssigneeId?.ToString(),
+                assigneeId.ToString(),
+                assignedBy);
 
             AddDistributedEvent(new TaskAssignedEto
             {
@@ -167,7 +192,17 @@ namespace NouAssist.Tasks.Aggregates
 
         public void Unassign()
         {
+            var oldAssigneeId = AssigneeId;
             AssigneeId = null;
+
+            if (oldAssigneeId.HasValue)
+            {
+                AddFieldChangeHistoryEntry(
+                    TaskHistoryChangeType.Unassigned,
+                    "AssigneeId",
+                    oldAssigneeId.ToString(),
+                    null);
+            }
 
             AddDistributedEvent(new TaskUnassignedEto
             {
@@ -180,7 +215,11 @@ namespace NouAssist.Tasks.Aggregates
         {
             TaskStatus = WorkflowStatusCategory.InProgress;
             Schedule = Schedule.MarkIncompleted();
-            Resolution = ResolutionInfo.Unresolved; // Use the default state
+            Resolution = ResolutionInfo.Unresolved;
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.Reopened,
+                "Task reopened");
         }
 
         public void Complete(Guid completedBy, ITaskCompletionPolicy completionPolicy, string resolution = null,
@@ -194,11 +233,19 @@ namespace NouAssist.Tasks.Aggregates
             }
             var completedAt = DateTime.UtcNow;
             Schedule = Schedule.MarkCompleted(completedAt);
-            
+
             TaskStatus = WorkflowStatusCategory.Done;
             ProgressPercent = 100.0;
             Resolution = ResolutionInfo.Create(resolution, resolutionNote);
-            
+
+            AddHistoryEntry(
+                TaskHistoryChangeType.Completed,
+                $"Task completed: {resolution}",
+                completedBy,
+                "TaskStatus",
+                "InProgress",
+                "Done");
+
             AddDistributedEvent(new TaskCompletedEto
             {
                 TaskInstanceId = Id,
@@ -219,6 +266,14 @@ namespace NouAssist.Tasks.Aggregates
 
             TaskStatus = WorkflowStatusCategory.Cancelled;
             Resolution = ResolutionInfo.Create("Cancelled", reason);
+
+            AddHistoryEntry(
+                TaskHistoryChangeType.Cancelled,
+                $"Task cancelled: {reason}",
+                null,
+                "TaskStatus",
+                TaskStatus.ToString(),
+                "Cancelled");
         }
 
         // Delegation
@@ -234,8 +289,18 @@ namespace NouAssist.Tasks.Aggregates
                 throw new BusinessException("Tasks:AlreadyDelegated");
             }
 
+            var oldAssigneeId = AssigneeId;
             DelegationInfo = new DelegationInfo(delegatedBy, delegatedTo, note);
             AssigneeId = delegatedTo;
+
+            AddHistoryEntry(
+                TaskHistoryChangeType.Delegated,
+                $"Delegated from {delegatedBy} to {delegatedTo}: {note}",
+                delegatedBy,
+                "AssigneeId",
+                oldAssigneeId?.ToString(),
+                delegatedTo.ToString(),
+                note);
 
             AddDistributedEvent(new TaskDelegatedEto
             {
@@ -262,7 +327,14 @@ namespace NouAssist.Tasks.Aggregates
 
             DelegationInfo = DelegationInfo.Accept(responseNote);
             TaskStatus = WorkflowStatusCategory.InProgress;
-            
+
+            AddHistoryEntry(
+                TaskHistoryChangeType.DelegationAccepted,
+                $"Delegation accepted by {acceptedBy}: {responseNote}",
+                acceptedBy,
+                "DelegationStatus",
+                "Delegated",
+                "Accepted");
 
             AddDistributedEvent(new TaskDelegationAcceptedEto
             {
@@ -288,7 +360,14 @@ namespace NouAssist.Tasks.Aggregates
 
             DelegationInfo = DelegationInfo.Decline(responseNote);
             AssigneeId = null;
-            
+
+            AddHistoryEntry(
+                TaskHistoryChangeType.DelegationDeclined,
+                $"Delegation declined by {declinedBy}: {responseNote}",
+                declinedBy,
+                "DelegationStatus",
+                "Delegated",
+                "Declined");
 
             AddDistributedEvent(new TaskDelegationDeclinedEto
             {
@@ -304,8 +383,11 @@ namespace NouAssist.Tasks.Aggregates
         // Blocking
         public void Block(string reason)
         {
-            BlockingInfo = BlockingInfo.Create(reason); // Assumes VO handles validation
-            
+            BlockingInfo = BlockingInfo.Create(reason);
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.Blocked,
+                $"Task blocked: {reason}");
 
             AddDistributedEvent(new TaskBlockedEto
             {
@@ -331,8 +413,12 @@ namespace NouAssist.Tasks.Aggregates
                 throw new BusinessException("Tasks:NotBlocked");
             }
 
+            var previousReason = BlockingInfo.Reason;
             BlockingInfo = BlockingInfo.NotBlocked;
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.Unblocked,
+                $"Task unblocked (was: {previousReason})");
         }
 
         // Step Completions
@@ -354,7 +440,11 @@ namespace NouAssist.Tasks.Aggregates
 
             completion.Complete(completedBy);
             UpdateProgress();
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.StepCompleted,
+                $"Step {stepId} completed",
+                completedBy);
         }
 
         public void UncompleteStep(Guid stepId)
@@ -367,7 +457,10 @@ namespace NouAssist.Tasks.Aggregates
 
             completion.Uncomplete();
             UpdateProgress();
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.StepUncompleted,
+                $"Step {stepId} uncompleted");
         }
 
         // Criterion Completions
@@ -388,7 +481,11 @@ namespace NouAssist.Tasks.Aggregates
             }
 
             completion.MarkAsMet(metBy);
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.CriterionMet,
+                $"Criterion {criterionId} marked as met",
+                metBy);
         }
 
         // Time Tracking
@@ -399,9 +496,14 @@ namespace NouAssist.Tasks.Aggregates
                 throw new BusinessException("Tasks:InvalidTimeLog");
             }
 
-            // The VO handles the logic of creating the new state
+            var oldMinutes = TimeTracking.ActualMinutes;
             TimeTracking = TimeTracking.LogTime(minutes);
-            
+
+            AddFieldChangeHistoryEntry(
+                TaskHistoryChangeType.TimeLogged,
+                "ActualMinutes",
+                oldMinutes.ToString(),
+                TimeTracking.ActualMinutes.ToString());
         }
 
         // Watchers
@@ -413,13 +515,19 @@ namespace NouAssist.Tasks.Aggregates
             }
 
             _watchers.Add(userId);
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.WatcherAdded,
+                $"Watcher {userId} added");
         }
 
         public void RemoveWatcher(Guid userId)
         {
             _watchers.Remove(userId);
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.WatcherRemoved,
+                $"Watcher {userId} removed");
         }
 
         // Progress Calculation
@@ -452,7 +560,10 @@ namespace NouAssist.Tasks.Aggregates
             var dependency = TaskDependency.CreateTaskDependency(
                 Id, dependsOnTaskId, dependencyType, lagMinutes, isBlocking);
             _dependencies.Add(dependency);
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.DependencyAdded,
+                $"Dependency added: {dependencyType} on task {dependsOnTaskId}");
         }
 
         public void RemoveDependency(Guid dependsOnTaskId)
@@ -464,80 +575,182 @@ namespace NouAssist.Tasks.Aggregates
             }
 
             _dependencies.Remove(dependency);
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.DependencyRemoved,
+                $"Dependency removed: task {dependsOnTaskId}");
         }
 
         // Other Methods
         public void MarkAsNextAction()
         {
             IsNextAction = true;
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.MarkedAsNextAction,
+                "Marked as next action");
         }
 
         public void UnmarkAsNextAction()
         {
             IsNextAction = false;
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.UnmarkedAsNextAction,
+                "Unmarked as next action");
         }
 
         public void LockDiscussion()
         {
             IsDiscussionLocked = true;
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.DiscussionLocked,
+                "Discussion locked");
         }
 
         public void UnlockDiscussion()
         {
             IsDiscussionLocked = false;
-            
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.DiscussionUnlocked,
+                "Discussion unlocked");
         }
 
         public void IncrementCommentsCount()
         {
             CommentsCount++;
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.CommentAdded,
+                $"Comment added (total: {CommentsCount})");
         }
 
         public void IncrementAttachmentsCount()
         {
             AttachmentsCount++;
+
+            AddSimpleHistoryEntry(
+                TaskHistoryChangeType.AttachmentAdded,
+                $"Attachment added (total: {AttachmentsCount})");
         }
 
         public void UpdatePriority(double importance, double urgency)
         {
+            var oldQuadrant = PriorityMatrix.Quadrant;
             PriorityMatrix = new ImportanceUrgencyMatrix(importance, urgency);
-            
+
+            AddFieldChangeHistoryEntry(
+                TaskHistoryChangeType.PriorityChanged,
+                "Priority",
+                oldQuadrant.ToString(),
+                PriorityMatrix.Quadrant.ToString());
         }
 
         public void UpdateFlag(bool isFlagged, string flaggedReason)
         {
-            // The logic is now encapsulated in the VO's factories
+            var wasFlagged = FlagInfo.IsFlagged;
             FlagInfo = isFlagged
                 ? FlagInfo.Create(flaggedReason)
                 : FlagInfo.NotFlagged;
-            
+
+            if (isFlagged && !wasFlagged)
+            {
+                AddSimpleHistoryEntry(
+                    TaskHistoryChangeType.Flagged,
+                    $"Task flagged: {flaggedReason}");
+            }
+            else if (!isFlagged && wasFlagged)
+            {
+                AddSimpleHistoryEntry(
+                    TaskHistoryChangeType.Unflagged,
+                    "Task unflagged");
+            }
         }
 
         public void UpdateWorkflowStatus(Guid workflowStatusId)
         {
+            var oldStatusId = WorkflowStatusId;
             WorkflowStatusId = workflowStatusId;
+
+            AddFieldChangeHistoryEntry(
+                TaskHistoryChangeType.StatusChanged,
+                "WorkflowStatusId",
+                oldStatusId.ToString(),
+                workflowStatusId.ToString());
         }
 
         public void RevokeDelegation()
         {
+            var delegatedTo = DelegationInfo?.DelegatedTo;
             DelegationInfo = null;
             AssigneeId = OwnerId;
+
+            AddHistoryEntry(
+                TaskHistoryChangeType.DelegationRevoked,
+                $"Delegation revoked (was delegated to {delegatedTo})",
+                null,
+                "AssigneeId",
+                delegatedTo?.ToString(),
+                OwnerId.ToString());
         }
         
         public void MoveToProject(Guid projectId, Guid workflowStatusId)
         {
+            var oldProjectId = ProjectId;
             ProjectId = projectId;
             WorkflowStatusId = workflowStatusId;
+
+            AddHistoryEntry(
+                TaskHistoryChangeType.MovedToProject,
+                $"Moved to project {projectId}",
+                null,
+                "ProjectId",
+                oldProjectId.ToString(),
+                projectId.ToString());
         }
-        
-        private void AddHistoryEntry(TaskStatus status, string note)
+
+        // History tracking methods
+        private void AddHistoryEntry(
+            TaskHistoryChangeType changeType,
+            string description,
+            Guid? changedBy = null,
+            string fieldName = null,
+            string oldValue = null,
+            string newValue = null,
+            string metadata = null)
         {
-            History.Add(new TaskHistoryEntry(Guid.NewGuid(), Id, status, note, DateTime.UtcNow));
+            var entry = new TaskHistoryEntry(
+                Guid.NewGuid(),
+                Id,
+                changeType,
+                description,
+                changedBy,
+                fieldName,
+                oldValue,
+                newValue,
+                metadata);
+            _history.Add(entry);
         }
-        
+
+        private void AddSimpleHistoryEntry(
+            TaskHistoryChangeType changeType,
+            string description,
+            Guid? changedBy = null)
+        {
+            _history.Add(TaskHistoryEntry.Create(Id, changeType, description, changedBy));
+        }
+
+        private void AddFieldChangeHistoryEntry(
+            TaskHistoryChangeType changeType,
+            string fieldName,
+            string oldValue,
+            string newValue,
+            Guid? changedBy = null)
+        {
+            _history.Add(TaskHistoryEntry.CreateFieldChange(
+                Id, changeType, fieldName, oldValue, newValue, changedBy));
+        }
     }
 }

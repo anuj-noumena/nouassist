@@ -282,6 +282,94 @@ namespace NouAssist.Tasks.TaskInstances
         }
 
         [Authorize(TasksPermissions.TaskInstances.Delegate)]
+        public async Task<TaskInstanceDto> DelegateViaWorkflowAsync(Guid id, DelegateTaskViaWorkflowDto input)
+        {
+            var taskInstance = await _taskInstanceRepository.GetAsync(id);
+
+            // Get workflow for this task's project
+            var workflowSchemeRepo = LazyServiceProvider.LazyGetRequiredService<NouAssist.Workflow.Data.IWorkflowSchemeRepository>();
+            var workflowRepo = LazyServiceProvider.LazyGetRequiredService<NouAssist.Workflow.Data.IWorkflowRepository>();
+            var workflowTransitionService = LazyServiceProvider.LazyGetRequiredService<NouAssist.Workflow.Services.WorkflowTransitionService>();
+
+            var workflowScheme = await workflowSchemeRepo.GetActiveSchemeForProjectAsync(taskInstance.ProjectId);
+            if (workflowScheme == null)
+            {
+                throw new BusinessException("Tasks:NoWorkflowSchemeForProject",
+                    $"No active workflow scheme found for project {taskInstance.ProjectId}");
+            }
+
+            // Check if quick delegation is allowed
+            if (!workflowScheme.AllowQuickDelegation)
+            {
+                throw new BusinessException("Tasks:QuickDelegationNotAllowed",
+                    "Quick delegation is not allowed for this project. Please use the standard delegation process.");
+            }
+
+            // Get the workflow for the task
+            var taskRepo = await LazyServiceProvider.LazyGetRequiredService<NouAssist.Tasks.Data.ITaskRepository>()
+                .GetWithDetailsAsync(taskInstance.TaskId);
+            var workflowId = workflowScheme.GetWorkflowForTaskType(taskRepo.TaskTypeId);
+            var workflow = await workflowRepo.GetWithDetailsAsync(workflowId);
+
+            // Find delegation transition
+            WorkflowTransition delegationTransition = null;
+            if (input.TransitionId.HasValue)
+            {
+                delegationTransition = workflow.GetTransition(input.TransitionId.Value);
+            }
+            else
+            {
+                // Find delegation transition by purpose
+                var delegationTransitions = workflow.GetAvailableTransitions(taskInstance.Progress.WorkflowStatusId);
+                delegationTransition = delegationTransitions.FirstOrDefault(t =>
+                    t.Purpose == NouAssist.Workflow.Enums.TransitionPurpose.Delegation);
+
+                if (delegationTransition == null)
+                {
+                    throw new BusinessException("Tasks:NoDelegationTransitionFound",
+                        "No delegation transition found for current status");
+                }
+            }
+
+            // Create delegation action configuration
+            var delegationAction = delegationTransition.Actions
+                .FirstOrDefault(a => a.ActionType == NouAssist.Workflow.Enums.WorkflowActionType.DelegateTask);
+
+            if (delegationAction == null)
+            {
+                throw new BusinessException("Tasks:NoDelegationActionConfigured",
+                    "The delegation transition does not have a delegation action configured");
+            }
+
+            // Update action configuration with target user
+            delegationAction.Configuration["targetUserId"] = input.DelegatedTo;
+            delegationAction.Configuration["note"] = input.Note;
+
+            // Execute workflow transition
+            var userRoles = new List<string>(); // TODO: Get user roles
+            var result = await workflowTransitionService.ExecuteTransitionAsync(
+                taskInstance.Id,
+                workflow,
+                delegationTransition,
+                CurrentUser.Id.Value,
+                userRoles,
+                input.Comment
+            );
+
+            if (!result.IsSuccessful)
+            {
+                throw new BusinessException("Tasks:WorkflowDelegationFailed",
+                    $"Workflow delegation failed: {result.ErrorMessage ?? string.Join(", ", result.Errors)}");
+            }
+
+            // Update workflow status on task instance
+            taskInstance.UpdateWorkflowStatus(delegationTransition.ToStatusId);
+            await _taskInstanceRepository.UpdateAsync(taskInstance);
+
+            return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
+        }
+
+        [Authorize(TasksPermissions.TaskInstances.Delegate)]
         public async Task<TaskInstanceDto> AcceptDelegationAsync(Guid id, AcceptDelegationDto input)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);

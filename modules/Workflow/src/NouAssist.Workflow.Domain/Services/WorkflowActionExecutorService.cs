@@ -1,27 +1,49 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Workflow.Aggregates;
+using Microsoft.Extensions.Logging;
 using NouAssist.Workflow.Entities;
-using NouAssist.Workflow.Enums;
+using NouAssist.Workflow.Services.Actions;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
-using Microsoft.Extensions.Logging;
 
 namespace NouAssist.Workflow.Services
 {
+    /// <summary>
+    /// Service for executing workflow actions using Strategy pattern.
+    /// Follows Single Responsibility Principle - coordinates action execution
+    /// Follows Open/Closed Principle - new action executors can be added without modifying this class
+    /// Follows Dependency Inversion Principle - depends on IWorkflowActionExecutor abstraction
+    /// </summary>
     public class WorkflowActionExecutorService : DomainService
     {
+        private readonly IEnumerable<IWorkflowActionExecutor> _actionExecutors;
+
+        public WorkflowActionExecutorService(IEnumerable<IWorkflowActionExecutor> actionExecutors)
+        {
+            _actionExecutors = actionExecutors;
+        }
+
+        /// <summary>
+        /// Executes a list of workflow actions in order
+        /// </summary>
         public async Task<ActionExecutionResult> ExecuteActionsAsync(
             List<WorkflowAction> actions,
             WorkflowActionContext context)
         {
             var result = new ActionExecutionResult { IsSuccessful = true };
 
+            if (actions == null || !actions.Any())
+            {
+                return result;
+            }
+
             foreach (var action in actions)
             {
                 if (!action.IsEnabled)
                 {
+                    Logger.LogDebug("Skipping disabled action {ActionId} ({ActionName})", action.Id, action.Name);
                     continue;
                 }
 
@@ -31,22 +53,47 @@ namespace NouAssist.Workflow.Services
                     {
                         // Queue for async execution
                         result.QueuedActions.Add(action.Id);
+                        Logger.LogInformation(
+                            "Queued async action {ActionId} ({ActionName}) for execution",
+                            action.Id, action.Name);
                     }
                     else
                     {
-                        await ExecuteSingleActionAsync(action, context);
-                        result.ExecutedActions.Add(action.Id);
+                        var executionResult = await ExecuteSingleActionAsync(action, context);
+
+                        if (executionResult.IsSuccessful)
+                        {
+                            result.ExecutedActions.Add(action.Id);
+                            Logger.LogInformation(
+                                "Successfully executed action {ActionId} ({ActionName})",
+                                action.Id, action.Name);
+                        }
+                        else
+                        {
+                            result.FailedActions.Add(action.Id);
+                            Logger.LogWarning(
+                                "Action {ActionId} ({ActionName}) failed: {ErrorMessage}",
+                                action.Id, action.Name, executionResult.ErrorMessage);
+
+                            if (!action.ContinueOnError)
+                            {
+                                result.IsSuccessful = false;
+                                result.ErrorMessage = $"Action '{action.Name}' failed: {executionResult.ErrorMessage}";
+                                break;
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(ex, "Error executing workflow action {ActionId}", action.Id);
+                    Logger.LogError(ex, "Unexpected error executing workflow action {ActionId} ({ActionName})",
+                        action.Id, action.Name);
                     result.FailedActions.Add(action.Id);
 
                     if (!action.ContinueOnError)
                     {
                         result.IsSuccessful = false;
-                        result.ErrorMessage = $"Action {action.Name} failed: {ex.Message}";
+                        result.ErrorMessage = $"Action '{action.Name}' failed with exception: {ex.Message}";
                         break;
                     }
                 }
@@ -55,72 +102,34 @@ namespace NouAssist.Workflow.Services
             return result;
         }
 
-        private async Task ExecuteSingleActionAsync(WorkflowAction action, WorkflowActionContext context)
+        /// <summary>
+        /// Executes a single workflow action using the appropriate executor
+        /// </summary>
+        private async Task<Actions.ActionExecutionResult> ExecuteSingleActionAsync(
+            WorkflowAction action,
+            WorkflowActionContext context)
         {
-            switch (action.ActionType)
+            // Find the first executor that can handle this action
+            var executor = _actionExecutors.FirstOrDefault(e => e.CanExecute(action));
+
+            if (executor == null)
             {
-                case WorkflowActionType.DelegateTask:
-                {
-                    // Extract configuration
-                    var targetUserIdObj = action.Configuration.GetValueOrDefault("targetUserId");
-                    if (targetUserIdObj == null)
-                    {
-                        throw new BusinessException("Workflow:DelegateTask:TargetUserIdRequired");
-                    }
-
-                    var targetUserId = Guid.Parse(targetUserIdObj.ToString());
-                    var note = action.Configuration.GetValueOrDefault("note")?.ToString();
-
-                    // Load task instance from Tasks module
-                    var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<NouAssist.Tasks.Data.ITaskInstanceRepository>();
-                    var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
-
-                    // Validate current user is the assignee
-                    if (taskInstance.AssigneeId != context.ExecutedBy)
-                    {
-                        throw new BusinessException("Workflow:NotAssignedToYou",
-                            $"Task must be assigned to you to delegate it. Current assignee: {taskInstance.AssigneeId}");
-                    }
-
-                    var oldAssignee = taskInstance.AssigneeId;
-
-                    // Perform delegation using TaskInstance domain method
-                    taskInstance.Delegate(context.ExecutedBy, targetUserId, note);
-
-                    // Update task instance
-                    await taskInstanceRepo.UpdateAsync(taskInstance);
-
-                    Logger.LogInformation(
-                        "Workflow delegation: TaskInstance {TaskInstanceId} from {OldAssignee} to {NewAssignee}",
-                        context.TaskInstanceId, oldAssignee, targetUserId);
-
-                    break;
-                }
-                case WorkflowActionType.InitiateApproval:
-                    // Resolve ApprovalWorkflow from config
-                {
-                    var approvalWorkflowId = action.Configuration.GetValueOrDefault("ApprovalWorkflowId") as Guid?;
-                    if (approvalWorkflowId.HasValue)
-                    {
-                        // Inject IApprovalWorkflowRepository or service
-                        // var engine = LazyServiceProvider.LazyGetRequiredService<IApprovalWorkflowEngine>();
-                        // var request = engine.InitiateApprovalRequest(... context.TaskId, approvalWorkflowId.Value ...);
-                        Logger.LogInformation("Initiated approval for task {TaskId}", context.TaskId);
-                    }
-
-                    break;
-                }
-                // ... other cases
-                default:
-                    Logger.LogInformation("Executing action {ActionName} of type {ActionType}", action.Name,
-                        action.ActionType);
-                    break;
+                var errorMsg = $"No executor found for action type: {action.ActionType}";
+                Logger.LogError(errorMsg);
+                return Actions.ActionExecutionResult.Failure(errorMsg);
             }
 
-            await Task.CompletedTask;
+            Logger.LogDebug(
+                "Executing action {ActionId} ({ActionName}) of type {ActionType} using {ExecutorType}",
+                action.Id, action.Name, action.ActionType, executor.GetType().Name);
+
+            return await executor.ExecuteAsync(action, context);
         }
     }
 
+    /// <summary>
+    /// Context containing data needed for action execution
+    /// </summary>
     public class WorkflowActionContext
     {
         public Guid TaskInstanceId { get; set; }
@@ -131,6 +140,9 @@ namespace NouAssist.Workflow.Services
         public Dictionary<string, object> CustomData { get; set; } = new();
     }
 
+    /// <summary>
+    /// Result of executing multiple workflow actions
+    /// </summary>
     public class ActionExecutionResult
     {
         public bool IsSuccessful { get; set; }
@@ -138,5 +150,9 @@ namespace NouAssist.Workflow.Services
         public List<Guid> QueuedActions { get; set; } = new();
         public List<Guid> FailedActions { get; set; } = new();
         public string ErrorMessage { get; set; }
+
+        public int TotalExecuted => ExecutedActions.Count;
+        public int TotalQueued => QueuedActions.Count;
+        public int TotalFailed => FailedActions.Count;
     }
 }

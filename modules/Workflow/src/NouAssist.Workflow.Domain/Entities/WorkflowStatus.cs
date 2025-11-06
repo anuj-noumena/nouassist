@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using NouAssist.Workflow.Enums;
 using Volo.Abp;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.Workflow.Entities
 {
-    public class WorkflowStatus : Entity<Guid>
+    public class WorkflowStatus : Entity<Guid>, IHasExtraProperties
     {
         public Guid WorkflowId { get; private set; }
         public string Name { get; private set; }
@@ -16,14 +17,12 @@ namespace NouAssist.Workflow.Entities
         public int OrderIndex { get; set; }
         public bool IsInitial { get; private set; }
         public bool IsResolution { get; set; }
-
-        private Dictionary<string, object> _properties;
-        public IReadOnlyDictionary<string, object> Properties => 
-            _properties?.AsReadOnly();
+        
+        public ExtraPropertyDictionary ExtraProperties { get; }
 
         protected WorkflowStatus()
         {
-            _properties = new Dictionary<string, object>();
+            ExtraProperties = new ();
         }
 
         public WorkflowStatus(
@@ -41,19 +40,18 @@ namespace NouAssist.Workflow.Entities
             Color = color ?? GetDefaultColorForCategory(category);
             OrderIndex = orderIndex;
             IsInitial = isInitial;
-            _properties = new Dictionary<string, object>();
+            ExtraProperties = new ();
         }
-
         
-        public void SetProperty(string key, object value)
-        {
-            if (_properties == null)
-            {
-                _properties = new Dictionary<string, object>();
-            }
-
-            _properties[key] = value;
-        }
+        // public void SetProperty(string key, object value)
+        // {
+        //     // if (_properties == null)
+        //     // {
+        //     //     _properties = new Dictionary<string, object>();
+        //     // }
+        //     //
+        //     // _properties[key] = value;
+        // }
 
         public bool IsTodo => Category == WorkflowStatusCategory.Todo;
         public bool IsInProgress => Category == WorkflowStatusCategory.InProgress;
@@ -74,5 +72,6 @@ namespace NouAssist.Workflow.Entities
                 _ => "#64748b"
             };
         }
+
     }
 }

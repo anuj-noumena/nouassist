@@ -126,6 +126,7 @@ namespace NouAssist.Tasks.Aggregates
             Guid ownerId,
             double importance,
             double urgency,
+            Guid? reporterId = null,
             Guid? tenantId = null,
             Guid? assigneeId = null) : base(id)
         {
@@ -133,6 +134,7 @@ namespace NouAssist.Tasks.Aggregates
             ProjectId = Check.NotNull(projectId, nameof(projectId));
             WorkflowId = Check.NotNull(workflowId, nameof(workflowId));
             OwnerId = Check.NotNull(ownerId, nameof(ownerId));
+            ReporterId = reporterId ?? ownerId;
             AssigneeId = assigneeId;
             TenantId = tenantId;
 

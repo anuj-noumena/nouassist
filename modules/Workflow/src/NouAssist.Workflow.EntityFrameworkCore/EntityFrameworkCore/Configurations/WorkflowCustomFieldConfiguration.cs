@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.Workflow.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
+using System.Linq.Dynamic.Core;
 
 namespace NouAssist.Workflow.EntityFrameworkCore.Configurations
 {

@@ -10,9 +10,11 @@ using NouAssist.Approval.Permissions;
 using NouAssist.Approval.Requests.Dtos;
 using NouAssist.Approval.Services;
 using NouAssist.Approval.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.Approval.Requests
@@ -50,7 +52,7 @@ namespace NouAssist.Approval.Requests
             var spec = CreateListSpecification(input);
 
             var requests = await _requestRepository.GetListAsync(spec);
-            var totalCount = await _requestRepository.CountAsync(spec);
+            var totalCount = await _requestRepository.CountAsync(spec.ToExpression());
 
             var dtos = new List<ApprovalRequestDto>();
             foreach (var request in requests)
@@ -68,7 +70,7 @@ namespace NouAssist.Approval.Requests
                 .And(new UserPendingApprovalsSpecification(CurrentUser.Id.Value));
 
             var requests = await _requestRepository.GetListAsync(spec);
-            var totalCount = await _requestRepository.CountAsync(spec);
+            var totalCount = await _requestRepository.CountAsync(spec.ToExpression());
 
             var dtos = new List<ApprovalRequestDto>();
             foreach (var request in requests)
@@ -212,11 +214,11 @@ namespace NouAssist.Approval.Requests
         private ISpecification<ApprovalRequest> CreateListSpecification(
             GetApprovalRequestListDto input)
         {
-            var spec = Specification.None<ApprovalRequest>();
+            ISpecification<ApprovalRequest> spec = new BaseSpecification<ApprovalRequest>();
 
             if (input.Status.HasValue)
             {
-                spec = spec.And(new Specification<ApprovalRequest>(
+                spec = spec.And(new BaseSpecification<ApprovalRequest>(
                     r => r.Status == input.Status.Value));
             }
 
@@ -235,7 +237,7 @@ namespace NouAssist.Approval.Requests
 
             if (input.RequestedBy.HasValue)
             {
-                spec = spec.And(new Specification<ApprovalRequest>(
+                spec = spec.And(new BaseSpecification<ApprovalRequest>(
                     r => r.RequestedBy == input.RequestedBy.Value));
             }
 

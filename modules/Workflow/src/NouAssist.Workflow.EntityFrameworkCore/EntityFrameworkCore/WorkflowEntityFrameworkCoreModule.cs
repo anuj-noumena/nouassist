@@ -3,14 +3,13 @@ using NouAssist.Workflow.Aggregates;
 using NouAssist.Workflow.Entities;
 using NouAssist.Workflow.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;
 
 namespace NouAssist.Workflow.EntityFrameworkCore;
 
 [DependsOn(
     typeof(WorkflowDomainModule),
-    typeof(AbpEntityFrameworkCorePostgreSQLModule)
+    typeof(AbpEntityFrameworkCoreModule)
 )]
 public class WorkflowEntityFrameworkCoreModule : AbpModule
 {
@@ -23,11 +22,6 @@ public class WorkflowEntityFrameworkCoreModule : AbpModule
             options.AddRepository<WorkflowCustomField, EfCoreWorkflowCustomFieldRepository>();
 
             options.AddDefaultRepositories<IWorkflowDbContext>(includeAllEntities: true);
-        });
-
-        Configure<AbpDbContextOptions>(options =>
-        {
-            options.UseNpgsql();
         });
     }
 }

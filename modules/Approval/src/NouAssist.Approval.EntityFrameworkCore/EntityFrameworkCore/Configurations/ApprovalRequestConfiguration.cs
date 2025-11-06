@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.Approval.Aggregates;
+using NouAssist.Approval.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.Approval.EntityFrameworkCore.Configurations
@@ -44,7 +45,7 @@ namespace NouAssist.Approval.EntityFrameworkCore.Configurations
                     v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
                 );
 
-            builder.Property(x => x.CustomFieldValues)
+            builder.Property(x => x.CustomFields)
                 .HasColumnType("jsonb")
                 .HasConversion(
                     v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),

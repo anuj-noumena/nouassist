@@ -9,6 +9,7 @@ using NouAssist.Workflow.Permissions;
 using NouAssist.Workflow.Workflows.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using System.Linq.Dynamic.Core;
 
 namespace NouAssist.Workflow.Workflows
 {
@@ -79,7 +80,7 @@ namespace NouAssist.Workflow.Workflows
             await _workflowSchemeRepository.DeleteAsync(id);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Edit)]
+        [Authorize(WorkflowPermissions.Workflows.Update)]
         public async Task<WorkflowSchemeDto> PublishAsync(Guid id)
         {
             var scheme = await _workflowSchemeRepository.GetAsync(id);
@@ -89,7 +90,7 @@ namespace NouAssist.Workflow.Workflows
             return ObjectMapper.Map<WorkflowScheme, WorkflowSchemeDto>(scheme);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Edit)]
+        [Authorize(WorkflowPermissions.Workflows.Update)]
         public async Task<WorkflowSchemeDto> ActivateAsync(Guid id)
         {
             var scheme = await _workflowSchemeRepository.GetAsync(id);
@@ -99,7 +100,7 @@ namespace NouAssist.Workflow.Workflows
             return ObjectMapper.Map<WorkflowScheme, WorkflowSchemeDto>(scheme);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Edit)]
+        [Authorize(WorkflowPermissions.Workflows.Update)]
         public async Task<WorkflowSchemeDto> DeactivateAsync(Guid id)
         {
             var scheme = await _workflowSchemeRepository.GetAsync(id);

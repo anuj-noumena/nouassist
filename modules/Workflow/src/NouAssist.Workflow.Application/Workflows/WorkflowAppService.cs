@@ -8,6 +8,7 @@ using NouAssist.Workflow.Permissions;
 using NouAssist.Workflow.Workflows.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using System.Linq.Dynamic.Core;
 
 namespace NouAssist.Workflow.Workflows
 {
@@ -89,7 +90,7 @@ namespace NouAssist.Workflow.Workflows
             return ObjectMapper.Map<Aggregates.Workflow, WorkflowDto>(workflow);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Edit)]
+        [Authorize(WorkflowPermissions.Workflows.Update)]
         public async Task<WorkflowDto> UpdateAsync(Guid id, UpdateWorkflowDto input)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -108,7 +109,7 @@ namespace NouAssist.Workflow.Workflows
             await _workflowRepository.DeleteAsync(id);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Edit)]
+        [Authorize(WorkflowPermissions.Workflows.Update)]
         public async Task<WorkflowDto> SetAsDefaultAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -118,7 +119,7 @@ namespace NouAssist.Workflow.Workflows
             return ObjectMapper.Map<Aggregates.Workflow, WorkflowDto>(workflow);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Edit)]
+        [Authorize(WorkflowPermissions.Workflows.Update)]
         public async Task<WorkflowDto> ActivateAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -128,7 +129,7 @@ namespace NouAssist.Workflow.Workflows
             return ObjectMapper.Map<Aggregates.Workflow, WorkflowDto>(workflow);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Edit)]
+        [Authorize(WorkflowPermissions.Workflows.Update)]
         public async Task<WorkflowDto> DeactivateAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetAsync(id);

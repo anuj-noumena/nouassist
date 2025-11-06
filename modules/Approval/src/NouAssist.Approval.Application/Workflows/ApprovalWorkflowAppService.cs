@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.Approval.Aggregates;
 using NouAssist.Approval.Data;
+using NouAssist.Approval.Entities;
 using NouAssist.Approval.Permissions;
 using NouAssist.Approval.Specifications;
 using NouAssist.Approval.Workflows.Dtos;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -37,8 +39,8 @@ namespace NouAssist.Approval.Workflows
         {
             var spec = CreateListSpecification(input);
 
-            var workflows = await _workflowRepository.GetListAsync(spec);
-            var totalCount = await _workflowRepository.CountAsync(spec);
+            var workflows = await _workflowRepository.GetListAsync(spec.ToExpression());
+            var totalCount = await _workflowRepository.CountAsync(spec.ToExpression());
 
             return new PagedResultDto<ApprovalWorkflowDto>(
                 totalCount,
@@ -195,23 +197,23 @@ namespace NouAssist.Approval.Workflows
         private ISpecification<ApprovalWorkflow> CreateListSpecification(
             GetApprovalWorkflowListDto input)
         {
-            var spec = Specification.None<ApprovalWorkflow>();
+            ISpecification<ApprovalWorkflow> spec = new BaseSpecification<ApprovalWorkflow>();
 
             if (input.WorkflowType.HasValue)
             {
-                spec = spec.And(new Specification<ApprovalWorkflow>(
+                spec = spec.And(new BaseSpecification<ApprovalWorkflow>(
                     w => w.WorkflowType == input.WorkflowType.Value));
             }
 
             if (input.IsActive.HasValue)
             {
-                spec = spec.And(new Specification<ApprovalWorkflow>(
+                spec = spec.And(new BaseSpecification<ApprovalWorkflow>(
                     w => w.IsActive == input.IsActive.Value));
             }
 
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
-                spec = spec.And(new Specification<ApprovalWorkflow>(
+                spec = spec.And(new BaseSpecification<ApprovalWorkflow>(
                     w => w.Name.Contains(input.Filter)));
             }
 

@@ -48,7 +48,9 @@ namespace NouAssist.SharedKernel.Services
             double baseImportance = 0.5)
         {
             if (!deadline.HasValue)
+            {
                 return (baseImportance, 0.3);
+            }
 
             var daysUntilDeadline = (deadline.Value - Clock.Now).TotalDays;
 

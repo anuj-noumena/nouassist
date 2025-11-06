@@ -78,6 +78,8 @@ namespace NouAssist.Tasks.Aggregates
 
         private readonly List<TaskDependency> _dependencies = new();
         public IReadOnlyCollection<TaskDependency> Dependencies => _dependencies.AsReadOnly();
+        
+        public List<TaskHistoryEntry> History { get; private set; } = new();
 
         protected TaskInstance()
         {
@@ -530,6 +532,11 @@ namespace NouAssist.Tasks.Aggregates
         {
             ProjectId = projectId;
             WorkflowStatusId = workflowStatusId;
+        }
+        
+        private void AddHistoryEntry(TaskStatus status, string note)
+        {
+            History.Add(new TaskHistoryEntry(Guid.NewGuid(), Id, status, note, DateTime.UtcNow));
         }
         
     }

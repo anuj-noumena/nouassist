@@ -15,6 +15,9 @@ namespace NouAssist.Workflow.Aggregates
         public Guid? DefaultWorkflowId { get; private set; }
         public bool IsActive { get; private set; }
         public bool IsDraft { get; private set; }
+        
+        public bool AllowQuickDelegation { get; private set; } = true;
+        public bool RequireApprovalForIntegrated { get; private set; } = false;
 
         private readonly List<WorkflowSchemeMapping> _mappings = new();
         public IReadOnlyCollection<WorkflowSchemeMapping> Mappings => 
@@ -104,6 +107,12 @@ namespace NouAssist.Workflow.Aggregates
         public void Deactivate()
         {
             IsActive = false;
+        }
+        
+        public void SetDelegationMode(bool allowQuick, bool requireApprovalForIntegrated = false)
+        {
+            AllowQuickDelegation = allowQuick;
+            RequireApprovalForIntegrated = requireApprovalForIntegrated;
         }
     }
 }

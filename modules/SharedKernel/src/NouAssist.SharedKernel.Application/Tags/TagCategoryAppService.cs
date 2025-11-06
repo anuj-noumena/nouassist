@@ -43,7 +43,9 @@ namespace NouAssist.SharedKernel.Tags
             );
 
             if (!string.IsNullOrWhiteSpace(input.Color))
+            {
                 category.Color = input.Color;
+            }
 
             await _categoryRepository.InsertAsync(category);
             return ObjectMapper.Map<TagCategory, TagCategoryDto>(category);
@@ -54,10 +56,14 @@ namespace NouAssist.SharedKernel.Tags
             var category = await _categoryRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Name))
+            {
                 category.Name = input.Name;
+            }
 
             if (input.Color != null)
+            {
                 category.Color = input.Color;
+            }
 
             await _categoryRepository.UpdateAsync(category);
             return ObjectMapper.Map<TagCategory, TagCategoryDto>(category);

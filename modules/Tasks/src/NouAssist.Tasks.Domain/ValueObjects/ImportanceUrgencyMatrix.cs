@@ -36,11 +36,20 @@ namespace NouAssist.Tasks.ValueObjects
         private static EisenhowerQuadrant CalculateQuadrant(double importance, double urgency)
         {
             if (importance >= 0.5 && urgency >= 0.5)
+            {
                 return EisenhowerQuadrant.Q1DoFirst;
+            }
+
             if (importance >= 0.5 && urgency < 0.5)
+            {
                 return EisenhowerQuadrant.Q2Schedule;
+            }
+
             if (importance < 0.5 && urgency >= 0.5)
+            {
                 return EisenhowerQuadrant.Q3Delegate;
+            }
+
             return EisenhowerQuadrant.Q4Eliminate;
         }
 

@@ -66,7 +66,10 @@ namespace NouAssist.Projects.Entities
 
         public void Resolve(string resolvedBy)
         {
-            if (Status == ProjectDependencyStatus.Resolved) return;
+            if (Status == ProjectDependencyStatus.Resolved)
+            {
+                return;
+            }
 
             Status = ProjectDependencyStatus.Resolved;
             ActualResolutionDate = DateTime.UtcNow;
@@ -96,8 +99,10 @@ namespace NouAssist.Projects.Entities
         public void SetMetadata(string key, object value)
         {
             if (_metadata == null)
+            {
                 _metadata = new Dictionary<string, object>();
-            
+            }
+
             _metadata[key] = value;
         }
 

@@ -52,8 +52,10 @@ namespace NouAssist.Workflow.Entities
         public void SetCondition(string key, object value)
         {
             if (_conditions == null)
+            {
                 _conditions = new Dictionary<string, object>();
-            
+            }
+
             _conditions[key] = value;
         }
 

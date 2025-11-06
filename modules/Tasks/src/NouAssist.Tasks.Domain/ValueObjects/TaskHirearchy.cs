@@ -20,13 +20,19 @@ namespace NouAssist.Tasks.ValueObjects
             int subtasksDoneCount = 0)
         {
             if (orderInParent < 0)
+            {
                 throw new ArgumentException("Order in parent cannot be negative.", nameof(orderInParent));
+            }
 
             if (subtasksCount < 0)
+            {
                 throw new ArgumentException("Subtask count cannot be negative.", nameof(subtasksCount));
+            }
 
             if (subtasksDoneCount < 0 || subtasksDoneCount > subtasksCount)
+            {
                 throw new ArgumentException("Invalid subtask completion count.", nameof(subtasksDoneCount));
+            }
 
             OrderInParent = orderInParent;
             ParentInstanceId = parentInstanceId;
@@ -53,7 +59,9 @@ namespace NouAssist.Tasks.ValueObjects
         public TaskHierarchy IncrementSubtasksDone()
         {
             if (SubtasksDoneCount >= SubtasksCount)
+            {
                 return this;
+            }
 
             return new TaskHierarchy(OrderInParent, ParentInstanceId, SubtasksCount, SubtasksDoneCount + 1);
         }

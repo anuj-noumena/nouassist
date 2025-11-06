@@ -130,23 +130,35 @@ namespace NouAssist.Tasks.TaskInstances
             //     taskInstance.AssigneeId = input.AssigneeId;
 
             if (input.PlannedStartDate.HasValue)
+            {
                 taskInstance.PlannedStartDate = input.PlannedStartDate;
+            }
 
             if (input.PlannedDueDate.HasValue)
+            {
                 taskInstance.PlannedDueDate = input.PlannedDueDate;
+            }
 
             if (input.ActualDueDate.HasValue)
+            {
                 taskInstance.ActualDueDate = input.ActualDueDate;
+            }
 
             if (input.Importance.HasValue && input.Urgency.HasValue)
+            {
                 taskInstance.UpdatePriority(input.Importance.Value, input.Urgency.Value);
+            }
 
             if (input.IsNextAction.HasValue)
             {
                 if (input.IsNextAction.Value)
+                {
                     taskInstance.MarkAsNextAction();
+                }
                 else
+                {
                     taskInstance.UnmarkAsNextAction();
+                }
             }
 
             if (input.IsFlagged.HasValue)
@@ -754,9 +766,13 @@ namespace NouAssist.Tasks.TaskInstances
                     if (input.IsNextAction.HasValue)
                     {
                         if (input.IsNextAction.Value)
+                        {
                             taskInstance.MarkAsNextAction();
+                        }
                         else
+                        {
                             taskInstance.UnmarkAsNextAction();
+                        }
                     }
 
                     

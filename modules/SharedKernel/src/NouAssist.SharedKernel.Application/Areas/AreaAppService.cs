@@ -72,13 +72,19 @@ namespace NouAssist.SharedKernel.Areas
             );
 
             if (!string.IsNullOrWhiteSpace(input.Description))
+            {
                 area.Description = input.Description;
+            }
 
             if (input.ParentId.HasValue)
+            {
                 area.AssignParent(input.ParentId.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Purpose))
+            {
                 area.Purpose = input.Purpose;
+            }
 
             await _areaRepository.InsertAsync(area);
             return ObjectMapper.Map<Area, AreaDto>(area);
@@ -89,13 +95,19 @@ namespace NouAssist.SharedKernel.Areas
             var area = await _areaRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Title))
+            {
                 area.Title = input.Title;
+            }
 
             if (input.Description != null)
+            {
                 area.Description = input.Description;
+            }
 
             if (input.Purpose != null)
+            {
                 area.Purpose = input.Purpose;
+            }
 
             await _areaRepository.UpdateAsync(area);
             return ObjectMapper.Map<Area, AreaDto>(area);

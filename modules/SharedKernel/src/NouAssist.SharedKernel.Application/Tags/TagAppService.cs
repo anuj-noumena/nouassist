@@ -39,10 +39,14 @@ namespace NouAssist.SharedKernel.Tags
             );
 
             if (!string.IsNullOrWhiteSpace(input.Color))
+            {
                 tag.Color = input.Color;
+            }
 
             if (input.CategoryId.HasValue)
+            {
                 tag.AssignToCategory(input.CategoryId.Value);
+            }
 
             await _tagRepository.InsertAsync(tag);
             return ObjectMapper.Map<Tag, TagDto>(tag);

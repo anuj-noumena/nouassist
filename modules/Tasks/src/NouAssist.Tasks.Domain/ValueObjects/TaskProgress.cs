@@ -21,10 +21,14 @@ namespace NouAssist.Tasks.ValueObjects
             bool isNextAction = false)
         {
             if (workflowStatusId == Guid.Empty)
+            {
                 throw new ArgumentException("WorkflowStatusId cannot be empty.", nameof(workflowStatusId));
+            }
 
             if (progressPercent < 0 || progressPercent > 100)
+            {
                 throw new ArgumentOutOfRangeException(nameof(progressPercent), "Progress percent must be between 0 and 100.");
+            }
 
             WorkflowStatusId = workflowStatusId;
             TaskStatus = taskStatus;
@@ -52,7 +56,9 @@ namespace NouAssist.Tasks.ValueObjects
         public TaskProgress UpdateProgress(double percent)
         {
             if (percent < 0 || percent > 100)
+            {
                 throw new ArgumentOutOfRangeException(nameof(percent), "Progress percent must be between 0 and 100.");
+            }
 
             return new TaskProgress(WorkflowStatusId, TaskStatus, percent, IsNextAction);
         }

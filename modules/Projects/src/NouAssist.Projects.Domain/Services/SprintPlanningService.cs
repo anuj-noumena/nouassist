@@ -59,7 +59,9 @@ namespace NouAssist.Projects.Services
         public int CalculateTeamVelocity(List<ProjectSprint> completedSprints, int lastNSprints = 3)
         {
             if (!completedSprints.Any())
+            {
                 return ProjectDomainConstants.DefaultSprintVelocity;
+            }
 
             var recentSprints = completedSprints
                 .OrderByDescending(s => s.CompletedAt)

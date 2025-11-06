@@ -34,7 +34,11 @@ namespace NouAssist.Projects.ValueObjects
         {
             get
             {
-                if (IsPast) return null;
+                if (IsPast)
+                {
+                    return null;
+                }
+
                 return EndDate - DateTime.UtcNow;
             }
         }

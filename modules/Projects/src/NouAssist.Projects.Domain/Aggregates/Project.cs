@@ -109,9 +109,14 @@ namespace NouAssist.Projects.Aggregates
         public void SetPriority(double importance, double urgency)
         {
             if (importance < 0 || importance > 1)
+            {
                 throw new BusinessException("Projects:InvalidImportance");
+            }
+
             if (urgency < 0 || urgency > 1)
+            {
                 throw new BusinessException("Projects:InvalidUrgency");
+            }
 
             Importance = importance;
             Urgency = urgency;
@@ -284,7 +289,11 @@ namespace NouAssist.Projects.Aggregates
         {
             get
             {
-                if (!DueDate.HasValue || IsCompleted) return null;
+                if (!DueDate.HasValue || IsCompleted)
+                {
+                    return null;
+                }
+
                 var remaining = DueDate.Value - DateTime.UtcNow;
                 return remaining.TotalSeconds > 0 ? remaining : TimeSpan.Zero;
             }
@@ -300,7 +309,11 @@ namespace NouAssist.Projects.Aggregates
         {
             get
             {
-                if (_successCriteria.Count == 0) return 0;
+                if (_successCriteria.Count == 0)
+                {
+                    return 0;
+                }
+
                 return (double)SuccessCriteriaMet / _successCriteria.Count * 100;
             }
         }
@@ -336,19 +349,39 @@ namespace NouAssist.Projects.Aggregates
         private static EisenhowerQuadrant CalculateQuadrant(double importance, double urgency)
         {
             if (importance >= 0.5 && urgency >= 0.5)
+            {
                 return EisenhowerQuadrant.Q1DoFirst;
+            }
+
             if (importance >= 0.5 && urgency < 0.5)
+            {
                 return EisenhowerQuadrant.Q2Schedule;
+            }
+
             if (importance < 0.5 && urgency >= 0.5)
+            {
                 return EisenhowerQuadrant.Q3Delegate;
+            }
+
             return EisenhowerQuadrant.Q4Eliminate;
         }
 
         private ProjectHealth CalculateHealth()
         {
-            if (IsCompleted) return ProjectHealth.Completed;
-            if (IsCancelled) return ProjectHealth.Cancelled;
-            if (IsOnHold) return ProjectHealth.OnHold;
+            if (IsCompleted)
+            {
+                return ProjectHealth.Completed;
+            }
+
+            if (IsCancelled)
+            {
+                return ProjectHealth.Cancelled;
+            }
+
+            if (IsOnHold)
+            {
+                return ProjectHealth.OnHold;
+            }
 
             double healthScore = 0;
             int factors = 0;
@@ -361,8 +394,15 @@ namespace NouAssist.Projects.Aggregates
                 var expectedProgress = elapsed / totalDuration * 100;
                 var progressDelta = Progress - expectedProgress;
 
-                if (progressDelta >= 0) healthScore += 1.0;
-                else if (progressDelta >= -10) healthScore += 0.5;
+                if (progressDelta >= 0)
+                {
+                    healthScore += 1.0;
+                }
+                else if (progressDelta >= -10)
+                {
+                    healthScore += 0.5;
+                }
+
                 factors++;
             }
 
@@ -382,8 +422,16 @@ namespace NouAssist.Projects.Aggregates
 
             var avgScore = factors > 0 ? healthScore / factors : 0.5;
 
-            if (avgScore >= 0.7) return ProjectHealth.Healthy;
-            if (avgScore >= 0.4) return ProjectHealth.AtRisk;
+            if (avgScore >= 0.7)
+            {
+                return ProjectHealth.Healthy;
+            }
+
+            if (avgScore >= 0.4)
+            {
+                return ProjectHealth.AtRisk;
+            }
+
             return ProjectHealth.Critical;
         }
 

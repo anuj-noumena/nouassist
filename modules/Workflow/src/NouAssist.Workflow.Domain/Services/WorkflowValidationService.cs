@@ -99,7 +99,10 @@ namespace NouAssist.Workflow.Services
                 // Validate actions
                 foreach (var action in transition.Actions)
                 {
-                    if (!action.IsEnabled) continue;
+                    if (!action.IsEnabled)
+                    {
+                        continue;
+                    }
 
                     // Check for required configuration
                     if (action.ActionType.RequiresConfiguration() && 

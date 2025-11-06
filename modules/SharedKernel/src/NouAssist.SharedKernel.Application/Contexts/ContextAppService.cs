@@ -54,19 +54,29 @@ namespace NouAssist.SharedKernel.Contexts
             );
 
             if (!string.IsNullOrWhiteSpace(input.Notes))
+            {
                 context.Notes = input.Notes;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Icon))
+            {
                 context.Icon = input.Icon;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Color))
+            {
                 context.Color = input.Color;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Location))
+            {
                 context.SetLocation(input.Location);
+            }
 
             if (input.EnergyLevel.HasValue)
+            {
                 context.SetEnergyLevel(input.EnergyLevel.Value);
+            }
 
             await _contextRepository.InsertAsync(context);
             return ObjectMapper.Map<Context, ContextDto>(context);
@@ -77,22 +87,34 @@ namespace NouAssist.SharedKernel.Contexts
             var context = await _contextRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Title))
+            {
                 context.Title = input.Title;
+            }
 
             if (input.Notes != null)
+            {
                 context.Notes = input.Notes;
+            }
 
             if (input.Icon != null)
+            {
                 context.Icon = input.Icon;
+            }
 
             if (input.Color != null)
+            {
                 context.Color = input.Color;
+            }
 
             if (input.Location != null)
+            {
                 context.SetLocation(input.Location);
+            }
 
             if (input.EnergyLevel.HasValue)
+            {
                 context.SetEnergyLevel(input.EnergyLevel.Value);
+            }
 
             await _contextRepository.UpdateAsync(context);
             return ObjectMapper.Map<Context, ContextDto>(context);

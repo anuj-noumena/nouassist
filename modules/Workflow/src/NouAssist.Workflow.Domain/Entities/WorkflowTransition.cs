@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NouAssist.Workflow.Enums;
+using NouAssist.Workflow.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
@@ -19,7 +21,8 @@ namespace NouAssist.Workflow.Entities
 
         private readonly List<Guid> _allowedUserIds = new();
         public IReadOnlyCollection<Guid> AllowedUserIds => _allowedUserIds.AsReadOnly();
-
+        public TransitionPurpose Purpose { get; private set; } = TransitionPurpose.Standard;  // New: Default to Standard
+        
         public bool RequiresComment { get; set; }
         public bool RequiresResolution { get; set; }
         public bool IsGlobal { get; set; }
@@ -30,19 +33,14 @@ namespace NouAssist.Workflow.Entities
         private readonly List<WorkflowAction> _actions = new();
         public IReadOnlyCollection<WorkflowAction> Actions => _actions.AsReadOnly();
 
-        private Dictionary<string, object> _conditions;
-        public IReadOnlyDictionary<string, object> Conditions => 
-            _conditions?.AsReadOnly();
+        private List<WorkflowCondition> _conditions = new();
+        public IReadOnlyCollection<WorkflowCondition> Conditions => 
+            _conditions.AsReadOnly();
 
-        private Dictionary<string, object> _validators;
-        public IReadOnlyDictionary<string, object> Validators => 
-            _validators?.AsReadOnly();
+        private Dictionary<string, object> _validators = new();
+        public IReadOnlyDictionary<string, object> Validators => _validators.AsReadOnly();
 
-        protected WorkflowTransition()
-        {
-            _conditions = new Dictionary<string, object>();
-            _validators = new Dictionary<string, object>();
-        }
+        protected WorkflowTransition(){}
 
         public WorkflowTransition(
             Guid id,
@@ -50,6 +48,7 @@ namespace NouAssist.Workflow.Entities
             string name,
             Guid fromStatusId,
             Guid toStatusId,
+            TransitionPurpose purpose = TransitionPurpose.Standard,
             string description = null) : base(id)
         {
             if (fromStatusId == toStatusId)
@@ -61,6 +60,7 @@ namespace NouAssist.Workflow.Entities
             Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             FromStatusId = fromStatusId;
             ToStatusId = toStatusId;
+            Purpose = purpose;
             Description = description;
         }
 
@@ -89,28 +89,38 @@ namespace NouAssist.Workflow.Entities
         public bool CanUserPerform(Guid userId, List<string> userRoles)
         {
             if (!_allowedRoles.Any() && !_allowedUserIds.Any())
+            {
                 return true;
+            }
 
             if (_allowedUserIds.Contains(userId))
+            {
                 return true;
+            }
 
             return _allowedRoles.Any(role => userRoles.Contains(role));
         }
 
-        public void SetCondition(string key, object value)
+        public void SetCondition(WorkflowCondition condition)
         {
-            if (_conditions == null)
-                _conditions = new Dictionary<string, object>();
-            
-            _conditions[key] = value;
+            _conditions ??= new List<WorkflowCondition>();
+
+            if (!_conditions.Contains(condition))
+            {
+                _conditions.Add(condition);
+            }
         }
 
         public void SetValidator(string key, object value)
         {
-            if (_validators == null)
-                _validators = new Dictionary<string, object>();
-            
+            _validators ??= new Dictionary<string, object>();
+
             _validators[key] = value;
+        }
+        
+        public void SetPurpose(TransitionPurpose purpose)
+        {
+            Purpose = purpose;
         }
 
         public bool HasConditions => _conditions?.Any() ?? false;

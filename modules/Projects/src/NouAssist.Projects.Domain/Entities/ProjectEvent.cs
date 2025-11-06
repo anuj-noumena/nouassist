@@ -41,7 +41,10 @@ namespace NouAssist.Projects.Entities
 
         public void MarkAsCompleted()
         {
-            if (IsCompleted) return;
+            if (IsCompleted)
+            {
+                return;
+            }
 
             IsCompleted = true;
             CompletedAt = DateTime.UtcNow;

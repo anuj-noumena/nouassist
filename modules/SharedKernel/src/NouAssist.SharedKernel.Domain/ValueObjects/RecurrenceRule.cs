@@ -92,7 +92,9 @@ namespace NouAssist.SharedKernel.ValueObjects
             }
 
             if (Until.HasValue && next > Until.Value)
+            {
                 return null;
+            }
 
             return next;
         }
@@ -101,8 +103,11 @@ namespace NouAssist.SharedKernel.ValueObjects
         {
             var intervalText = Interval == 1 ? "" : $"every {Interval} ";
             var frequencyText = Frequency.ToString().ToLower();
-            if (Interval > 1) frequencyText += "s";
-            
+            if (Interval > 1)
+            {
+                frequencyText += "s";
+            }
+
             return $"Repeats {intervalText}{frequencyText}";
         }
 

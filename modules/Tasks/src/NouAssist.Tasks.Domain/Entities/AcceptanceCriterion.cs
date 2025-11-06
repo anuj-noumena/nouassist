@@ -47,7 +47,11 @@ namespace NouAssist.Tasks.Entities
 
         public string GetFormattedGWT()
         {
-            if (!HasGivenWhenThen) return Description;
+            if (!HasGivenWhenThen)
+            {
+                return Description;
+            }
+
             return $"GIVEN {GivenContext}\nWHEN {WhenAction}\nTHEN {ThenOutcome}";
         }
 

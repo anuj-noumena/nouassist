@@ -110,8 +110,10 @@ namespace NouAssist.Workflow.Aggregates
         public void SetProperty(string key, object value)
         {
             if (_properties == null)
+            {
                 _properties = new Dictionary<string, object>();
-            
+            }
+
             _properties[key] = value;
         }
 

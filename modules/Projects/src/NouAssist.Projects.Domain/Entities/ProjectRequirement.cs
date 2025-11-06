@@ -1,5 +1,3 @@
-// src/NouAssist.Projects.Domain/Entities/ProjectRequirement.cs
-
 using System;
 using NouAssist.Projects.Enums;
 using Volo.Abp;

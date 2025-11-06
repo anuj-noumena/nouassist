@@ -41,7 +41,10 @@ namespace NouAssist.Projects.ValueObjects
 
         public SuccessCriterion MarkAsMet(string metBy)
         {
-            if (IsMet) return this;
+            if (IsMet)
+            {
+                return this;
+            }
 
             return new SuccessCriterion(
                 Description,

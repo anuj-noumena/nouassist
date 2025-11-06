@@ -36,12 +36,18 @@ namespace NouAssist.Tasks.Services
                 {
                     case DependencyType.FinishToStart:
                         if (!dependentInstance.Schedule.IsCompleted)
+                        {
                             return false;
+                        }
+
                         break;
 
                     case DependencyType.StartToStart:
                         if (!dependentInstance.Schedule.HasStarted)
+                        {
                             return false;
+                        }
+
                         break;
 
                     case DependencyType.FinishToFinish:
@@ -78,7 +84,10 @@ namespace NouAssist.Tasks.Services
                 var dependentInstance = dependentInstances
                     .FirstOrDefault(i => i.Id == dependency.DependsOnTaskInstanceId);
 
-                if (dependentInstance == null) continue;
+                if (dependentInstance == null)
+                {
+                    continue;
+                }
 
                 DateTime? constraintDate = null;
 
@@ -140,7 +149,10 @@ namespace NouAssist.Tasks.Services
 
             foreach (var dep in dependencies)
             {
-                if (!dep.DependsOnTaskId.HasValue) continue;
+                if (!dep.DependsOnTaskId.HasValue)
+                {
+                    continue;
+                }
 
                 var dependsOnId = dep.DependsOnTaskId.Value;
 

@@ -16,10 +16,14 @@ namespace NouAssist.SharedKernel.ValueObjects
             value = value?.Trim().ToLowerInvariant();
             
             if (string.IsNullOrWhiteSpace(value))
+            {
                 throw new BusinessException("Core:EmailRequired", "Email is required.");
+            }
 
             if (!IsValidEmail(value))
+            {
                 throw new BusinessException("Core:InvalidEmail", "Invalid email format.");
+            }
 
             Value = value;
         }
@@ -32,7 +36,9 @@ namespace NouAssist.SharedKernel.ValueObjects
         private static bool IsValidEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
+            {
                 return false;
+            }
 
             try
             {

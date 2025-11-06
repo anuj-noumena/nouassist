@@ -45,9 +45,21 @@ namespace NouAssist.SharedKernel.ValueObjects
 
         public string GetDisplayLocation()
         {
-            if (IsVirtual) return "Virtual Meeting";
-            if (!string.IsNullOrWhiteSpace(Name)) return Name;
-            if (!string.IsNullOrWhiteSpace(Address)) return Address;
+            if (IsVirtual)
+            {
+                return "Virtual Meeting";
+            }
+
+            if (!string.IsNullOrWhiteSpace(Name))
+            {
+                return Name;
+            }
+
+            if (!string.IsNullOrWhiteSpace(Address))
+            {
+                return Address;
+            }
+
             return "No location specified";
         }
 

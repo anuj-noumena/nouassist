@@ -37,9 +37,21 @@ namespace NouAssist.SharedKernel.ValueObjects
 
         public EisenhowerQuadrant DetermineQuadrant(UrgencyScore urgency)
         {
-            if (IsHigh && urgency.IsHigh) return EisenhowerQuadrant.Q1DoFirst;
-            if (IsHigh && !urgency.IsHigh) return EisenhowerQuadrant.Q2Schedule;
-            if (!IsHigh && urgency.IsHigh) return EisenhowerQuadrant.Q3Delegate;
+            if (IsHigh && urgency.IsHigh)
+            {
+                return EisenhowerQuadrant.Q1DoFirst;
+            }
+
+            if (IsHigh && !urgency.IsHigh)
+            {
+                return EisenhowerQuadrant.Q2Schedule;
+            }
+
+            if (!IsHigh && urgency.IsHigh)
+            {
+                return EisenhowerQuadrant.Q3Delegate;
+            }
+
             return EisenhowerQuadrant.Q4Eliminate;
         }
 

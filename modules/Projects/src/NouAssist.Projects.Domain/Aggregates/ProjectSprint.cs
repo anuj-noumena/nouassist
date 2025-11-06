@@ -119,14 +119,20 @@ namespace NouAssist.Projects.Aggregates
             if (planned.HasValue)
             {
                 if (planned < 0)
+                {
                     throw new BusinessException("Projects:InvalidStoryPoints");
+                }
+
                 PlannedStoryPoints = planned.Value;
             }
 
             if (completed.HasValue)
             {
                 if (completed < 0 || completed > PlannedStoryPoints)
+                {
                     throw new BusinessException("Projects:InvalidCompletedStoryPoints");
+                }
+
                 CompletedStoryPoints = completed.Value;
             }
         }
@@ -145,7 +151,11 @@ namespace NouAssist.Projects.Aggregates
         {
             get
             {
-                if (Status == SprintStatus.Completed || IsPast) return null;
+                if (Status == SprintStatus.Completed || IsPast)
+                {
+                    return null;
+                }
+
                 return EndDate - DateTime.UtcNow;
             }
         }
@@ -162,16 +172,29 @@ namespace NouAssist.Projects.Aggregates
         {
             get
             {
-                if (Status == SprintStatus.Completed) return SprintHealth.Completed;
-                if (!IsActive) return SprintHealth.NotStarted;
+                if (Status == SprintStatus.Completed)
+                {
+                    return SprintHealth.Completed;
+                }
+
+                if (!IsActive)
+                {
+                    return SprintHealth.NotStarted;
+                }
 
                 var timeElapsedPercent = (DateTime.UtcNow - StartDate).TotalDays / DurationInDays;
                 var progressPercent = CompletionRate / 100;
 
                 if (progressPercent >= timeElapsedPercent * 0.9)
+                {
                     return SprintHealth.OnTrack;
+                }
+
                 if (progressPercent >= timeElapsedPercent * 0.7)
+                {
                     return SprintHealth.AtRisk;
+                }
+
                 return SprintHealth.BehindSchedule;
             }
         }

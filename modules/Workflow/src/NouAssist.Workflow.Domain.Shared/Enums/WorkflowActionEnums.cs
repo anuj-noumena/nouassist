@@ -88,7 +88,10 @@ namespace NouAssist.Workflow.Enums
         /// <summary>
         /// Validate required fields
         /// </summary>
-        ValidateFields = 17
+        ValidateFields = 17,
+        InitiateApproval = 18,  // Triggers ApprovalRequest
+        CompleteApproval = 19,   // Processes pending approvals
+        DelegateTask = 20
     }
 
     /// <summary>

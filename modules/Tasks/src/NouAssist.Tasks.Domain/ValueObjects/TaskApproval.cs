@@ -14,7 +14,9 @@ namespace NouAssist.Tasks.ValueObjects
         public TaskApproval(Guid? approvalRequestId, bool requiresApproval)
         {
             if (requiresApproval && approvalRequestId == null)
+            {
                 throw new ArgumentException("ApprovalRequestId must be provided when approval is required.");
+            }
 
             ApprovalRequestId = approvalRequestId;
             RequiresApproval = requiresApproval;

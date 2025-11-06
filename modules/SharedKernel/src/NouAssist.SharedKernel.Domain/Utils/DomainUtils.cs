@@ -12,7 +12,9 @@ namespace NouAssist.SharedKernel.Utils
         public static Guid ConvertEntityTypeToGuid(string entityType)
         {
             if (string.IsNullOrWhiteSpace(entityType))
+            {
                 throw new ArgumentException("Entity type cannot be null or empty", nameof(entityType));
+            }
 
             // Create deterministic Guid from string
             using var md5 = MD5.Create();

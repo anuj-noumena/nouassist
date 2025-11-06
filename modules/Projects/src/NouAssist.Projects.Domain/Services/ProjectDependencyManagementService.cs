@@ -56,7 +56,9 @@ namespace NouAssist.Projects.Services
             }
 
             if (visited.Contains(currentProjectId))
+            {
                 return false;
+            }
 
             visited.Add(currentProjectId);
             stack.Push(currentProjectId);
@@ -129,7 +131,9 @@ namespace NouAssist.Projects.Services
             foreach (var dep in dependencies.Where(d => d.IsActive))
             {
                 if (!graph.ContainsKey(dep.ProjectId))
+                {
                     graph[dep.ProjectId] = new List<Guid>();
+                }
 
                 graph[dep.ProjectId].Add(dep.DependsOnProjectId);
             }
@@ -146,7 +150,9 @@ namespace NouAssist.Projects.Services
             void Visit(Guid node)
             {
                 if (temp.Contains(node))
+                {
                     throw new BusinessException("Projects:CircularDependency");
+                }
 
                 if (!visited.Contains(node))
                 {

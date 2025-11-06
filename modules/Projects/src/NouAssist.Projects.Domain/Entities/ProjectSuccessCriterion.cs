@@ -75,17 +75,24 @@ namespace NouAssist.Projects.Entities
 
         public void MarkAsMet(string metBy, string notes = null, string evidenceUrl = null)
         {
-            if (IsMet) return;
+            if (IsMet)
+            {
+                return;
+            }
 
             IsMet = true;
             MetAt = DateTime.UtcNow;
             MetBy = Check.NotNullOrWhiteSpace(metBy, nameof(metBy));
             
             if (!string.IsNullOrWhiteSpace(notes))
+            {
                 Notes = notes;
-            
+            }
+
             if (!string.IsNullOrWhiteSpace(evidenceUrl))
+            {
                 EvidenceUrl = evidenceUrl;
+            }
         }
 
         public void UnmarkAsMet()
@@ -117,8 +124,10 @@ namespace NouAssist.Projects.Entities
         public void SetMetadata(string key, object value)
         {
             if (_metadata == null)
+            {
                 _metadata = new Dictionary<string, object>();
-            
+            }
+
             _metadata[key] = value;
         }
 
@@ -140,8 +149,16 @@ namespace NouAssist.Projects.Entities
         {
             get
             {
-                if (!TargetNumeric.HasValue || !ActualNumeric.HasValue) return null;
-                if (TargetNumeric.Value == 0) return null;
+                if (!TargetNumeric.HasValue || !ActualNumeric.HasValue)
+                {
+                    return null;
+                }
+
+                if (TargetNumeric.Value == 0)
+                {
+                    return null;
+                }
+
                 return Math.Clamp(ActualNumeric.Value / TargetNumeric.Value * 100, 0, 100);
             }
         }

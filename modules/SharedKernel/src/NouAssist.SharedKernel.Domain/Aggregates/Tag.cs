@@ -37,7 +37,9 @@ namespace NouAssist.SharedKernel.Aggregates
         public void DecrementUsage()
         {
             if (UsageCount > 0)
+            {
                 UsageCount--;
+            }
         }
 
         public void AssignToCategory(Guid categoryId)

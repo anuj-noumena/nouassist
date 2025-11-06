@@ -161,28 +161,44 @@ namespace NouAssist.Tasks.Tasks
 
             // Update other properties
             if (input.Notes != null)
+            {
                 task.Notes = input.Notes;
+            }
 
             if (input.ExpectedResult != null)
+            {
                 task.ExpectedResult = input.ExpectedResult;
+            }
 
             if (input.DefaultContextId.HasValue)
+            {
                 task.DefaultContextId = input.DefaultContextId;
+            }
 
             if (input.DefaultAreaId.HasValue)
+            {
                 task.DefaultAreaId = input.DefaultAreaId;
+            }
 
             if (input.DefaultSprintId.HasValue)
+            {
                 task.DefaultSprintId = input.DefaultSprintId;
+            }
 
             if (input.TaskTypeId.HasValue)
+            {
                 task.TaskTypeId = input.TaskTypeId;
+            }
 
             if (input.EstimateMinutes.HasValue)
+            {
                 task.EstimateMinutes = input.EstimateMinutes;
+            }
 
             if (input.DefaultDueDate.HasValue)
+            {
                 task.DefaultDueDate = input.DefaultDueDate;
+            }
 
             await _taskRepository.UpdateAsync(task);
 

@@ -23,10 +23,14 @@ namespace NouAssist.Tasks.ValueObjects
             bool isDiscussionLocked = false)
         {
             if (commentsCount < 0)
+            {
                 throw new ArgumentException("Comments count cannot be negative.", nameof(commentsCount));
+            }
 
             if (attachmentsCount < 0)
+            {
                 throw new ArgumentException("Attachments count cannot be negative.", nameof(attachmentsCount));
+            }
 
             CommentsCount = commentsCount;
             AttachmentsCount = attachmentsCount;
@@ -53,7 +57,9 @@ namespace NouAssist.Tasks.ValueObjects
         public TaskDiscussion AddWatcher(Guid userId)
         {
             if (_watchers.Contains(userId))
+            {
                 return this;
+            }
 
             var updated = _watchers.ToList();
             updated.Add(userId);
@@ -64,7 +70,9 @@ namespace NouAssist.Tasks.ValueObjects
         public TaskDiscussion RemoveWatcher(Guid userId)
         {
             if (!_watchers.Contains(userId))
+            {
                 return this;
+            }
 
             var updated = _watchers.Where(w => w != userId).ToList();
             return new TaskDiscussion(CommentsCount, AttachmentsCount, updated, IsDiscussionLocked);
@@ -93,7 +101,9 @@ namespace NouAssist.Tasks.ValueObjects
             yield return IsDiscussionLocked;
 
             foreach (var watcher in _watchers.OrderBy(x => x))
+            {
                 yield return watcher;
+            }
         }
     }
 }

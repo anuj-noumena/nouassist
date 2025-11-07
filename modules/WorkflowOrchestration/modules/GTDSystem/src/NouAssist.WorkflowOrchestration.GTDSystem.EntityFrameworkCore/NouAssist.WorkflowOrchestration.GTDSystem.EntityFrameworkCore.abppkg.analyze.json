@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.GTDSystem.Domain",
-          "namespace": "NouAssist.WorkflowOrchestration.GTDSystem",
+          "namespace": "NouAssist.GTD",
           "name": "GTDSystemDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore",
-      "connectionStringName": "GTDSystem",
+      "connectionStringName": "GTD",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore",
-          "name": "ConfigureGTDSystem",
+          "name": "ConfigureGTD",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IGTDSystemDbContext",
+          "name": "IGTDDbContext",
           "namespace": "NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore",
-          "fullName": "NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore.IGTDSystemDbContext"
+          "fullName": "NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore.IGTDDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "GTDSystemDbContext",
+      "name": "GTDDbContext",
       "summary": null
     }
   ]

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.3.6"/>
+    <ProjectReference Include="..\..\..\SharedKernel\src\NouAssist.SharedKernel.Domain\NouAssist.SharedKernel.Domain.csproj" />
     <ProjectReference Include="..\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Shared\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Shared.csproj" />
   </ItemGroup>
 

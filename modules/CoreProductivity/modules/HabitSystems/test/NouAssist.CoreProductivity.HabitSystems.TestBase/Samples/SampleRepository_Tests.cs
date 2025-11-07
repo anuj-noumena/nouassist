@@ -8,7 +8,7 @@ namespace NouAssist.CoreProductivity.HabitSystems.Samples;
  * Then inherit these abstract classes from EF Core & MongoDB test projects.
  * In this way, both database providers are tests with the same set tests.
  */
-public abstract class SampleRepository_Tests<TStartupModule> : HabitSystemsTestBase<TStartupModule>
+public abstract class SampleRepository_Tests<TStartupModule> : HabitsTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly ISampleRepository _sampleRepository;

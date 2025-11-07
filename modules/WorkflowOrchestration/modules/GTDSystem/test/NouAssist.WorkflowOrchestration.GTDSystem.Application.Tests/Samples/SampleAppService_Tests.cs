@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : GTDSystemApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : GTDApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

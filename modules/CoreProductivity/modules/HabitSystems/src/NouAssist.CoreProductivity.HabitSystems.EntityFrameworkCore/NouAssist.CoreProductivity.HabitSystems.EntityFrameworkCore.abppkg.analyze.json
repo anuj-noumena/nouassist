@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.HabitSystems.Domain",
-          "namespace": "NouAssist.CoreProductivity.HabitSystems",
+          "namespace": "NouAssist.Habits",
           "name": "HabitSystemsDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.CoreProductivity.HabitSystems.EntityFrameworkCore",
-      "connectionStringName": "HabitSystems",
+      "connectionStringName": "Habits",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.CoreProductivity.HabitSystems.EntityFrameworkCore",
-          "name": "ConfigureHabitSystems",
+          "name": "ConfigureHabits",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IHabitSystemsDbContext",
+          "name": "IHabitsDbContext",
           "namespace": "NouAssist.CoreProductivity.HabitSystems.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.CoreProductivity.HabitSystems.EntityFrameworkCore",
-          "fullName": "NouAssist.CoreProductivity.HabitSystems.EntityFrameworkCore.IHabitSystemsDbContext"
+          "fullName": "NouAssist.CoreProductivity.HabitSystems.EntityFrameworkCore.IHabitsDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "HabitSystemsDbContext",
+      "name": "HabitsDbContext",
       "summary": null
     }
   ]

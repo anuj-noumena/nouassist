@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.GoalTracking.Domain",
-          "namespace": "NouAssist.CoreProductivity.GoalTracking",
+          "namespace": "NouAssist.Goals",
           "name": "GoalTrackingDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore",
-      "connectionStringName": "GoalTracking",
+      "connectionStringName": "Goals",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore",
-          "name": "ConfigureGoalTracking",
+          "name": "ConfigureGoals",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IGoalTrackingDbContext",
+          "name": "IGoalsDbContext",
           "namespace": "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore",
-          "fullName": "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore.IGoalTrackingDbContext"
+          "fullName": "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore.IGoalsDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "GoalTrackingDbContext",
+      "name": "GoalsDbContext",
       "summary": null
     }
   ]

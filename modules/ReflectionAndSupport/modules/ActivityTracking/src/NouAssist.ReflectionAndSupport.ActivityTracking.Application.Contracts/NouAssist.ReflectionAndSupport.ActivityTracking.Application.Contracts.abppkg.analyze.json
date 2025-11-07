@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking",
+      "namespace": "NouAssist.Activity",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.ActivityTracking.Domain.Shared",
-          "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking",
+          "namespace": "NouAssist.Activity",
           "name": "ActivityTrackingDomainSharedModule"
         },
         {

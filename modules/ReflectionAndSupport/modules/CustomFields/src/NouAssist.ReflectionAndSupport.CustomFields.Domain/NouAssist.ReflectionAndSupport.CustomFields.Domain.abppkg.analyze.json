@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.CustomFields",
+      "namespace": "NouAssist.CustomFields",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Infrastructure.Notifications",
+      "namespace": "NouAssist.Notifications",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.Notifications.Domain.Shared",
-          "namespace": "NouAssist.Infrastructure.Notifications",
+          "namespace": "NouAssist.Notifications",
           "name": "NotificationsDomainSharedModule"
         },
         {

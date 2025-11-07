@@ -1,0 +1,46 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.CoreProductivity.GoalTracking.Aggregates;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+
+namespace NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore.Configurations
+{
+    public class UserAchievementConfiguration : IEntityTypeConfiguration<UserAchievement>
+    {
+        public void Configure(EntityTypeBuilder<UserAchievement> builder)
+        {
+            builder.ConfigureByConvention();
+
+            builder.ToTable(GoalsDbProperties.DbTablePrefix + "UserAchievements",
+                            GoalsDbProperties.DbSchema);
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.UserId)
+                .IsRequired();
+
+            builder.Property(x => x.AchievementId)
+                .IsRequired();
+
+            builder.Property(x => x.UnlockedAt)
+                .IsRequired();
+
+            builder.Property(x => x.ProgressPercentage)
+                .IsRequired()
+                .HasPrecision(5, 2);
+
+            builder.Property(x => x.ProgressDataJson)
+                .HasColumnType("jsonb");
+
+            builder.Property(x => x.IsNotified)
+                .IsRequired();
+
+            builder.Property(x => x.NotifiedAt);
+
+            builder.HasIndex(x => new { x.UserId, x.AchievementId }).IsUnique();
+            builder.HasIndex(x => x.UserId);
+
+            builder.ApplyObjectExtensionMappings();
+        }
+    }
+}

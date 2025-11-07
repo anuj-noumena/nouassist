@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CollaborationHub.ContactManagement.Samples;
 
-[Area(ContactManagementRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = ContactManagementRemoteServiceConsts.RemoteServiceName)]
-[Route("api/contact-management/example")]
-public class ExampleController : ContactManagementController, ISampleAppService
+[Area(ContactsRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = ContactsRemoteServiceConsts.RemoteServiceName)]
+[Route("api/contacts/example")]
+public class ExampleController : ContactsController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

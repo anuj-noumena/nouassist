@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.TimeManagement",
+      "namespace": "NouAssist.Calendar",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.TimeManagement.Domain",
-          "namespace": "NouAssist.CoreProductivity.TimeManagement",
+          "namespace": "NouAssist.Calendar",
           "name": "TimeManagementDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.TimeManagement.Application.Contracts",
-          "namespace": "NouAssist.CoreProductivity.TimeManagement",
+          "namespace": "NouAssist.Calendar",
           "name": "TimeManagementApplicationContractsModule"
         },
         {

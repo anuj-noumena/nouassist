@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.GoalTracking.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : GoalTrackingApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : GoalsApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

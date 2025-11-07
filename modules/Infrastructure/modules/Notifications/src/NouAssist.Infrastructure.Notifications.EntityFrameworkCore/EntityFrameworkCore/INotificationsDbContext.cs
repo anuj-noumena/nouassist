@@ -1,12 +1,14 @@
-﻿using Volo.Abp.Data;
+using Microsoft.EntityFrameworkCore;
+using NouAssist.Infrastructure.Notifications.Aggregates;
+using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Infrastructure.Notifications.EntityFrameworkCore;
-
-[ConnectionStringName(NotificationsDbProperties.ConnectionStringName)]
-public interface INotificationsDbContext : IEfCoreDbContext
+namespace NouAssist.Infrastructure.Notifications.EntityFrameworkCore
 {
-    /* Add DbSet for each Aggregate Root here. Example:
-     * DbSet<Question> Questions { get; }
-     */
+    [ConnectionStringName(NotificationsDbProperties.ConnectionStringName)]
+    public interface INotificationsDbContext : IEfCoreDbContext
+    {
+        DbSet<Notification> Notifications { get; }
+        DbSet<NotificationPreference> NotificationPreferences { get; }
+    }
 }

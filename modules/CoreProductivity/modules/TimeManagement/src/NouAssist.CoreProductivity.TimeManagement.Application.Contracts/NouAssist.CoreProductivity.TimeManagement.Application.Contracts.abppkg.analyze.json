@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.TimeManagement",
+      "namespace": "NouAssist.Calendar",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.TimeManagement.Domain.Shared",
-          "namespace": "NouAssist.CoreProductivity.TimeManagement",
+          "namespace": "NouAssist.Calendar",
           "name": "TimeManagementDomainSharedModule"
         },
         {

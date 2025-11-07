@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Infrastructure.Notifications",
+      "namespace": "NouAssist.Notifications",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.Notifications.Domain",
-          "namespace": "NouAssist.Infrastructure.Notifications",
+          "namespace": "NouAssist.Notifications",
           "name": "NotificationsDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.Notifications.Application.Contracts",
-          "namespace": "NouAssist.Infrastructure.Notifications",
+          "namespace": "NouAssist.Notifications",
           "name": "NotificationsApplicationContractsModule"
         },
         {

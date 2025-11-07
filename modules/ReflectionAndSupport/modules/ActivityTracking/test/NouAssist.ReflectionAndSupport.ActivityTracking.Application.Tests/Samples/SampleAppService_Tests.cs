@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.ReflectionAndSupport.ActivityTracking.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : ActivityTrackingApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : ActivityApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

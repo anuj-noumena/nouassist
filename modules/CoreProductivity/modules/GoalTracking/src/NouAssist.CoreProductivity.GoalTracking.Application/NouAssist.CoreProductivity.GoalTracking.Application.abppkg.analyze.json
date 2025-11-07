@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.GoalTracking",
+      "namespace": "NouAssist.Goals",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.GoalTracking.Domain",
-          "namespace": "NouAssist.CoreProductivity.GoalTracking",
+          "namespace": "NouAssist.Goals",
           "name": "GoalTrackingDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.GoalTracking.Application.Contracts",
-          "namespace": "NouAssist.CoreProductivity.GoalTracking",
+          "namespace": "NouAssist.Goals",
           "name": "GoalTrackingApplicationContractsModule"
         },
         {

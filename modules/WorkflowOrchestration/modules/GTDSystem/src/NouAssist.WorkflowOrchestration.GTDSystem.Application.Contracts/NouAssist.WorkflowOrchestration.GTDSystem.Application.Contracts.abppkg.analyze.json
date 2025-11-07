@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.WorkflowOrchestration.GTDSystem",
+      "namespace": "NouAssist.GTD",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.GTDSystem.Domain.Shared",
-          "namespace": "NouAssist.WorkflowOrchestration.GTDSystem",
+          "namespace": "NouAssist.GTD",
           "name": "GTDSystemDomainSharedModule"
         },
         {

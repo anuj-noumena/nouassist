@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.TaskManagement.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : TaskManagementDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : TasksDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

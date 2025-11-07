@@ -1,9 +1,9 @@
-﻿using Volo.Abp.Localization;
+using Volo.Abp.Localization;
 
-namespace NouAssist.ReflectionAndSupport.CustomFields.Localization;
-
-[LocalizationResourceName("CustomFields")]
-public class CustomFieldsResource
+namespace NouAssist.ReflectionAndSupport.CustomFields.Localization
 {
-
+    [LocalizationResourceName("CustomFields")]
+    public class CustomFieldsResource
+    {
+    }
 }

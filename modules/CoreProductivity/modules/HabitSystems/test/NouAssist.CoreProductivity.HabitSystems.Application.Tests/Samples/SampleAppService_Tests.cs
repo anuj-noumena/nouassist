@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.HabitSystems.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : HabitSystemsApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : HabitsApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

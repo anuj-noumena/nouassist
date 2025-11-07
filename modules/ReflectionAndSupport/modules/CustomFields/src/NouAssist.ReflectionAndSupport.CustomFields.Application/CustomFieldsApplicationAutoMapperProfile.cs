@@ -1,13 +1,24 @@
-﻿using AutoMapper;
+using AutoMapper;
+using NouAssist.ReflectionAndSupport.CustomFields.Aggregates;
+using NouAssist.ReflectionAndSupport.CustomFields.Definitions.Dtos;
+using NouAssist.ReflectionAndSupport.CustomFields.Entities;
+using NouAssist.ReflectionAndSupport.CustomFields.ValueObjects;
+using NouAssist.ReflectionAndSupport.CustomFields.Values.Dtos;
 
-namespace NouAssist.ReflectionAndSupport.CustomFields;
-
-public class CustomFieldsApplicationAutoMapperProfile : Profile
+namespace NouAssist.ReflectionAndSupport.CustomFields
 {
-    public CustomFieldsApplicationAutoMapperProfile()
+    public class CustomFieldsApplicationAutoMapperProfile : Profile
     {
-        /* You can configure your AutoMapper mapping configuration here.
-         * Alternatively, you can split your mapping configurations
-         * into multiple profile classes for a better organization. */
+        public CustomFieldsApplicationAutoMapperProfile()
+        {
+            CreateMap<CustomFieldDefinition, CustomFieldDefinitionDto>();
+            CreateMap<CustomFieldOption, CustomFieldOptionDto>();
+
+            CreateMap<CustomFieldValue, CustomFieldValueDto>()
+                .ForMember(dest => dest.Value, 
+                    opt => opt.MapFrom(src => src.GetValue<object>()))
+                .ForMember(dest => dest.FieldName, opt => opt.Ignore())
+                .ForMember(dest => dest.FieldKey, opt => opt.Ignore());
+        }
     }
 }

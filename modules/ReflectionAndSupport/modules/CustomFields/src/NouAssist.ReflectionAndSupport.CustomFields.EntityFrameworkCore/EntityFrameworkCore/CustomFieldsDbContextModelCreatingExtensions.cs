@@ -1,33 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.ReflectionAndSupport.CustomFields.EntityFrameworkCore;
-
-public static class CustomFieldsDbContextModelCreatingExtensions
+namespace NouAssist.ReflectionAndSupport.CustomFields.EntityFrameworkCore
 {
-    public static void ConfigureCustomFields(
-        this ModelBuilder builder)
+    public static class CustomFieldsDbContextModelCreatingExtensions
     {
-        Check.NotNull(builder, nameof(builder));
-
-        /* Configure all entities here. Example:
-
-        builder.Entity<Question>(b =>
+        public static void ConfigureCustomFields(
+            this ModelBuilder builder,
+            CustomFieldsDbContext dbContext)
         {
-            //Configure table & schema name
-            b.ToTable(CustomFieldsDbProperties.DbTablePrefix + "Questions", CustomFieldsDbProperties.DbSchema);
+            Check.NotNull(builder, nameof(builder));
 
-            b.ConfigureByConvention();
-
-            //Properties
-            b.Property(q => q.Title).IsRequired().HasMaxLength(QuestionConsts.MaxTitleLength);
-
-            //Relations
-            b.HasMany(question => question.Tags).WithOne().HasForeignKey(qt => qt.QuestionId);
-
-            //Indexes
-            b.HasIndex(q => q.CreationTime);
-        });
-        */
+            builder.ApplyConfigurationsFromAssembly(typeof(CustomFieldsDbContext).Assembly);
+        }
     }
 }

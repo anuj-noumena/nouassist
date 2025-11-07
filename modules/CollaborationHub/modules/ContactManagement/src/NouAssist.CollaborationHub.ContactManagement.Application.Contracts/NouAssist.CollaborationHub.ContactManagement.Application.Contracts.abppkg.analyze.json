@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CollaborationHub.ContactManagement",
+      "namespace": "NouAssist.Contacts",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.ContactManagement.Domain.Shared",
-          "namespace": "NouAssist.CollaborationHub.ContactManagement",
+          "namespace": "NouAssist.Contacts",
           "name": "ContactManagementDomainSharedModule"
         },
         {

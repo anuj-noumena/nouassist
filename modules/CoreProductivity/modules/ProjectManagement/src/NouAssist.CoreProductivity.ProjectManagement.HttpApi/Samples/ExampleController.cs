@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CoreProductivity.ProjectManagement.Samples;
 
-[Area(ProjectManagementRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = ProjectManagementRemoteServiceConsts.RemoteServiceName)]
-[Route("api/project-management/example")]
-public class ExampleController : ProjectManagementController, ISampleAppService
+[Area(ProjectsRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = ProjectsRemoteServiceConsts.RemoteServiceName)]
+[Route("api/projects/example")]
+public class ExampleController : ProjectsController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

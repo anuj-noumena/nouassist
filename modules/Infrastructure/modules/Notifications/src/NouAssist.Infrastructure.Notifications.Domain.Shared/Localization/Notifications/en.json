@@ -1,7 +1,10 @@
 {
   "culture": "en",
   "texts": {
-    "MyAccount":  "My account",
-    "SamplePageMessage": "A sample page for the Notifications module"
+    "Notifications:Expired": "Notification has expired.",
+    "Notifications:AlreadyRead": "Notification is already marked as read.",
+    "Notifications:TitleTooLong": "Notification title exceeds maximum length of {0} characters.",
+    "Notifications:MessageTooLong": "Notification message exceeds maximum length of {0} characters.",
+    "Notifications:InvalidExpiry": "Expiry date must be after creation date."
   }
 }

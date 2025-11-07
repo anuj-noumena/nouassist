@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.Infrastructure.SearchEngine.Samples;
 
-public class SampleAppService : SearchEngineAppService, ISampleAppService
+public class SampleAppService : SearchAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

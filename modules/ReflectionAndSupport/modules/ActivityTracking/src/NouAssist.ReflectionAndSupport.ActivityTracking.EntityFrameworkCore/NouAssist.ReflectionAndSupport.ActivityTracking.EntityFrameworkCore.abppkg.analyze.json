@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.ActivityTracking.Domain",
-          "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking",
+          "namespace": "NouAssist.Activity",
           "name": "ActivityTrackingDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking.EntityFrameworkCore",
-      "connectionStringName": "ActivityTracking",
+      "connectionStringName": "Activity",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking.EntityFrameworkCore",
-          "name": "ConfigureActivityTracking",
+          "name": "ConfigureActivity",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IActivityTrackingDbContext",
+          "name": "IActivityDbContext",
           "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.ActivityTracking.EntityFrameworkCore",
-          "fullName": "NouAssist.ReflectionAndSupport.ActivityTracking.EntityFrameworkCore.IActivityTrackingDbContext"
+          "fullName": "NouAssist.ReflectionAndSupport.ActivityTracking.EntityFrameworkCore.IActivityDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "ActivityTrackingDbContext",
+      "name": "ActivityDbContext",
       "summary": null
     }
   ]

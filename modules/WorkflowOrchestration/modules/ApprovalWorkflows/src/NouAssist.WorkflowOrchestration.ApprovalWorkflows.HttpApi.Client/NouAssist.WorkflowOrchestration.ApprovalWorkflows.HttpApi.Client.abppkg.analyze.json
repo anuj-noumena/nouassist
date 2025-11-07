@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows",
+      "namespace": "NouAssist.Approval",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Contracts",
-          "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows",
-          "name": "NouAssist.WorkflowOrchestrationApplicationContractsModule"
+          "namespace": "NouAssist.Approval",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.WorkflowOrchestrationHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

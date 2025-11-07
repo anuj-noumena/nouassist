@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.TimeManagement.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : TimeManagementApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : CalendarApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\ApprovalWorkflows\*.json" />
-    <Content Remove="Localization\ApprovalWorkflows\*.json" />
+    <EmbeddedResource Include="Localization\Approval\*.json" />
+    <Content Remove="Localization\Approval\*.json" />
   </ItemGroup>
 
 </Project>

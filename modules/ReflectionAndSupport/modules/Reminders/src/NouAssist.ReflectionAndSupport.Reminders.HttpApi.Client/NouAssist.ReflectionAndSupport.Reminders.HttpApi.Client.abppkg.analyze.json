@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.Reminders",
+      "namespace": "NouAssist.Reminders",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.Reminders.Application.Contracts",
-          "namespace": "NouAssist.ReflectionAndSupport.Reminders",
-          "name": "NouAssist.ReflectionAndSupportApplicationContractsModule"
+          "namespace": "NouAssist.Reminders",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.ReflectionAndSupportHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

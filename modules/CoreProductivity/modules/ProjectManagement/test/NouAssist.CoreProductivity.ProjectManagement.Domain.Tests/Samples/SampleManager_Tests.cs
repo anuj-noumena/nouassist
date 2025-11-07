@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.ProjectManagement.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : ProjectManagementDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : ProjectsDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

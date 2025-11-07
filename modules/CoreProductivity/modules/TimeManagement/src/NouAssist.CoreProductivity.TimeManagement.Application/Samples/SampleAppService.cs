@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.CoreProductivity.TimeManagement.Samples;
 
-public class SampleAppService : TimeManagementAppService, ISampleAppService
+public class SampleAppService : CalendarAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

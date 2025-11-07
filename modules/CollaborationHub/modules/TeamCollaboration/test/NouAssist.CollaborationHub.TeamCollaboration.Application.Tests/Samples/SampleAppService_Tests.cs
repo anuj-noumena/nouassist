@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.CollaborationHub.TeamCollaboration.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : TeamCollaborationApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : MeetingsApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

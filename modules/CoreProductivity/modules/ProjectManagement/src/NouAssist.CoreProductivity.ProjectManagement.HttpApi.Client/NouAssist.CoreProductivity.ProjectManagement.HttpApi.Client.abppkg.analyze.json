@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+      "namespace": "NouAssist.Projects",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.ProjectManagement.Application.Contracts",
-          "namespace": "NouAssist.CoreProductivity.ProjectManagement",
-          "name": "NouAssist.CoreProductivityApplicationContractsModule"
+          "namespace": "NouAssist.Projects",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.CoreProductivityHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

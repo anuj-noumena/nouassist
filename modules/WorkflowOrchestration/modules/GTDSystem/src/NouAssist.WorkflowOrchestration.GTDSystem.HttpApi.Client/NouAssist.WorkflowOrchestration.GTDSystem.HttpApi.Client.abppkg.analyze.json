@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.WorkflowOrchestration.GTDSystem",
+      "namespace": "NouAssist.GTD",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.GTDSystem.Application.Contracts",
-          "namespace": "NouAssist.WorkflowOrchestration.GTDSystem",
-          "name": "NouAssist.WorkflowOrchestrationApplicationContractsModule"
+          "namespace": "NouAssist.GTD",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.WorkflowOrchestrationHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.Reminders",
+      "namespace": "NouAssist.Reminders",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.Reminders.Domain",
-          "namespace": "NouAssist.ReflectionAndSupport.Reminders",
+          "namespace": "NouAssist.Reminders",
           "name": "RemindersDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.Reminders.Application.Contracts",
-          "namespace": "NouAssist.ReflectionAndSupport.Reminders",
+          "namespace": "NouAssist.Reminders",
           "name": "RemindersApplicationContractsModule"
         },
         {

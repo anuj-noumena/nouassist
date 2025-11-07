@@ -1,12 +1,13 @@
-﻿using Volo.Abp.Data;
+using Microsoft.EntityFrameworkCore;
+using NouAssist.ReflectionAndSupport.Reminders.Aggregates;
+using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.ReflectionAndSupport.Reminders.EntityFrameworkCore;
-
-[ConnectionStringName(RemindersDbProperties.ConnectionStringName)]
-public interface IRemindersDbContext : IEfCoreDbContext
+namespace NouAssist.ReflectionAndSupport.Reminders.EntityFrameworkCore
 {
-    /* Add DbSet for each Aggregate Root here. Example:
-     * DbSet<Question> Questions { get; }
-     */
+    [ConnectionStringName(RemindersDbProperties.ConnectionStringName)]
+    public interface IRemindersDbContext : IEfCoreDbContext
+    {
+        DbSet<Reminder> Reminders { get; }
+    }
 }

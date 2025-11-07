@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.CustomFields",
+      "namespace": "NouAssist.CustomFields",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.CustomFields.Application.Contracts",
-          "namespace": "NouAssist.ReflectionAndSupport.CustomFields",
+          "namespace": "NouAssist.CustomFields",
           "name": "CustomFieldsApplicationContractsModule"
         },
         {

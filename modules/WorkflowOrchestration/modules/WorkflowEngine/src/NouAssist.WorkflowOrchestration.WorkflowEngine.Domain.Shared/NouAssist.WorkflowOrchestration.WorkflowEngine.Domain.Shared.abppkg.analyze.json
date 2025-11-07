@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.WorkflowOrchestration.WorkflowEngine",
+      "namespace": "NouAssist.Workflow",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

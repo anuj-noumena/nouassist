@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.CollaborationHub.UserProfiles.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : UserProfilesDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : UsersDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

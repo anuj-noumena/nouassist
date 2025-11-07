@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CoreProductivity.HabitSystems.Samples;
 
-[Area(HabitSystemsRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = HabitSystemsRemoteServiceConsts.RemoteServiceName)]
-[Route("api/habit-systems/example")]
-public class ExampleController : HabitSystemsController, ISampleAppService
+[Area(HabitsRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = HabitsRemoteServiceConsts.RemoteServiceName)]
+[Route("api/habits/example")]
+public class ExampleController : HabitsController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

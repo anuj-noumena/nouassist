@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CoreProductivity.TimeManagement.Samples;
 
-[Area(TimeManagementRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = TimeManagementRemoteServiceConsts.RemoteServiceName)]
-[Route("api/time-management/example")]
-public class ExampleController : TimeManagementController, ISampleAppService
+[Area(CalendarRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = CalendarRemoteServiceConsts.RemoteServiceName)]
+[Route("api/calendar/example")]
+public class ExampleController : CalendarController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

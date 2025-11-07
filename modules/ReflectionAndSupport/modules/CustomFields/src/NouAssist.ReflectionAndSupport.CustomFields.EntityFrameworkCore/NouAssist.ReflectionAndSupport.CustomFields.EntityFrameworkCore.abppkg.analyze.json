@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.CustomFields.Domain",
-          "namespace": "NouAssist.ReflectionAndSupport.CustomFields",
+          "namespace": "NouAssist.CustomFields",
           "name": "CustomFieldsDomainModule"
         },
         {

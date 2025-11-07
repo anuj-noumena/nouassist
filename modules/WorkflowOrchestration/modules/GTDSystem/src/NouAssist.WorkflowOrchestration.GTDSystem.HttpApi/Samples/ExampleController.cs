@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.Samples;
 
-[Area(GTDSystemRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = GTDSystemRemoteServiceConsts.RemoteServiceName)]
-[Route("api/g-tDSystem/example")]
-public class ExampleController : GTDSystemController, ISampleAppService
+[Area(GTDRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = GTDRemoteServiceConsts.RemoteServiceName)]
+[Route("api/g-tD/example")]
+public class ExampleController : GTDController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

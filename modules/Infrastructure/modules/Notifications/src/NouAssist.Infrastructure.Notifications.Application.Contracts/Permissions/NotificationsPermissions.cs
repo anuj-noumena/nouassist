@@ -1,13 +1,19 @@
-﻿using Volo.Abp.Reflection;
-
-namespace NouAssist.Infrastructure.Notifications.Permissions;
-
-public class NotificationsPermissions
+namespace NouAssist.Infrastructure.Notifications.Permissions
 {
-    public const string GroupName = "Notifications";
-
-    public static string[] GetAll()
+    public static class NotificationsPermissions
     {
-        return ReflectionHelper.GetPublicConstantsRecursively(typeof(NotificationsPermissions));
+        public const string GroupName = "Notifications";
+
+        public static class Notifications
+        {
+            public const string Default = GroupName + ".Notifications";
+            public const string Manage = Default + ".Manage";
+        }
+
+        public static class Preferences
+        {
+            public const string Default = GroupName + ".Preferences";
+            public const string Manage = Default + ".Manage";
+        }
     }
 }

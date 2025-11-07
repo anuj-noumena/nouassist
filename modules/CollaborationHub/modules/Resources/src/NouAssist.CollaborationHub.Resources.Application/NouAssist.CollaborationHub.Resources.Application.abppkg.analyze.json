@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CollaborationHub.Resources",
+      "namespace": "NouAssist.Resources",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.Resources.Domain",
-          "namespace": "NouAssist.CollaborationHub.Resources",
+          "namespace": "NouAssist.Resources",
           "name": "ResourcesDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.Resources.Application.Contracts",
-          "namespace": "NouAssist.CollaborationHub.Resources",
+          "namespace": "NouAssist.Resources",
           "name": "ResourcesApplicationContractsModule"
         },
         {

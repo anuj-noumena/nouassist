@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\SearchEngine\*.json" />
-    <Content Remove="Localization\SearchEngine\*.json" />
+    <EmbeddedResource Include="Localization\Search\*.json" />
+    <Content Remove="Localization\Search\*.json" />
   </ItemGroup>
 
 </Project>

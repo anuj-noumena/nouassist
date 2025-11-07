@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.CollaborationHub.UserProfiles.Samples;
 
-public class SampleAppService : UserProfilesAppService, ISampleAppService
+public class SampleAppService : UsersAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

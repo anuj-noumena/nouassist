@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CollaborationHub.TeamCollaboration",
+      "namespace": "NouAssist.Meetings",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.TeamCollaboration.Domain.Shared",
-          "namespace": "NouAssist.CollaborationHub.TeamCollaboration",
+          "namespace": "NouAssist.Meetings",
           "name": "TeamCollaborationDomainSharedModule"
         },
         {

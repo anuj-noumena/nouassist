@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking",
+      "namespace": "NouAssist.Activity",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.ActivityTracking.Application.Contracts",
-          "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking",
-          "name": "NouAssist.ReflectionAndSupportApplicationContractsModule"
+          "namespace": "NouAssist.Activity",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.ReflectionAndSupportHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

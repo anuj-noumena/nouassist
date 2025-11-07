@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.Samples;
 
-public class SampleAppService : GTDSystemAppService, ISampleAppService
+public class SampleAppService : GTDAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

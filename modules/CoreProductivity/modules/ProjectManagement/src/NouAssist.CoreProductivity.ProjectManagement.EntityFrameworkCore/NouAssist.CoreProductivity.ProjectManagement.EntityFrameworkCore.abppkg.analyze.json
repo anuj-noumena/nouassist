@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.ProjectManagement.Domain",
-          "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+          "namespace": "NouAssist.Projects",
           "name": "ProjectManagementDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore",
-      "connectionStringName": "ProjectManagement",
+      "connectionStringName": "Projects",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore",
-          "name": "ConfigureProjectManagement",
+          "name": "ConfigureProjects",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IProjectManagementDbContext",
+          "name": "IProjectsDbContext",
           "namespace": "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore",
-          "fullName": "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore.IProjectManagementDbContext"
+          "fullName": "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore.IProjectsDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "ProjectManagementDbContext",
+      "name": "ProjectsDbContext",
       "summary": null
     }
   ]

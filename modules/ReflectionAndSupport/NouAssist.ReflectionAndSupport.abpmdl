@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.ReflectionAndSupport.Domain": {
+      "path": "src/NouAssist.ReflectionAndSupport.Domain/NouAssist.ReflectionAndSupport.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.ReflectionAndSupport.Application.Contracts": {
+      "path": "src/NouAssist.ReflectionAndSupport.Application.Contracts/NouAssist.ReflectionAndSupport.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.ReflectionAndSupport.Application": {
+      "path": "src/NouAssist.ReflectionAndSupport.Application/NouAssist.ReflectionAndSupport.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.ReflectionAndSupport.EntityFrameworkCore": {
+      "path": "src/NouAssist.ReflectionAndSupport.EntityFrameworkCore/NouAssist.ReflectionAndSupport.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.ReflectionAndSupport.HttpApi": {
+      "path": "src/NouAssist.ReflectionAndSupport.HttpApi/NouAssist.ReflectionAndSupport.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.ReflectionAndSupport.HttpApi.Client": {
+      "path": "src/NouAssist.ReflectionAndSupport.HttpApi.Client/NouAssist.ReflectionAndSupport.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.ReflectionAndSupport.TestBase": {
+      "path": "test/NouAssist.ReflectionAndSupport.TestBase/NouAssist.ReflectionAndSupport.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.ReflectionAndSupport.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.ReflectionAndSupport.EntityFrameworkCore.Tests/NouAssist.ReflectionAndSupport.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.ReflectionAndSupport.Domain.Tests": {
+      "path": "test/NouAssist.ReflectionAndSupport.Domain.Tests/NouAssist.ReflectionAndSupport.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.ReflectionAndSupport.Application.Tests": {
+      "path": "test/NouAssist.ReflectionAndSupport.Application.Tests/NouAssist.ReflectionAndSupport.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.ReflectionAndSupport.Domain.Shared": {
+      "path": "src/NouAssist.ReflectionAndSupport.Domain.Shared/NouAssist.ReflectionAndSupport.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.ReflectionAndSupport.Installer": {
+       "path": "src/NouAssist.ReflectionAndSupport.Installer/NouAssist.ReflectionAndSupport.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

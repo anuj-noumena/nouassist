@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.ReflectionAndSupport.Journaling</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NouAssist.ReflectionAndSupport.Journaling.Application\NouAssist.ReflectionAndSupport.Journaling.Application.csproj" />
+    <ProjectReference Include="..\NouAssist.ReflectionAndSupport.Journaling.Domain.Tests\NouAssist.ReflectionAndSupport.Journaling.Domain.Tests.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+  </ItemGroup>
+
+</Project>

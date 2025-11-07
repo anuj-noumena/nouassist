@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Infrastructure.SearchEngine.Domain": {
+      "path": "src/NouAssist.Infrastructure.SearchEngine.Domain/NouAssist.Infrastructure.SearchEngine.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.SearchEngine.Application.Contracts": {
+      "path": "src/NouAssist.Infrastructure.SearchEngine.Application.Contracts/NouAssist.Infrastructure.SearchEngine.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.SearchEngine.Application": {
+      "path": "src/NouAssist.Infrastructure.SearchEngine.Application/NouAssist.Infrastructure.SearchEngine.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore": {
+      "path": "src/NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore/NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.SearchEngine.HttpApi": {
+      "path": "src/NouAssist.Infrastructure.SearchEngine.HttpApi/NouAssist.Infrastructure.SearchEngine.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.SearchEngine.HttpApi.Client": {
+      "path": "src/NouAssist.Infrastructure.SearchEngine.HttpApi.Client/NouAssist.Infrastructure.SearchEngine.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.SearchEngine.TestBase": {
+      "path": "test/NouAssist.Infrastructure.SearchEngine.TestBase/NouAssist.Infrastructure.SearchEngine.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore.Tests/NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.SearchEngine.Domain.Tests": {
+      "path": "test/NouAssist.Infrastructure.SearchEngine.Domain.Tests/NouAssist.Infrastructure.SearchEngine.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.SearchEngine.Application.Tests": {
+      "path": "test/NouAssist.Infrastructure.SearchEngine.Application.Tests/NouAssist.Infrastructure.SearchEngine.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.SearchEngine.Domain.Shared": {
+      "path": "src/NouAssist.Infrastructure.SearchEngine.Domain.Shared/NouAssist.Infrastructure.SearchEngine.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.SearchEngine.Installer": {
+       "path": "src/NouAssist.Infrastructure.SearchEngine.Installer/NouAssist.Infrastructure.SearchEngine.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

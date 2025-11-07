@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.ReflectionAndSupport.Journaling</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="9.3.6" />
+    <ProjectReference Include="..\NouAssist.ReflectionAndSupport.Journaling.Domain\NouAssist.ReflectionAndSupport.Journaling.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

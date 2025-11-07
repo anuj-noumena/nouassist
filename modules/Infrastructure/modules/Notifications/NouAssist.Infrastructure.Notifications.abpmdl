@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Infrastructure.Notifications.Domain": {
+      "path": "src/NouAssist.Infrastructure.Notifications.Domain/NouAssist.Infrastructure.Notifications.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Notifications.Application.Contracts": {
+      "path": "src/NouAssist.Infrastructure.Notifications.Application.Contracts/NouAssist.Infrastructure.Notifications.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Notifications.Application": {
+      "path": "src/NouAssist.Infrastructure.Notifications.Application/NouAssist.Infrastructure.Notifications.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Notifications.EntityFrameworkCore": {
+      "path": "src/NouAssist.Infrastructure.Notifications.EntityFrameworkCore/NouAssist.Infrastructure.Notifications.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Notifications.HttpApi": {
+      "path": "src/NouAssist.Infrastructure.Notifications.HttpApi/NouAssist.Infrastructure.Notifications.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Notifications.HttpApi.Client": {
+      "path": "src/NouAssist.Infrastructure.Notifications.HttpApi.Client/NouAssist.Infrastructure.Notifications.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Notifications.TestBase": {
+      "path": "test/NouAssist.Infrastructure.Notifications.TestBase/NouAssist.Infrastructure.Notifications.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.Notifications.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Infrastructure.Notifications.EntityFrameworkCore.Tests/NouAssist.Infrastructure.Notifications.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.Notifications.Domain.Tests": {
+      "path": "test/NouAssist.Infrastructure.Notifications.Domain.Tests/NouAssist.Infrastructure.Notifications.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.Notifications.Application.Tests": {
+      "path": "test/NouAssist.Infrastructure.Notifications.Application.Tests/NouAssist.Infrastructure.Notifications.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.Notifications.Domain.Shared": {
+      "path": "src/NouAssist.Infrastructure.Notifications.Domain.Shared/NouAssist.Infrastructure.Notifications.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Notifications.Installer": {
+       "path": "src/NouAssist.Infrastructure.Notifications.Installer/NouAssist.Infrastructure.Notifications.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

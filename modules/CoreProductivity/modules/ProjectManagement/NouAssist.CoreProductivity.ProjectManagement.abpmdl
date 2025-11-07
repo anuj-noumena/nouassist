@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.CoreProductivity.ProjectManagement.Domain": {
+      "path": "src/NouAssist.CoreProductivity.ProjectManagement.Domain/NouAssist.CoreProductivity.ProjectManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.Application.Contracts": {
+      "path": "src/NouAssist.CoreProductivity.ProjectManagement.Application.Contracts/NouAssist.CoreProductivity.ProjectManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.Application": {
+      "path": "src/NouAssist.CoreProductivity.ProjectManagement.Application/NouAssist.CoreProductivity.ProjectManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore": {
+      "path": "src/NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore/NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.HttpApi": {
+      "path": "src/NouAssist.CoreProductivity.ProjectManagement.HttpApi/NouAssist.CoreProductivity.ProjectManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.HttpApi.Client": {
+      "path": "src/NouAssist.CoreProductivity.ProjectManagement.HttpApi.Client/NouAssist.CoreProductivity.ProjectManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.TestBase": {
+      "path": "test/NouAssist.CoreProductivity.ProjectManagement.TestBase/NouAssist.CoreProductivity.ProjectManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore.Tests/NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.Domain.Tests": {
+      "path": "test/NouAssist.CoreProductivity.ProjectManagement.Domain.Tests/NouAssist.CoreProductivity.ProjectManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.Application.Tests": {
+      "path": "test/NouAssist.CoreProductivity.ProjectManagement.Application.Tests/NouAssist.CoreProductivity.ProjectManagement.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.Domain.Shared": {
+      "path": "src/NouAssist.CoreProductivity.ProjectManagement.Domain.Shared/NouAssist.CoreProductivity.ProjectManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.ProjectManagement.Installer": {
+       "path": "src/NouAssist.CoreProductivity.ProjectManagement.Installer/NouAssist.CoreProductivity.ProjectManagement.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.CoreProductivity.GoalTracking.Domain": {
+      "path": "src/NouAssist.CoreProductivity.GoalTracking.Domain/NouAssist.CoreProductivity.GoalTracking.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.Application.Contracts": {
+      "path": "src/NouAssist.CoreProductivity.GoalTracking.Application.Contracts/NouAssist.CoreProductivity.GoalTracking.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.Application": {
+      "path": "src/NouAssist.CoreProductivity.GoalTracking.Application/NouAssist.CoreProductivity.GoalTracking.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore": {
+      "path": "src/NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore/NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.HttpApi": {
+      "path": "src/NouAssist.CoreProductivity.GoalTracking.HttpApi/NouAssist.CoreProductivity.GoalTracking.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.HttpApi.Client": {
+      "path": "src/NouAssist.CoreProductivity.GoalTracking.HttpApi.Client/NouAssist.CoreProductivity.GoalTracking.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.TestBase": {
+      "path": "test/NouAssist.CoreProductivity.GoalTracking.TestBase/NouAssist.CoreProductivity.GoalTracking.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore.Tests/NouAssist.CoreProductivity.GoalTracking.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.Domain.Tests": {
+      "path": "test/NouAssist.CoreProductivity.GoalTracking.Domain.Tests/NouAssist.CoreProductivity.GoalTracking.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.Application.Tests": {
+      "path": "test/NouAssist.CoreProductivity.GoalTracking.Application.Tests/NouAssist.CoreProductivity.GoalTracking.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.Domain.Shared": {
+      "path": "src/NouAssist.CoreProductivity.GoalTracking.Domain.Shared/NouAssist.CoreProductivity.GoalTracking.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.GoalTracking.Installer": {
+       "path": "src/NouAssist.CoreProductivity.GoalTracking.Installer/NouAssist.CoreProductivity.GoalTracking.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

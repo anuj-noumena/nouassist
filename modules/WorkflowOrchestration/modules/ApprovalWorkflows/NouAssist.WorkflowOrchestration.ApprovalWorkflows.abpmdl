@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain": {
+      "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Contracts": {
+      "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Contracts/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application": {
+      "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore": {
+      "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore/NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.HttpApi": {
+      "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.HttpApi/NouAssist.WorkflowOrchestration.ApprovalWorkflows.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.HttpApi.Client": {
+      "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.HttpApi.Client/NouAssist.WorkflowOrchestration.ApprovalWorkflows.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.TestBase": {
+      "path": "test/NouAssist.WorkflowOrchestration.ApprovalWorkflows.TestBase/NouAssist.WorkflowOrchestration.ApprovalWorkflows.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore.Tests/NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Tests": {
+      "path": "test/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Tests/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Tests": {
+      "path": "test/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Tests/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Shared": {
+      "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Shared/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Installer": {
+       "path": "src/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Installer/NouAssist.WorkflowOrchestration.ApprovalWorkflows.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

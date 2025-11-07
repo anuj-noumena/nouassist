@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.WorkflowOrchestration.WorkflowEngine</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NouAssist.WorkflowOrchestration.WorkflowEngine.Application\NouAssist.WorkflowOrchestration.WorkflowEngine.Application.csproj" />
+    <ProjectReference Include="..\NouAssist.WorkflowOrchestration.WorkflowEngine.Domain.Tests\NouAssist.WorkflowOrchestration.WorkflowEngine.Domain.Tests.csproj" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+  </ItemGroup>
+
+</Project>

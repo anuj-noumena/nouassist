@@ -1,0 +1,68 @@
+{
+  "name": "NouAssist.CollaborationHub.DiscussionThreads.HttpApi.Client",
+  "hash": "",
+  "contents": [
+    {
+      "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
+      "dependsOnModules": [
+        {
+          "declaringAssemblyName": "NouAssist.CollaborationHub.DiscussionThreads.Application.Contracts",
+          "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
+          "name": "NouAssist.CollaborationHubApplicationContractsModule"
+        },
+        {
+          "declaringAssemblyName": "Volo.Abp.Http.Client",
+          "namespace": "Volo.Abp.Http.Client",
+          "name": "AbpHttpClientModule"
+        }
+      ],
+      "implementingInterfaces": [
+        {
+          "name": "IAbpModule",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IAbpModule"
+        },
+        {
+          "name": "IOnPreApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPreApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationInitialization",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationInitialization"
+        },
+        {
+          "name": "IOnPostApplicationInitialization",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IOnPostApplicationInitialization"
+        },
+        {
+          "name": "IOnApplicationShutdown",
+          "namespace": "Volo.Abp",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.IOnApplicationShutdown"
+        },
+        {
+          "name": "IPreConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPreConfigureServices"
+        },
+        {
+          "name": "IPostConfigureServices",
+          "namespace": "Volo.Abp.Modularity",
+          "declaringAssemblyName": "Volo.Abp.Core",
+          "fullName": "Volo.Abp.Modularity.IPostConfigureServices"
+        }
+      ],
+      "contentType": "abpModule",
+      "name": "NouAssist.CollaborationHubHttpApiClientModule",
+      "summary": null
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.WorkflowOrchestration.ApprovalWorkflows</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="9.3.6" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.3.6" />
+    <ProjectReference Include="..\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Contracts\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Contracts.csproj" />
+    <ProjectReference Include="..\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

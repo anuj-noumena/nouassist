@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.WorkflowOrchestration.WorkflowEngine</RootNamespace>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.3.6"/>
+    <ProjectReference Include="..\NouAssist.WorkflowOrchestration.WorkflowEngine.Domain.Shared\NouAssist.WorkflowOrchestration.WorkflowEngine.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

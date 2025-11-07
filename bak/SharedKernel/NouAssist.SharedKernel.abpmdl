@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.SharedKernel.Domain": {
+      "path": "src/NouAssist.SharedKernel.Domain/NouAssist.SharedKernel.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.SharedKernel.Application.Contracts": {
+      "path": "src/NouAssist.SharedKernel.Application.Contracts/NouAssist.SharedKernel.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.SharedKernel.Application": {
+      "path": "src/NouAssist.SharedKernel.Application/NouAssist.SharedKernel.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.SharedKernel.EntityFrameworkCore": {
+      "path": "src/NouAssist.SharedKernel.EntityFrameworkCore/NouAssist.SharedKernel.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.SharedKernel.HttpApi": {
+      "path": "src/NouAssist.SharedKernel.HttpApi/NouAssist.SharedKernel.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.SharedKernel.HttpApi.Client": {
+      "path": "src/NouAssist.SharedKernel.HttpApi.Client/NouAssist.SharedKernel.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.SharedKernel.TestBase": {
+      "path": "test/NouAssist.SharedKernel.TestBase/NouAssist.SharedKernel.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.SharedKernel.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.SharedKernel.EntityFrameworkCore.Tests/NouAssist.SharedKernel.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.SharedKernel.Domain.Tests": {
+      "path": "test/NouAssist.SharedKernel.Domain.Tests/NouAssist.SharedKernel.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.SharedKernel.Application.Tests": {
+      "path": "test/NouAssist.SharedKernel.Application.Tests/NouAssist.SharedKernel.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.SharedKernel.Domain.Shared": {
+      "path": "src/NouAssist.SharedKernel.Domain.Shared/NouAssist.SharedKernel.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.SharedKernel.Installer": {
+       "path": "src/NouAssist.SharedKernel.Installer/NouAssist.SharedKernel.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

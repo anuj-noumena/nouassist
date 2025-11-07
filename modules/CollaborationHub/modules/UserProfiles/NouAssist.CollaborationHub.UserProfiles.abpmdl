@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.CollaborationHub.UserProfiles.Domain": {
+      "path": "src/NouAssist.CollaborationHub.UserProfiles.Domain/NouAssist.CollaborationHub.UserProfiles.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.Application.Contracts": {
+      "path": "src/NouAssist.CollaborationHub.UserProfiles.Application.Contracts/NouAssist.CollaborationHub.UserProfiles.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.Application": {
+      "path": "src/NouAssist.CollaborationHub.UserProfiles.Application/NouAssist.CollaborationHub.UserProfiles.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore": {
+      "path": "src/NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore/NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.HttpApi": {
+      "path": "src/NouAssist.CollaborationHub.UserProfiles.HttpApi/NouAssist.CollaborationHub.UserProfiles.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.HttpApi.Client": {
+      "path": "src/NouAssist.CollaborationHub.UserProfiles.HttpApi.Client/NouAssist.CollaborationHub.UserProfiles.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.TestBase": {
+      "path": "test/NouAssist.CollaborationHub.UserProfiles.TestBase/NouAssist.CollaborationHub.UserProfiles.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore.Tests/NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.Domain.Tests": {
+      "path": "test/NouAssist.CollaborationHub.UserProfiles.Domain.Tests/NouAssist.CollaborationHub.UserProfiles.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.Application.Tests": {
+      "path": "test/NouAssist.CollaborationHub.UserProfiles.Application.Tests/NouAssist.CollaborationHub.UserProfiles.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.Domain.Shared": {
+      "path": "src/NouAssist.CollaborationHub.UserProfiles.Domain.Shared/NouAssist.CollaborationHub.UserProfiles.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CollaborationHub.UserProfiles.Installer": {
+       "path": "src/NouAssist.CollaborationHub.UserProfiles.Installer/NouAssist.CollaborationHub.UserProfiles.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

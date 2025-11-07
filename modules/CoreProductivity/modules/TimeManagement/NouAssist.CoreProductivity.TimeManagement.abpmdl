@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.CoreProductivity.TimeManagement.Domain": {
+      "path": "src/NouAssist.CoreProductivity.TimeManagement.Domain/NouAssist.CoreProductivity.TimeManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.Application.Contracts": {
+      "path": "src/NouAssist.CoreProductivity.TimeManagement.Application.Contracts/NouAssist.CoreProductivity.TimeManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.Application": {
+      "path": "src/NouAssist.CoreProductivity.TimeManagement.Application/NouAssist.CoreProductivity.TimeManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore": {
+      "path": "src/NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore/NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.HttpApi": {
+      "path": "src/NouAssist.CoreProductivity.TimeManagement.HttpApi/NouAssist.CoreProductivity.TimeManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.HttpApi.Client": {
+      "path": "src/NouAssist.CoreProductivity.TimeManagement.HttpApi.Client/NouAssist.CoreProductivity.TimeManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.TestBase": {
+      "path": "test/NouAssist.CoreProductivity.TimeManagement.TestBase/NouAssist.CoreProductivity.TimeManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore.Tests/NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.Domain.Tests": {
+      "path": "test/NouAssist.CoreProductivity.TimeManagement.Domain.Tests/NouAssist.CoreProductivity.TimeManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.Application.Tests": {
+      "path": "test/NouAssist.CoreProductivity.TimeManagement.Application.Tests/NouAssist.CoreProductivity.TimeManagement.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.Domain.Shared": {
+      "path": "src/NouAssist.CoreProductivity.TimeManagement.Domain.Shared/NouAssist.CoreProductivity.TimeManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.CoreProductivity.TimeManagement.Installer": {
+       "path": "src/NouAssist.CoreProductivity.TimeManagement.Installer/NouAssist.CoreProductivity.TimeManagement.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

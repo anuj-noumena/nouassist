@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Infrastructure.Domain": {
+      "path": "src/NouAssist.Infrastructure.Domain/NouAssist.Infrastructure.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Application.Contracts": {
+      "path": "src/NouAssist.Infrastructure.Application.Contracts/NouAssist.Infrastructure.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Application": {
+      "path": "src/NouAssist.Infrastructure.Application/NouAssist.Infrastructure.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.EntityFrameworkCore": {
+      "path": "src/NouAssist.Infrastructure.EntityFrameworkCore/NouAssist.Infrastructure.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.HttpApi": {
+      "path": "src/NouAssist.Infrastructure.HttpApi/NouAssist.Infrastructure.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.HttpApi.Client": {
+      "path": "src/NouAssist.Infrastructure.HttpApi.Client/NouAssist.Infrastructure.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.TestBase": {
+      "path": "test/NouAssist.Infrastructure.TestBase/NouAssist.Infrastructure.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Infrastructure.EntityFrameworkCore.Tests/NouAssist.Infrastructure.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.Domain.Tests": {
+      "path": "test/NouAssist.Infrastructure.Domain.Tests/NouAssist.Infrastructure.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.Application.Tests": {
+      "path": "test/NouAssist.Infrastructure.Application.Tests/NouAssist.Infrastructure.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Infrastructure.Domain.Shared": {
+      "path": "src/NouAssist.Infrastructure.Domain.Shared/NouAssist.Infrastructure.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Infrastructure.Installer": {
+       "path": "src/NouAssist.Infrastructure.Installer/NouAssist.Infrastructure.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

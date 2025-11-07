@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\TimeManagement\*.json" />
-    <Content Remove="Localization\TimeManagement\*.json" />
+    <EmbeddedResource Include="Localization\Calendar\*.json" />
+    <Content Remove="Localization\Calendar\*.json" />
   </ItemGroup>
 
 </Project>

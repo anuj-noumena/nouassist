@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.WorkflowOrchestration.ApprovalWorkflows.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : ApprovalWorkflowsApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : ApprovalApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

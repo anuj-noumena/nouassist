@@ -1,0 +1,7 @@
+{
+  "culture": "en",
+  "texts": {
+    "Activity:CannotModify": "Activity cannot be modified after creation.",
+    "Activity:InvalidVisibility": "Invalid activity visibility level."
+  }
+}

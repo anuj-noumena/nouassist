@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
+      "namespace": "NouAssist.Comments",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.DiscussionThreads.Domain.Shared",
-          "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
+          "namespace": "NouAssist.Comments",
           "name": "DiscussionThreadsDomainSharedModule"
         },
         {

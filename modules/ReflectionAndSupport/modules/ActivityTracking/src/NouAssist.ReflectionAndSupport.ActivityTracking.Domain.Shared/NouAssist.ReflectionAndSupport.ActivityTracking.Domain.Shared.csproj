@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\ActivityTracking\*.json" />
-    <Content Remove="Localization\ActivityTracking\*.json" />
+    <EmbeddedResource Include="Localization\Activity\*.json" />
+    <Content Remove="Localization\Activity\*.json" />
   </ItemGroup>
 
 </Project>

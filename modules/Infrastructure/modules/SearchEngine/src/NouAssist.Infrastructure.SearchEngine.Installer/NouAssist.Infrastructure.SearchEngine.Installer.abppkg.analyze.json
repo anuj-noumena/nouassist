@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Infrastructure.SearchEngine",
+      "namespace": "NouAssist.Search",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.VirtualFileSystem",

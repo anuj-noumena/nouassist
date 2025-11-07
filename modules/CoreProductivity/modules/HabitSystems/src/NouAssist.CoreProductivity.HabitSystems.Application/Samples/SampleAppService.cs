@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.CoreProductivity.HabitSystems.Samples;
 
-public class SampleAppService : HabitSystemsAppService, ISampleAppService
+public class SampleAppService : HabitsAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

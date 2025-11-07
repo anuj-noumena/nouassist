@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : GTDSystemDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : GTDDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

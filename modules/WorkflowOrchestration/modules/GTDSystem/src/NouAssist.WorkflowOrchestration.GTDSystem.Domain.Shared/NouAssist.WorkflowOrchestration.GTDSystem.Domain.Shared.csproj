@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\GTDSystem\*.json" />
-    <Content Remove="Localization\GTDSystem\*.json" />
+    <EmbeddedResource Include="Localization\GTD\*.json" />
+    <Content Remove="Localization\GTD\*.json" />
   </ItemGroup>
 
 </Project>

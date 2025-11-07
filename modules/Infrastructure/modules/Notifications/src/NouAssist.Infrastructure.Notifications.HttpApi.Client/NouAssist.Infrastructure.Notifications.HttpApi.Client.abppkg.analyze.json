@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Infrastructure.Notifications",
+      "namespace": "NouAssist.Notifications",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.Notifications.Application.Contracts",
-          "namespace": "NouAssist.Infrastructure.Notifications",
-          "name": "NouAssist.InfrastructureApplicationContractsModule"
+          "namespace": "NouAssist.Notifications",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.InfrastructureHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

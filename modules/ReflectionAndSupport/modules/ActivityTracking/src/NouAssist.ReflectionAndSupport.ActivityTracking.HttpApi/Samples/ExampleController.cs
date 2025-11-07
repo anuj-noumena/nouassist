@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.ReflectionAndSupport.ActivityTracking.Samples;
 
-[Area(ActivityTrackingRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = ActivityTrackingRemoteServiceConsts.RemoteServiceName)]
-[Route("api/activity-tracking/example")]
-public class ExampleController : ActivityTrackingController, ISampleAppService
+[Area(ActivityRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = ActivityRemoteServiceConsts.RemoteServiceName)]
+[Route("api/activity/example")]
+public class ExampleController : ActivityController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

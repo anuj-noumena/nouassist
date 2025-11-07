@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain",
-          "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows",
+          "namespace": "NouAssist.Approval",
           "name": "ApprovalWorkflowsDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore",
-      "connectionStringName": "ApprovalWorkflows",
+      "connectionStringName": "Approval",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore",
-          "name": "ConfigureApprovalWorkflows",
+          "name": "ConfigureApproval",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IApprovalWorkflowsDbContext",
+          "name": "IApprovalDbContext",
           "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore",
-          "fullName": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore.IApprovalWorkflowsDbContext"
+          "fullName": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.EntityFrameworkCore.IApprovalDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "ApprovalWorkflowsDbContext",
+      "name": "ApprovalDbContext",
       "summary": null
     }
   ]

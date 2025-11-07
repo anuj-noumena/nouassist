@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.WorkflowOrchestration.ApprovalWorkflows.Samples;
 
-[Area(ApprovalWorkflowsRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = ApprovalWorkflowsRemoteServiceConsts.RemoteServiceName)]
-[Route("api/approval-workflows/example")]
-public class ExampleController : ApprovalWorkflowsController, ISampleAppService
+[Area(ApprovalRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = ApprovalRemoteServiceConsts.RemoteServiceName)]
+[Route("api/approval/example")]
+public class ExampleController : ApprovalController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

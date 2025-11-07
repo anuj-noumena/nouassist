@@ -1,24 +1,34 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
+using NouAssist.CollaborationHub.Resources.Aggregates;
+using NouAssist.CollaborationHub.Resources.Data;
+using NouAssist.CollaborationHub.Resources.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.CollaborationHub.Resources.EntityFrameworkCore;
-
-[DependsOn(
-    typeof(ResourcesDomainModule),
-    typeof(AbpEntityFrameworkCoreModule)
-)]
-public class ResourcesEntityFrameworkCoreModule : AbpModule
+namespace NouAssist.CollaborationHub.Resources.EntityFrameworkCore
 {
-    public override void ConfigureServices(ServiceConfigurationContext context)
+    [DependsOn(
+        typeof(NouAssistResourcesDomainModule),
+        typeof(AbpEntityFrameworkCorePostgreSqlModule)
+    )]
+    public class ResourcesEntityFrameworkCoreModule : AbpModule
     {
-        context.Services.AddAbpDbContext<ResourcesDbContext>(options =>
+        public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            options.AddDefaultRepositories<IResourcesDbContext>(includeAllEntities: true);
-            
-            /* Add custom repositories here. Example:
-            * options.AddRepository<Question, EfCoreQuestionRepository>();
-            */
-        });
+            context.Services.AddAbpDbContext<ResourcesDbContext>(options =>
+            {
+                options.AddRepository<Resource, EfCoreResourceRepository>();
+                options.AddRepository<Book, EfCoreBookRepository>();
+                options.AddRepository<InventoryItem, EfCoreInventoryItemRepository>();
+                options.AddRepository<StorageBackend, EfCoreStorageBackendRepository>();
+                options.AddRepository<BookCollection, EfCoreBookCollectionRepository>();
+            });
+
+            Configure<AbpDbContextOptions>(options =>
+            {
+                options.UseNpgsql();
+            });
+        }
     }
 }

@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Infrastructure.SearchEngine",
+      "namespace": "NouAssist.Search",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.SearchEngine.Application.Contracts",
-          "namespace": "NouAssist.Infrastructure.SearchEngine",
-          "name": "NouAssist.InfrastructureApplicationContractsModule"
+          "namespace": "NouAssist.Search",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.InfrastructureHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

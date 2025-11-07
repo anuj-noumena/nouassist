@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.Reviews",
+      "namespace": "NouAssist.Reviews",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.Reviews.Application.Contracts",
-          "namespace": "NouAssist.ReflectionAndSupport.Reviews",
+          "namespace": "NouAssist.Reviews",
           "name": "ReviewsApplicationContractsModule"
         },
         {

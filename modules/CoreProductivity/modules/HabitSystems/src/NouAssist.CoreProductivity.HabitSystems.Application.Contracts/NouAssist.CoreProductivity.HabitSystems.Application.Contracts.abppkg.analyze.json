@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.HabitSystems",
+      "namespace": "NouAssist.Habits",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.HabitSystems.Domain.Shared",
-          "namespace": "NouAssist.CoreProductivity.HabitSystems",
+          "namespace": "NouAssist.Habits",
           "name": "HabitSystemsDomainSharedModule"
         },
         {

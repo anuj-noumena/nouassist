@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CollaborationHub.UserProfiles",
+      "namespace": "NouAssist.Users",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.UserProfiles.Domain.Shared",
-          "namespace": "NouAssist.CollaborationHub.UserProfiles",
+          "namespace": "NouAssist.Users",
           "name": "UserProfilesDomainSharedModule"
         },
         {

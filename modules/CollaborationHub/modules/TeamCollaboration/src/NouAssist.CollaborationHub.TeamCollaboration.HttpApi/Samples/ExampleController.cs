@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CollaborationHub.TeamCollaboration.Samples;
 
-[Area(TeamCollaborationRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = TeamCollaborationRemoteServiceConsts.RemoteServiceName)]
-[Route("api/team-collaboration/example")]
-public class ExampleController : TeamCollaborationController, ISampleAppService
+[Area(MeetingsRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = MeetingsRemoteServiceConsts.RemoteServiceName)]
+[Route("api/meetings/example")]
+public class ExampleController : MeetingsController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

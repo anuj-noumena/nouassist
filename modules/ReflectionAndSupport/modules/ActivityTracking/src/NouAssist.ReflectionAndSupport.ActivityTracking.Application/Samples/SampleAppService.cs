@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.ReflectionAndSupport.ActivityTracking.Samples;
 
-public class SampleAppService : ActivityTrackingAppService, ISampleAppService
+public class SampleAppService : ActivityAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

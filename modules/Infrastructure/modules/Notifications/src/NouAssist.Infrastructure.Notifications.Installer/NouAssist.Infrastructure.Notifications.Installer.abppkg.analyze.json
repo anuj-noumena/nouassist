@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Infrastructure.Notifications",
+      "namespace": "NouAssist.Notifications",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.VirtualFileSystem",

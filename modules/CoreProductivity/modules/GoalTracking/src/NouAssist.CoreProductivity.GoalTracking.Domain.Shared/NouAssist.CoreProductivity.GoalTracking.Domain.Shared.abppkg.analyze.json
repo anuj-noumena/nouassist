@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.GoalTracking",
+      "namespace": "NouAssist.Goals",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

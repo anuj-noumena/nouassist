@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.TaskManagement",
+      "namespace": "NouAssist.Tasks",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.TaskManagement.Domain.Shared",
-          "namespace": "NouAssist.CoreProductivity.TaskManagement",
+          "namespace": "NouAssist.Tasks",
           "name": "TaskManagementDomainSharedModule"
         },
         {

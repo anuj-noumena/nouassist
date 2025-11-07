@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CoreProductivity.GoalTracking.Samples;
 
-[Area(GoalTrackingRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = GoalTrackingRemoteServiceConsts.RemoteServiceName)]
-[Route("api/goal-tracking/example")]
-public class ExampleController : GoalTrackingController, ISampleAppService
+[Area(GoalsRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = GoalsRemoteServiceConsts.RemoteServiceName)]
+[Route("api/goals/example")]
+public class ExampleController : GoalsController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

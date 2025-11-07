@@ -1,33 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Infrastructure.Notifications.EntityFrameworkCore;
-
-public static class NotificationsDbContextModelCreatingExtensions
+namespace NouAssist.Infrastructure.Notifications.EntityFrameworkCore
 {
-    public static void ConfigureNotifications(
-        this ModelBuilder builder)
+    public static class NotificationsDbContextModelCreatingExtensions
     {
-        Check.NotNull(builder, nameof(builder));
-
-        /* Configure all entities here. Example:
-
-        builder.Entity<Question>(b =>
+        public static void ConfigureNotifications(
+            this ModelBuilder builder,
+            NotificationsDbContext dbContext)
         {
-            //Configure table & schema name
-            b.ToTable(NotificationsDbProperties.DbTablePrefix + "Questions", NotificationsDbProperties.DbSchema);
+            Check.NotNull(builder, nameof(builder));
 
-            b.ConfigureByConvention();
-
-            //Properties
-            b.Property(q => q.Title).IsRequired().HasMaxLength(QuestionConsts.MaxTitleLength);
-
-            //Relations
-            b.HasMany(question => question.Tags).WithOne().HasForeignKey(qt => qt.QuestionId);
-
-            //Indexes
-            b.HasIndex(q => q.CreationTime);
-        });
-        */
+            builder.ApplyConfigurationsFromAssembly(typeof(NotificationsDbContext).Assembly);
+        }
     }
 }

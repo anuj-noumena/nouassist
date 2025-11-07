@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.SearchEngine.Domain",
-          "namespace": "NouAssist.Infrastructure.SearchEngine",
+          "namespace": "NouAssist.Search",
           "name": "SearchEngineDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore",
-      "connectionStringName": "SearchEngine",
+      "connectionStringName": "Search",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore",
-          "name": "ConfigureSearchEngine",
+          "name": "ConfigureSearch",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "ISearchEngineDbContext",
+          "name": "ISearchDbContext",
           "namespace": "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore",
-          "fullName": "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore.ISearchEngineDbContext"
+          "fullName": "NouAssist.Infrastructure.SearchEngine.EntityFrameworkCore.ISearchDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "SearchEngineDbContext",
+      "name": "SearchDbContext",
       "summary": null
     }
   ]

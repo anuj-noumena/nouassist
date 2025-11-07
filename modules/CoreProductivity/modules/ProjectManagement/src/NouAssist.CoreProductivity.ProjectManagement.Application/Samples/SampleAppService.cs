@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.CoreProductivity.ProjectManagement.Samples;
 
-public class SampleAppService : ProjectManagementAppService, ISampleAppService
+public class SampleAppService : ProjectsAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

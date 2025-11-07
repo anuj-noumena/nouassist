@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows",
+      "namespace": "NouAssist.Approval",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain",
-          "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows",
+          "namespace": "NouAssist.Approval",
           "name": "ApprovalWorkflowsDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.WorkflowOrchestration.ApprovalWorkflows.Application.Contracts",
-          "namespace": "NouAssist.WorkflowOrchestration.ApprovalWorkflows",
+          "namespace": "NouAssist.Approval",
           "name": "ApprovalWorkflowsApplicationContractsModule"
         },
         {

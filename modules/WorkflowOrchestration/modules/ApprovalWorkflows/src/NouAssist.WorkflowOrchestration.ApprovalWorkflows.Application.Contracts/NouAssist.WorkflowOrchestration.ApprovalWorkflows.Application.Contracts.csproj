@@ -14,4 +14,10 @@
     <ProjectReference Include="..\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Shared\NouAssist.WorkflowOrchestration.ApprovalWorkflows.Domain.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\..\..\..\..\..\.nuget\packages\fluentvalidation\11.11.0\lib\net8.0\FluentValidation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

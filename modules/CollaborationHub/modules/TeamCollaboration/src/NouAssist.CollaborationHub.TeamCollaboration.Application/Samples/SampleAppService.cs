@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.CollaborationHub.TeamCollaboration.Samples;
 
-public class SampleAppService : TeamCollaborationAppService, ISampleAppService
+public class SampleAppService : MeetingsAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

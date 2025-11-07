@@ -1,13 +1,18 @@
-﻿using AutoMapper;
+using AutoMapper;
+using NouAssist.Infrastructure.Notifications.Aggregates;
+using NouAssist.Infrastructure.Notifications.Entities;
+using NouAssist.Infrastructure.Notifications.Notifications.Dtos;
 
-namespace NouAssist.Infrastructure.Notifications;
-
-public class NotificationsApplicationAutoMapperProfile : Profile
+namespace NouAssist.Infrastructure.Notifications
 {
-    public NotificationsApplicationAutoMapperProfile()
+    public class NotificationsApplicationAutoMapperProfile : Profile
     {
-        /* You can configure your AutoMapper mapping configuration here.
-         * Alternatively, you can split your mapping configurations
-         * into multiple profile classes for a better organization. */
+        public NotificationsApplicationAutoMapperProfile()
+        {
+            CreateMap<Notification, NotificationDto>();
+            CreateMap<NotificationDeliveryLogEntry, NotificationDeliveryLogDto>();
+            CreateMap<NotificationPreference, NotificationPreferenceDto>();
+            CreateMap<NotificationPreference, NotificationPreferenceDto>();
+        }
     }
 }

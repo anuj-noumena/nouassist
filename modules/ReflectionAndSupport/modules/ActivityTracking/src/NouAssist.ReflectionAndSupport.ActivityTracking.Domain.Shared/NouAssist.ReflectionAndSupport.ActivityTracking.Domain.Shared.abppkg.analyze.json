@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.ActivityTracking",
+      "namespace": "NouAssist.Activity",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

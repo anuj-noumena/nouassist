@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.TimeManagement.Domain",
-          "namespace": "NouAssist.CoreProductivity.TimeManagement",
+          "namespace": "NouAssist.Calendar",
           "name": "TimeManagementDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore",
-      "connectionStringName": "TimeManagement",
+      "connectionStringName": "Calendar",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore",
-          "name": "ConfigureTimeManagement",
+          "name": "ConfigureCalendar",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "ITimeManagementDbContext",
+          "name": "ICalendarDbContext",
           "namespace": "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore",
-          "fullName": "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore.ITimeManagementDbContext"
+          "fullName": "NouAssist.CoreProductivity.TimeManagement.EntityFrameworkCore.ICalendarDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "TimeManagementDbContext",
+      "name": "CalendarDbContext",
       "summary": null
     }
   ]

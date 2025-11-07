@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+      "namespace": "NouAssist.Projects",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.ProjectManagement.Domain.Shared",
-          "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+          "namespace": "NouAssist.Projects",
           "name": "ProjectManagementDomainSharedModule"
         },
         {

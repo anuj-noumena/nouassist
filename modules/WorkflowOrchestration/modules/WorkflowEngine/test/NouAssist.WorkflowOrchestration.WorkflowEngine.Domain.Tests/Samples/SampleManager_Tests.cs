@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.WorkflowOrchestration.WorkflowEngine.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : WorkflowEngineDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : WorkflowDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

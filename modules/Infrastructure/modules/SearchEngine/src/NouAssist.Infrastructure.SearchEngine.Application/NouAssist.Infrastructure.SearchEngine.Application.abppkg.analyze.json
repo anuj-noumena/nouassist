@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Infrastructure.SearchEngine",
+      "namespace": "NouAssist.Search",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.SearchEngine.Domain",
-          "namespace": "NouAssist.Infrastructure.SearchEngine",
+          "namespace": "NouAssist.Search",
           "name": "SearchEngineDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.SearchEngine.Application.Contracts",
-          "namespace": "NouAssist.Infrastructure.SearchEngine",
+          "namespace": "NouAssist.Search",
           "name": "SearchEngineApplicationContractsModule"
         },
         {

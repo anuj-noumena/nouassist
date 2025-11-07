@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.Infrastructure.SearchEngine.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : SearchEngineDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : SearchDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

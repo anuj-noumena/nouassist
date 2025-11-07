@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
+      "namespace": "NouAssist.Comments",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

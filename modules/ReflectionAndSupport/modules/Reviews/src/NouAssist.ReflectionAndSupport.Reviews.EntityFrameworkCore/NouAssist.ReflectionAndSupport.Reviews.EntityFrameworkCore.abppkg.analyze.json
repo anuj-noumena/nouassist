@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.Reviews.Domain",
-          "namespace": "NouAssist.ReflectionAndSupport.Reviews",
+          "namespace": "NouAssist.Reviews",
           "name": "ReviewsDomainModule"
         },
         {

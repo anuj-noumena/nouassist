@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.TimeManagement.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : TimeManagementDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : CalendarDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

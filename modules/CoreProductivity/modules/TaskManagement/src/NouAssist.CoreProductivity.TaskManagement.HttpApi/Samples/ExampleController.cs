@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CoreProductivity.TaskManagement.Samples;
 
-[Area(TaskManagementRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = TaskManagementRemoteServiceConsts.RemoteServiceName)]
-[Route("api/task-management/example")]
-public class ExampleController : TaskManagementController, ISampleAppService
+[Area(TasksRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = TasksRemoteServiceConsts.RemoteServiceName)]
+[Route("api/tasks/example")]
+public class ExampleController : TasksController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

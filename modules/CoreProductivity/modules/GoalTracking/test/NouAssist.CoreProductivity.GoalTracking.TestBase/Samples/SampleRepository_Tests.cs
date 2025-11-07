@@ -8,7 +8,7 @@ namespace NouAssist.CoreProductivity.GoalTracking.Samples;
  * Then inherit these abstract classes from EF Core & MongoDB test projects.
  * In this way, both database providers are tests with the same set tests.
  */
-public abstract class SampleRepository_Tests<TStartupModule> : GoalTrackingTestBase<TStartupModule>
+public abstract class SampleRepository_Tests<TStartupModule> : GoalsTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly ISampleRepository _sampleRepository;

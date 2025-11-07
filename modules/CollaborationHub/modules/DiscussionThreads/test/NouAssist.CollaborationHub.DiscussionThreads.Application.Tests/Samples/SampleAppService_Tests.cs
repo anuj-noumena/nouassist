@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.CollaborationHub.DiscussionThreads.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : DiscussionThreadsApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : CommentsApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

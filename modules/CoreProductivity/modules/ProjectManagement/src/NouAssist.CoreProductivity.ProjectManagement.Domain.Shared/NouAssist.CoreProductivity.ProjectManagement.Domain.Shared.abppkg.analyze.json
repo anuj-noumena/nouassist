@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+      "namespace": "NouAssist.Projects",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

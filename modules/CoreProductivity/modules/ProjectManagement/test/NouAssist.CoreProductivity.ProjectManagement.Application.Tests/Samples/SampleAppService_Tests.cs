@@ -5,7 +5,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.ProjectManagement.Samples;
 
-public abstract class SampleAppService_Tests<TStartupModule> : ProjectManagementApplicationTestBase<TStartupModule>
+public abstract class SampleAppService_Tests<TStartupModule> : ProjectsApplicationTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     private readonly ISampleAppService _sampleAppService;

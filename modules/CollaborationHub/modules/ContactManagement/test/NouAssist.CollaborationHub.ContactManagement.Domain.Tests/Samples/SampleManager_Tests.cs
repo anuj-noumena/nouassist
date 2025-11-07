@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.CollaborationHub.ContactManagement.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : ContactManagementDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : ContactsDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

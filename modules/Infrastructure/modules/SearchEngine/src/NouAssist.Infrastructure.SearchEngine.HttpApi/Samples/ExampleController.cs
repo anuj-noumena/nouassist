@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.Infrastructure.SearchEngine.Samples;
 
-[Area(SearchEngineRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = SearchEngineRemoteServiceConsts.RemoteServiceName)]
-[Route("api/search-engine/example")]
-public class ExampleController : SearchEngineController, ISampleAppService
+[Area(SearchRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = SearchRemoteServiceConsts.RemoteServiceName)]
+[Route("api/search/example")]
+public class ExampleController : SearchController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

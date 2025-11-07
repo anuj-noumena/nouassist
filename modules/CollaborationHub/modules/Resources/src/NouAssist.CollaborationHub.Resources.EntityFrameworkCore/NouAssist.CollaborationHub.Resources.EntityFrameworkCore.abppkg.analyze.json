@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.Resources.Domain",
-          "namespace": "NouAssist.CollaborationHub.Resources",
+          "namespace": "NouAssist.Resources",
           "name": "ResourcesDomainModule"
         },
         {

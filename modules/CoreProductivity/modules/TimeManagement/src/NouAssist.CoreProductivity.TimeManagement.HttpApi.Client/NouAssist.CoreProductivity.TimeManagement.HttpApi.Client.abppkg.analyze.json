@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.TimeManagement",
+      "namespace": "NouAssist.Calendar",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.TimeManagement.Application.Contracts",
-          "namespace": "NouAssist.CoreProductivity.TimeManagement",
-          "name": "NouAssist.CoreProductivityApplicationContractsModule"
+          "namespace": "NouAssist.Calendar",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.CoreProductivityHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace NouAssist.CoreProductivity.HabitSystems.Samples;
 
-public abstract class SampleManager_Tests<TStartupModule> : HabitSystemsDomainTestBase<TStartupModule>
+public abstract class SampleManager_Tests<TStartupModule> : HabitsDomainTestBase<TStartupModule>
     where TStartupModule : IAbpModule
 {
     //private readonly SampleManager _sampleManager;

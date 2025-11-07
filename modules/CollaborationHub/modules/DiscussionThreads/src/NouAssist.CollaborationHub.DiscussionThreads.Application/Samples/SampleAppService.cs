@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace NouAssist.CollaborationHub.DiscussionThreads.Samples;
 
-public class SampleAppService : DiscussionThreadsAppService, ISampleAppService
+public class SampleAppService : CommentsAppService, ISampleAppService
 {
     public Task<SampleDto> GetAsync()
     {

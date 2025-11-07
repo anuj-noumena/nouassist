@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.TaskManagement",
+      "namespace": "NouAssist.Tasks",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.TaskManagement.Application.Contracts",
-          "namespace": "NouAssist.CoreProductivity.TaskManagement",
+          "namespace": "NouAssist.Tasks",
           "name": "TaskManagementApplicationContractsModule"
         },
         {

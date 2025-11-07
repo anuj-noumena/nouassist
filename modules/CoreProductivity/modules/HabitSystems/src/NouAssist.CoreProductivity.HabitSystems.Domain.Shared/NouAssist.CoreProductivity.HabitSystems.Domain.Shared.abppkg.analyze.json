@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.HabitSystems",
+      "namespace": "NouAssist.Habits",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

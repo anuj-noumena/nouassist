@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.Reviews",
+      "namespace": "NouAssist.Reviews",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.Reviews.Application.Contracts",
-          "namespace": "NouAssist.ReflectionAndSupport.Reviews",
-          "name": "NouAssist.ReflectionAndSupportApplicationContractsModule"
+          "namespace": "NouAssist.Reviews",
+          "name": "NouAssistApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssist.ReflectionAndSupportHttpApiClientModule",
+      "name": "NouAssistHttpApiClientModule",
       "summary": null
     }
   ]

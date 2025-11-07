@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.ReflectionAndSupport.Reminders",
+      "namespace": "NouAssist.Reminders",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.ReflectionAndSupport.Reminders.Domain.Shared",
-          "namespace": "NouAssist.ReflectionAndSupport.Reminders",
+          "namespace": "NouAssist.Reminders",
           "name": "RemindersDomainSharedModule"
         },
         {

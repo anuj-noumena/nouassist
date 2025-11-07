@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CollaborationHub.DiscussionThreads.Samples;
 
-[Area(DiscussionThreadsRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = DiscussionThreadsRemoteServiceConsts.RemoteServiceName)]
-[Route("api/discussion-threads/example")]
-public class ExampleController : DiscussionThreadsController, ISampleAppService
+[Area(CommentsRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = CommentsRemoteServiceConsts.RemoteServiceName)]
+[Route("api/comments/example")]
+public class ExampleController : CommentsController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

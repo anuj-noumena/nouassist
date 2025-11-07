@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\HabitSystems\*.json" />
-    <Content Remove="Localization\HabitSystems\*.json" />
+    <EmbeddedResource Include="Localization\Habits\*.json" />
+    <Content Remove="Localization\Habits\*.json" />
   </ItemGroup>
 
 </Project>

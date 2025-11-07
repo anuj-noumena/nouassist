@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.HabitSystems",
+      "namespace": "NouAssist.Habits",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.HabitSystems.Application.Contracts",
-          "namespace": "NouAssist.CoreProductivity.HabitSystems",
+          "namespace": "NouAssist.Habits",
           "name": "HabitSystemsApplicationContractsModule"
         },
         {

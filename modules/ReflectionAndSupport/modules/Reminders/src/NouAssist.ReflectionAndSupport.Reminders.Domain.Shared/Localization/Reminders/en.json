@@ -1,7 +1,10 @@
 {
   "culture": "en",
   "texts": {
-    "MyAccount":  "My account",
-    "SamplePageMessage": "A sample page for the Reminders module"
+    "Reminders:CannotSnooze": "Cannot snooze a reminder that has already been sent.",
+    "Reminders:CannotReschedule": "Cannot reschedule a sent reminder.",
+    "Reminders:InvalidSnoozeDuration": "Snooze duration must be positive.",
+    "Reminders:TitleRequired": "Reminder title is required.",
+    "Reminders:InvalidRecurrence": "Invalid recurrence pattern."
   }
 }

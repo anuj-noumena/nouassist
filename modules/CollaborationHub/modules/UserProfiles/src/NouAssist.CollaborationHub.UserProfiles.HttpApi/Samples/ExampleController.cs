@@ -5,10 +5,10 @@ using Volo.Abp;
 
 namespace NouAssist.CollaborationHub.UserProfiles.Samples;
 
-[Area(UserProfilesRemoteServiceConsts.ModuleName)]
-[RemoteService(Name = UserProfilesRemoteServiceConsts.RemoteServiceName)]
-[Route("api/user-profiles/example")]
-public class ExampleController : UserProfilesController, ISampleAppService
+[Area(UsersRemoteServiceConsts.ModuleName)]
+[RemoteService(Name = UsersRemoteServiceConsts.RemoteServiceName)]
+[Route("api/users/example")]
+public class ExampleController : UsersController, ISampleAppService
 {
     private readonly ISampleAppService _sampleAppService;
 

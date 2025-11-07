@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+      "namespace": "NouAssist.Projects",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.ProjectManagement.Domain",
-          "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+          "namespace": "NouAssist.Projects",
           "name": "ProjectManagementDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.CoreProductivity.ProjectManagement.Application.Contracts",
-          "namespace": "NouAssist.CoreProductivity.ProjectManagement",
+          "namespace": "NouAssist.Projects",
           "name": "ProjectManagementApplicationContractsModule"
         },
         {

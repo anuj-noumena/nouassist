@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.Infrastructure.Notifications.Domain",
-          "namespace": "NouAssist.Infrastructure.Notifications",
+          "namespace": "NouAssist.Notifications",
           "name": "NotificationsDomainModule"
         },
         {

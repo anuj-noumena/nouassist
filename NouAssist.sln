@@ -119,6 +119,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NouAssist.Approval.HttpApi"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NouAssist.Approval.HttpApi.Client", "modules\Approval\src\NouAssist.Approval.HttpApi.Client\NouAssist.Approval.HttpApi.Client.csproj", "{753955B8-C138-46D0-9ABE-845122400E78}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{CCAF4835-76AE-45AA-AA48-F56546FAF190}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NouAssist.Notifications.Application", "modules\Notifications\src\NouAssist.Notifications.Application\NouAssist.Notifications.Application.csproj", "{0B59FB22-A24B-40AF-B7F5-C136F67C947E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NouAssist.Notifications.Application.Contracts", "modules\Notifications\src\NouAssist.Notifications.Application.Contracts\NouAssist.Notifications.Application.Contracts.csproj", "{ED0FE369-9E3B-4E0E-AF31-DEA2BD0E023D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NouAssist.Notifications.Domain", "modules\Notifications\src\NouAssist.Notifications.Domain\NouAssist.Notifications.Domain.csproj", "{560951BD-07D1-49CE-B868-38145FCC8434}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -325,6 +333,18 @@ Global
 		{753955B8-C138-46D0-9ABE-845122400E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{753955B8-C138-46D0-9ABE-845122400E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{753955B8-C138-46D0-9ABE-845122400E78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B59FB22-A24B-40AF-B7F5-C136F67C947E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B59FB22-A24B-40AF-B7F5-C136F67C947E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B59FB22-A24B-40AF-B7F5-C136F67C947E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B59FB22-A24B-40AF-B7F5-C136F67C947E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED0FE369-9E3B-4E0E-AF31-DEA2BD0E023D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED0FE369-9E3B-4E0E-AF31-DEA2BD0E023D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED0FE369-9E3B-4E0E-AF31-DEA2BD0E023D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED0FE369-9E3B-4E0E-AF31-DEA2BD0E023D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{560951BD-07D1-49CE-B868-38145FCC8434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{560951BD-07D1-49CE-B868-38145FCC8434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{560951BD-07D1-49CE-B868-38145FCC8434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{560951BD-07D1-49CE-B868-38145FCC8434}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -385,6 +405,10 @@ Global
 		{94AFB128-8C3E-4645-83B4-9C9F98CF6C09} = {1F31EF4A-7F97-46A1-9A06-9EC98EDE7B1A}
 		{865821E9-6074-480F-85FD-DF259279A103} = {1F31EF4A-7F97-46A1-9A06-9EC98EDE7B1A}
 		{753955B8-C138-46D0-9ABE-845122400E78} = {1F31EF4A-7F97-46A1-9A06-9EC98EDE7B1A}
+		{CCAF4835-76AE-45AA-AA48-F56546FAF190} = {F3832B90-904E-488B-8DDE-5296E39E33DD}
+		{0B59FB22-A24B-40AF-B7F5-C136F67C947E} = {CCAF4835-76AE-45AA-AA48-F56546FAF190}
+		{ED0FE369-9E3B-4E0E-AF31-DEA2BD0E023D} = {CCAF4835-76AE-45AA-AA48-F56546FAF190}
+		{560951BD-07D1-49CE-B868-38145FCC8434} = {CCAF4835-76AE-45AA-AA48-F56546FAF190}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {28315BFD-90E7-4E14-A2EA-F3D23AF4126F}

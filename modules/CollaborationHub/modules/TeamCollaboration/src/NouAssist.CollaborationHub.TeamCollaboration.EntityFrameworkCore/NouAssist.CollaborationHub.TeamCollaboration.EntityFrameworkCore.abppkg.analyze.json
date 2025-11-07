@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.TeamCollaboration.Domain",
-          "namespace": "NouAssist.Meetings",
+          "namespace": "NouAssist.CollaborationHub.TeamCollaboration",
           "name": "TeamCollaborationDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.CollaborationHub.TeamCollaboration.EntityFrameworkCore",
-      "connectionStringName": "Meetings",
+      "connectionStringName": "TeamCollaboration",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.CollaborationHub.TeamCollaboration.EntityFrameworkCore",
-          "name": "ConfigureMeetings",
+          "name": "ConfigureTeamCollaboration",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IMeetingsDbContext",
+          "name": "ITeamCollaborationDbContext",
           "namespace": "NouAssist.CollaborationHub.TeamCollaboration.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.CollaborationHub.TeamCollaboration.EntityFrameworkCore",
-          "fullName": "NouAssist.CollaborationHub.TeamCollaboration.EntityFrameworkCore.IMeetingsDbContext"
+          "fullName": "NouAssist.CollaborationHub.TeamCollaboration.EntityFrameworkCore.ITeamCollaborationDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "MeetingsDbContext",
+      "name": "TeamCollaborationDbContext",
       "summary": null
     }
   ]

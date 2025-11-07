@@ -12,10 +12,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore.Repositories
 {
     public class EfCoreTicklerRepository 
-        : EfCoreRepository<IGtdDbContext, TicklerItem, Guid>, ITicklerRepository
+        : EfCoreRepository<IGTDSystemDbContext, TicklerItem, Guid>, ITicklerRepository
     {
         public EfCoreTicklerRepository(
-            IDbContextProvider<IGtdDbContext> dbContextProvider)
+            IDbContextProvider<IGTDSystemDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

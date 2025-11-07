@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.DiscussionThreads.Domain",
-          "namespace": "NouAssist.Comments",
+          "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
           "name": "DiscussionThreadsDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.CollaborationHub.DiscussionThreads.EntityFrameworkCore",
-      "connectionStringName": "Comments",
+      "connectionStringName": "DiscussionThreads",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.CollaborationHub.DiscussionThreads.EntityFrameworkCore",
-          "name": "ConfigureComments",
+          "name": "ConfigureDiscussionThreads",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "ICommentsDbContext",
+          "name": "IDiscussionThreadsDbContext",
           "namespace": "NouAssist.CollaborationHub.DiscussionThreads.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.CollaborationHub.DiscussionThreads.EntityFrameworkCore",
-          "fullName": "NouAssist.CollaborationHub.DiscussionThreads.EntityFrameworkCore.ICommentsDbContext"
+          "fullName": "NouAssist.CollaborationHub.DiscussionThreads.EntityFrameworkCore.IDiscussionThreadsDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "CommentsDbContext",
+      "name": "DiscussionThreadsDbContext",
       "summary": null
     }
   ]

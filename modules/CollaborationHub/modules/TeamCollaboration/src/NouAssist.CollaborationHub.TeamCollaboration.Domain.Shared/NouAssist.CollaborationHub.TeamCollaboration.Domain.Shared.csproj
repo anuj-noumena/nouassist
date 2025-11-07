@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\Meetings\*.json" />
-    <Content Remove="Localization\Meetings\*.json" />
+    <EmbeddedResource Include="Localization\TeamCollaboration\*.json" />
+    <Content Remove="Localization\TeamCollaboration\*.json" />
   </ItemGroup>
 
 </Project>

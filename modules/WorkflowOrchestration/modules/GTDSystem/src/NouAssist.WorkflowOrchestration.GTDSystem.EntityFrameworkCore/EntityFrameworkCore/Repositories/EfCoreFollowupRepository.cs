@@ -10,10 +10,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore.Repositories
 {
     public class EfCoreFollowupRepository 
-        : EfCoreRepository<IGtdDbContext, Followup, Guid>
+        : EfCoreRepository<IGTDSystemDbContext, Followup, Guid>
     {
         public EfCoreFollowupRepository(
-            IDbContextProvider<IGtdDbContext> dbContextProvider)
+            IDbContextProvider<IGTDSystemDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

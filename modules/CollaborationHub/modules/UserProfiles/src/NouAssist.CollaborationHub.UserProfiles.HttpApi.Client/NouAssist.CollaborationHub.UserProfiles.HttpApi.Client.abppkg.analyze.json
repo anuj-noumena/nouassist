@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Users",
+      "namespace": "NouAssist.CollaborationHub.UserProfiles",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.UserProfiles.Application.Contracts",
-          "namespace": "NouAssist.Users",
-          "name": "NouAssistApplicationContractsModule"
+          "namespace": "NouAssist.CollaborationHub.UserProfiles",
+          "name": "NouAssist.CollaborationHubApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssistHttpApiClientModule",
+      "name": "NouAssist.CollaborationHubHttpApiClientModule",
       "summary": null
     }
   ]

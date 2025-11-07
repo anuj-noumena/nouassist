@@ -3,12 +3,12 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Comments",
+      "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.DiscussionThreads.Application.Contracts",
-          "namespace": "NouAssist.Comments",
-          "name": "NouAssistApplicationContractsModule"
+          "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
+          "name": "NouAssist.CollaborationHubApplicationContractsModule"
         },
         {
           "declaringAssemblyName": "Volo.Abp.Http.Client",
@@ -61,7 +61,7 @@
         }
       ],
       "contentType": "abpModule",
-      "name": "NouAssistHttpApiClientModule",
+      "name": "NouAssist.CollaborationHubHttpApiClientModule",
       "summary": null
     }
   ]

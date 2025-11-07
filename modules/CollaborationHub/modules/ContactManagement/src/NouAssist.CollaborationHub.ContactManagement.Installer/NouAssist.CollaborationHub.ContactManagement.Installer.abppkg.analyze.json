@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Contacts",
+      "namespace": "NouAssist.CollaborationHub.ContactManagement",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.VirtualFileSystem",

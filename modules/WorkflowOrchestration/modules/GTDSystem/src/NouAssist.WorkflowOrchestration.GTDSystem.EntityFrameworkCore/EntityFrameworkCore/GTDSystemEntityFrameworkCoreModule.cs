@@ -12,9 +12,9 @@ public class GTDSystemEntityFrameworkCoreModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddAbpDbContext<GTDSystemDbContext>(options =>
+        context.Services.AddAbpDbContext<GTDDbContext>(options =>
         {
-            options.AddDefaultRepositories<IGTDSystemDbContext>(includeAllEntities: true);
+            options.AddDefaultRepositories<IGTDDbContext>(includeAllEntities: true);
             
             /* Add custom repositories here. Example:
             * options.AddRepository<Question, EfCoreQuestionRepository>();

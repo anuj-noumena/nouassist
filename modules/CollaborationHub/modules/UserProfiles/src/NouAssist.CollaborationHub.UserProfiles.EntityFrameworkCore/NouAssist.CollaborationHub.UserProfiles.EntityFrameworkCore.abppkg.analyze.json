@@ -7,7 +7,7 @@
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.UserProfiles.Domain",
-          "namespace": "NouAssist.Users",
+          "namespace": "NouAssist.CollaborationHub.UserProfiles",
           "name": "UserProfilesDomainModule"
         },
         {
@@ -66,14 +66,14 @@
     },
     {
       "namespace": "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore",
-      "connectionStringName": "Users",
+      "connectionStringName": "UserProfiles",
       "databaseTables": [],
       "replacedDbContexts": [],
       "modelBuilderExtensionMethods": [
         {
           "returnType": "Void",
           "namespace": "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore",
-          "name": "ConfigureUsers",
+          "name": "ConfigureUserProfiles",
           "summary": null,
           "isAsync": false,
           "isPublic": true,
@@ -156,14 +156,14 @@
           "fullName": "Volo.Abp.DependencyInjection.ITransientDependency"
         },
         {
-          "name": "IUsersDbContext",
+          "name": "IUserProfilesDbContext",
           "namespace": "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore",
           "declaringAssemblyName": "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore",
-          "fullName": "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore.IUsersDbContext"
+          "fullName": "NouAssist.CollaborationHub.UserProfiles.EntityFrameworkCore.IUserProfilesDbContext"
         }
       ],
       "contentType": "efCoreDbContext",
-      "name": "UsersDbContext",
+      "name": "UserProfilesDbContext",
       "summary": null
     }
   ]

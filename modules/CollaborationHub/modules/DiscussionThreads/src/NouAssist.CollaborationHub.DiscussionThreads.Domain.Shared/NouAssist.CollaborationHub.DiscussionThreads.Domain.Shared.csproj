@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\Comments\*.json" />
-    <Content Remove="Localization\Comments\*.json" />
+    <EmbeddedResource Include="Localization\DiscussionThreads\*.json" />
+    <Content Remove="Localization\DiscussionThreads\*.json" />
   </ItemGroup>
 
 </Project>

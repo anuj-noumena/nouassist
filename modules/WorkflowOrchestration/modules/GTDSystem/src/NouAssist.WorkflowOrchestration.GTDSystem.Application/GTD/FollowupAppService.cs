@@ -12,7 +12,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
 {
-    [Authorize(GtdPermissions.WaitingFor.Default)]
+    [Authorize(GTDSystemPermissions.WaitingFor.Default)]
     public class FollowupAppService : ApplicationService, IFollowupAppService
     {
         private readonly IRepository<Followup, Guid> _followupRepository;

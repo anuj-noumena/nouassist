@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Meetings",
+      "namespace": "NouAssist.CollaborationHub.TeamCollaboration",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.TeamCollaboration.Domain",
-          "namespace": "NouAssist.Meetings",
+          "namespace": "NouAssist.CollaborationHub.TeamCollaboration",
           "name": "TeamCollaborationDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.TeamCollaboration.Application.Contracts",
-          "namespace": "NouAssist.Meetings",
+          "namespace": "NouAssist.CollaborationHub.TeamCollaboration",
           "name": "TeamCollaborationApplicationContractsModule"
         },
         {

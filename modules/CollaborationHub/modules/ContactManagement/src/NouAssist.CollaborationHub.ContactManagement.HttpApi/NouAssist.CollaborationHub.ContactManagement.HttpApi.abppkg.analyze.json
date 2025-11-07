@@ -3,11 +3,11 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Contacts",
+      "namespace": "NouAssist.CollaborationHub.ContactManagement",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.ContactManagement.Application.Contracts",
-          "namespace": "NouAssist.Contacts",
+          "namespace": "NouAssist.CollaborationHub.ContactManagement",
           "name": "ContactManagementApplicationContractsModule"
         },
         {

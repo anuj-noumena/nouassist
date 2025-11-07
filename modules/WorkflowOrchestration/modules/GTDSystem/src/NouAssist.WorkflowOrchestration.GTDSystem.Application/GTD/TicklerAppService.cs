@@ -16,7 +16,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
 {
-    [Authorize(GtdPermissions.Ticklers.Default)]
+    [Authorize(GTDSystemPermissions.Ticklers.Default)]
     public class TicklerAppService : ApplicationService, ITicklerAppService
     {
         private readonly ITicklerRepository _ticklerRepository;
@@ -83,7 +83,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return new ListResultDto<TicklerItemDto>(dtos);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Create)]
+        [Authorize(GTDSystemPermissions.Ticklers.Create)]
         public async Task<TicklerItemDto> CreateAsync(CreateTicklerItemDto input)
         {
             var userId = CurrentUser.GetId();
@@ -125,7 +125,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Update)]
+        [Authorize(GTDSystemPermissions.Ticklers.Update)]
         public async Task<TicklerItemDto> UpdateAsync(Guid id, UpdateTicklerItemDto input)
         {
             var tickler = await _ticklerRepository.GetAsync(id);
@@ -146,13 +146,13 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Delete)]
+        [Authorize(GTDSystemPermissions.Ticklers.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _ticklerRepository.DeleteAsync(id);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Surface)]
+        [Authorize(GTDSystemPermissions.Ticklers.Surface)]
         public async Task<TicklerItemDto> SurfaceAsync(Guid id)
         {
             var tickler = await _ticklerRepository.GetAsync(id);
@@ -161,7 +161,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Process)]
+        [Authorize(GTDSystemPermissions.Ticklers.Process)]
         public async Task<TicklerItemDto> TakeActionAsync(Guid id, TicklerActionType actionType)
         {
             var tickler = await _ticklerRepository.GetAsync(id);
@@ -170,7 +170,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Process)]
+        [Authorize(GTDSystemPermissions.Ticklers.Process)]
         public async Task<TicklerItemDto> DismissAsync(Guid id)
         {
             var tickler = await _ticklerRepository.GetAsync(id);
@@ -179,7 +179,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Update)]
+        [Authorize(GTDSystemPermissions.Ticklers.Update)]
         public async Task<TicklerItemDto> SnoozeAsync(Guid id, SnoozeTicklerDto input)
         {
             var tickler = await _ticklerRepository.GetAsync(id);
@@ -188,7 +188,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Update)]
+        [Authorize(GTDSystemPermissions.Ticklers.Update)]
         public async Task<TicklerItemDto> RescheduleAsync(Guid id, DateTime newDate)
         {
             var tickler = await _ticklerRepository.GetAsync(id);
@@ -197,7 +197,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Update)]
+        [Authorize(GTDSystemPermissions.Ticklers.Update)]
         public async Task<TicklerItemDto> SetRecurrenceAsync(Guid id, SetRecurrenceDto input)
         {
             var tickler = await _ticklerRepository.GetAsync(id);
@@ -215,7 +215,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
         }
 
-        [Authorize(GtdPermissions.Ticklers.Process)]
+        [Authorize(GTDSystemPermissions.Ticklers.Process)]
         public async Task ProcessDueTicklersAsync()
         {
             var userId = CurrentUser.GetId();

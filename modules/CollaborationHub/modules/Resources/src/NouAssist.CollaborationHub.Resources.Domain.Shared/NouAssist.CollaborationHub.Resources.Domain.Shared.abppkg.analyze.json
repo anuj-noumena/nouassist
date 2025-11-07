@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Resources",
+      "namespace": "NouAssist.CollaborationHub.Resources",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.Validation",

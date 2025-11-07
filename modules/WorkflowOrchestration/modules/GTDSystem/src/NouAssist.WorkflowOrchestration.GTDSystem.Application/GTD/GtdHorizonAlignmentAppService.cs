@@ -12,7 +12,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
 {
-    [Authorize(GtdPermissions.Horizons.Default)]
+    [Authorize(GTDSystemPermissions.Horizons.Default)]
     public class GtdHorizonAlignmentAppService : ApplicationService, IGtdHorizonAlignmentAppService
     {
         private readonly IGtdHorizonAlignmentRepository _alignmentRepository;

@@ -3,7 +3,7 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Users",
+      "namespace": "NouAssist.CollaborationHub.UserProfiles",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "Volo.Abp.VirtualFileSystem",

@@ -16,7 +16,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
 {
-    [Authorize(GtdPermissions.SomedayMaybe.Default)]
+    [Authorize(GTDSystemPermissions.SomedayMaybe.Default)]
     public class SomedayMaybeAppService : ApplicationService, ISomedayMaybeAppService
     {
         private readonly ISomedayMaybeRepository _somedayMaybeRepository;
@@ -77,7 +77,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return new ListResultDto<SomedayMaybeItemDto>(dtos);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Create)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Create)]
         public async Task<SomedayMaybeItemDto> CreateAsync(CreateSomedayMaybeItemDto input)
         {
             var userId = CurrentUser.GetId();
@@ -102,7 +102,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> UpdateAsync(Guid id, UpdateSomedayMaybeItemDto input)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -123,13 +123,13 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Delete)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _somedayMaybeRepository.DeleteAsync(id);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Promote)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Promote)]
         public async Task<SomedayMaybeItemDto> PromoteAsync(Guid id, PromoteSomedayMaybeDto input)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -138,7 +138,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> ArchiveAsync(Guid id)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -147,7 +147,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> ActivateAsync(Guid id)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -156,7 +156,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> PutOnHoldAsync(Guid id)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -165,7 +165,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Review)]
+        [Authorize(GTDSystemPermissions.SomedayMaybe.Review)]
         public async Task<SomedayMaybeItemDto> ReviewAsync(Guid id, ReviewSomedayMaybeDto input)
         {
             var userId = CurrentUser.GetId();

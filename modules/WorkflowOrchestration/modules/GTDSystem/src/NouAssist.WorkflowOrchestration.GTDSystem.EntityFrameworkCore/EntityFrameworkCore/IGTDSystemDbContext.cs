@@ -1,12 +1,21 @@
-﻿using Volo.Abp.Data;
+using Microsoft.EntityFrameworkCore;
+using NouAssist.WorkflowOrchestration.GTDSystem.Aggregates;
+using NouAssist.WorkflowOrchestration.GTDSystem.Entities;
+using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore;
-
-[ConnectionStringName(GTDSystemDbProperties.ConnectionStringName)]
-public interface IGTDSystemDbContext : IEfCoreDbContext
+namespace NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore
 {
-    /* Add DbSet for each Aggregate Root here. Example:
-     * DbSet<Question> Questions { get; }
-     */
+    [ConnectionStringName(GtdDbProperties.ConnectionStringName)]
+    public interface IGTDSystemDbContext : IEfCoreDbContext
+    {
+        DbSet<GtdHorizon> GtdHorizons { get; }
+        DbSet<GtdHorizonAlignment> GtdHorizonAlignments { get; }
+        DbSet<SomedayMaybeItem> SomedayMaybeItems { get; }
+        DbSet<SomedayMaybeReview> SomedayMaybeReviews { get; }
+        DbSet<TicklerItem> TicklerItems { get; }
+        DbSet<TicklerProcessingLog> TicklerProcessingLogs { get; }
+        DbSet<WaitingFor> WaitingFors { get; }
+        DbSet<Followup> Followups { get; }
+    }
 }

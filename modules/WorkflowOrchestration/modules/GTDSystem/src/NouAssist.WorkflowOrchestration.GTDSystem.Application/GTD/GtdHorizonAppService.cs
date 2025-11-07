@@ -14,7 +14,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
 {
-    [Authorize(GtdPermissions.Horizons.Default)]
+    [Authorize(GTDSystemPermissions.Horizons.Default)]
     public class GtdHorizonAppService : ApplicationService, IGtdHorizonAppService
     {
         private readonly IGtdHorizonRepository _horizonRepository;
@@ -55,7 +55,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return new ListResultDto<GtdHorizonDto>(dtos);
         }
 
-        [Authorize(GtdPermissions.Horizons.Create)]
+        [Authorize(GTDSystemPermissions.Horizons.Create)]
         public async Task<GtdHorizonDto> CreateAsync(CreateGtdHorizonDto input)
         {
             var userId = CurrentUser.GetId();
@@ -82,7 +82,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(GTDSystemPermissions.Horizons.Update)]
         public async Task<GtdHorizonDto> UpdateAsync(Guid id, UpdateGtdHorizonDto input)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -106,13 +106,13 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Delete)]
+        [Authorize(GTDSystemPermissions.Horizons.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _horizonRepository.DeleteAsync(id);
         }
 
-        [Authorize(GtdPermissions.Horizons.Review)]
+        [Authorize(GTDSystemPermissions.Horizons.Review)]
         public async Task<GtdHorizonDto> MarkAsReviewedAsync(Guid id)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -121,7 +121,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Publish)]
+        [Authorize(GTDSystemPermissions.Horizons.Publish)]
         public async Task<GtdHorizonDto> PublishAsync(Guid id)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -130,7 +130,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(GTDSystemPermissions.Horizons.Update)]
         public async Task<GtdHorizonDto> LinkGoalAsync(Guid id, Guid goalId)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -139,7 +139,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(GTDSystemPermissions.Horizons.Update)]
         public async Task<GtdHorizonDto> LinkAreaAsync(Guid id, Guid areaId)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -148,7 +148,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(GTDSystemPermissions.Horizons.Update)]
         public async Task<GtdHorizonDto> LinkProjectAsync(Guid id, Guid projectId)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -157,7 +157,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(GTDSystemPermissions.Horizons.Update)]
         public async Task<GtdHorizonDto> AddCoreValueAsync(Guid id, string value)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -166,7 +166,7 @@ namespace NouAssist.WorkflowOrchestration.GTDSystem.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(GTDSystemPermissions.Horizons.Update)]
         public async Task<GtdHorizonDto> AddKeyThemeAsync(Guid id, string theme)
         {
             var horizon = await _horizonRepository.GetAsync(id);

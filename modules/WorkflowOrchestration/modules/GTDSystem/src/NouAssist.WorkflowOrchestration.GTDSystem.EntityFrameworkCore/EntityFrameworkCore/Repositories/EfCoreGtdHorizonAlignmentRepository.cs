@@ -12,10 +12,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore.Repositories
 {
     public class EfCoreGtdHorizonAlignmentRepository 
-        : EfCoreRepository<IGtdDbContext, GtdHorizonAlignment, Guid>, IGtdHorizonAlignmentRepository
+        : EfCoreRepository<IGTDSystemDbContext, GtdHorizonAlignment, Guid>, IGtdHorizonAlignmentRepository
     {
         public EfCoreGtdHorizonAlignmentRepository(
-            IDbContextProvider<IGtdDbContext> dbContextProvider)
+            IDbContextProvider<IGTDSystemDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

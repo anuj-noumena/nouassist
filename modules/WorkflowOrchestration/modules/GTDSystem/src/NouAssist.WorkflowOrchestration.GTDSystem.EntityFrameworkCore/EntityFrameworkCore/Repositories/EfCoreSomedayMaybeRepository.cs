@@ -12,10 +12,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkflowOrchestration.GTDSystem.EntityFrameworkCore.Repositories
 {
     public class EfCoreSomedayMaybeRepository 
-        : EfCoreRepository<IGtdDbContext, SomedayMaybeItem, Guid>, ISomedayMaybeRepository
+        : EfCoreRepository<IGTDSystemDbContext, SomedayMaybeItem, Guid>, ISomedayMaybeRepository
     {
         public EfCoreSomedayMaybeRepository(
-            IDbContextProvider<IGtdDbContext> dbContextProvider)
+            IDbContextProvider<IGTDSystemDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

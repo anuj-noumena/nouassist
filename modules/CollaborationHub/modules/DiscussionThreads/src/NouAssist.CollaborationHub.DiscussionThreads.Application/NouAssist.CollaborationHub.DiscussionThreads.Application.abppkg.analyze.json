@@ -3,16 +3,16 @@
   "hash": "",
   "contents": [
     {
-      "namespace": "NouAssist.Comments",
+      "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
       "dependsOnModules": [
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.DiscussionThreads.Domain",
-          "namespace": "NouAssist.Comments",
+          "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
           "name": "DiscussionThreadsDomainModule"
         },
         {
           "declaringAssemblyName": "NouAssist.CollaborationHub.DiscussionThreads.Application.Contracts",
-          "namespace": "NouAssist.Comments",
+          "namespace": "NouAssist.CollaborationHub.DiscussionThreads",
           "name": "DiscussionThreadsApplicationContractsModule"
         },
         {

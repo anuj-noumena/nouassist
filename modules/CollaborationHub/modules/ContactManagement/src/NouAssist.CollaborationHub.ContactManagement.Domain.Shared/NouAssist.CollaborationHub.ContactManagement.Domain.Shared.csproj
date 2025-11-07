@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\Contacts\*.json" />
-    <Content Remove="Localization\Contacts\*.json" />
+    <EmbeddedResource Include="Localization\ContactManagement\*.json" />
+    <Content Remove="Localization\ContactManagement\*.json" />
   </ItemGroup>
 
 </Project>

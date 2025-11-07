@@ -1,13 +1,29 @@
-﻿using AutoMapper;
+using AutoMapper;
+using NouAssist.CollaborationHub.ContactManagement.Aggregates;
+using NouAssist.CollaborationHub.ContactManagement.Dtos;
+using NouAssist.CollaborationHub.ContactManagement.ValueObjects;
 
-namespace NouAssist.CollaborationHub.ContactManagement;
-
-public class ContactManagementApplicationAutoMapperProfile : Profile
+namespace NouAssist.CollaborationHub.ContactManagement
 {
-    public ContactManagementApplicationAutoMapperProfile()
+    public class ContactsApplicationAutoMapperProfile : Profile
     {
-        /* You can configure your AutoMapper mapping configuration here.
-         * Alternatively, you can split your mapping configurations
-         * into multiple profile classes for a better organization. */
+        public ContactsApplicationAutoMapperProfile()
+        {
+            // Contact mappings
+            CreateMap<Contact, ContactDto>()
+                .ForMember(dest => dest.HasEmail, opt => opt.MapFrom(src => src.HasEmail))
+                .ForMember(dest => dest.HasPhone, opt => opt.MapFrom(src => src.HasPhone))
+                .ForMember(dest => dest.NeedsFollowup, opt => opt.MapFrom(src => src.NeedsFollowup))
+                .ForMember(dest => dest.ClientName, opt => opt.Ignore());
+
+            CreateMap<ContactMethod, ContactMethodDto>();
+
+            CreateMap<SocialProfile, SocialProfileDto>();
+
+            // Client mappings
+            CreateMap<Client, ClientDto>()
+                .ForMember(dest => dest.NeedsReview, opt => opt.MapFrom(src => src.NeedsReview))
+                .ForMember(dest => dest.PrimaryContactName, opt => opt.Ignore());
+        }
     }
 }

@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.AssetManagement.Permissions;
 using NouAssist.AssetManagement.Resources.Aggregates;
 using NouAssist.AssetManagement.Resources.Collections.Dtos;
 using NouAssist.AssetManagement.Resources.Data;
-using NouAssist.AssetManagement.Resources.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.AssetManagement.Resources.Collections
 {
-    [Authorize(ResourcesPermissions.Books.Default)]
+    [Authorize(AssetManagementPermissions.Resources.Collections.Default)]
     public class BookCollectionAppService : ApplicationService, IBookCollectionAppService
     {
         private readonly IBookCollectionRepository _collectionRepository;
@@ -44,7 +44,7 @@ namespace NouAssist.AssetManagement.Resources.Collections
             return ObjectMapper.Map<List<BookCollection>, List<BookCollectionDto>>(collections);
         }
 
-        [Authorize(ResourcesPermissions.Books.Create)]
+        [Authorize(AssetManagementPermissions.Resources.Collections.Create)]
         public async Task<BookCollectionDto> CreateAsync(CreateBookCollectionDto input)
         {
             // Check for duplicate name
@@ -77,7 +77,7 @@ namespace NouAssist.AssetManagement.Resources.Collections
             return ObjectMapper.Map<BookCollection, BookCollectionDto>(collection);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Collections.Update)]
         public async Task<BookCollectionDto> UpdateAsync(Guid id, UpdateBookCollectionDto input)
         {
             var collection = await _collectionRepository.GetAsync(id);
@@ -117,7 +117,7 @@ namespace NouAssist.AssetManagement.Resources.Collections
             return ObjectMapper.Map<BookCollection, BookCollectionDto>(collection);
         }
 
-        [Authorize(ResourcesPermissions.Books.Delete)]
+        [Authorize(AssetManagementPermissions.Resources.Collections.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var collection = await _collectionRepository.GetAsync(id);
@@ -132,7 +132,7 @@ namespace NouAssist.AssetManagement.Resources.Collections
             await _collectionRepository.UpdateAsync(collection);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Collections.Update)]
         public async Task<BookCollectionDto> AddBookAsync(Guid collectionId, AddBookToCollectionDto input)
         {
             var collection = await _collectionRepository.GetAsync(collectionId);
@@ -156,7 +156,7 @@ namespace NouAssist.AssetManagement.Resources.Collections
             return ObjectMapper.Map<BookCollection, BookCollectionDto>(collection);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Collections.Update)]
         public async Task RemoveBookAsync(Guid collectionId, Guid bookId)
         {
             var collection = await _collectionRepository.GetAsync(collectionId);
@@ -171,7 +171,7 @@ namespace NouAssist.AssetManagement.Resources.Collections
             await _collectionRepository.UpdateAsync(collection);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Collections.Update)]
         public async Task<BookCollectionDto> ReorderAsync(Guid id, int newSortOrder)
         {
             var collection = await _collectionRepository.GetAsync(id);

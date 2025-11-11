@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.AssetManagement.Permissions;
 using NouAssist.AssetManagement.Resources.Aggregates;
 using NouAssist.AssetManagement.Resources.Books.Dtos;
 using NouAssist.AssetManagement.Resources.Data;
-using NouAssist.AssetManagement.Resources.Permissions;
 using NouAssist.AssetManagement.Resources.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -13,7 +13,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.AssetManagement.Resources.Books
 {
-    [Authorize(ResourcesPermissions.Books.Default)]
+    [Authorize(AssetManagementPermissions.Resources.Books.Default)]
     public class BookAppService : ApplicationService, IBookAppService
     {
         private readonly IBookRepository _bookRepository;
@@ -49,7 +49,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             );
         }
 
-        [Authorize(ResourcesPermissions.Books.Create)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Create)]
         public async Task<BookDto> CreateAsync(CreateBookDto input)
         {
             var book = new Book(
@@ -92,7 +92,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Update)]
         public async Task<BookDto> UpdateAsync(Guid id, UpdateBookDto input)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -117,7 +117,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.Delete)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -132,7 +132,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             await _bookRepository.UpdateAsync(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.UpdateReadingProgress)]
+        [Authorize(AssetManagementPermissions.Resources.Books.UpdateReadingProgress)]
         public async Task<BookDto> StartReadingAsync(Guid id)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -149,7 +149,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.UpdateReadingProgress)]
+        [Authorize(AssetManagementPermissions.Resources.Books.UpdateReadingProgress)]
         public async Task<BookDto> UpdateProgressAsync(Guid id, UpdateReadingProgressDto input)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -166,7 +166,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.UpdateReadingProgress)]
+        [Authorize(AssetManagementPermissions.Resources.Books.UpdateReadingProgress)]
         public async Task<BookDto> FinishReadingAsync(Guid id)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -183,7 +183,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.UpdateReadingProgress)]
+        [Authorize(AssetManagementPermissions.Resources.Books.UpdateReadingProgress)]
         public async Task<BookDto> MarkAsAbandonedAsync(Guid id)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -200,7 +200,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.Rate)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Rate)]
         public async Task<BookDto> RateAsync(Guid id, RateBookDto input)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -223,7 +223,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Update)]
         public async Task<BookDto> AddToFavoritesAsync(Guid id)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -240,7 +240,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Update)]
         public async Task<BookDto> RemoveFromFavoritesAsync(Guid id)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -257,7 +257,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Update)]
         public async Task<BookDto> AddTagAsync(Guid id, string tag)
         {
             var book = await _bookRepository.GetAsync(id);
@@ -274,7 +274,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             return MapToDto(book);
         }
 
-        [Authorize(ResourcesPermissions.Books.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Books.Update)]
         public async Task<BookDto> RemoveTagAsync(Guid id, string tag)
         {
             var book = await _bookRepository.GetAsync(id);

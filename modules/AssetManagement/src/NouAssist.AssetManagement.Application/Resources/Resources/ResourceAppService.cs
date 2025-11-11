@@ -4,10 +4,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.AssetManagement.Permissions;
 using NouAssist.AssetManagement.Resources.Aggregates;
 using NouAssist.AssetManagement.Resources.Data;
 using NouAssist.AssetManagement.Resources.Enums;
-using NouAssist.AssetManagement.Resources.Permissions;
 using NouAssist.AssetManagement.Resources.Resources.Dtos;
 using NouAssist.AssetManagement.Resources.Services;
 using Volo.Abp;
@@ -16,7 +16,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.AssetManagement.Resources.Resources
 {
-    [Authorize(ResourcesPermissions.Resources.Default)]
+    [Authorize(AssetManagementPermissions.Resources.Resources.Default)]
     public class ResourceAppService : ApplicationService, IResourceAppService
     {
         private readonly IResourceRepository _resourceRepository;
@@ -58,7 +58,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             );
         }
 
-        [Authorize(ResourcesPermissions.Resources.Upload)]
+        [Authorize(AssetManagementPermissions.Resources.Resources.Upload)]
         public async Task<ResourceDto> UploadAsync(UploadResourceDto input)
         {
             if (input.File == null || input.File.Length == 0)
@@ -107,7 +107,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(ResourcesPermissions.Resources.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Resources.Update)]
         public async Task<ResourceDto> UpdateAsync(Guid id, UpdateResourceDto input)
         {
             var resource = await _resourceRepository.GetAsync(id);
@@ -138,7 +138,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(ResourcesPermissions.Resources.Delete)]
+        [Authorize(AssetManagementPermissions.Resources.Resources.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var resource = await _resourceRepository.GetAsync(id);
@@ -153,7 +153,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             await _resourceRepository.UpdateAsync(resource);
         }
 
-        [Authorize(ResourcesPermissions.Resources.Download)]
+        [Authorize(AssetManagementPermissions.Resources.Resources.Download)]
         public async Task<byte[]> DownloadAsync(Guid id)
         {
             var resource = await _resourceRepository.GetAsync(id);
@@ -170,7 +170,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             throw new NotImplementedException("File download not implemented. Integrate with storage service.");
         }
 
-        [Authorize(ResourcesPermissions.Resources.ManageVersions)]
+        [Authorize(AssetManagementPermissions.Resources.Resources.ManageVersions)]
         public async Task<ResourceDto> UploadNewVersionAsync(Guid id, UploadResourceDto input)
         {
             var resource = await _resourceRepository.GetWithVersionsAsync(id);
@@ -212,7 +212,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(ResourcesPermissions.Resources.ManagePermissions)]
+        [Authorize(AssetManagementPermissions.Resources.Resources.ManagePermissions)]
         public async Task<ResourceDto> GrantAccessAsync(Guid id, GrantAccessDto input)
         {
             var resource = await _resourceRepository.GetWithAclAsync(id);
@@ -230,7 +230,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(ResourcesPermissions.Resources.ManagePermissions)]
+        [Authorize(AssetManagementPermissions.Resources.Resources.ManagePermissions)]
         public async Task RevokeAccessAsync(Guid id, Guid userId)
         {
             var resource = await _resourceRepository.GetWithAclAsync(id);

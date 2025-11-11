@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.AssetManagement.Permissions;
 using NouAssist.AssetManagement.Resources.Aggregates;
 using NouAssist.AssetManagement.Resources.Data;
-using NouAssist.AssetManagement.Resources.Permissions;
 using NouAssist.AssetManagement.Resources.Storage.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.AssetManagement.Resources.Storage
 {
-    [Authorize(ResourcesPermissions.StorageBackends.Default)]
+    [Authorize(AssetManagementPermissions.Resources.Storage.Default)]
     public class StorageBackendAppService : ApplicationService, IStorageBackendAppService
     {
         private readonly IStorageBackendRepository _storageBackendRepository;
@@ -45,7 +45,7 @@ namespace NouAssist.AssetManagement.Resources.Storage
             return ObjectMapper.Map<StorageBackend, StorageBackendDto>(defaultBackend);
         }
 
-        [Authorize(ResourcesPermissions.StorageBackends.Manage)]
+        [Authorize(AssetManagementPermissions.Resources.Storage.Manage)]
         public async Task<StorageBackendDto> CreateAsync(CreateStorageBackendDto input)
         {
             // Check for duplicate name
@@ -80,7 +80,7 @@ namespace NouAssist.AssetManagement.Resources.Storage
             return ObjectMapper.Map<StorageBackend, StorageBackendDto>(backend);
         }
 
-        [Authorize(ResourcesPermissions.StorageBackends.Manage)]
+        [Authorize(AssetManagementPermissions.Resources.Storage.Manage)]
         public async Task<StorageBackendDto> UpdateAsync(Guid id, UpdateStorageBackendDto input)
         {
             var backend = await _storageBackendRepository.GetAsync(id);
@@ -116,7 +116,7 @@ namespace NouAssist.AssetManagement.Resources.Storage
             return ObjectMapper.Map<StorageBackend, StorageBackendDto>(backend);
         }
 
-        [Authorize(ResourcesPermissions.StorageBackends.Manage)]
+        [Authorize(AssetManagementPermissions.Resources.Storage.Manage)]
         public async Task DeleteAsync(Guid id)
         {
             var backend = await _storageBackendRepository.GetAsync(id);
@@ -130,7 +130,7 @@ namespace NouAssist.AssetManagement.Resources.Storage
             await _storageBackendRepository.UpdateAsync(backend);
         }
 
-        [Authorize(ResourcesPermissions.StorageBackends.Manage)]
+        [Authorize(AssetManagementPermissions.Resources.Storage.Manage)]
         public async Task<StorageBackendDto> SetAsDefaultAsync(Guid id)
         {
             var backend = await _storageBackendRepository.GetAsync(id);

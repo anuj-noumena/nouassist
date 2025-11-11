@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Collaboration.Domain": {
+      "path": "src/NouAssist.Collaboration.Domain/NouAssist.Collaboration.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Collaboration.Application.Contracts": {
+      "path": "src/NouAssist.Collaboration.Application.Contracts/NouAssist.Collaboration.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Collaboration.Application": {
+      "path": "src/NouAssist.Collaboration.Application/NouAssist.Collaboration.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Collaboration.EntityFrameworkCore": {
+      "path": "src/NouAssist.Collaboration.EntityFrameworkCore/NouAssist.Collaboration.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Collaboration.HttpApi": {
+      "path": "src/NouAssist.Collaboration.HttpApi/NouAssist.Collaboration.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Collaboration.HttpApi.Client": {
+      "path": "src/NouAssist.Collaboration.HttpApi.Client/NouAssist.Collaboration.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Collaboration.TestBase": {
+      "path": "test/NouAssist.Collaboration.TestBase/NouAssist.Collaboration.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Collaboration.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Collaboration.EntityFrameworkCore.Tests/NouAssist.Collaboration.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Collaboration.Domain.Tests": {
+      "path": "test/NouAssist.Collaboration.Domain.Tests/NouAssist.Collaboration.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Collaboration.Application.Tests": {
+      "path": "test/NouAssist.Collaboration.Application.Tests/NouAssist.Collaboration.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Collaboration.Domain.Shared": {
+      "path": "src/NouAssist.Collaboration.Domain.Shared/NouAssist.Collaboration.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Collaboration.Installer": {
+       "path": "src/NouAssist.Collaboration.Installer/NouAssist.Collaboration.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

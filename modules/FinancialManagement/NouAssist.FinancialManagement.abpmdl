@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.FinancialManagement.Domain": {
+      "path": "src/NouAssist.FinancialManagement.Domain/NouAssist.FinancialManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.FinancialManagement.Application.Contracts": {
+      "path": "src/NouAssist.FinancialManagement.Application.Contracts/NouAssist.FinancialManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.FinancialManagement.Application": {
+      "path": "src/NouAssist.FinancialManagement.Application/NouAssist.FinancialManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.FinancialManagement.EntityFrameworkCore": {
+      "path": "src/NouAssist.FinancialManagement.EntityFrameworkCore/NouAssist.FinancialManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.FinancialManagement.HttpApi": {
+      "path": "src/NouAssist.FinancialManagement.HttpApi/NouAssist.FinancialManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.FinancialManagement.HttpApi.Client": {
+      "path": "src/NouAssist.FinancialManagement.HttpApi.Client/NouAssist.FinancialManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.FinancialManagement.TestBase": {
+      "path": "test/NouAssist.FinancialManagement.TestBase/NouAssist.FinancialManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.FinancialManagement.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.FinancialManagement.EntityFrameworkCore.Tests/NouAssist.FinancialManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.FinancialManagement.Domain.Tests": {
+      "path": "test/NouAssist.FinancialManagement.Domain.Tests/NouAssist.FinancialManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.FinancialManagement.Application.Tests": {
+      "path": "test/NouAssist.FinancialManagement.Application.Tests/NouAssist.FinancialManagement.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.FinancialManagement.Domain.Shared": {
+      "path": "src/NouAssist.FinancialManagement.Domain.Shared/NouAssist.FinancialManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.FinancialManagement.Installer": {
+       "path": "src/NouAssist.FinancialManagement.Installer/NouAssist.FinancialManagement.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

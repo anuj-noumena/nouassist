@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Notification.Domain": {
+      "path": "src/NouAssist.Notification.Domain/NouAssist.Notification.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Notification.Application.Contracts": {
+      "path": "src/NouAssist.Notification.Application.Contracts/NouAssist.Notification.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Notification.Application": {
+      "path": "src/NouAssist.Notification.Application/NouAssist.Notification.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Notification.EntityFrameworkCore": {
+      "path": "src/NouAssist.Notification.EntityFrameworkCore/NouAssist.Notification.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Notification.HttpApi": {
+      "path": "src/NouAssist.Notification.HttpApi/NouAssist.Notification.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Notification.HttpApi.Client": {
+      "path": "src/NouAssist.Notification.HttpApi.Client/NouAssist.Notification.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Notification.TestBase": {
+      "path": "test/NouAssist.Notification.TestBase/NouAssist.Notification.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Notification.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Notification.EntityFrameworkCore.Tests/NouAssist.Notification.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Notification.Domain.Tests": {
+      "path": "test/NouAssist.Notification.Domain.Tests/NouAssist.Notification.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Notification.Application.Tests": {
+      "path": "test/NouAssist.Notification.Application.Tests/NouAssist.Notification.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Notification.Domain.Shared": {
+      "path": "src/NouAssist.Notification.Domain.Shared/NouAssist.Notification.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Notification.Installer": {
+       "path": "src/NouAssist.Notification.Installer/NouAssist.Notification.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

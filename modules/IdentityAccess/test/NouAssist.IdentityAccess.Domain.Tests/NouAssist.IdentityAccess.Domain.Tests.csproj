@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.IdentityAccess</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NouAssist.IdentityAccess.Domain\NouAssist.IdentityAccess.Domain.csproj" />
+    <ProjectReference Include="..\NouAssist.IdentityAccess.TestBase\NouAssist.IdentityAccess.TestBase.csproj" />
+  </ItemGroup>
+
+
+</Project>

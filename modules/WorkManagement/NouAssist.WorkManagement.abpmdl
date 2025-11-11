@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.WorkManagement.Domain": {
+      "path": "src/NouAssist.WorkManagement.Domain/NouAssist.WorkManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkManagement.Application.Contracts": {
+      "path": "src/NouAssist.WorkManagement.Application.Contracts/NouAssist.WorkManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkManagement.Application": {
+      "path": "src/NouAssist.WorkManagement.Application/NouAssist.WorkManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkManagement.EntityFrameworkCore": {
+      "path": "src/NouAssist.WorkManagement.EntityFrameworkCore/NouAssist.WorkManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkManagement.HttpApi": {
+      "path": "src/NouAssist.WorkManagement.HttpApi/NouAssist.WorkManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkManagement.HttpApi.Client": {
+      "path": "src/NouAssist.WorkManagement.HttpApi.Client/NouAssist.WorkManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkManagement.TestBase": {
+      "path": "test/NouAssist.WorkManagement.TestBase/NouAssist.WorkManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkManagement.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.WorkManagement.EntityFrameworkCore.Tests/NouAssist.WorkManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkManagement.Domain.Tests": {
+      "path": "test/NouAssist.WorkManagement.Domain.Tests/NouAssist.WorkManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkManagement.Application.Tests": {
+      "path": "test/NouAssist.WorkManagement.Application.Tests/NouAssist.WorkManagement.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.WorkManagement.Domain.Shared": {
+      "path": "src/NouAssist.WorkManagement.Domain.Shared/NouAssist.WorkManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.WorkManagement.Installer": {
+       "path": "src/NouAssist.WorkManagement.Installer/NouAssist.WorkManagement.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

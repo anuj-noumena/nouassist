@@ -1,0 +1,46 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.Habits.Entities;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+
+namespace NouAssist.Habits.EntityFrameworkCore.Configurations
+{
+    public class HabitTrackingEntryConfiguration : IEntityTypeConfiguration<HabitTrackingEntry>
+    {
+        public void Configure(EntityTypeBuilder<HabitTrackingEntry> builder)
+        {
+            builder.ConfigureByConvention();
+
+            builder.ToTable(HabitsDbProperties.DbTablePrefix + "HabitTrackingEntries",
+                           HabitsDbProperties.DbSchema);
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.OwnerId)
+                .IsRequired();
+
+            builder.Property(x => x.HabitId)
+                .IsRequired();
+
+            builder.Property(x => x.LogDate)
+                .IsRequired()
+                .HasColumnType("date");
+
+            builder.Property(x => x.Completed)
+                .IsRequired();
+
+            builder.Property(x => x.CompletedAt);
+
+            builder.Property(x => x.Notes)
+                .HasMaxLength(1000);
+
+            // Indexes
+            builder.HasIndex(x => x.HabitId);
+            builder.HasIndex(x => x.OwnerId);
+            builder.HasIndex(x => new { x.HabitId, x.LogDate })
+                .IsUnique();
+            builder.HasIndex(x => x.Completed);
+            builder.HasIndex(x => x.TenantId);
+        }
+    }
+}

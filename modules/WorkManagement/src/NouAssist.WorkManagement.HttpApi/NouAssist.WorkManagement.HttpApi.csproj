@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.WorkManagement</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="9.3.6"/>
+    <ProjectReference Include="..\NouAssist.WorkManagement.Application.Contracts\NouAssist.WorkManagement.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.LearningDevelopment.Domain": {
+      "path": "src/NouAssist.LearningDevelopment.Domain/NouAssist.LearningDevelopment.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.LearningDevelopment.Application.Contracts": {
+      "path": "src/NouAssist.LearningDevelopment.Application.Contracts/NouAssist.LearningDevelopment.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.LearningDevelopment.Application": {
+      "path": "src/NouAssist.LearningDevelopment.Application/NouAssist.LearningDevelopment.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.LearningDevelopment.EntityFrameworkCore": {
+      "path": "src/NouAssist.LearningDevelopment.EntityFrameworkCore/NouAssist.LearningDevelopment.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.LearningDevelopment.HttpApi": {
+      "path": "src/NouAssist.LearningDevelopment.HttpApi/NouAssist.LearningDevelopment.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.LearningDevelopment.HttpApi.Client": {
+      "path": "src/NouAssist.LearningDevelopment.HttpApi.Client/NouAssist.LearningDevelopment.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.LearningDevelopment.TestBase": {
+      "path": "test/NouAssist.LearningDevelopment.TestBase/NouAssist.LearningDevelopment.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.LearningDevelopment.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.LearningDevelopment.EntityFrameworkCore.Tests/NouAssist.LearningDevelopment.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.LearningDevelopment.Domain.Tests": {
+      "path": "test/NouAssist.LearningDevelopment.Domain.Tests/NouAssist.LearningDevelopment.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.LearningDevelopment.Application.Tests": {
+      "path": "test/NouAssist.LearningDevelopment.Application.Tests/NouAssist.LearningDevelopment.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.LearningDevelopment.Domain.Shared": {
+      "path": "src/NouAssist.LearningDevelopment.Domain.Shared/NouAssist.LearningDevelopment.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.LearningDevelopment.Installer": {
+       "path": "src/NouAssist.LearningDevelopment.Installer/NouAssist.LearningDevelopment.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

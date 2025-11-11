@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.TimeManagement.Domain": {
+      "path": "src/NouAssist.TimeManagement.Domain/NouAssist.TimeManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TimeManagement.Application.Contracts": {
+      "path": "src/NouAssist.TimeManagement.Application.Contracts/NouAssist.TimeManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TimeManagement.Application": {
+      "path": "src/NouAssist.TimeManagement.Application/NouAssist.TimeManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TimeManagement.EntityFrameworkCore": {
+      "path": "src/NouAssist.TimeManagement.EntityFrameworkCore/NouAssist.TimeManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TimeManagement.HttpApi": {
+      "path": "src/NouAssist.TimeManagement.HttpApi/NouAssist.TimeManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TimeManagement.HttpApi.Client": {
+      "path": "src/NouAssist.TimeManagement.HttpApi.Client/NouAssist.TimeManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TimeManagement.TestBase": {
+      "path": "test/NouAssist.TimeManagement.TestBase/NouAssist.TimeManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.TimeManagement.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.TimeManagement.EntityFrameworkCore.Tests/NouAssist.TimeManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.TimeManagement.Domain.Tests": {
+      "path": "test/NouAssist.TimeManagement.Domain.Tests/NouAssist.TimeManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.TimeManagement.Application.Tests": {
+      "path": "test/NouAssist.TimeManagement.Application.Tests/NouAssist.TimeManagement.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.TimeManagement.Domain.Shared": {
+      "path": "src/NouAssist.TimeManagement.Domain.Shared/NouAssist.TimeManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.TimeManagement.Installer": {
+       "path": "src/NouAssist.TimeManagement.Installer/NouAssist.TimeManagement.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

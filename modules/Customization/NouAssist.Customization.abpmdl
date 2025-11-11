@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.Customization.Domain": {
+      "path": "src/NouAssist.Customization.Domain/NouAssist.Customization.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Customization.Application.Contracts": {
+      "path": "src/NouAssist.Customization.Application.Contracts/NouAssist.Customization.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Customization.Application": {
+      "path": "src/NouAssist.Customization.Application/NouAssist.Customization.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Customization.EntityFrameworkCore": {
+      "path": "src/NouAssist.Customization.EntityFrameworkCore/NouAssist.Customization.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Customization.HttpApi": {
+      "path": "src/NouAssist.Customization.HttpApi/NouAssist.Customization.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Customization.HttpApi.Client": {
+      "path": "src/NouAssist.Customization.HttpApi.Client/NouAssist.Customization.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Customization.TestBase": {
+      "path": "test/NouAssist.Customization.TestBase/NouAssist.Customization.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Customization.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.Customization.EntityFrameworkCore.Tests/NouAssist.Customization.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Customization.Domain.Tests": {
+      "path": "test/NouAssist.Customization.Domain.Tests/NouAssist.Customization.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Customization.Application.Tests": {
+      "path": "test/NouAssist.Customization.Application.Tests/NouAssist.Customization.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.Customization.Domain.Shared": {
+      "path": "src/NouAssist.Customization.Domain.Shared/NouAssist.Customization.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.Customization.Installer": {
+       "path": "src/NouAssist.Customization.Installer/NouAssist.Customization.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Data;
-using NouAssist.Resources.Enums;
-using NouAssist.Resources.Inventory.Dtos;
-using NouAssist.Resources.Permissions;
-using NouAssist.Resources.Services;
-using NouAssist.Resources.Specifications;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Data;
+using NouAssist.AssetManagement.Resources.Inventory.Dtos;
+using NouAssist.AssetManagement.Resources.Permissions;
+using NouAssist.AssetManagement.Resources.Services;
+using NouAssist.AssetManagement.Resources.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Inventory
+namespace NouAssist.AssetManagement.Resources.Inventory
 {
     [Authorize(ResourcesPermissions.Inventory.Default)]
     public class InventoryAppService : ApplicationService, IInventoryAppService

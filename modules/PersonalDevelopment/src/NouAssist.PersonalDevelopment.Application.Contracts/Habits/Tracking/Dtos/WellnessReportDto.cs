@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NouAssist.Habits.Tracking.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Tracking.Dtos
 {
     public class WellnessReportDto
     {

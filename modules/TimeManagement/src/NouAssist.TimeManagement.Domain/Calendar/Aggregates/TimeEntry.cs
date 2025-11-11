@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Calendar.Aggregates
+namespace NouAssist.TimeManagement.Calendar.Aggregates
 {
     public class TimeEntry : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

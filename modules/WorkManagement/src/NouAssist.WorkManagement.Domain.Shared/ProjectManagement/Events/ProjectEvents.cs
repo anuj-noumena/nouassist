@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Events
+namespace NouAssist.WorkManagement.ProjectManagement.Events
 {
     [EventName("NouAssist.CoreProductivity.ProjectManagement.Created")]
     public class ProjectCreatedEto : IMultiTenant

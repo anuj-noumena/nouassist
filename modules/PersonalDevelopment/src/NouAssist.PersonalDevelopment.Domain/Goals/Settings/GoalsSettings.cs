@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Goals.Settings;
+﻿namespace NouAssist.PersonalDevelopment.Goals.Settings;
 
 public static class GoalsSettings
 {

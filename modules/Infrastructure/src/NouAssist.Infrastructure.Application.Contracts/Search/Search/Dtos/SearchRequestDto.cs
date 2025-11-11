@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Search.Enums;
+using NouAssist.Infrastructure.Search.Enums;
 
-namespace NouAssist.Search.Search.Dtos
+namespace NouAssist.Infrastructure.Search.Search.Dtos
 {
     public class SearchRequestDto
     {

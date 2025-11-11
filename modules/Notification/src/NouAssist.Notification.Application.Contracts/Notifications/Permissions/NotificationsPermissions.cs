@@ -1,4 +1,4 @@
-namespace NouAssist.Notifications.Permissions
+namespace NouAssist.Notification.Notifications.Permissions
 {
     public static class NotificationsPermissions
     {

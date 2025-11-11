@@ -1,4 +1,4 @@
-namespace NouAssist.Comments.EntityFrameworkCore
+namespace NouAssist.Collaboration.Comments.EntityFrameworkCore
 {
     public static class CommentsDbProperties
     {

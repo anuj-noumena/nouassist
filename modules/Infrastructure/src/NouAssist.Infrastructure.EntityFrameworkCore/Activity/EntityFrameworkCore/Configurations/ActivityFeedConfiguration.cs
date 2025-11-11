@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Activity.Aggregates;
-using NouAssist.Activity.Enums;
+using NouAssist.Infrastructure.Activity.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Activity.EntityFrameworkCore.Configurations
+namespace NouAssist.Infrastructure.Activity.EntityFrameworkCore.Configurations
 {
     public class ActivityFeedConfiguration : IEntityTypeConfiguration<ActivityFeed>
     {

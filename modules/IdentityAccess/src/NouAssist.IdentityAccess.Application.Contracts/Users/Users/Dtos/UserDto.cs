@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Users.Dtos
+namespace NouAssist.IdentityAccess.Users.Users.Dtos
 {
     public class UserDto : FullAuditedEntityDto<Guid>
     {

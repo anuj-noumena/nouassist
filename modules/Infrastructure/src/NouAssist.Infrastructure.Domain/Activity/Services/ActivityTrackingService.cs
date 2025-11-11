@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using NouAssist.Activity.Aggregates;
-using NouAssist.Activity.Enums;
-using NouAssist.Activity.Events;
+using NouAssist.Infrastructure.Activity.Aggregates;
+using NouAssist.Infrastructure.Activity.Enums;
+using NouAssist.Infrastructure.Activity.Events;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Activity.Services
+namespace NouAssist.Infrastructure.Activity.Services
 {
     public class ActivityTrackingService : DomainService
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CustomFields.ValueObjects
+namespace NouAssist.Customization.CustomFields.ValueObjects
 {
     public class CustomFieldOption : ValueObject
     {

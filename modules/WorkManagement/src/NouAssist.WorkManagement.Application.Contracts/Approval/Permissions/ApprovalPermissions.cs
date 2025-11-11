@@ -1,4 +1,4 @@
-namespace NouAssist.Approval.Permissions
+namespace NouAssist.WorkManagement.Approval.Permissions
 {
     public static class ApprovalPermissions
     {

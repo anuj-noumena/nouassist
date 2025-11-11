@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Team.Aggregates;
-using NouAssist.Team.Entities;
+using NouAssist.IdentityAccess.Team.Aggregates;
+using NouAssist.IdentityAccess.Team.Entities;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Team.Services
+namespace NouAssist.IdentityAccess.Team.Services
 {
     public class RolePermissionService : DomainService
     {

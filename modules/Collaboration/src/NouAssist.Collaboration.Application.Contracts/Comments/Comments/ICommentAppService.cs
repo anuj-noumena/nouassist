@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Comments.Dtos;
+using NouAssist.Collaboration.Comments.Comments.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Comments.Comments
+namespace NouAssist.Collaboration.Comments.Comments
 {
     public interface ICommentAppService : IApplicationService
     {

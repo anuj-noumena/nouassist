@@ -1,8 +1,8 @@
-﻿using NouAssist.Resources.Localization;
+﻿using NouAssist.AssetManagement.Resources.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Resources.Permissions;
+namespace NouAssist.AssetManagement.Resources.Permissions;
 
 public class ResourcesPermissionDefinitionProvider : PermissionDefinitionProvider
 {

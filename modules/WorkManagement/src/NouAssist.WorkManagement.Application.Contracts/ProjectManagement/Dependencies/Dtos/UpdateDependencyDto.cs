@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Dependencies.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos
 {
     public class UpdateDependencyDto
     {

@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using NouAssist.Team.Aggregates;
-using NouAssist.Team.Entities;
-using NouAssist.Team.Enums;
+using NouAssist.IdentityAccess.Team.Entities;
+using NouAssist.IdentityAccess.Team.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
-using Microsoft.Extensions.Logging;
 
-namespace NouAssist.Team.Services
+namespace NouAssist.IdentityAccess.Team.Services
 {
     public class TeamMembershipService : DomainService
     {

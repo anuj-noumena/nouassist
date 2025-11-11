@@ -1,9 +1,8 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Calendar.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Calendar.Specifications
+namespace NouAssist.TimeManagement.Calendar.Specifications
 {
     public class ActiveCalendarsSpecification : Specification<Aggregates.Calendar>
     {

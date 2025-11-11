@@ -1,4 +1,4 @@
-namespace NouAssist.Search.Permissions
+namespace NouAssist.Infrastructure.Search.Permissions
 {
     public static class SearchPermissions
     {

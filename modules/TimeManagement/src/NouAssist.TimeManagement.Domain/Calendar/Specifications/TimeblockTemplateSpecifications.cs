@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using NouAssist.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Calendar.Specifications
+namespace NouAssist.TimeManagement.Calendar.Specifications
 {
     public class ActiveTimeblockTemplatesSpecification : Specification<TimeblockTemplate>
     {

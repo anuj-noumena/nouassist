@@ -1,7 +1,7 @@
-﻿using NouAssist.Habits.Localization;
+﻿using NouAssist.PersonalDevelopment.Habits.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Habits;
+namespace NouAssist.PersonalDevelopment.Habits;
 
 public abstract class HabitsAppService : ApplicationService
 {

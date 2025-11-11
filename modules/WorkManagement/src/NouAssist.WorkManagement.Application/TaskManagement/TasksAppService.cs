@@ -1,7 +1,7 @@
-﻿using NouAssist.CoreProductivity.TaskManagement.Localization;
+﻿using NouAssist.WorkManagement.TaskManagement.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.TaskManagement;
+namespace NouAssist.WorkManagement.TaskManagement;
 
 public abstract class TasksAppService : ApplicationService
 {

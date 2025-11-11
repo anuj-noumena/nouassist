@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Users;
+﻿namespace NouAssist.IdentityAccess.Users;
 
 public class UsersRemoteServiceConsts
 {

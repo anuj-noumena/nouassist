@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Calendar.Data
+namespace NouAssist.TimeManagement.Calendar.Data
 {
     public interface IUserAvailabilityRepository : IRepository<Aggregates.UserAvailability, Guid>
     {

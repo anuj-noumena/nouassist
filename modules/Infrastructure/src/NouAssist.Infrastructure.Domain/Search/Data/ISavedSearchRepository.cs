@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Search.Aggregates;
+using NouAssist.Infrastructure.Search.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Search.Data
+namespace NouAssist.Infrastructure.Search.Data
 {
     public interface ISavedSearchRepository : IRepository<SavedSearch, Guid>
     {

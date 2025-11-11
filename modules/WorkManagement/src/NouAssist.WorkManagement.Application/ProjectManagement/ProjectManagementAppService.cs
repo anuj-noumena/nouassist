@@ -1,7 +1,6 @@
-﻿using NouAssist.CoreProductivity.ProjectManagement.Localization;
-using Volo.Abp.Application.Services;
+﻿using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement;
+namespace NouAssist.WorkManagement.ProjectManagement;
 
 public abstract class ProjectManagementAppService : ApplicationService
 {

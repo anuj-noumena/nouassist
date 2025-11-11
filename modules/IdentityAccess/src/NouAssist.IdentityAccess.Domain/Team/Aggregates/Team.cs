@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Team.Entities;
-using NouAssist.Team.Enums;
-using NouAssist.Team.Events;
+using NouAssist.IdentityAccess.Team.Entities;
+using NouAssist.IdentityAccess.Team.Enums;
+using NouAssist.IdentityAccess.Team.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.Timing;
 
-namespace NouAssist.Team.Aggregates
+namespace NouAssist.IdentityAccess.Team.Aggregates
 {
     public class Team : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

@@ -11,8 +11,15 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.AutoMapper" Version="9.3.6" />
     <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.3.6" />
+    <PackageReference Include="Volo.Abp.FluentValidation" Version="9.3.6" />
+    <ProjectReference Include="..\..\..\SharedKernel\src\NouAssist.SharedKernel.Domain\NouAssist.SharedKernel.Domain.csproj" />
     <ProjectReference Include="..\NouAssist.WorkManagement.Application.Contracts\NouAssist.WorkManagement.Application.Contracts.csproj" />
     <ProjectReference Include="..\NouAssist.WorkManagement.Domain\NouAssist.WorkManagement.Domain.csproj" />
+    <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
+    <PackageReference Update="Fody" Version="6.9.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

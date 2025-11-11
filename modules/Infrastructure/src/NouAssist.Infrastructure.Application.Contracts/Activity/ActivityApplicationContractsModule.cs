@@ -1,8 +1,8 @@
 ﻿using Volo.Abp.Application;
-using Volo.Abp.Modularity;
 using Volo.Abp.Authorization;
+using Volo.Abp.Modularity;
 
-namespace NouAssist.Activity;
+namespace NouAssist.Infrastructure.Activity;
 
 [DependsOn(
     typeof(ActivityDomainSharedModule),

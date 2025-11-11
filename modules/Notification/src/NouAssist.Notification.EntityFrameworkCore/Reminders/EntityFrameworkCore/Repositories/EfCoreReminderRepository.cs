@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Data;
-using NouAssist.Reminders.Enums;
+using NouAssist.Notification.Reminders.Aggregates;
+using NouAssist.Notification.Reminders.Data;
+using NouAssist.Notification.Reminders.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Reminders.EntityFrameworkCore.Repositories
+namespace NouAssist.Notification.Reminders.EntityFrameworkCore.Repositories
 {
     public class EfCoreReminderRepository 
         : EfCoreRepository<IRemindersDbContext, Reminder, Guid>, IReminderRepository

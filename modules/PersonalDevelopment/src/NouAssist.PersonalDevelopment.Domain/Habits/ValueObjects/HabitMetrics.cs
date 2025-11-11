@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Habits.ValueObjects
+namespace NouAssist.PersonalDevelopment.Habits.ValueObjects
 {
     public class HabitMetrics : ValueObject
     {

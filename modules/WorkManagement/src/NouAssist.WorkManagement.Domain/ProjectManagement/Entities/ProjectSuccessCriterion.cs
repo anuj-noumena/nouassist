@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Entities
+namespace NouAssist.WorkManagement.ProjectManagement.Entities
 {
     public class ProjectSuccessCriterion : FullAuditedEntity<Guid>
     {

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Goals.EntityFrameworkCore
+namespace NouAssist.PersonalDevelopment.Goals.EntityFrameworkCore
 {
     [ConnectionStringName(GoalsDbProperties.ConnectionStringName)]
     public class GoalsDbContext : AbpDbContext<GoalsDbContext>, IGoalsDbContext

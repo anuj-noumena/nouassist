@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Comments.EntityFrameworkCore.Configurations
+namespace NouAssist.Collaboration.Comments.EntityFrameworkCore.Configurations
 {
     public class CommentAggregateConfiguration : IEntityTypeConfiguration<Comment>
     {

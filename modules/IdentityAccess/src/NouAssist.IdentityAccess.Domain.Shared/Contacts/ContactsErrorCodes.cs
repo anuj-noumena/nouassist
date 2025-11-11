@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Contacts;
+﻿namespace NouAssist.IdentityAccess.Contacts;
 
 public static class ContactsErrorCodes
 {

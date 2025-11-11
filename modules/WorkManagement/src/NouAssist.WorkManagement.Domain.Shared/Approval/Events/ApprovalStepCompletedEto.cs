@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Approval.Events
+namespace NouAssist.WorkManagement.Approval.Events
 {
     [EventName("NouAssist.Approval.StepCompleted")]
     public class ApprovalStepCompletedEto : IMultiTenant

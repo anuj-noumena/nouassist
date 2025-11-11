@@ -1,6 +1,6 @@
 using System;
 
-namespace NouAssist.Tasks.TaskInstances.Dtos;
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos;
 
 public class TaskInstanceStatisticsDto
 {

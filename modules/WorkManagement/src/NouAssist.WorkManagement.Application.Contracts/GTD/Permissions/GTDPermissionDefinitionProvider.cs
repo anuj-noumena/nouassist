@@ -1,8 +1,8 @@
-﻿using NouAssist.GTD.Localization;
+﻿using NouAssist.WorkManagement.GTD.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.GTD.Permissions;
+namespace NouAssist.WorkManagement.GTD.Permissions;
 
 public class GTDPermissionDefinitionProvider : PermissionDefinitionProvider
 {

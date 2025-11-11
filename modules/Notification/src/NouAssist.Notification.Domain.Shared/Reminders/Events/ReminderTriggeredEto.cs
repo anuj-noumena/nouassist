@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Reminders.Events
+namespace NouAssist.Notification.Reminders.Events
 {
     [EventName("NouAssist.Reminders.Triggered")]
     public class ReminderTriggeredEto : IMultiTenant

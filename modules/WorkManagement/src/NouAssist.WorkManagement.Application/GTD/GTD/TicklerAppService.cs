@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Core.ValueObjects;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Data;
-using NouAssist.GTD.Dtos;
-using NouAssist.GTD.Enums;
-using NouAssist.GTD.Permissions;
-using NouAssist.GTD.Services;
+using NouAssist.WorkManagement.GTD.Aggregates;
+using NouAssist.WorkManagement.GTD.Data;
+using NouAssist.WorkManagement.GTD.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Services;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.GTD.GTD
+namespace NouAssist.WorkManagement.GTD.GTD
 {
     [Authorize(GtdPermissions.Ticklers.Default)]
     public class TicklerAppService : ApplicationService, ITicklerAppService

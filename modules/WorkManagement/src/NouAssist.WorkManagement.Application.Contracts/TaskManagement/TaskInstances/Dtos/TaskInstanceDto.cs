@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Tasks.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Tasks.TaskInstances.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
     public class TaskInstanceDto : FullAuditedEntityDto<Guid>
     {

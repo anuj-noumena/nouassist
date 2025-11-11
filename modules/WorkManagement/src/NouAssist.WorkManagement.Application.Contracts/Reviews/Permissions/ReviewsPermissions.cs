@@ -1,4 +1,4 @@
-namespace NouAssist.Reviews.Permissions
+namespace NouAssist.WorkManagement.Reviews.Permissions
 {
     public static class ReviewsPermissions
     {

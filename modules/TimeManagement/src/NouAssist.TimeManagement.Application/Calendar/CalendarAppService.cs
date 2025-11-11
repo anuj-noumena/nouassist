@@ -1,7 +1,7 @@
-﻿using NouAssist.Calendar.Localization;
+﻿using NouAssist.TimeManagement.Calendar.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Calendar;
+namespace NouAssist.TimeManagement.Calendar;
 
 public abstract class CalendarAppService : ApplicationService
 {

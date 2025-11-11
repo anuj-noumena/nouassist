@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Search.ValueObjects
+namespace NouAssist.Infrastructure.Search.ValueObjects
 {
     public class SearchResultItem : ValueObject
     {

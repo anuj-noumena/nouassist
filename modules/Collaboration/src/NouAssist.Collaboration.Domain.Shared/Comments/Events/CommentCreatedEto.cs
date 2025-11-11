@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Comments.Events
+namespace NouAssist.Collaboration.Comments.Events
 {
     [EventName("NouAssist.Comments.CommentCreated")]
     public class CommentCreatedEto : IMultiTenant

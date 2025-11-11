@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Data;
-using NouAssist.Habits.Permissions;
-using NouAssist.Habits.Routines.Dtos;
-using NouAssist.Habits.Services;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Data;
+using NouAssist.PersonalDevelopment.Habits.Permissions;
+using NouAssist.PersonalDevelopment.Habits.Routines.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Services;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Habits.Routines
+namespace NouAssist.PersonalDevelopment.Habits.Routines
 {
     [Authorize(HabitsPermissions.Routines.Default)]
     public class RoutineAppService : ApplicationService, IRoutineAppService

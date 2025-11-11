@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Search.Aggregates;
-using NouAssist.Search.Data;
-using NouAssist.Search.Enums;
-using NouAssist.Search.ValueObjects;
+using NouAssist.Infrastructure.Search.Aggregates;
+using NouAssist.Infrastructure.Search.Data;
+using NouAssist.Infrastructure.Search.Enums;
+using NouAssist.Infrastructure.Search.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Search.Services
+namespace NouAssist.Infrastructure.Search.Services
 {
     public class SearchAnalyticsService : DomainService
     {

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Reviews.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Configurations
 {
     public class ReviewProgressConfiguration : IEntityTypeConfiguration<ReviewProgress>
     {

@@ -1,6 +1,6 @@
 using Volo.Abp;
 
-namespace NouAssist.Activity.Exceptions
+namespace NouAssist.Infrastructure.Activity.Exceptions
 {
     public class ActivityDomainException : BusinessException
     {

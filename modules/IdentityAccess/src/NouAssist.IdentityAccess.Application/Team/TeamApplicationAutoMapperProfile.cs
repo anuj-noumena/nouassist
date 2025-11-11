@@ -1,10 +1,10 @@
 using AutoMapper;
-using NouAssist.Team.Aggregates;
-using NouAssist.Team.Entities;
-using NouAssist.Team.Roles.Dtos;
-using NouAssist.Team.Teams.Dtos;
+using NouAssist.IdentityAccess.Team.Aggregates;
+using NouAssist.IdentityAccess.Team.Entities;
+using NouAssist.IdentityAccess.Team.Roles.Dtos;
+using NouAssist.IdentityAccess.Team.Teams.Dtos;
 
-namespace NouAssist.Team
+namespace NouAssist.IdentityAccess.Team
 {
     public class TeamApplicationAutoMapperProfile : Profile
     {

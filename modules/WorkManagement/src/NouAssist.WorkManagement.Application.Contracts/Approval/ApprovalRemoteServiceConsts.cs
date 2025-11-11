@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Approval;
+﻿namespace NouAssist.WorkManagement.Approval;
 
 public class ApprovalRemoteServiceConsts
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Calendar.ValueObjects
+namespace NouAssist.TimeManagement.Calendar.ValueObjects
 {
     public class RecurrenceRule : ValueObject
     {

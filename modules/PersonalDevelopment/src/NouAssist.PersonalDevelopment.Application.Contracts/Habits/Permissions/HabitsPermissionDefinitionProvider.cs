@@ -1,8 +1,8 @@
-using NouAssist.Habits.Localization;
+using NouAssist.PersonalDevelopment.Habits.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Habits.Permissions
+namespace NouAssist.PersonalDevelopment.Habits.Permissions
 {
     public class HabitsPermissionDefinitionProvider : PermissionDefinitionProvider
     {

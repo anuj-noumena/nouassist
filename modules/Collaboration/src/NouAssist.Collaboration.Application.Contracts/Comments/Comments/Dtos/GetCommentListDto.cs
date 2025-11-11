@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Comments.Enums;
+using NouAssist.Collaboration.Comments.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Comments.Dtos
+namespace NouAssist.Collaboration.Comments.Comments.Dtos
 {
     public class GetCommentListDto : PagedAndSortedResultRequestDto
     {

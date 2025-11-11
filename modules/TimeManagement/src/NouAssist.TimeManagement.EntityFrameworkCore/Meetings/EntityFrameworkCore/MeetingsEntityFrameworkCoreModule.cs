@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Meetings.EntityFrameworkCore;
+namespace NouAssist.TimeManagement.Meetings.EntityFrameworkCore;
 
 [DependsOn(
     typeof(MeetingsDomainModule),

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Team.EntityFrameworkCore
+namespace NouAssist.IdentityAccess.Team.EntityFrameworkCore
 {
     public static class TeamDbContextModelCreatingExtensions
     {

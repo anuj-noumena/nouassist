@@ -1,13 +1,13 @@
 using AutoMapper;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Dtos;
-using NouAssist.Reviews.Entities;
-using NouAssist.Reviews.Progress.Dtos;
-using NouAssist.Reviews.Services;
-using NouAssist.Reviews.Templates.Dtos;
-using NouAssist.Reviews.ValueObjects;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Entities;
+using NouAssist.WorkManagement.Reviews.Progress.Dtos;
+using NouAssist.WorkManagement.Reviews.Reviews.Dtos;
+using NouAssist.WorkManagement.Reviews.Services;
+using NouAssist.WorkManagement.Reviews.Templates.Dtos;
+using NouAssist.WorkManagement.Reviews.ValueObjects;
 
-namespace NouAssist.Reviews
+namespace NouAssist.WorkManagement.Reviews
 {
     public class ReviewsApplicationAutoMapperProfile : Profile
     {

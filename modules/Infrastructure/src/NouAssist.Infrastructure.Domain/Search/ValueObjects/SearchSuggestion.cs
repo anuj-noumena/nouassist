@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Search.Enums;
+using NouAssist.Infrastructure.Search.Enums;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Search.ValueObjects
+namespace NouAssist.Infrastructure.Search.ValueObjects
 {
     public class SearchSuggestion : ValueObject
     {

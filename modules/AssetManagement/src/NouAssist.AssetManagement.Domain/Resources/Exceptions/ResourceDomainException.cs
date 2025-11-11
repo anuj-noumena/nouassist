@@ -1,6 +1,6 @@
 using Volo.Abp;
 
-namespace NouAssist.Resources.Exceptions
+namespace NouAssist.AssetManagement.Resources.Exceptions
 {
     public class ResourceDomainException : BusinessException
     {

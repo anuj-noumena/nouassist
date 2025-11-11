@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Events.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Events.Dtos
 {
     public class RescheduleEventDto
     {

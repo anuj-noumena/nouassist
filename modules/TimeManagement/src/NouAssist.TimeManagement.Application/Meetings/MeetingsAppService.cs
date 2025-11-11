@@ -1,7 +1,7 @@
-﻿using NouAssist.Meetings.Localization;
+﻿using NouAssist.TimeManagement.Meetings.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Meetings;
+namespace NouAssist.TimeManagement.Meetings;
 
 public abstract class MeetingsAppService : ApplicationService
 {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Calendar.TimeEntries.Dtos
+namespace NouAssist.TimeManagement.Calendar.TimeEntries.Dtos
 {
     public class TimeEntryDto : FullAuditedEntityDto<Guid>
     {

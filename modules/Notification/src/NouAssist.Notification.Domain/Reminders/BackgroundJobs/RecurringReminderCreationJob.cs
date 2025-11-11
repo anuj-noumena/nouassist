@@ -1,14 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Data;
-using NouAssist.Reminders.Services;
-using Volo.Abp.BackgroundJobs;
+using NouAssist.Notification.Reminders.Data;
+using NouAssist.Notification.Reminders.Services;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Uow;
 
-namespace NouAssist.Reminders.BackgroundJobs
+namespace NouAssist.Notification.Reminders.BackgroundJobs
 {
     public class RecurringReminderCreationJobArgs
     {

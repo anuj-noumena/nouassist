@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Core.Enums;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Data;
-using NouAssist.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Aggregates;
+using NouAssist.WorkManagement.GTD.Data;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.GTD.Services
+namespace NouAssist.WorkManagement.GTD.Services
 {
     public class HorizonAlignmentService : DomainService
     {

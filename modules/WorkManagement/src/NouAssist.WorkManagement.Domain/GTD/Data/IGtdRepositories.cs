@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Core.Enums;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Aggregates;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.GTD.Data
+namespace NouAssist.WorkManagement.GTD.Data
 {
     public interface IGtdHorizonRepository : IRepository<GtdHorizon, Guid>
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Habits.Routines.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Routines.Dtos
 {
     public class CreateRoutineDto
     {

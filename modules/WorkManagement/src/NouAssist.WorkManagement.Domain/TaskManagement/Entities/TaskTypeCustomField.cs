@@ -1,8 +1,7 @@
 using System;
-using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Tasks.Entities
+namespace NouAssist.WorkManagement.TaskManagement.Entities
 {
     public class TaskTypeCustomField : Entity<Guid>
     {

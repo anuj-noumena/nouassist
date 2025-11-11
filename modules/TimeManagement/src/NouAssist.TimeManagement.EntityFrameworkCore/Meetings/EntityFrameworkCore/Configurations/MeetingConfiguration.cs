@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Meetings.Aggregates;
-using NouAssist.Meetings.ValueObjects;
+using NouAssist.TimeManagement.Meetings.Aggregates;
+using NouAssist.TimeManagement.Meetings.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Meetings.EntityFrameworkCore.Configurations
+namespace NouAssist.TimeManagement.Meetings.EntityFrameworkCore.Configurations
 {
     public class MeetingConfiguration : IEntityTypeConfiguration<Meeting>
     {

@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Search.Search.Dtos
+namespace NouAssist.Infrastructure.Search.Search.Dtos
 {
     public class SavedSearchDto : CreationAuditedEntityDto<Guid>
     {

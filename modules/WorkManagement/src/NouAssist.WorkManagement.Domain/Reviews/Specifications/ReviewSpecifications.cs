@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Reviews.Specifications
+namespace NouAssist.WorkManagement.Reviews.Specifications
 {
     public class IncompleteReviewsSpecification : Specification<Review>
     {
@@ -43,7 +43,7 @@ namespace NouAssist.Reviews.Specifications
         }
 
         public override Expression<Func<Review, bool>> ToExpression() =>
-            r => r.CreatedTime >= _startDate && r.CreatedTime <= _endDate;
+            r => r.CreationTime >= _startDate && r.CreationTime <= _endDate;
     }
 
     public class OverdueReviewsSpecification : Specification<Review>

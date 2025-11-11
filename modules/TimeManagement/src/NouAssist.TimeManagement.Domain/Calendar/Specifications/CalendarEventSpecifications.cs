@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using NouAssist.Calendar.Aggregates;
-using NouAssist.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Calendar.Specifications
+namespace NouAssist.TimeManagement.Calendar.Specifications
 {
     public class EventsInDateRangeSpecification : Specification<CalendarEvent>
     {

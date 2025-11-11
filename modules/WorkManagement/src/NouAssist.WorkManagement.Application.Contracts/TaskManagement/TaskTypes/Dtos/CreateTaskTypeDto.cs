@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Tasks.TaskTypes.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.TaskTypes.Dtos
 {
     public class CreateTaskTypeDto
     {

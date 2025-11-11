@@ -1,10 +1,8 @@
-using System.Linq;
-using System.Threading.Tasks;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.ValueObjects;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Resources.Services
+namespace NouAssist.AssetManagement.Resources.Services
 {
     public class BookMetadataService : DomainService
     {

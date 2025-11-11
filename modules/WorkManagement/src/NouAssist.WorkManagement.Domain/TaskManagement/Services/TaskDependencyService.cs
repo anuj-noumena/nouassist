@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Entities;
-using NouAssist.Tasks.Enums;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Entities;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Tasks.Services
+namespace NouAssist.WorkManagement.TaskManagement.Services
 {
     public class TaskDependencyService : DomainService
     {

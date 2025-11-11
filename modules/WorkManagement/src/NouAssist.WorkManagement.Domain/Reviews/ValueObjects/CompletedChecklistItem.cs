@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Reviews.ValueObjects
+namespace NouAssist.WorkManagement.Reviews.ValueObjects
 {
     public class CompletedChecklistItem : ValueObject
     {

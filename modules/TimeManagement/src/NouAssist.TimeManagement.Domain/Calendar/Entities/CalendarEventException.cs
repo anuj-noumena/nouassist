@@ -1,9 +1,9 @@
 using System;
-using NouAssist.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Calendar.Entities
+namespace NouAssist.TimeManagement.Calendar.Entities
 {
     public class CalendarEventException : Entity<Guid>
     {

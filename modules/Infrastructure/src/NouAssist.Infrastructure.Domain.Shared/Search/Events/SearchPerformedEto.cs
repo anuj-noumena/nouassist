@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Search.Events
+namespace NouAssist.Infrastructure.Search.Events
 {
     [EventName("NouAssist.Search.Performed")]
     public class SearchPerformedEto : IMultiTenant

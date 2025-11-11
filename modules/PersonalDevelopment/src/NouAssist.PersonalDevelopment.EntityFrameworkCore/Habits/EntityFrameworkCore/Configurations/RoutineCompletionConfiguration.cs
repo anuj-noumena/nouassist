@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Habits.EntityFrameworkCore.Configurations
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore.Configurations
 {
     public class RoutineCompletionConfiguration : IEntityTypeConfiguration<RoutineCompletion>
     {

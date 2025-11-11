@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Comments.Settings;
+﻿namespace NouAssist.Collaboration.Comments.Settings;
 
 public static class CommentsSettings
 {

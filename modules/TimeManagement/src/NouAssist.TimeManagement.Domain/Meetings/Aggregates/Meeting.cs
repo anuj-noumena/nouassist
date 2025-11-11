@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Meetings.Enums;
-using NouAssist.Meetings.Events;
-using NouAssist.Meetings.ValueObjects;
+using NouAssist.TimeManagement.Meetings.Enums;
+using NouAssist.TimeManagement.Meetings.Events;
+using NouAssist.TimeManagement.Meetings.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Meetings.Aggregates;
+namespace NouAssist.TimeManagement.Meetings.Aggregates;
 
 public class Meeting : FullAuditedAggregateRoot<Guid>, IMultiTenant
 {

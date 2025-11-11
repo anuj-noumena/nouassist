@@ -1,9 +1,7 @@
 using System;
-using Volo.Abp;
-using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Tasks.Entities
+namespace NouAssist.WorkManagement.TaskManagement.Entities
 {
     public class TaskActionStepCompletion : FullAuditedEntity
     {

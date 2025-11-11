@@ -1,10 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Core.Enums;
-using NouAssist.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Goals.Specifications
+namespace NouAssist.PersonalDevelopment.Goals.Specifications
 {
     public class ActiveGoalsSpecification : Specification<Goal>
     {

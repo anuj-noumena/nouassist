@@ -1,7 +1,7 @@
-﻿using NouAssist.Comments.Localization;
+﻿using NouAssist.Collaboration.Comments.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Comments;
+namespace NouAssist.Collaboration.Comments;
 
 public abstract class CommentsAppService : ApplicationService
 {

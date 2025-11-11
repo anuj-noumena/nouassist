@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Data;
-using NouAssist.Reviews.Enums;
-using Volo.Abp;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Data;
+using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Reviews.Services
+namespace NouAssist.WorkManagement.Reviews.Services
 {
     public class ReviewProcessingService : DomainService
     {

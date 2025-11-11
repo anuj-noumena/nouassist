@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Workflow.Events
+namespace NouAssist.WorkManagement.Workflow.Events
 {
     [EventName("NouAssist.Workflow.Transition.Executed")]
     public class WorkflowTransitionExecutedEto : IMultiTenant

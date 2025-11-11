@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Reviews.Progress.Dtos
+namespace NouAssist.WorkManagement.Reviews.Progress.Dtos
 {
     public class ReviewProgressDto : EntityDto<Guid>
     {

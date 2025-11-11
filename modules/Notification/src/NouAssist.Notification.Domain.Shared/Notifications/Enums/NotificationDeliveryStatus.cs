@@ -1,4 +1,4 @@
-namespace NouAssist.Notifications.Enums
+namespace NouAssist.Notification.Notifications.Enums
 {
     public enum NotificationDeliveryStatus : byte
     {

@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Reflection;
 
-namespace NouAssist.GTD.Permissions;
+namespace NouAssist.WorkManagement.GTD.Permissions;
 
 public class GTDPermissions
 {

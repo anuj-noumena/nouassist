@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Localization;
 
-namespace NouAssist.Notifications.Localization;
+namespace NouAssist.Notification.Notifications.Localization;
 
 [LocalizationResourceName("Notifications")]
 public class NotificationsResource

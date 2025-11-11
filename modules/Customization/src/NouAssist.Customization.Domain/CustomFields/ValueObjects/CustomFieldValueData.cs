@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CustomFields.ValueObjects
+namespace NouAssist.Customization.CustomFields.ValueObjects
 {
     public class CustomFieldValueData : ValueObject
     {

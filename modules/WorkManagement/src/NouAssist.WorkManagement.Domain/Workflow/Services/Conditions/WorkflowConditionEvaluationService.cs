@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Workflow.ValueObjects;
+using NouAssist.WorkManagement.Workflow.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Workflow.Services.Conditions
+namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 {
     /// <summary>
     /// Orchestrates condition evaluation using multiple evaluators.

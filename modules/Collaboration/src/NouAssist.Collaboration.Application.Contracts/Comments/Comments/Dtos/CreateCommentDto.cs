@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Comments.Enums;
+using NouAssist.Collaboration.Comments.Enums;
 
-namespace NouAssist.Comments.Dtos
+namespace NouAssist.Collaboration.Comments.Comments.Dtos
 {
     public class CreateCommentDto
     {

@@ -1,4 +1,4 @@
-namespace NouAssist.Activity.Permissions
+namespace NouAssist.Infrastructure.Activity.Permissions
 {
     public static class ActivityPermissions
     {

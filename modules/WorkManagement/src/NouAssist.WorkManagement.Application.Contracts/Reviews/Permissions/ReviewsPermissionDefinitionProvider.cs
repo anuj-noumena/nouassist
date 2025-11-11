@@ -1,8 +1,8 @@
-using NouAssist.Reviews.Localization;
+using NouAssist.WorkManagement.Reviews.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Reviews.Permissions
+namespace NouAssist.WorkManagement.Reviews.Permissions
 {
     public class ReviewsPermissionDefinitionProvider : PermissionDefinitionProvider
     {

@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.CoreProductivity.ProjectManagement.Projects.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Projects.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Projects
+namespace NouAssist.WorkManagement.ProjectManagement.Projects
 {
     public interface IProjectAppService : IApplicationService
     {

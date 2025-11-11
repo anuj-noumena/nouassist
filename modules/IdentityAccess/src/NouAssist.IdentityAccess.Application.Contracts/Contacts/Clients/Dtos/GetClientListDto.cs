@@ -1,7 +1,7 @@
-using NouAssist.Contacts.Enums;
+using NouAssist.IdentityAccess.Contacts.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Contacts.Dtos
+namespace NouAssist.IdentityAccess.Contacts.Clients.Dtos
 {
     public class GetClientListDto : PagedAndSortedResultRequestDto
     {

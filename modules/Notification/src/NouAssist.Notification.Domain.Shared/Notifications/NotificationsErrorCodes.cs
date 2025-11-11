@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Notifications;
+﻿namespace NouAssist.Notification.Notifications;
 
 public static class NotificationsErrorCodes
 {

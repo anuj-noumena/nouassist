@@ -2,12 +2,12 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NouAssist.Search.Data;
+using NouAssist.Infrastructure.Search.Data;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 using Volo.Abp.Uow;
 
-namespace NouAssist.Search.BackgroundWorkers
+namespace NouAssist.Infrastructure.Search.BackgroundWorkers
 {
     public class SearchAnalyticsAggregationWorker : AsyncPeriodicBackgroundWorkerBase
     {

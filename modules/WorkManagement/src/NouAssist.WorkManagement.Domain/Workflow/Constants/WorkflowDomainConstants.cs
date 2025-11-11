@@ -1,4 +1,4 @@
-namespace NouAssist.Workflow.Constants
+namespace NouAssist.WorkManagement.Workflow.Constants
 {
     public static class WorkflowDomainConstants
     {

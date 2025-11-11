@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Core.Enums;
-using NouAssist.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Goals.Data
+namespace NouAssist.PersonalDevelopment.Goals.Data
 {
     public interface IGoalRepository : IRepository<Goal, Guid>
     {

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Approval.Aggregates;
-using NouAssist.Approval.Data;
-using NouAssist.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Aggregates;
+using NouAssist.WorkManagement.Approval.Data;
+using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Approval.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore.Repositories
 {
     public class EfCoreApprovalWorkflowRepository 
         : EfCoreRepository<IApprovalDbContext, ApprovalWorkflow, Guid>, 

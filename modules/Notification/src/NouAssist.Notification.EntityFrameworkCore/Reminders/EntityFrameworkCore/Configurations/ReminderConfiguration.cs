@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.ValueObjects;
+using NouAssist.Notification.Reminders.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Reminders.EntityFrameworkCore.Configurations
+namespace NouAssist.Notification.Reminders.EntityFrameworkCore.Configurations
 {
     public class ReminderConfiguration : IEntityTypeConfiguration<Reminder>
     {

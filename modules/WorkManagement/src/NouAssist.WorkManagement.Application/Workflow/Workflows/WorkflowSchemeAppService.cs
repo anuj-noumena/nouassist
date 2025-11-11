@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Workflow.Aggregates;
-using NouAssist.Workflow.Data;
-using NouAssist.Workflow.Permissions;
-using NouAssist.Workflow.Workflows.Dtos;
+using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Permissions;
+using NouAssist.WorkManagement.Workflow.Workflows.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using System.Linq.Dynamic.Core;
 
-namespace NouAssist.Workflow.Workflows
+namespace NouAssist.WorkManagement.Workflow.Workflows
 {
     [Authorize(WorkflowPermissions.Workflows.Default)]
     public class WorkflowSchemeAppService : ApplicationService, IWorkflowSchemeAppService

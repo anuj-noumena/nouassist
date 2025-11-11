@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Habits;
+﻿namespace NouAssist.PersonalDevelopment.Habits;
 
 public static class HabitsErrorCodes
 {

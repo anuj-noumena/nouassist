@@ -2,12 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Activity.Data;
-using Volo.Abp.BackgroundJobs;
+using NouAssist.Infrastructure.Activity.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Uow;
 
-namespace NouAssist.Activity.BackgroundJobs
+namespace NouAssist.Infrastructure.Activity.BackgroundJobs
 {
     public class ActivityFeedAggregationJobArgs
     {

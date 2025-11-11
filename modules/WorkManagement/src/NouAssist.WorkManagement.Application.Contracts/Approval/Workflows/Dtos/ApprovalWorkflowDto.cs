@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Approval.Workflows.Dtos
+namespace NouAssist.WorkManagement.Approval.Workflows.Dtos
 {
     public class ApprovalWorkflowDto : FullAuditedEntityDto<Guid>
     {

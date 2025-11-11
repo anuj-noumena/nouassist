@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.Timing;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Entities
+namespace NouAssist.WorkManagement.ProjectManagement.Entities
 {
     public class ProjectDependency : FullAuditedEntity<Guid>, IMultiTenant
     {

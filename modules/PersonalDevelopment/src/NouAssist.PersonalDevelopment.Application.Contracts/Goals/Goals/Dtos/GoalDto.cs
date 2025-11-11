@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Core.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Goals.Dtos
+namespace NouAssist.PersonalDevelopment.Goals.Goals.Dtos
 {
     public class GoalDto : FullAuditedEntityDto<Guid>
     {

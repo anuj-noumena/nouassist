@@ -1,13 +1,13 @@
-﻿using Volo.Abp.Modularity;
-using Volo.Abp.Localization;
-using NouAssist.Search.Localization;
+﻿using NouAssist.Infrastructure.Search.Localization;
 using Volo.Abp.Domain;
+using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
+using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
-namespace NouAssist.Search;
+namespace NouAssist.Infrastructure.Search;
 
 [DependsOn(
     typeof(AbpValidationModule),

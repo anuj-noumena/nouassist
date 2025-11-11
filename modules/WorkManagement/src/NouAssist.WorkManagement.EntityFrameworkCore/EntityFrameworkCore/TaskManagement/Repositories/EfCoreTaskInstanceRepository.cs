@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Data;
-using NouAssist.Tasks.Enums;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Tasks.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositories
 {
     public class EfCoreTaskInstanceRepository 
         : EfCoreRepository<ITasksDbContext, TaskInstance, Guid>, ITaskInstanceRepository

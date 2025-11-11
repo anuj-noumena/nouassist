@@ -1,10 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Notifications.Aggregates;
-using NouAssist.Notifications.Enums;
+using NouAssist.Notification.Notifications.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Notifications.Specifications
+namespace NouAssist.Notification.Notifications.Specifications
 {
     public class UnreadNotificationsSpecification : Specification<Notification>
     {

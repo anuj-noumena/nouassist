@@ -1,4 +1,4 @@
-namespace NouAssist.Resources.Books.Dtos
+namespace NouAssist.AssetManagement.Resources.Books.Dtos
 {
     public class UpdateReadingProgressDto
     {

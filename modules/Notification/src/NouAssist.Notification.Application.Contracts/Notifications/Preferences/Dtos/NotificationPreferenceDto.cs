@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Notifications.Preferences.Dtos
+namespace NouAssist.Notification.Notifications.Preferences.Dtos
 {
     public class NotificationPreferenceDto : CreationAuditedEntityDto<Guid>
     {

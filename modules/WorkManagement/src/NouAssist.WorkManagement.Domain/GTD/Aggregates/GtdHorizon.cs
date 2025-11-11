@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Core.Enums;
-using NouAssist.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.GTD.Aggregates
+namespace NouAssist.WorkManagement.GTD.Aggregates
 {
     public class GtdHorizon : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

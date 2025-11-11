@@ -1,9 +1,9 @@
 using System;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Habits.Entities
+namespace NouAssist.PersonalDevelopment.Habits.Entities
 {
     public class HabitCue : Entity<Guid>
     {

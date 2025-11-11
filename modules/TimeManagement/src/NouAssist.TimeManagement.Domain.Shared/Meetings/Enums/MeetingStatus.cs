@@ -1,4 +1,4 @@
-namespace NouAssist.Meetings.Enums
+namespace NouAssist.TimeManagement.Meetings.Enums
 {
     public enum MeetingStatus : byte
     {

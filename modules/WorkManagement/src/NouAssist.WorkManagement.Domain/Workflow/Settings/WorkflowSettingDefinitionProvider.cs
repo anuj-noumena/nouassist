@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Workflow.Settings;
+namespace NouAssist.WorkManagement.Workflow.Settings;
 
 public class WorkflowSettingDefinitionProvider : SettingDefinitionProvider
 {

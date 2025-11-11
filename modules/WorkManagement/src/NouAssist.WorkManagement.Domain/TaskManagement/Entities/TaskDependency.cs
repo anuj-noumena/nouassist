@@ -1,9 +1,9 @@
 using System;
-using NouAssist.Tasks.Enums;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Tasks.Entities
+namespace NouAssist.WorkManagement.TaskManagement.Entities
 {
     public class TaskDependency : Entity
     {

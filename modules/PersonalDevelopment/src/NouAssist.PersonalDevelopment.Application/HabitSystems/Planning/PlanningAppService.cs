@@ -1,17 +1,9 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CoreProductivity.HabitSystems.Aggregates;
-using NouAssist.CoreProductivity.HabitSystems.Data;
-using NouAssist.CoreProductivity.HabitSystems.Dtos;
-using NouAssist.CoreProductivity.HabitSystems.Permissions;
-using NouAssist.CoreProductivity.HabitSystems.Planning.Dtos;
-using NouAssist.CoreProductivity.HabitSystems.Routines.Dtos;
-using NouAssist.CoreProductivity.HabitSystems.Services;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.HabitSystems.Planning
+namespace NouAssist.PersonalDevelopment.HabitSystems.Planning
 {
     [Authorize(HabitsPermissions.Tracking.ViewOwn)]
     public class PlanningAppService : ApplicationService, IPlanningAppService

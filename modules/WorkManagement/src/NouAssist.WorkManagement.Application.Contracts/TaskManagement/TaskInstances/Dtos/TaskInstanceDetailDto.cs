@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NouAssist.Tasks.TaskInstances.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
     public class TaskInstanceDetailDto : TaskInstanceDto
     {

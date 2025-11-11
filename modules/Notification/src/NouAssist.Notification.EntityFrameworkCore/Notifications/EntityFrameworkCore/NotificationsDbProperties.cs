@@ -1,4 +1,4 @@
-namespace NouAssist.Notifications.EntityFrameworkCore
+namespace NouAssist.Notification.Notifications.EntityFrameworkCore
 {
     public static class NotificationsDbProperties
     {

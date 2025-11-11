@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Notifications.Settings;
+﻿namespace NouAssist.Notification.Notifications.Settings;
 
 public static class NotificationsSettings
 {

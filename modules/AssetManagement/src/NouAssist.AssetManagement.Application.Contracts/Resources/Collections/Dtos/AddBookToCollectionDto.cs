@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Resources.Collections.Dtos
+namespace NouAssist.AssetManagement.Resources.Collections.Dtos
 {
     public class AddBookToCollectionDto
     {

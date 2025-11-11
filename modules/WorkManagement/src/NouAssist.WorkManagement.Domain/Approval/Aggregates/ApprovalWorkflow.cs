@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Approval.Entities;
-using NouAssist.Approval.Enums;
-using NouAssist.SharedKernel.ValueObjects;
+using NouAssist.WorkManagement.Approval.Entities;
+using NouAssist.WorkManagement.Approval.Enums;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Approval.Aggregates
+namespace NouAssist.WorkManagement.Approval.Aggregates
 {
     /// <summary>
     /// Represents an approval workflow that defines a set of sequential or parallel approval steps

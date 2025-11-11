@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Habits.EntityFrameworkCore
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore
 {
     [ConnectionStringName(HabitsDbProperties.ConnectionStringName)]
     public class HabitsDbContext : AbpDbContext<HabitsDbContext>, IHabitsDbContext

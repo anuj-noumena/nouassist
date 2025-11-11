@@ -1,4 +1,4 @@
-namespace NouAssist.Meetings.EntityFrameworkCore
+namespace NouAssist.TimeManagement.Meetings.EntityFrameworkCore
 {
     public static class MeetingsDbProperties
     {

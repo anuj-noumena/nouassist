@@ -1,4 +1,4 @@
-namespace NouAssist.CoreProductivity.ProjectManagement.Permissions
+namespace NouAssist.WorkManagement.ProjectManagement.Permissions
 {
     public static class ProjectsPermissions
     {

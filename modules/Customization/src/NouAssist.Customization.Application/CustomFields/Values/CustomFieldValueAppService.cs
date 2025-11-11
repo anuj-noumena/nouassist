@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CustomFields.Data;
-using NouAssist.CustomFields.Entities;
-using NouAssist.CustomFields.Permissions;
-using NouAssist.CustomFields.Services;
-using NouAssist.CustomFields.Values.Dtos;
+using NouAssist.Customization.CustomFields.Data;
+using NouAssist.Customization.CustomFields.Entities;
+using NouAssist.Customization.CustomFields.Permissions;
+using NouAssist.Customization.CustomFields.Services;
+using NouAssist.Customization.CustomFields.Values.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CustomFields.Values
+namespace NouAssist.Customization.CustomFields.Values
 {
     [Authorize(CustomFieldsPermissions.Values.Default)]
     public class CustomFieldValueAppService : ApplicationService, ICustomFieldValueAppService

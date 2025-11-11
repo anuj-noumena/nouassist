@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Data;
-using NouAssist.Resources.Permissions;
-using NouAssist.Resources.Storage.Dtos;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Data;
+using NouAssist.AssetManagement.Resources.Permissions;
+using NouAssist.AssetManagement.Resources.Storage.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Storage
+namespace NouAssist.AssetManagement.Resources.Storage
 {
     [Authorize(ResourcesPermissions.StorageBackends.Default)]
     public class StorageBackendAppService : ApplicationService, IStorageBackendAppService

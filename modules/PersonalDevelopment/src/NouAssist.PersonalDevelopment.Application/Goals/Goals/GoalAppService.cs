@@ -3,22 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Core.Enums;
-using NouAssist.Core.ValueObjects;
-using NouAssist.Goals.Aggregates;
-using NouAssist.Goals.Data;
-using NouAssist.Goals.Dtos;
-using NouAssist.Goals.Entities;
-using NouAssist.Goals.Permissions;
-using NouAssist.Goals.Services;
-using NouAssist.Goals.Specifications;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Data;
+using NouAssist.PersonalDevelopment.Goals.Entities;
+using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
+using NouAssist.PersonalDevelopment.Goals.Permissions;
+using NouAssist.PersonalDevelopment.Goals.Services;
+using NouAssist.PersonalDevelopment.Goals.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Goals.Goals
+namespace NouAssist.PersonalDevelopment.Goals.Goals
 {
     [Authorize(GoalsPermissions.Goals.Default)]
     public class GoalAppService : ApplicationService, IGoalAppService

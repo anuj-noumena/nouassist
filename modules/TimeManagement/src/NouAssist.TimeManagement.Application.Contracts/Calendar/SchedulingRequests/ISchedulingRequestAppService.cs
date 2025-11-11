@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Calendar.SchedulingRequests.Dtos;
+using NouAssist.TimeManagement.Calendar.SchedulingRequests.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Calendar.SchedulingRequests
+namespace NouAssist.TimeManagement.Calendar.SchedulingRequests
 {
     public interface ISchedulingRequestAppService : IApplicationService
     {

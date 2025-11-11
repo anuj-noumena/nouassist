@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Goals.Services
+namespace NouAssist.PersonalDevelopment.Goals.Services
 {
     public class GoalProgressCalculationService : DomainService
     {

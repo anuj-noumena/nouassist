@@ -1,4 +1,4 @@
-namespace NouAssist.CustomFields.Permissions
+namespace NouAssist.Customization.CustomFields.Permissions
 {
     public static class CustomFieldsPermissions
     {

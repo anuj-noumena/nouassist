@@ -1,6 +1,6 @@
-using NouAssist.Tasks.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
 
-namespace NouAssist.Tasks.Policies;
+namespace NouAssist.WorkManagement.TaskManagement.Policies;
 
 public interface ITaskCompletionPolicy
 {

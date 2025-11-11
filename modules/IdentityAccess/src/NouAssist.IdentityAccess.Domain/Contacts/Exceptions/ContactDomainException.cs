@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp;
 
-namespace NouAssist.Contacts.Exceptions
+namespace NouAssist.IdentityAccess.Contacts.Exceptions
 {
     public class ContactDomainException : BusinessException
     {

@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Workflow.ValueObjects;
+using NouAssist.WorkManagement.Workflow.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Workflow.Services.Conditions
+namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 {
     /// <summary>
     /// Evaluates conditions based on user roles.

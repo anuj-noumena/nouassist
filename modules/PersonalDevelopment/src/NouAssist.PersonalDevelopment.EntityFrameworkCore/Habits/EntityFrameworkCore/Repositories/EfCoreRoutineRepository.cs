@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Data;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Habits.EntityFrameworkCore.Repositories
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore.Repositories
 {
     public class EfCoreRoutineRepository 
         : EfCoreRepository<IHabitsDbContext, Routine, Guid>, IRoutineRepository

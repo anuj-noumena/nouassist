@@ -1,14 +1,14 @@
 using AutoMapper;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Books.Dtos;
-using NouAssist.Resources.Collections.Dtos;
-using NouAssist.Resources.Entities;
-using NouAssist.Resources.Inventory.Dtos;
-using NouAssist.Resources.Resources.Dtos;
-using NouAssist.Resources.Storage.Dtos;
-using NouAssist.Resources.ValueObjects;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Books.Dtos;
+using NouAssist.AssetManagement.Resources.Collections.Dtos;
+using NouAssist.AssetManagement.Resources.Entities;
+using NouAssist.AssetManagement.Resources.Inventory.Dtos;
+using NouAssist.AssetManagement.Resources.Resources.Dtos;
+using NouAssist.AssetManagement.Resources.Storage.Dtos;
+using NouAssist.AssetManagement.Resources.ValueObjects;
 
-namespace NouAssist.Resources
+namespace NouAssist.AssetManagement.Resources
 {
     public class ResourcesApplicationAutoMapperProfile : Profile
     {

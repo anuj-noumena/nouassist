@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Calendar.Aggregates;
-using NouAssist.Calendar.Entities;
-using NouAssist.Calendar.ValueObjects;
+using NouAssist.TimeManagement.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.Entities;
+using NouAssist.TimeManagement.Calendar.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Calendar.Services
+namespace NouAssist.TimeManagement.Calendar.Services
 {
     public class RecurringEventGeneratorService : DomainService
     {

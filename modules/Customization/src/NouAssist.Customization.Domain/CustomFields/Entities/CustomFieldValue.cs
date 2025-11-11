@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CustomFields.Entities
+namespace NouAssist.Customization.CustomFields.Entities
 {
     public class CustomFieldValue : FullAuditedEntity<Guid>, IMultiTenant
     {

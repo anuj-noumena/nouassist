@@ -1,8 +1,8 @@
-using NouAssist.CustomFields.Localization;
+using NouAssist.Customization.CustomFields.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.CustomFields.Permissions
+namespace NouAssist.Customization.CustomFields.Permissions
 {
     public class CustomFieldsPermissionDefinitionProvider : PermissionDefinitionProvider
     {

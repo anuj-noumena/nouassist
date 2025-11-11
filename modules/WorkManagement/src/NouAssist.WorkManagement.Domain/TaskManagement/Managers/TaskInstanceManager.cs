@@ -1,18 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Data;
-using NouAssist.Tasks.Entities;
-using NouAssist.Tasks.Exceptions;
-using NouAssist.Tasks.Policies;
-using NouAssist.Tasks.Services;
-using NouAssist.Tasks.ValueObjects;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.TaskManagement.Entities;
+using NouAssist.WorkManagement.TaskManagement.Exceptions;
+using NouAssist.WorkManagement.TaskManagement.Policies;
+using NouAssist.WorkManagement.TaskManagement.Services;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Tasks.Managers
+namespace NouAssist.WorkManagement.TaskManagement.Managers
 {
     /// <summary>
     /// Manager for TaskInstance aggregate - handles complex business logic

@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Habits.Specifications
+namespace NouAssist.PersonalDevelopment.Habits.Specifications
 {
     public class HealthEntriesWithGoodSleepSpecification : Specification<HealthTrackingEntry>
     {

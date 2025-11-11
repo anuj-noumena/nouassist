@@ -1,8 +1,7 @@
-using NouAssist.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Users.Permissions
+namespace NouAssist.IdentityAccess.Users.Permissions
 {
     public class UsersPermissionDefinitionProvider : PermissionDefinitionProvider
     {

@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Reflection;
 
-namespace NouAssist.CoreProductivity.TaskManagement.Permissions;
+namespace NouAssist.WorkManagement.TaskManagement.Permissions;
 
 public class TaskManagementPermissions
 {

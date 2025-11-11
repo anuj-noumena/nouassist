@@ -1,7 +1,7 @@
-﻿using NouAssist.Workflow.Localization;
+﻿using NouAssist.WorkManagement.Workflow.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Workflow;
+namespace NouAssist.WorkManagement.Workflow;
 
 public abstract class WorkflowAppService : ApplicationService
 {

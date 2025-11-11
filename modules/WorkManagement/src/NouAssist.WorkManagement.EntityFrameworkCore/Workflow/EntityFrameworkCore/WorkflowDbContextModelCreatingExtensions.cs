@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Workflow.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore;
 
 public static class WorkflowDbContextModelCreatingExtensions
 {

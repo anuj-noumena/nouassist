@@ -1,8 +1,8 @@
-﻿using NouAssist.Contacts.Localization;
+﻿using NouAssist.IdentityAccess.Contacts.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Contacts.Permissions;
+namespace NouAssist.IdentityAccess.Contacts.Permissions;
 
 public class ContactsPermissionDefinitionProvider : PermissionDefinitionProvider
 {

@@ -1,15 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NouAssist.Reminders.BackgroundJobs;
-using NouAssist.Reminders.Data;
-using Volo.Abp.BackgroundJobs;
+using NouAssist.Notification.Reminders.BackgroundJobs;
+using NouAssist.Notification.Reminders.Data;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 
-namespace NouAssist.Reminders.BackgroundWorkers
+namespace NouAssist.Notification.Reminders.BackgroundWorkers
 {
     public class ReminderProcessingWorker : AsyncPeriodicBackgroundWorkerBase
     {

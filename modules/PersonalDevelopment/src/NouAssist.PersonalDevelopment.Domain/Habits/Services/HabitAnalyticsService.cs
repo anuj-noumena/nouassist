@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Entities;
-using NouAssist.Habits.ValueObjects;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Habits.Services
+namespace NouAssist.PersonalDevelopment.Habits.Services
 {
     public class HabitAnalyticsService : DomainService
     {

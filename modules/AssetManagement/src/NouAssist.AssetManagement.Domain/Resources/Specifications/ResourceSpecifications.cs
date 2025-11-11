@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Resources.Specifications
+namespace NouAssist.AssetManagement.Resources.Specifications
 {
     public class ResourcesByKindSpecification : Specification<Resource>
     {

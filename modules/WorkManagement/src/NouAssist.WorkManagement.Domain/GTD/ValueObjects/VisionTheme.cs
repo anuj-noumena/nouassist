@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.GTD.ValueObjects
+namespace NouAssist.WorkManagement.GTD.ValueObjects
 {
     public class VisionTheme : ValueObject
     {

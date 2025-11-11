@@ -1,8 +1,8 @@
-using NouAssist.Approval.Localization;
+using NouAssist.WorkManagement.Approval.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Approval.Permissions
+namespace NouAssist.WorkManagement.Approval.Permissions
 {
     public class ApprovalPermissionDefinitionProvider : PermissionDefinitionProvider
     {

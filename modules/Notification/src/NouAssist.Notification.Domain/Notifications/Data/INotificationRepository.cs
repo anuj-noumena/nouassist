@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Notifications.Aggregates;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Notifications.Data
+namespace NouAssist.Notification.Notifications.Data
 {
     public interface INotificationRepository : IRepository<Notification, Guid>
     {

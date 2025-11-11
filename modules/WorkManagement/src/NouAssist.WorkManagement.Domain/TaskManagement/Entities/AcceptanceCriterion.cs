@@ -1,10 +1,8 @@
 using System;
 using Volo.Abp;
-using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
-using Volo.Abp.Timing;
 
-namespace NouAssist.Tasks.Entities
+namespace NouAssist.WorkManagement.TaskManagement.Entities
 {
     public class AcceptanceCriterion : FullAuditedEntity<Guid>
     {

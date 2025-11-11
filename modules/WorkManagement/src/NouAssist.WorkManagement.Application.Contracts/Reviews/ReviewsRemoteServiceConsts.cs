@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Reviews;
+﻿namespace NouAssist.WorkManagement.Reviews;
 
 public class ReviewsRemoteServiceConsts
 {

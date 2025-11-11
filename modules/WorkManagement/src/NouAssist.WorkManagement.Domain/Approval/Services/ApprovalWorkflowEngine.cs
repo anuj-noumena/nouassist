@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using NouAssist.Approval.Aggregates;
-using NouAssist.Approval.Entities;
-using NouAssist.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Aggregates;
+using NouAssist.WorkManagement.Approval.Entities;
+using NouAssist.WorkManagement.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
-using Microsoft.Extensions.Logging;
-using NouAssist.Approval.Events;
 using Volo.Abp.EventBus.Distributed;
 
-namespace NouAssist.Approval.Services
+namespace NouAssist.WorkManagement.Approval.Services
 {
     public class ApprovalWorkflowEngine(IDistributedEventBus distributedEventBus) : DomainService
     {

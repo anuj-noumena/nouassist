@@ -1,4 +1,4 @@
-namespace NouAssist.Tasks.EntityFrameworkCore
+namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement
 {
     public static class TasksDbProperties
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Search.EntityFrameworkCore;
+namespace NouAssist.Infrastructure.Search.EntityFrameworkCore;
 
 public static class SearchDbContextModelCreatingExtensions
 {

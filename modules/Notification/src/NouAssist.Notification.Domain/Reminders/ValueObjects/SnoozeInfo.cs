@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Reminders.ValueObjects
+namespace NouAssist.Notification.Reminders.ValueObjects
 {
     public class SnoozeInfo : ValueObject
     {

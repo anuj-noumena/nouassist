@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Calendar.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Calendar.EntityFrameworkCore.Configurations
+namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
 {
     public class CalendarAggregateConfiguration : IEntityTypeConfiguration<Aggregates.Calendar>
     {

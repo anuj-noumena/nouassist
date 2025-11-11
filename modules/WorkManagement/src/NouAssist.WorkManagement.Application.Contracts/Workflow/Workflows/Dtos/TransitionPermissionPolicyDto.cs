@@ -1,12 +1,8 @@
 using System;
-
 using System.Collections.Generic;
+using NouAssist.WorkManagement.Workflow.Enums;
 
-using NouAssist.Workflow.Enums;
-
- 
-
-namespace NouAssist.Workflow.Permissions.Dtos
+namespace NouAssist.WorkManagement.Workflow.Workflows.Dtos
 
 {
 

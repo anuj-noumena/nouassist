@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Requirements.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Requirements.Dtos
 {
     public class UpdateRequirementDto
     {

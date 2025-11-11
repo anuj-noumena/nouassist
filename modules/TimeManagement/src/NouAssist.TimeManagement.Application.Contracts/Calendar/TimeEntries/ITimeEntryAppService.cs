@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Calendar.TimeEntries.Dtos;
+using NouAssist.TimeManagement.Calendar.TimeEntries.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Calendar.TimeEntries
+namespace NouAssist.TimeManagement.Calendar.TimeEntries
 {
     public interface ITimeEntryAppService : IApplicationService
     {

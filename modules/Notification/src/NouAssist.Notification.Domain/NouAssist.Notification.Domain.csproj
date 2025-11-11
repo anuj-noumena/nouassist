@@ -12,6 +12,11 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.3.6"/>
     <ProjectReference Include="..\NouAssist.Notification.Domain.Shared\NouAssist.Notification.Domain.Shared.csproj" />
+    <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
+    <PackageReference Update="Fody" Version="6.9.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

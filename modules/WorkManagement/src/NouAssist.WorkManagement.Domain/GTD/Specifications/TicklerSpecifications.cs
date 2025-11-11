@@ -1,11 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Core.Enums;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Aggregates;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.GTD.Specifications
+namespace NouAssist.WorkManagement.GTD.Specifications
 {
     public class DueTicklersSpecification : Specification<TicklerItem>
     {

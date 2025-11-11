@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Tasks.TaskInstances.Dtos;
-using NouAssist.Tasks.Tasks.Dtos;
+using NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Tasks.TaskInstances
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
 {
     public interface ITaskInstanceAppService : IApplicationService
     {

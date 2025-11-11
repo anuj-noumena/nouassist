@@ -1,8 +1,8 @@
-﻿using NouAssist.Goals.Localization;
+﻿using NouAssist.PersonalDevelopment.Goals.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Goals.Permissions;
+namespace NouAssist.PersonalDevelopment.Goals.Permissions;
 
 public class GoalsPermissionDefinitionProvider : PermissionDefinitionProvider
 {

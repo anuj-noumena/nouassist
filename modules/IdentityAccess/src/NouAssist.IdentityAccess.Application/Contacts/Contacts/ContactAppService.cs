@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Contacts.Aggregates;
-using NouAssist.Contacts.Data;
-using NouAssist.Contacts.Dtos;
-using NouAssist.Contacts.Permissions;
-using NouAssist.Contacts.ValueObjects;
+using NouAssist.IdentityAccess.Contacts.Aggregates;
+using NouAssist.IdentityAccess.Contacts.Contacts.Dtos;
+using NouAssist.IdentityAccess.Contacts.Data;
+using NouAssist.IdentityAccess.Contacts.Permissions;
+using NouAssist.IdentityAccess.Contacts.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Contacts.Contacts
+namespace NouAssist.IdentityAccess.Contacts.Contacts
 {
     [Authorize(ContactsPermissions.Contacts.Default)]
     public class ContactAppService : ApplicationService, IContactAppService

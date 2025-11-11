@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.GTD.Settings;
+namespace NouAssist.WorkManagement.GTD.Settings;
 
 public class GTDSettingDefinitionProvider : SettingDefinitionProvider
 {

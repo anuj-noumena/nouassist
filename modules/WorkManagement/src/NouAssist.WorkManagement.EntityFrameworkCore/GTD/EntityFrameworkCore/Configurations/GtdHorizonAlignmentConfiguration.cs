@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.GTD.Aggregates;
+using NouAssist.WorkManagement.GTD.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.GTD.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.GTD.EntityFrameworkCore.Configurations
 {
     public class GtdHorizonAlignmentConfiguration : IEntityTypeConfiguration<GtdHorizonAlignment>
     {

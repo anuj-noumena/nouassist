@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Resources.Events
+namespace NouAssist.AssetManagement.Resources.Events
 {
     [EventName("NouAssist.Resources.Uploaded")]
     public class ResourceUploadedEto : IMultiTenant

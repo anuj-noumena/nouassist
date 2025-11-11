@@ -1,4 +1,4 @@
-namespace NouAssist.Calendar.Enums
+namespace NouAssist.TimeManagement.Calendar.Enums
 {
     public enum SchedulingRequestStatus : byte
     {

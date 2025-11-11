@@ -4,7 +4,7 @@ using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Calendar.Entities
+namespace NouAssist.TimeManagement.Calendar.Entities
 {
     public class SchedulingSlot : Entity<Guid>
     {

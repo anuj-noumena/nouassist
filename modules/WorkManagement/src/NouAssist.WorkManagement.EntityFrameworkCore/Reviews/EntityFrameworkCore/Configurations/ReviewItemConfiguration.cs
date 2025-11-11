@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Reviews.Entities;
-using NouAssist.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Reviews.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Configurations
 {
     public class ReviewItemConfiguration : IEntityTypeConfiguration<ReviewItem>
     {

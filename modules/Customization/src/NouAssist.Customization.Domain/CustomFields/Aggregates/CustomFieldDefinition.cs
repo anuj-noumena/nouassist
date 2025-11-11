@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NouAssist.CustomFields.Enums;
-using NouAssist.CustomFields.ValueObjects;
+using NouAssist.Customization.CustomFields.Enums;
+using NouAssist.Customization.CustomFields.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CustomFields.Aggregates
+namespace NouAssist.Customization.CustomFields.Aggregates
 {
     public class CustomFieldDefinition : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

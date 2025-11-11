@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CustomFields.Definitions.Dtos;
-using NouAssist.CustomFields.Enums;
+using NouAssist.Customization.CustomFields.Definitions.Dtos;
+using NouAssist.Customization.CustomFields.Enums;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CustomFields.Definitions
+namespace NouAssist.Customization.CustomFields.Definitions
 {
     public interface ICustomFieldDefinitionAppService : IApplicationService
     {

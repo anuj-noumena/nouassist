@@ -1,8 +1,8 @@
-﻿using NouAssist.Workflow.Localization;
+﻿using NouAssist.WorkManagement.Workflow.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Workflow.Permissions;
+namespace NouAssist.WorkManagement.Workflow.Permissions;
 
 public class WorkflowPermissionDefinitionProvider : PermissionDefinitionProvider
 {

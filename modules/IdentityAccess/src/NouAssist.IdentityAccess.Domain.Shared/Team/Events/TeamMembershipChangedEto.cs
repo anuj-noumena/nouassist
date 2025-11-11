@@ -1,9 +1,9 @@
 using System;
-using NouAssist.Team.Enums;
+using NouAssist.IdentityAccess.Team.Enums;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Team.Events
+namespace NouAssist.IdentityAccess.Team.Events
 {
     [EventName("NouAssist.Team.MemberAdded")]
     public class TeamMemberAddedEto : IMultiTenant

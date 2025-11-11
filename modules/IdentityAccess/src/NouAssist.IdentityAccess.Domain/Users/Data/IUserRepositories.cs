@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Users.Data
+namespace NouAssist.IdentityAccess.Users.Data
 {
     public interface IUserRepository : IRepository<User, Guid>
     {

@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Data;
-using NouAssist.CoreProductivity.ProjectManagement.Permissions;
-using NouAssist.CoreProductivity.ProjectManagement.Sprints.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Data;
+using NouAssist.WorkManagement.ProjectManagement.Permissions;
+using NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Sprints
+namespace NouAssist.WorkManagement.ProjectManagement.Sprints
 {
     [Authorize(ProjectsPermissions.Sprints.Default)]
     public class ProjectSprintAppService : ApplicationService, IProjectSprintAppService

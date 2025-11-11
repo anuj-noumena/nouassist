@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Tasks.Tasks.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
 {
     public class GetTaskListDto : PagedAndSortedResultRequestDto
     {

@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.Notifications.Aggregates;
-using NouAssist.Notifications.Entities;
-using NouAssist.Notifications.Notifications.Dtos;
+using NouAssist.Notification.Notifications.Aggregates;
+using NouAssist.Notification.Notifications.Entities;
+using NouAssist.Notification.Notifications.Notifications.Dtos;
 
-namespace NouAssist.Notifications
+namespace NouAssist.Notification.Notifications
 {
     public class NotificationsApplicationAutoMapperProfile : Profile
     {

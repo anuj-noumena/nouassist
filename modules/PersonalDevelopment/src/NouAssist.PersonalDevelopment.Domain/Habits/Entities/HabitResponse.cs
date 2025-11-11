@@ -2,7 +2,7 @@ using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Habits.Entities
+namespace NouAssist.PersonalDevelopment.Habits.Entities
 {
     public class HabitResponse : Entity<Guid>
     {

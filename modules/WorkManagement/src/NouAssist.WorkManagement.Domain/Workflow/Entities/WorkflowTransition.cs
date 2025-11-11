@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Workflow.Enums;
-using NouAssist.Workflow.ValueObjects;
+using NouAssist.WorkManagement.Workflow.Enums;
+using NouAssist.WorkManagement.Workflow.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Workflow.Entities
+namespace NouAssist.WorkManagement.Workflow.Entities
 {
     public class WorkflowTransition : Entity<Guid>
     {

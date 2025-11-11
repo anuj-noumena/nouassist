@@ -11,6 +11,11 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Http.Client" Version="9.3.6"/>
     <ProjectReference Include="..\NouAssist.Infrastructure.Application.Contracts\NouAssist.Infrastructure.Application.Contracts.csproj" />
+    <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
+    <PackageReference Update="Fody" Version="6.9.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

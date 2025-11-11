@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Meetings.Settings;
+namespace NouAssist.TimeManagement.Meetings.Settings;
 
 public class MeetingsSettingDefinitionProvider : SettingDefinitionProvider
 {

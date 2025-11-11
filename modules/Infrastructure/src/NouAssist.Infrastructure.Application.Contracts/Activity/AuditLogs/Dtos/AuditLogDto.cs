@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Activity.AuditLogs.Dtos
+namespace NouAssist.Infrastructure.Activity.AuditLogs.Dtos
 {
     public class AuditLogDto : CreationAuditedEntityDto<Guid>
     {

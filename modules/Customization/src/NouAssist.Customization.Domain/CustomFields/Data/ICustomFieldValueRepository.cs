@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CustomFields.Entities;
+using NouAssist.Customization.CustomFields.Entities;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.CustomFields.Data
+namespace NouAssist.Customization.CustomFields.Data
 {
     public interface ICustomFieldValueRepository : IRepository<CustomFieldValue, Guid>
     {

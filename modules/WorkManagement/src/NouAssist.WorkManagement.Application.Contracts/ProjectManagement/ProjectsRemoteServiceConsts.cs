@@ -1,4 +1,4 @@
-﻿namespace NouAssist.CoreProductivity.ProjectManagement;
+﻿namespace NouAssist.WorkManagement.ProjectManagement;
 
 public class ProjectsRemoteServiceConsts
 {

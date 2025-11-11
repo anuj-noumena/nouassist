@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Resources.Data
+namespace NouAssist.AssetManagement.Resources.Data
 {
     public interface IBookCollectionRepository : IRepository<BookCollection, Guid>
     {

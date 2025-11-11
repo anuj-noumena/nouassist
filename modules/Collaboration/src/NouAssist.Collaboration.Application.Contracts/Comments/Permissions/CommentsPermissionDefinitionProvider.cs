@@ -1,8 +1,8 @@
-﻿using NouAssist.Comments.Localization;
+﻿using NouAssist.Collaboration.Comments.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Comments.Permissions;
+namespace NouAssist.Collaboration.Comments.Permissions;
 
 public class CommentsPermissionDefinitionProvider : PermissionDefinitionProvider
 {

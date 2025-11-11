@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp;
 
-namespace NouAssist.Tasks.Exceptions
+namespace NouAssist.WorkManagement.TaskManagement.Exceptions
 {
     public class TaskDomainException : BusinessException
     {

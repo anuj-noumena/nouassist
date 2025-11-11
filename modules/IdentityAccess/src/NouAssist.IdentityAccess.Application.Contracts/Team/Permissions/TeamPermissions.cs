@@ -1,4 +1,4 @@
-namespace NouAssist.Team.Permissions
+namespace NouAssist.IdentityAccess.Team.Permissions
 {
     public static class TeamPermissions
     {

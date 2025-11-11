@@ -1,8 +1,7 @@
-using FluentValidation;
-using NouAssist.CoreProductivity.ProjectManagement.Constants;
-using NouAssist.CoreProductivity.ProjectManagement.Sprints.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Constants;
+using NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Sprints.Validators
+namespace NouAssist.WorkManagement.ProjectManagement.Sprints.Validators
 {
     public class UpdateSprintDtoValidator : AbstractValidator<UpdateSprintDto>
     {

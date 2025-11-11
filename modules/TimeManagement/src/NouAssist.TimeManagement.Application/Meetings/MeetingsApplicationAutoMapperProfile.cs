@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.Meetings.Aggregates;
-using NouAssist.Meetings.Meetings.Dtos;
-using NouAssist.Meetings.ValueObjects;
+using NouAssist.TimeManagement.Meetings.Aggregates;
+using NouAssist.TimeManagement.Meetings.Meetings.Dtos;
+using NouAssist.TimeManagement.Meetings.ValueObjects;
 
-namespace NouAssist.Meetings
+namespace NouAssist.TimeManagement.Meetings
 {
     public class MeetingsApplicationAutoMapperProfile : Profile
     {

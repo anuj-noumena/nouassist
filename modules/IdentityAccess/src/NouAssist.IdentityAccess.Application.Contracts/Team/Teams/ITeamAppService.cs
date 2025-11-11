@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Team.Teams.Dtos;
+using NouAssist.IdentityAccess.Team.Teams.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Team.Teams
+namespace NouAssist.IdentityAccess.Team.Teams
 {
     public interface ITeamAppService : IApplicationService
     {

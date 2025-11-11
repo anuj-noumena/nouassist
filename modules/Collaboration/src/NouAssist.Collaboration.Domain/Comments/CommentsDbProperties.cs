@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Comments;
+﻿namespace NouAssist.Collaboration.Comments;
 
 public static class CommentsDbProperties
 {

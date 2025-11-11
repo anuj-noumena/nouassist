@@ -1,7 +1,6 @@
-using System;
 using Volo.Abp;
 
-namespace NouAssist.Meetings.Exceptions
+namespace NouAssist.TimeManagement.Meetings.Exceptions
 {
     public class MeetingException : BusinessException
     {

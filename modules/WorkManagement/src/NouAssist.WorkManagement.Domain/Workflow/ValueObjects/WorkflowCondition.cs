@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Workflow.ValueObjects
+namespace NouAssist.WorkManagement.Workflow.ValueObjects
 {
     public class WorkflowCondition : ValueObject  // Inherit from your base if exists, or simple class
     {

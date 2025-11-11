@@ -1,9 +1,8 @@
 using System;
-using NouAssist.Reviews.Enums;
-using Volo.Abp;
+using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Reviews.Entities
+namespace NouAssist.WorkManagement.Reviews.Entities
 {
     public class ReviewItem : AuditedEntity<Guid>
     {

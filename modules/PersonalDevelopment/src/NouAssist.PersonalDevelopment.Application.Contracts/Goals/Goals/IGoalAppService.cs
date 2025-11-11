@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Goals.Dtos;
+using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Goals.Goals
+namespace NouAssist.PersonalDevelopment.Goals.Goals
 {
     public interface IGoalAppService : IApplicationService
     {

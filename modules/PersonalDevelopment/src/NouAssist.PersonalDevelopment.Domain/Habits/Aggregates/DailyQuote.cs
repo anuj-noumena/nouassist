@@ -3,7 +3,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Habits.Aggregates
+namespace NouAssist.PersonalDevelopment.Habits.Aggregates
 {
     public class DailyQuote : AggregateRoot<Guid>, IMultiTenant
     {

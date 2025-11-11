@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Workflow.Settings;
+﻿namespace NouAssist.WorkManagement.Workflow.Settings;
 
 public static class WorkflowSettings
 {

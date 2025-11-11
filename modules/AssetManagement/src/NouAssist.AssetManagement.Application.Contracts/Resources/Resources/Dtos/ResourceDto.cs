@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Resources.Resources.Dtos
+namespace NouAssist.AssetManagement.Resources.Resources.Dtos
 {
     public class ResourceDto : FullAuditedEntityDto<Guid>
     {

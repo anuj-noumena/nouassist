@@ -1,12 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Goals.Aggregates;
-using NouAssist.Goals.Data;
-using NouAssist.Goals.EntityFrameworkCore.Repositories;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Goals.EntityFrameworkCore
+namespace NouAssist.PersonalDevelopment.Goals.EntityFrameworkCore
 {
     [DependsOn(
         typeof(GoalsDomainModule),

@@ -1,9 +1,8 @@
 using System.Linq;
-using NouAssist.Tasks.Aggregates;
-using Volo.Abp;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Tasks.Services
+namespace NouAssist.WorkManagement.TaskManagement.Services
 {
     /// <summary>
     /// Validates business rules across task entities

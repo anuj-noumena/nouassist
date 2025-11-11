@@ -1,8 +1,8 @@
-using NouAssist.Meetings.Localization;
+using NouAssist.TimeManagement.Meetings.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Meetings.Permissions
+namespace NouAssist.TimeManagement.Meetings.Permissions
 {
     public class MeetingsPermissionDefinitionProvider : PermissionDefinitionProvider
     {

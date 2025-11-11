@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace NouAssist.CoreProductivity.ProjectManagement;
+namespace NouAssist.WorkManagement.ProjectManagement;
 
 public class ProjectManagementApplicationAutoMapperProfile : Profile
 {

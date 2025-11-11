@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Search.Settings;
+namespace NouAssist.Infrastructure.Search.Settings;
 
 public class SearchSettingDefinitionProvider : SettingDefinitionProvider
 {

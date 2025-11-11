@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CustomFields.Aggregates;
-using NouAssist.CustomFields.Enums;
+using NouAssist.Customization.CustomFields.Aggregates;
+using NouAssist.Customization.CustomFields.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.CustomFields.Services
+namespace NouAssist.Customization.CustomFields.Services
 {
     public class CustomFieldValidationService : DomainService
     {

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.CoreProductivity.ProjectManagement.Data;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Data;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.EntityFrameworkCore.Projects.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Repositories
 {
     public class EfCoreProjectSuccessCriterionRepository 
         : EfCoreRepository<IProjectsDbContext, ProjectSuccessCriterion, Guid>, 

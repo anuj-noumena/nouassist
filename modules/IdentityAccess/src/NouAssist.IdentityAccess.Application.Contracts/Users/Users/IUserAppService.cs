@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Users.Dtos;
+using NouAssist.IdentityAccess.Users.Users.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Users.Users
+namespace NouAssist.IdentityAccess.Users.Users
 {
     public interface IUserAppService : IApplicationService
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NouAssist.Habits.ValueObjects
+namespace NouAssist.PersonalDevelopment.Habits.ValueObjects
 {
     public class WellnessReport
     {

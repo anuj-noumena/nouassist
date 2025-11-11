@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.Aggregates;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Calendar.Services
+namespace NouAssist.TimeManagement.Calendar.Services
 {
     /// <summary>
     /// Domain service for detecting and resolving calendar conflicts

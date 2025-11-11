@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Approval.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore;
 
 [DependsOn(
     typeof(ApprovalDomainModule),

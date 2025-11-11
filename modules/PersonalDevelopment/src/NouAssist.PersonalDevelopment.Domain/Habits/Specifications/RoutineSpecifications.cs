@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using NouAssist.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Habits.Specifications
+namespace NouAssist.PersonalDevelopment.Habits.Specifications
 {
     public class ActiveRoutinesSpecification : Specification<Routine>
     {

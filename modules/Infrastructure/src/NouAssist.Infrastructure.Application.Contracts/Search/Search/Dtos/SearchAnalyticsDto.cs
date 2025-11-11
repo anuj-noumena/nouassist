@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 
-namespace NouAssist.Search.Search.Dtos
+namespace NouAssist.Infrastructure.Search.Search.Dtos
 {
     public class SearchAnalyticsDto
     {

@@ -1,4 +1,4 @@
-namespace NouAssist.Activity.EntityFrameworkCore
+namespace NouAssist.Infrastructure.Activity.EntityFrameworkCore
 {
     public static class ActivityDbProperties
     {

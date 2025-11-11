@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Resources.Collections.Dtos;
+using NouAssist.AssetManagement.Resources.Collections.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Collections
+namespace NouAssist.AssetManagement.Resources.Collections
 {
     public interface IBookCollectionAppService : IApplicationService
     {

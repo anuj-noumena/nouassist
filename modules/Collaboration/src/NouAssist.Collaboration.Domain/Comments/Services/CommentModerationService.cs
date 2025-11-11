@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using NouAssist.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.Aggregates;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Comments.Services
+namespace NouAssist.Collaboration.Comments.Services
 {
     /// <summary>
     /// Domain service for comment moderation and content filtering

@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Search.EntityFrameworkCore;
+namespace NouAssist.Infrastructure.Search.EntityFrameworkCore;
 
 [DependsOn(
     typeof(SearchDomainModule),

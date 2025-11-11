@@ -3,7 +3,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Search.Aggregates
+namespace NouAssist.Infrastructure.Search.Aggregates
 {
     public class SavedSearch : CreationAuditedAggregateRoot<Guid>, IMultiTenant
     {

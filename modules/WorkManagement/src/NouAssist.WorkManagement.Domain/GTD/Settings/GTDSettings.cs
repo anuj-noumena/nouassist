@@ -1,4 +1,4 @@
-﻿namespace NouAssist.GTD.Settings;
+﻿namespace NouAssist.WorkManagement.GTD.Settings;
 
 public static class GTDSettings
 {

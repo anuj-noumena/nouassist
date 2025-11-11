@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CoreProductivity.ProjectManagement.Dependencies.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Dependencies
+namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
 {
     public interface IProjectDependencyAppService : IApplicationService
     {

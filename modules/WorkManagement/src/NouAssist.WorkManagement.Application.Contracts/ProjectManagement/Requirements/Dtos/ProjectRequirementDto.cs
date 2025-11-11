@@ -1,8 +1,8 @@
 using System;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Requirements.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Requirements.Dtos
 {
     public class ProjectRequirementDto : FullAuditedEntityDto<Guid>
     {

@@ -1,4 +1,4 @@
-﻿namespace NouAssist.GTD;
+﻿namespace NouAssist.WorkManagement.GTD;
 
 public class GTDRemoteServiceConsts
 {

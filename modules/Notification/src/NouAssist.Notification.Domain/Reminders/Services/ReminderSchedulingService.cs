@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Data;
-using NouAssist.Reminders.Enums;
-using NouAssist.Reminders.ValueObjects;
+using NouAssist.Notification.Reminders.Aggregates;
+using NouAssist.Notification.Reminders.Data;
+using NouAssist.Notification.Reminders.Enums;
+using NouAssist.Notification.Reminders.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Reminders.Services
+namespace NouAssist.Notification.Reminders.Services
 {
     public class ReminderSchedulingService : DomainService
     {

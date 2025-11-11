@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Habits.Tracking.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Tracking.Dtos
 {
     public class HealthTrackingDto : AuditedEntityDto<Guid>
     {

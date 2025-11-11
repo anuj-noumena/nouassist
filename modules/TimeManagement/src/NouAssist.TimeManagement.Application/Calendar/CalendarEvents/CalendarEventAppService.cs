@@ -1,23 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Calendar.Aggregates;
-using NouAssist.Calendar.CalendarEvents.Dtos;
-using NouAssist.Calendar.Data;
-using NouAssist.Calendar.Enums;
-using NouAssist.Calendar.Permissions;
-using NouAssist.Calendar.Services;
-using NouAssist.Calendar.Specifications;
-using NouAssist.Calendar.ValueObjects;
+using NouAssist.TimeManagement.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.CalendarEvents.Dtos;
+using NouAssist.TimeManagement.Calendar.Data;
+using NouAssist.TimeManagement.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Permissions;
+using NouAssist.TimeManagement.Calendar.Services;
+using NouAssist.TimeManagement.Calendar.Specifications;
+using NouAssist.TimeManagement.Calendar.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Calendar.CalendarEvents
+namespace NouAssist.TimeManagement.Calendar.CalendarEvents
 {
     [Authorize(CalendarPermissions.CalendarEvents.Default)]
     public class CalendarEventAppService : ApplicationService, ICalendarEventAppService

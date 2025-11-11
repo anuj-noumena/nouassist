@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Sprints.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos
 {
     public class CompleteSprintDto
     {

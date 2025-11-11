@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.CustomFields.Entities;
+using NouAssist.Customization.CustomFields.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.CustomFields.EntityFrameworkCore.Configurations
+namespace NouAssist.Customization.CustomFields.EntityFrameworkCore.Configurations
 {
     public class CustomFieldValueConfiguration : IEntityTypeConfiguration<CustomFieldValue>
     {

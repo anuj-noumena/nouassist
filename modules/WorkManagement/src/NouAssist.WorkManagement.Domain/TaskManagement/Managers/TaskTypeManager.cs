@@ -1,12 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Data;
-using NouAssist.Tasks.Exceptions;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.TaskManagement.Exceptions;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Tasks.Managers
+namespace NouAssist.WorkManagement.TaskManagement.Managers
 {
     public class TaskTypeManager : DomainService
     {

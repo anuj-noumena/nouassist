@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Approval.Aggregates;
-using NouAssist.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Aggregates;
+using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Approval.Data
+namespace NouAssist.WorkManagement.Approval.Data
 {
     public interface IApprovalWorkflowRepository : IRepository<ApprovalWorkflow, Guid>
     {

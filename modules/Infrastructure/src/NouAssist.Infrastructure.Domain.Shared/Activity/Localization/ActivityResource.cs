@@ -1,6 +1,6 @@
 using Volo.Abp.Localization;
 
-namespace NouAssist.Activity.Localization
+namespace NouAssist.Infrastructure.Activity.Localization
 {
     [LocalizationResourceName("Activity")]
     public class ActivityResource

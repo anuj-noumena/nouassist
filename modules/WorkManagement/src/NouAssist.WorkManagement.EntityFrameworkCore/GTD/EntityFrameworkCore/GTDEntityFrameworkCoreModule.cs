@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.GTD.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.GTD.EntityFrameworkCore;
 
 [DependsOn(
     typeof(GTDDomainModule),

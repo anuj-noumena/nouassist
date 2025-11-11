@@ -1,4 +1,4 @@
-namespace NouAssist.Tasks.Enums
+namespace NouAssist.WorkManagement.TaskManagement.Enums
 {
     public enum WorkflowStatusCategory : byte
     {

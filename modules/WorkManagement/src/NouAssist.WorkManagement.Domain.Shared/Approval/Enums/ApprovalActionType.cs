@@ -1,4 +1,4 @@
-namespace NouAssist.Approval.Enums
+namespace NouAssist.WorkManagement.Approval.Enums
 {
     /// <summary>
     /// Defines the type of actions that can be associated with an approval step.

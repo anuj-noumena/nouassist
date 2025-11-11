@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Reminders;
+﻿namespace NouAssist.Notification.Reminders;
 
 public static class RemindersErrorCodes
 {

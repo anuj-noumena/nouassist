@@ -1,6 +1,4 @@
-using FluentValidation;
-
-namespace NouAssist.Meetings.Meetings.Dtos
+namespace NouAssist.TimeManagement.Meetings.Meetings.Dtos
 {
     public class CreateMeetingDtoValidator : AbstractValidator<CreateMeetingDto>
     {

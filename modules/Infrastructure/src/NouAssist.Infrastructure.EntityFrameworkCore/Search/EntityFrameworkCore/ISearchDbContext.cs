@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Search.Aggregates;
+using NouAssist.Infrastructure.Search.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Search.EntityFrameworkCore
+namespace NouAssist.Infrastructure.Search.EntityFrameworkCore
 {
     [ConnectionStringName(SearchDbProperties.ConnectionStringName)]
     public interface ISearchDbContext : IEfCoreDbContext

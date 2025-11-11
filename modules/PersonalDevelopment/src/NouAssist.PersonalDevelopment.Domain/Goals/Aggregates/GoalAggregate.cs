@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NouAssist.Goals.Aggregates
+namespace NouAssist.PersonalDevelopment.Goals.Aggregates
 {
     /// <summary>
     /// Rich aggregate combining Goal with related entities for comprehensive analysis

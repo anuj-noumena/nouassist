@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Habits.Planning.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Planning.Dtos
 {
     public class DailyReflectionDto : AuditedEntityDto<Guid>
     {

@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Resources.Settings;
+﻿namespace NouAssist.AssetManagement.Resources.Settings;
 
 public static class ResourcesSettings
 {

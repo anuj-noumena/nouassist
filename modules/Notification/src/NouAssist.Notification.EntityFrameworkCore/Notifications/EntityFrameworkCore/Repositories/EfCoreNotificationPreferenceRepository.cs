@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Notifications.Aggregates;
-using NouAssist.Notifications.Data;
-using NouAssist.Notifications.Enums;
+using NouAssist.Notification.Notifications.Aggregates;
+using NouAssist.Notification.Notifications.Data;
+using NouAssist.Notification.Notifications.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Notifications.EntityFrameworkCore.Repositories
+namespace NouAssist.Notification.Notifications.EntityFrameworkCore.Repositories
 {
     public class EfCoreNotificationPreferenceRepository 
         : EfCoreRepository<INotificationsDbContext, NotificationPreference, Guid>, INotificationPreferenceRepository

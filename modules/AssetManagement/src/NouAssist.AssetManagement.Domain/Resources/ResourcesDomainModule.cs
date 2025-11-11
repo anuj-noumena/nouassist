@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Resources;
+namespace NouAssist.AssetManagement.Resources;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

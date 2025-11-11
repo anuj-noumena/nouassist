@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Notifications.Aggregates;
+using NouAssist.Notification.Notifications.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Notifications.EntityFrameworkCore
+namespace NouAssist.Notification.Notifications.EntityFrameworkCore
 {
     [ConnectionStringName(NotificationsDbProperties.ConnectionStringName)]
     public class NotificationsDbContext : AbpDbContext<NotificationsDbContext>, INotificationsDbContext

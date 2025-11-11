@@ -1,15 +1,15 @@
 // src/NouAssist.Tasks.Domain/Managers/TaskManager.cs
+
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Data;
-using NouAssist.Tasks.Exceptions;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.TaskManagement.Exceptions;
+using NouAssist.WorkManagement.TaskManagement.Specifications;
 using Volo.Abp.Domain.Services;
-using Task = NouAssist.Tasks.Aggregates.Task;
 
-namespace NouAssist.Tasks.Managers
+namespace NouAssist.WorkManagement.TaskManagement.Managers
 {
     /// <summary>
     /// Manager for Task aggregate - handles complex business logic
@@ -39,7 +39,7 @@ namespace NouAssist.Tasks.Managers
             if (projectId.HasValue)
             {
                 var existingTasks = await _taskRepository.GetListAsync(
-                    new Specifications.TasksByProjectSpecification(projectId.Value));
+                    new TasksByProjectSpecification(projectId.Value).ToExpression());
                 
                 if (existingTasks.Any(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase)))
                 {

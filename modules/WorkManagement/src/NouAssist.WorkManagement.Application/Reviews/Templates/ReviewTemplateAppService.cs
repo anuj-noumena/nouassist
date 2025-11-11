@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Data;
-using NouAssist.Reviews.Enums;
-using NouAssist.Reviews.Permissions;
-using NouAssist.Reviews.Templates.Dtos;
-using NouAssist.Reviews.ValueObjects;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Data;
+using NouAssist.WorkManagement.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Permissions;
+using NouAssist.WorkManagement.Reviews.Templates.Dtos;
+using NouAssist.WorkManagement.Reviews.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Reviews.Templates
+namespace NouAssist.WorkManagement.Reviews.Templates
 {
     [Authorize(ReviewsPermissions.Templates.ViewSystem)]
     public class ReviewTemplateAppService : ApplicationService, IReviewTemplateAppService

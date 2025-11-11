@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.Tasks.Tasks.Dtos;
+using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
 
-namespace NouAssist.Tasks.Tasks.Validators
+namespace NouAssist.WorkManagement.TaskManagement.Tasks.Validators
 {
     public class CreateTaskDtoValidator : AbstractValidator<CreateTaskDto>
     {

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NouAssist.WorkManagement.ProjectManagement;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement;
 
 [ConnectionStringName(ProjectManagementDbProperties.ConnectionStringName)]
 public class ProjectManagementDbContext : AbpDbContext<ProjectManagementDbContext>, IProjectManagementDbContext

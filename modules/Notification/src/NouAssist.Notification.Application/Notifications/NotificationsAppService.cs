@@ -1,7 +1,7 @@
-﻿using NouAssist.Notifications.Localization;
+﻿using NouAssist.Notification.Notifications.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Notifications;
+namespace NouAssist.Notification.Notifications;
 
 public abstract class NotificationsAppService : ApplicationService
 {

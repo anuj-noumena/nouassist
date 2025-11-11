@@ -1,4 +1,4 @@
-namespace NouAssist.Workflow.Enums;
+namespace NouAssist.WorkManagement.Workflow.Enums;
 
 public enum TransitionPurpose : byte
 {

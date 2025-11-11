@@ -1,4 +1,4 @@
-namespace NouAssist.Reminders.EntityFrameworkCore
+namespace NouAssist.Notification.Reminders.EntityFrameworkCore
 {
     public static class RemindersDbProperties
     {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Reviews.EntityFrameworkCore
+namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore
 {
     public static class ReviewsDbContextModelCreatingExtensions
     {

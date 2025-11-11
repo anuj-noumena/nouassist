@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Activity;
+﻿namespace NouAssist.Infrastructure.Activity;
 
 public static class ActivityErrorCodes
 {

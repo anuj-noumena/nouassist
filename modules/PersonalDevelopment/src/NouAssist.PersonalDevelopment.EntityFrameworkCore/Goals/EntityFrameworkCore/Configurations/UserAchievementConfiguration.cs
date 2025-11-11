@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Goals.EntityFrameworkCore.Configurations
+namespace NouAssist.PersonalDevelopment.Goals.EntityFrameworkCore.Configurations
 {
     public class UserAchievementConfiguration : IEntityTypeConfiguration<UserAchievement>
     {

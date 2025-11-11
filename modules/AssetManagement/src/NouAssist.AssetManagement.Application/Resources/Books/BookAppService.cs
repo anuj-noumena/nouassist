@@ -1,19 +1,17 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Books.Dtos;
-using NouAssist.Resources.Data;
-using NouAssist.Resources.Enums;
-using NouAssist.Resources.Permissions;
-using NouAssist.Resources.Specifications;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Books.Dtos;
+using NouAssist.AssetManagement.Resources.Data;
+using NouAssist.AssetManagement.Resources.Permissions;
+using NouAssist.AssetManagement.Resources.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Books
+namespace NouAssist.AssetManagement.Resources.Books
 {
     [Authorize(ResourcesPermissions.Books.Default)]
     public class BookAppService : ApplicationService, IBookAppService

@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Team.Aggregates;
+using NouAssist.IdentityAccess.Team.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Team.EntityFrameworkCore.Configurations
+namespace NouAssist.IdentityAccess.Team.EntityFrameworkCore.Configurations
 {
     public class RoleConfiguration : IEntityTypeConfiguration<Role>
     {

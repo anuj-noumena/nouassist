@@ -1,22 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Approval.Aggregates;
-using NouAssist.Approval.Data;
-using NouAssist.Approval.Entities;
-using NouAssist.Approval.Permissions;
-using NouAssist.Approval.Specifications;
-using NouAssist.Approval.Workflows.Dtos;
 using NouAssist.SharedKernel.Specifications;
-using Volo.Abp;
+using NouAssist.WorkManagement.Approval.Aggregates;
+using NouAssist.WorkManagement.Approval.Data;
+using NouAssist.WorkManagement.Approval.Entities;
+using NouAssist.WorkManagement.Approval.Permissions;
+using NouAssist.WorkManagement.Approval.Workflows.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Approval.Workflows
+namespace NouAssist.WorkManagement.Approval.Workflows
 {
     [Authorize(ApprovalPermissions.Workflows.Default)]
     public class ApprovalWorkflowAppService : ApplicationService, IApprovalWorkflowAppService

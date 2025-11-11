@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CoreProductivity.ProjectManagement.Events.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Events.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Events
+namespace NouAssist.WorkManagement.ProjectManagement.Events
 {
     public interface IProjectEventAppService : IApplicationService
     {

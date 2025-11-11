@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Comments.EntityFrameworkCore
+namespace NouAssist.Collaboration.Comments.EntityFrameworkCore
 {
     public static class CommentsDbContextModelCreatingExtensions
     {

@@ -3,12 +3,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Data;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Reviews.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Repositories
 {
     public class EfCoreReviewProgressRepository 
         : EfCoreRepository<IReviewsDbContext, ReviewProgress, Guid>, IReviewProgressRepository

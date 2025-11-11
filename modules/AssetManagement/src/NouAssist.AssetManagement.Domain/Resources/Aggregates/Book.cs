@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using NouAssist.Resources.Enums;
-using NouAssist.Resources.Events;
-using NouAssist.Resources.ValueObjects;
+using NouAssist.AssetManagement.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Events;
+using NouAssist.AssetManagement.Resources.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Resources.Aggregates
+namespace NouAssist.AssetManagement.Resources.Aggregates
 {
     public class Book : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

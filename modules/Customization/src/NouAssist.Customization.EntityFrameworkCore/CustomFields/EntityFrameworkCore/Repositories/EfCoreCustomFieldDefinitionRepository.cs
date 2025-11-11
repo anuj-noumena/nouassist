@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.CustomFields.Aggregates;
-using NouAssist.CustomFields.Data;
-using NouAssist.CustomFields.Enums;
+using NouAssist.Customization.CustomFields.Aggregates;
+using NouAssist.Customization.CustomFields.Data;
+using NouAssist.Customization.CustomFields.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.CustomFields.EntityFrameworkCore.Repositories
+namespace NouAssist.Customization.CustomFields.EntityFrameworkCore.Repositories
 {
     public class EfCoreCustomFieldDefinitionRepository 
         : EfCoreRepository<ICustomFieldsDbContext, CustomFieldDefinition, Guid>, 

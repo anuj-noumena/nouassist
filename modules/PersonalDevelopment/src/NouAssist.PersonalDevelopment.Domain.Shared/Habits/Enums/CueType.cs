@@ -1,4 +1,4 @@
-namespace NouAssist.Habits.Enums
+namespace NouAssist.PersonalDevelopment.Habits.Enums
 {
     public enum CueType : byte
     {

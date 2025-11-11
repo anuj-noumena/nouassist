@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Search.Settings;
+﻿namespace NouAssist.Infrastructure.Search.Settings;
 
 public static class SearchSettings
 {

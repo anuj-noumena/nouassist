@@ -1,10 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Workflow.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Workflow.Data
+namespace NouAssist.WorkManagement.Workflow.Data
 {
     public interface IWorkflowRepository : IRepository<Aggregates.Workflow, Guid>
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.ValueObjects
+namespace NouAssist.WorkManagement.ProjectManagement.ValueObjects
 {
     public class DateRange : ValueObject
     {

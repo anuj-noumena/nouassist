@@ -1,9 +1,9 @@
 using System;
-using NouAssist.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Approval.Events
+namespace NouAssist.WorkManagement.Approval.Events
 {
     [EventName("NouAssist.Approval.RequestProcessed")]
     public class ApprovalRequestProcessedEto : IMultiTenant

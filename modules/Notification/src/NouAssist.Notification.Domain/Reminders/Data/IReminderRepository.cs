@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Enums;
+using NouAssist.Notification.Reminders.Aggregates;
+using NouAssist.Notification.Reminders.Enums;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Reminders.Data
+namespace NouAssist.Notification.Reminders.Data
 {
     public interface IReminderRepository : IRepository<Reminder, Guid>
     {

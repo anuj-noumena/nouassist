@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Habits.Events;
-using NouAssist.Reviews.Entities;
-using NouAssist.Reviews.Enums;
-using NouAssist.Reviews.ValueObjects;
+using NouAssist.WorkManagement.Reviews.Entities;
+using NouAssist.WorkManagement.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Events;
+using NouAssist.WorkManagement.Reviews.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Reviews.Aggregates
+namespace NouAssist.WorkManagement.Reviews.Aggregates
 {
     public class Review : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -164,10 +164,10 @@ namespace NouAssist.Reviews.Aggregates
         }
 
         // Action Items
-        public void AddActionItem(string description, string assignedTo = null, DateTime? dueBy = null)
+        public void AddActionItem(Guid actionItemId, string description, string assignedTo = null, DateTime? dueBy = null)
         {
             var item = new ReviewActionItem(
-                GuidGenerator.Create(),
+                actionItemId,
                 description,
                 assignedTo,
                 dueBy

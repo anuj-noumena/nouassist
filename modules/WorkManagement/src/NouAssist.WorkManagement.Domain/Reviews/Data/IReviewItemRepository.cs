@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Reviews.Entities;
-using NouAssist.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Entities;
+using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Reviews.Data
+namespace NouAssist.WorkManagement.Reviews.Data
 {
     public interface IReviewItemRepository : IRepository<ReviewItem, Guid>
     {

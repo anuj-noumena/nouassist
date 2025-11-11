@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Calendar.CalendarEvents.Dtos
+namespace NouAssist.TimeManagement.Calendar.CalendarEvents.Dtos
 {
     public class CalendarEventDto : FullAuditedEntityDto<Guid>
     {

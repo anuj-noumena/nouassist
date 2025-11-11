@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Data;
-using NouAssist.Habits.ValueObjects;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Data;
+using NouAssist.PersonalDevelopment.Habits.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Habits.Services
+namespace NouAssist.PersonalDevelopment.Habits.Services
 {
     /// <summary>
     /// Domain service for analyzing wellness patterns across health, energy, mood, and focus tracking

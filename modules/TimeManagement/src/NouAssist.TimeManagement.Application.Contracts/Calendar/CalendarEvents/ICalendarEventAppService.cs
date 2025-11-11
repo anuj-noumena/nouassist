@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Calendar.CalendarEvents.Dtos;
+using NouAssist.TimeManagement.Calendar.CalendarEvents.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Calendar.CalendarEvents
+namespace NouAssist.TimeManagement.Calendar.CalendarEvents
 {
     public interface ICalendarEventAppService : IApplicationService
     {

@@ -1,12 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Notifications.Aggregates;
-using NouAssist.Notifications.Data;
-using NouAssist.Notifications.EntityFrameworkCore.Repositories;
+using NouAssist.Notification.Notifications.Aggregates;
+using NouAssist.Notification.Notifications.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Notifications.EntityFrameworkCore
+namespace NouAssist.Notification.Notifications.EntityFrameworkCore
 {
     [DependsOn(
         typeof(NouAssistNotificationsDomainModule),

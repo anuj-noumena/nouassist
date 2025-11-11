@@ -1,10 +1,11 @@
 // src/NouAssist.CoreProductivity.ProjectManagement.Domain/Entities/ProjectEvent.cs
+
 using System;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Entities
+namespace NouAssist.WorkManagement.ProjectManagement.Entities
 {
     public class ProjectEvent : FullAuditedEntity<Guid>
     {

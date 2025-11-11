@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Comments.Settings;
+namespace NouAssist.Collaboration.Comments.Settings;
 
 public class CommentsSettingDefinitionProvider : SettingDefinitionProvider
 {

@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Workflow.Entities
+namespace NouAssist.WorkManagement.Workflow.Entities
 {
     /// <summary>
     /// Links a custom field definition to a workflow scheme with context-specific configuration

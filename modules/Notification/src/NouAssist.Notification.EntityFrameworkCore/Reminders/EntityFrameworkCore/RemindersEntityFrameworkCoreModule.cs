@@ -1,12 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Data;
-using NouAssist.Reminders.EntityFrameworkCore.Repositories;
+using NouAssist.Notification.Reminders.Aggregates;
+using NouAssist.Notification.Reminders.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Reminders.EntityFrameworkCore
+namespace NouAssist.Notification.Reminders.EntityFrameworkCore
 {
     [DependsOn(
         typeof(NouAssistRemindersDomainModule),

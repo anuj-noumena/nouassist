@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Habits.Routines.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Routines.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Habits.Routines
+namespace NouAssist.PersonalDevelopment.Habits.Routines
 {
     public interface IRoutineAppService : IApplicationService
     {

@@ -2,7 +2,7 @@ using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Comments.Entities
+namespace NouAssist.Collaboration.Comments.Entities
 {
     public class CommentReaction : Entity<Guid>
     {

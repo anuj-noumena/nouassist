@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Meetings.Meetings.Dtos;
+using NouAssist.TimeManagement.Meetings.Meetings.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Meetings.Meetings
+namespace NouAssist.TimeManagement.Meetings.Meetings
 {
     public interface IMeetingAppService : IApplicationService
     {

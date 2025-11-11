@@ -1,7 +1,7 @@
-﻿using NouAssist.Contacts.Localization;
+﻿using NouAssist.IdentityAccess.Contacts.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Contacts;
+namespace NouAssist.IdentityAccess.Contacts;
 
 public abstract class ContactsAppService : ApplicationService
 {

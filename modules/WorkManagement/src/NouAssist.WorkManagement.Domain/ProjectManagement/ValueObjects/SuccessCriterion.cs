@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.ValueObjects
+namespace NouAssist.WorkManagement.ProjectManagement.ValueObjects
 {
     public class SuccessCriterion : ValueObject
     {

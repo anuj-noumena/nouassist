@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Entities;
 
-namespace NouAssist.Workflow.Services.Actions
+namespace NouAssist.WorkManagement.Workflow.Services.Actions
 {
     /// <summary>
     /// Interface for executing individual workflow actions.

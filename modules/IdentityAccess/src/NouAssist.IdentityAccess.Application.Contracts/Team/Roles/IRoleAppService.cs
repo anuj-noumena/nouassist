@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Team.Roles.Dtos;
+using NouAssist.IdentityAccess.Team.Roles.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Team.Roles
+namespace NouAssist.IdentityAccess.Team.Roles
 {
     public interface IRoleAppService : IApplicationService
     {

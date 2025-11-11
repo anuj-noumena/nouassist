@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Approval.Enums;
-using NouAssist.SharedKernel.ValueObjects;
+using NouAssist.WorkManagement.Approval.Enums;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Approval.Entities
+namespace NouAssist.WorkManagement.Approval.Entities
 {
     /// <summary>
     /// Represents a single step in an approval workflow.

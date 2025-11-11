@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos
 {
     public class UpdateSuccessCriterionDto
     {

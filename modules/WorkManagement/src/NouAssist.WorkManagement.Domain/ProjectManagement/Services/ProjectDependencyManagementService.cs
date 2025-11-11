@@ -1,13 +1,13 @@
 // src/NouAssist.CoreProductivity.ProjectManagement.Domain/Services/ProjectDependencyManagementService.cs
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Services
+namespace NouAssist.WorkManagement.ProjectManagement.Services
 {
     public class ProjectDependencyManagementService : DomainService
     {

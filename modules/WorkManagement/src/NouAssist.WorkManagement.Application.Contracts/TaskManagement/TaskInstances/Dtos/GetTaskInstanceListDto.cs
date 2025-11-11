@@ -1,8 +1,9 @@
 using System;
-using NouAssist.Tasks.Enums;
+using NouAssist.WorkManagement.Shared.Enums;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Tasks.TaskInstances.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
     public class GetTaskInstanceListDto : PagedAndSortedResultRequestDto
     {

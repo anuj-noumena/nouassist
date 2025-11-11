@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Meetings.Settings;
+﻿namespace NouAssist.TimeManagement.Meetings.Settings;
 
 public static class MeetingsSettings
 {

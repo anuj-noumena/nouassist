@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Reminders.Enums;
+using NouAssist.Notification.Reminders.Enums;
 
-namespace NouAssist.Reminders.Reminders.Dtos
+namespace NouAssist.Notification.Reminders.Reminders.Dtos
 {
     public class CreateReminderDto
     {

@@ -1,9 +1,9 @@
 using System;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Workflow.Entities
+namespace NouAssist.WorkManagement.ProjectManagement.Entities
 {
     public class ProjectRequirement : FullAuditedEntity<Guid>
     {

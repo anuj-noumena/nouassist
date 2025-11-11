@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.Calendar.Timeblocks.Dtos;
+using NouAssist.TimeManagement.Calendar.Timeblocks.Dtos;
 
-namespace NouAssist.Calendar.Timeblocks.Validators
+namespace NouAssist.TimeManagement.Calendar.Timeblocks.Validators
 {
     public class CreateTimeblockDtoValidator : AbstractValidator<CreateTimeblockDto>
     {

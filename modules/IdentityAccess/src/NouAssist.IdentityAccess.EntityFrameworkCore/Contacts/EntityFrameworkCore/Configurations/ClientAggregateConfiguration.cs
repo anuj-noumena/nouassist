@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Contacts.Aggregates;
+using NouAssist.IdentityAccess.Contacts.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Contacts.EntityFrameworkCore.Configurations
+namespace NouAssist.IdentityAccess.Contacts.EntityFrameworkCore.Configurations
 {
     public class ClientAggregateConfiguration : IEntityTypeConfiguration<Client>
     {

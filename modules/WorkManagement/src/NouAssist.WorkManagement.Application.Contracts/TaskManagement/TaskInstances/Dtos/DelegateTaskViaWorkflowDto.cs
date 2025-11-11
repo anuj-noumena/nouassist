@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Tasks.TaskInstances.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
     /// <summary>
     /// DTO for delegating a task via workflow transition

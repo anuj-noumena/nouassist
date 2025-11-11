@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Goals;
+﻿namespace NouAssist.PersonalDevelopment.Goals;
 
 public class GoalsRemoteServiceConsts
 {

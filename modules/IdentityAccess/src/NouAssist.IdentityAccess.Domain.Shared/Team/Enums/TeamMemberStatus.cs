@@ -1,4 +1,4 @@
-namespace NouAssist.Team.Enums
+namespace NouAssist.IdentityAccess.Team.Enums
 {
     public enum TeamMemberStatus : byte
     {

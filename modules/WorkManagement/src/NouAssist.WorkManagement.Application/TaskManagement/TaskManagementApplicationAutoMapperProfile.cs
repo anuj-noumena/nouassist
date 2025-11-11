@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace NouAssist.CoreProductivity.TaskManagement;
+namespace NouAssist.WorkManagement.TaskManagement;
 
 public class TaskManagementApplicationAutoMapperProfile : Profile
 {

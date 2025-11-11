@@ -1,8 +1,7 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 
-namespace NouAssist.Habits.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Habits.Dtos
 {
     public class AddHabitCueDto
     {

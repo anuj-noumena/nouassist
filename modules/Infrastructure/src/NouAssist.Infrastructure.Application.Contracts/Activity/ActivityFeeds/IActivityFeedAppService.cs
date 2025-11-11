@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Activity.ActivityFeeds.Dtos;
+using NouAssist.Infrastructure.Activity.ActivityFeeds.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Activity.ActivityFeeds
+namespace NouAssist.Infrastructure.Activity.ActivityFeeds
 {
     public interface IActivityFeedAppService : IApplicationService
     {

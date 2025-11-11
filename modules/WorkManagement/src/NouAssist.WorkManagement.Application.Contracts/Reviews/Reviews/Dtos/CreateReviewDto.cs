@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Enums;
 
-namespace NouAssist.Reviews.Dtos
+namespace NouAssist.WorkManagement.Reviews.Reviews.Dtos
 {
     public class CreateReviewDto
     {

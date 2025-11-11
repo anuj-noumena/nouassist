@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.Goals.Dtos;
+using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
 
-namespace NouAssist.Goals.Validators
+namespace NouAssist.PersonalDevelopment.Goals.Goals.Validators
 {
     public class CreateGoalDtoValidator : AbstractValidator<CreateGoalDto>
     {

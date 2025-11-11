@@ -1,4 +1,4 @@
-namespace NouAssist.Comments.Permissions
+namespace NouAssist.Collaboration.Comments.Permissions
 {
     public static class CommentsPermissions
     {

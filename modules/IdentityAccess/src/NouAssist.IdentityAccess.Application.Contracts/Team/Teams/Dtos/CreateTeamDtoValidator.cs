@@ -1,6 +1,4 @@
-using FluentValidation;
-
-namespace NouAssist.Team.Teams.Dtos
+namespace NouAssist.IdentityAccess.Team.Teams.Dtos
 {
     public class CreateTeamDtoValidator : AbstractValidator<CreateTeamDto>
     {

@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.EntityFrameworkCore.Projects
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement
 {
     public static class ProjectsDbContextModelCreatingExtensions
     {

@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Comments.Entities;
+using NouAssist.Collaboration.Comments.Entities;
 
-namespace NouAssist.Comments.EntityFrameworkCore.Configurations
+namespace NouAssist.Collaboration.Comments.EntityFrameworkCore.Configurations
 {
     public class CommentReactionConfiguration : IEntityTypeConfiguration<CommentReaction>
     {

@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Habits.Data
+namespace NouAssist.PersonalDevelopment.Habits.Data
 {
     public interface IRoutineCompletionRepository : IRepository<RoutineCompletion, Guid>
     {

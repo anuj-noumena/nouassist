@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Calendar.EntityFrameworkCore
+namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore
 {
     public static class CalendarDbContextModelCreatingExtensions
     {

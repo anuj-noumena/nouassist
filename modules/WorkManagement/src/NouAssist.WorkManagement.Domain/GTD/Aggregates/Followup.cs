@@ -1,9 +1,8 @@
 using System;
-using NouAssist.GTD.Enums;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.GTD.Aggregates
+namespace NouAssist.WorkManagement.GTD.Aggregates
 {
     public class Followup : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

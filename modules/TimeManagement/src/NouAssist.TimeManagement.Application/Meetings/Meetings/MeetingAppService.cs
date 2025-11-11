@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Meetings.Aggregates;
-using NouAssist.Meetings.Data;
-using NouAssist.Meetings.Meetings.Dtos;
-using NouAssist.Meetings.Permissions;
-using NouAssist.Meetings.Services;
-using NouAssist.Meetings.Specifications;
-using NouAssist.Meetings.ValueObjects;
+using NouAssist.TimeManagement.Meetings.Aggregates;
+using NouAssist.TimeManagement.Meetings.Data;
+using NouAssist.TimeManagement.Meetings.Meetings.Dtos;
+using NouAssist.TimeManagement.Meetings.Permissions;
+using NouAssist.TimeManagement.Meetings.Services;
+using NouAssist.TimeManagement.Meetings.Specifications;
+using NouAssist.TimeManagement.Meetings.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Meetings.Meetings
+namespace NouAssist.TimeManagement.Meetings.Meetings
 {
     [Authorize(MeetingsPermissions.Meetings.Default)]
     public class MeetingAppService : ApplicationService, IMeetingAppService

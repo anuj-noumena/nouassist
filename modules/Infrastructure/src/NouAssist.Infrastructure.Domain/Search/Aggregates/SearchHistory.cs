@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Search.Enums;
+using NouAssist.Infrastructure.Search.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Search.Aggregates
+namespace NouAssist.Infrastructure.Search.Aggregates
 {
     public class SearchHistory : CreationAuditedAggregateRoot<Guid>, IMultiTenant
     {

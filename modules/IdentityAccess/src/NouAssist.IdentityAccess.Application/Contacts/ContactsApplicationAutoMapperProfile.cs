@@ -1,9 +1,10 @@
 using AutoMapper;
-using NouAssist.Contacts.Aggregates;
-using NouAssist.Contacts.Dtos;
-using NouAssist.Contacts.ValueObjects;
+using NouAssist.IdentityAccess.Contacts.Aggregates;
+using NouAssist.IdentityAccess.Contacts.Clients.Dtos;
+using NouAssist.IdentityAccess.Contacts.Contacts.Dtos;
+using NouAssist.IdentityAccess.Contacts.ValueObjects;
 
-namespace NouAssist.Contacts
+namespace NouAssist.IdentityAccess.Contacts
 {
     public class ContactsApplicationAutoMapperProfile : Profile
     {

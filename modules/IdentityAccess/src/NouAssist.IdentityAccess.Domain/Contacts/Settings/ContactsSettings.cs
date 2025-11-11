@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Contacts.Settings;
+﻿namespace NouAssist.IdentityAccess.Contacts.Settings;
 
 public static class ContactsSettings
 {

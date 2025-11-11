@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Search.Aggregates;
+using NouAssist.Infrastructure.Search.Aggregates;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Search.Data
+namespace NouAssist.Infrastructure.Search.Data
 {
     public interface ISearchHistoryRepository : IRepository<SearchHistory, Guid>
     {

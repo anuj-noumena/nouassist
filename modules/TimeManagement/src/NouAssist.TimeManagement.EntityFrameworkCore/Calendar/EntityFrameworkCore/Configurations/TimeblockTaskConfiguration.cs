@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Calendar.Entities;
+using NouAssist.TimeManagement.Calendar.Entities;
 
-namespace NouAssist.Calendar.EntityFrameworkCore.Configurations
+namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
 {
     public class TimeblockTaskConfiguration : IEntityTypeConfiguration<TimeblockTask>
     {

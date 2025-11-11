@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Contacts.Dtos;
+using NouAssist.IdentityAccess.Contacts.Clients.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Contacts.Clients
+namespace NouAssist.IdentityAccess.Contacts.Clients
 {
     public interface IClientAppService : IApplicationService
     {

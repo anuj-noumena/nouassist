@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Search;
+﻿namespace NouAssist.Infrastructure.Search;
 
 public class SearchRemoteServiceConsts
 {

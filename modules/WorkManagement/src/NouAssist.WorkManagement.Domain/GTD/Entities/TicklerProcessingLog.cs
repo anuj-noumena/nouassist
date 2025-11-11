@@ -1,10 +1,9 @@
 using System;
-using NouAssist.Core.Enums;
-using NouAssist.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.GTD.Entities
+namespace NouAssist.WorkManagement.GTD.Entities
 {
     public class TicklerProcessingLog : Entity<Guid>
     {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Reviews.Dtos
+namespace NouAssist.WorkManagement.Reviews.Reviews.Dtos
 {
     public class UpdateReviewReflectionsDto
     {

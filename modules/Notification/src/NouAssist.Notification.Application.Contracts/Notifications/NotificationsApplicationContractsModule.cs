@@ -1,8 +1,8 @@
 ﻿using Volo.Abp.Application;
-using Volo.Abp.Modularity;
 using Volo.Abp.Authorization;
+using Volo.Abp.Modularity;
 
-namespace NouAssist.Notifications;
+namespace NouAssist.Notification.Notifications;
 
 [DependsOn(
     typeof(NotificationsDomainSharedModule),

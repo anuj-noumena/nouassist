@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Approval.Settings;
+﻿namespace NouAssist.WorkManagement.Approval.Settings;
 
 public static class ApprovalSettings
 {

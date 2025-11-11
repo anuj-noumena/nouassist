@@ -2,7 +2,7 @@ using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Goals.Entities
+namespace NouAssist.PersonalDevelopment.Goals.Entities
 {
     public class GoalMilestone : FullAuditedEntity<Guid>
     {

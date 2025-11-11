@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Approval.EntityFrameworkCore.Configurations;
 using Volo.Abp;
 
-namespace NouAssist.Approval.EntityFrameworkCore
+namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore
 {
     public static class ApprovalDbContextModelCreatingExtensions
     {

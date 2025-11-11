@@ -2,12 +2,12 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NouAssist.Activity.Data;
+using NouAssist.Infrastructure.Activity.Data;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 using Volo.Abp.Uow;
 
-namespace NouAssist.Activity.BackgroundWorkers
+namespace NouAssist.Infrastructure.Activity.BackgroundWorkers
 {
     public class AuditLogArchiveWorker : AsyncPeriodicBackgroundWorkerBase
     {

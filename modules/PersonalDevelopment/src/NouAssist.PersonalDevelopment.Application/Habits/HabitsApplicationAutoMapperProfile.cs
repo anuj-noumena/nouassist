@@ -1,13 +1,13 @@
 using AutoMapper;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Dtos;
-using NouAssist.Habits.Entities;
-using NouAssist.Habits.Planning.Dtos;
-using NouAssist.Habits.Routines.Dtos;
-using NouAssist.Habits.Tracking.Dtos;
-using NouAssist.Habits.ValueObjects;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.Habits.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Planning.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Routines.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Tracking.Dtos;
+using NouAssist.PersonalDevelopment.Habits.ValueObjects;
 
-namespace NouAssist.Habits
+namespace NouAssist.PersonalDevelopment.Habits
 {
     public class HabitsApplicationAutoMapperProfile : Profile
     {

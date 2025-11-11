@@ -1,4 +1,4 @@
-namespace NouAssist.CustomFields.EntityFrameworkCore
+namespace NouAssist.Customization.CustomFields.EntityFrameworkCore
 {
     public static class CustomFieldsDbProperties
     {

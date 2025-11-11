@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Team.EntityFrameworkCore.Configurations
+namespace NouAssist.IdentityAccess.Team.EntityFrameworkCore.Configurations
 {
     public class TeamConfiguration : IEntityTypeConfiguration<Team.Aggregates.Team>
     {

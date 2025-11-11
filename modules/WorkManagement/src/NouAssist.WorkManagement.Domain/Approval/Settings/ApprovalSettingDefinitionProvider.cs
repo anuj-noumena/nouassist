@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Approval.Settings;
+namespace NouAssist.WorkManagement.Approval.Settings;
 
 public class ApprovalSettingDefinitionProvider : SettingDefinitionProvider
 {

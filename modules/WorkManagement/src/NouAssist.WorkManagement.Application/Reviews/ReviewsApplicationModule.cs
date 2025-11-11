@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Volo.Abp.Application;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
-using Volo.Abp.Application;
 
-namespace NouAssist.Reviews;
+namespace NouAssist.WorkManagement.Reviews;
 
 [DependsOn(
     typeof(ReviewsDomainModule),

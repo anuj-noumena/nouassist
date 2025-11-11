@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Habits.Dtos;
-using NouAssist.Habits.Routines.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Habits.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Routines.Dtos;
 
-namespace NouAssist.Habits.Planning.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Planning.Dtos
 {
     public class DailyPlanDto
     {

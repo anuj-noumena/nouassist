@@ -1,9 +1,8 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Workflow.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Workflow.Specifications
+namespace NouAssist.WorkManagement.Workflow.Specifications
 {
     public class ActiveWorkflowsSpecification : Specification<Aggregates.Workflow>
     {

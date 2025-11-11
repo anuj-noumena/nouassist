@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CoreProductivity.ProjectManagement.Data;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.CoreProductivity.ProjectManagement.Permissions;
-using NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Data;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Permissions;
+using NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria
+namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
 {
     [Authorize(ProjectsPermissions.SuccessCriteria.Default)]
     public class ProjectSuccessCriterionAppService : ApplicationService, IProjectSuccessCriterionAppService

@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Meetings.Aggregates;
-using NouAssist.Meetings.Enums;
+using NouAssist.TimeManagement.Meetings.Aggregates;
+using NouAssist.TimeManagement.Meetings.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Meetings.Specifications
+namespace NouAssist.TimeManagement.Meetings.Specifications
 {
     public class UpcomingMeetingsSpecification : Specification<Meeting>
     {

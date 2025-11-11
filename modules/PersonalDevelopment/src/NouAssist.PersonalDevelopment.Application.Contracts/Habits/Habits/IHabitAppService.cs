@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Habits.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Habits.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Habits.Habits
+namespace NouAssist.PersonalDevelopment.Habits.Habits
 {
     public interface IHabitAppService : IApplicationService
     {

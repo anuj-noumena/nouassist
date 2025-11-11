@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Resources.Resources.Dtos;
+using NouAssist.AssetManagement.Resources.Resources.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Resources
+namespace NouAssist.AssetManagement.Resources.Resources
 {
     public interface IResourceAppService : IApplicationService
     {

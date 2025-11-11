@@ -1,13 +1,12 @@
 // src/NouAssist.CoreProductivity.ProjectManagement.Domain/Specifications/RequirementSpecifications.cs
+
 using System;
 using System.Linq.Expressions;
-using NouAssist.Core.Specifications;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
-using NouAssist.Workflow.Entities;
-using Volo.Abp.Specifications;
+using NouAssist.SharedKernel.Specifications;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Specifications
+namespace NouAssist.WorkManagement.ProjectManagement.Specifications
 {
     public class PendingRequirementsSpecification : BaseSpecification<ProjectRequirement>
     {

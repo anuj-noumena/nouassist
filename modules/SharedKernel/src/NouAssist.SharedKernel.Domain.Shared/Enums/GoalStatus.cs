@@ -18,14 +18,6 @@ namespace NouAssist.SharedKernel.Enums
         Completed = 5
     }
 
-    public enum EisenhowerQuadrant : byte
-    {
-        Q1DoFirst = 1,      // Urgent & Important
-        Q2Schedule = 2,     // Not Urgent & Important
-        Q3Delegate = 3,     // Urgent & Not Important
-        Q4Eliminate = 4     // Not Urgent & Not Important
-    }
-
     public enum InboxItemType : byte
     {
         Task = 1,

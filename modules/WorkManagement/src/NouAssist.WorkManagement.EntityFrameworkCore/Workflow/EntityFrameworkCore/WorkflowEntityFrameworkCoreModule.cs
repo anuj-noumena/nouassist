@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Workflow.Aggregates;
-using NouAssist.Workflow.Entities;
-using NouAssist.Workflow.EntityFrameworkCore.Repositories;
+using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Workflow.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore;
 
 [DependsOn(
     typeof(WorkflowDomainModule),

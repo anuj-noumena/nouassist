@@ -1,13 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Resources.Data;
-using NouAssist.Resources.Enums;
-using Volo.Abp.BackgroundJobs;
+using NouAssist.AssetManagement.Resources.Data;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Uow;
 
-namespace NouAssist.Resources.BackgroundJobs
+namespace NouAssist.AssetManagement.Resources.BackgroundJobs
 {
     public class ResourceOcrProcessingJobArgs
     {

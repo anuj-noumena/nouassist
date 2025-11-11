@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Activity.ActivityFeeds.Dtos
+namespace NouAssist.Infrastructure.Activity.ActivityFeeds.Dtos
 {
     public class ActivityFeedDto : FullAuditedEntityDto<Guid>
     {

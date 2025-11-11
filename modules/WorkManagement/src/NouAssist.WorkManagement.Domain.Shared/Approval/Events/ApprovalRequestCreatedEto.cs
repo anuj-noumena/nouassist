@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Approval.Events;
+namespace NouAssist.WorkManagement.Approval.Events;
 
 [EventName("NouAssist.Approval.RequestCreated")]
 public class ApprovalRequestCreatedEto : IMultiTenant

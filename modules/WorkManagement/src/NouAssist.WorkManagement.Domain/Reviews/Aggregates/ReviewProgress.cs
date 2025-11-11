@@ -4,7 +4,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Reviews.Aggregates
+namespace NouAssist.WorkManagement.Reviews.Aggregates
 {
     public class ReviewProgress : AggregateRoot<Guid>, IMultiTenant
     {

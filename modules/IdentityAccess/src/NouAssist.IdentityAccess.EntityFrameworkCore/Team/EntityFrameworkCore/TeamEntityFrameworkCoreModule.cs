@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Team.EntityFrameworkCore;
+namespace NouAssist.IdentityAccess.Team.EntityFrameworkCore;
 
 [DependsOn(
     typeof(TeamDomainModule),

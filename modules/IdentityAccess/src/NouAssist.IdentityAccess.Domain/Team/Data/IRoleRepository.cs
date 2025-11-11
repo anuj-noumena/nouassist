@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Team.Aggregates;
+using NouAssist.IdentityAccess.Team.Aggregates;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Team.Data
+namespace NouAssist.IdentityAccess.Team.Data
 {
     public interface IRoleRepository : IRepository<Role, Guid>
     {

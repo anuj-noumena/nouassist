@@ -4,14 +4,16 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.SharedKernel.Specifications;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Data;
-using NouAssist.Tasks.Managers;
-using NouAssist.Tasks.Permissions;
-using NouAssist.Tasks.Services;
-using NouAssist.Tasks.Specifications;
-using NouAssist.Tasks.TaskInstances.Dtos;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.TaskManagement.Managers;
+using NouAssist.WorkManagement.TaskManagement.Permissions;
+using NouAssist.WorkManagement.TaskManagement.Services;
+using NouAssist.WorkManagement.TaskManagement.Specifications;
+using NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos;
+using NouAssist.WorkManagement.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Enums;
+using NouAssist.WorkManagement.Workflow.Services;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -20,7 +22,7 @@ using Volo.Abp.Specifications;
 using Volo.Abp.Users;
 using Task = System.Threading.Tasks.Task;
 
-namespace NouAssist.Tasks.TaskInstances
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
 {
     [Authorize(TasksPermissions.TaskInstances.Default)]
     public class TaskInstanceAppService : ApplicationService, ITaskInstanceAppService
@@ -285,9 +287,9 @@ namespace NouAssist.Tasks.TaskInstances
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
 
             // Get workflow for this task's project
-            var workflowSchemeRepo = LazyServiceProvider.LazyGetRequiredService<NouAssist.Workflow.Data.IWorkflowSchemeRepository>();
-            var workflowRepo = LazyServiceProvider.LazyGetRequiredService<NouAssist.Workflow.Data.IWorkflowRepository>();
-            var workflowTransitionService = LazyServiceProvider.LazyGetRequiredService<NouAssist.Workflow.Services.WorkflowTransitionService>();
+            var workflowSchemeRepo = LazyServiceProvider.LazyGetRequiredService<IWorkflowSchemeRepository>();
+            var workflowRepo = LazyServiceProvider.LazyGetRequiredService<IWorkflowRepository>();
+            var workflowTransitionService = LazyServiceProvider.LazyGetRequiredService<WorkflowTransitionService>();
 
             var workflowScheme = await workflowSchemeRepo.GetActiveSchemeForProjectAsync(taskInstance.ProjectId);
             if (workflowScheme == null)
@@ -304,7 +306,7 @@ namespace NouAssist.Tasks.TaskInstances
             }
 
             // Get the workflow for the task
-            var taskRepo = await LazyServiceProvider.LazyGetRequiredService<NouAssist.Tasks.Data.ITaskRepository>()
+            var taskRepo = await LazyServiceProvider.LazyGetRequiredService<ITaskRepository>()
                 .GetWithDetailsAsync(taskInstance.TaskId);
             var workflowId = workflowScheme.GetWorkflowForTaskType(taskRepo.TaskTypeId);
             var workflow = await workflowRepo.GetWithDetailsAsync(workflowId);
@@ -320,7 +322,7 @@ namespace NouAssist.Tasks.TaskInstances
                 // Find delegation transition by purpose
                 var delegationTransitions = workflow.GetAvailableTransitions(taskInstance.Progress.WorkflowStatusId);
                 delegationTransition = delegationTransitions.FirstOrDefault(t =>
-                    t.Purpose == NouAssist.Workflow.Enums.TransitionPurpose.Delegation);
+                    t.Purpose == TransitionPurpose.Delegation);
 
                 if (delegationTransition == null)
                 {
@@ -331,7 +333,7 @@ namespace NouAssist.Tasks.TaskInstances
 
             // Create delegation action configuration
             var delegationAction = delegationTransition.Actions
-                .FirstOrDefault(a => a.ActionType == NouAssist.Workflow.Enums.WorkflowActionType.DelegateTask);
+                .FirstOrDefault(a => a.ActionType == WorkflowActionType.DelegateTask);
 
             if (delegationAction == null)
             {

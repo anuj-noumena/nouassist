@@ -1,12 +1,12 @@
 using System;
-using NouAssist.Reminders.Enums;
-using NouAssist.Reminders.Events;
-using NouAssist.Reminders.ValueObjects;
+using NouAssist.Notification.Reminders.Enums;
+using NouAssist.Notification.Reminders.Events;
+using NouAssist.Notification.Reminders.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Reminders.Aggregates
+namespace NouAssist.Notification.Reminders.Aggregates
 {
     public class Reminder : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

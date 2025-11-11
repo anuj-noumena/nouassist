@@ -1,7 +1,7 @@
-﻿using NouAssist.CustomFields.Localization;
+﻿using NouAssist.Customization.CustomFields.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CustomFields;
+namespace NouAssist.Customization.CustomFields;
 
 public abstract class CustomFieldsAppService : ApplicationService
 {

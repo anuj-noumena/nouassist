@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Calendar.Enums;
-using NouAssist.Calendar.Events;
+using NouAssist.TimeManagement.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
-using Volo.Abp.Timing;
 
-namespace NouAssist.Calendar.Aggregates
+namespace NouAssist.TimeManagement.Calendar.Aggregates
 {
     public class SchedulingRequest : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

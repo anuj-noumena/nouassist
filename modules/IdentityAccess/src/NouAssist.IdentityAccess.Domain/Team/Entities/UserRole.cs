@@ -3,7 +3,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Team.Entities
+namespace NouAssist.IdentityAccess.Team.Entities
 {
     public class UserRole : FullAuditedEntity<Guid>, IMultiTenant
     {

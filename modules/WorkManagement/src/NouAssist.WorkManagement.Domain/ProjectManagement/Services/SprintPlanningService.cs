@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Constants;
-using Volo.Abp;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Constants;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Services
+namespace NouAssist.WorkManagement.ProjectManagement.Services
 {
     public class SprintPlanningService : DomainService
     {

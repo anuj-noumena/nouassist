@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Workflow.Workflows.Dtos
+namespace NouAssist.WorkManagement.Workflow.Workflows.Dtos
 {
     public class CreateWorkflowSchemeDto
     {

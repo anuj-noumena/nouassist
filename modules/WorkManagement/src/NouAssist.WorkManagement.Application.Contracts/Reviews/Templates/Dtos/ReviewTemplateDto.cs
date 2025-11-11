@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Reviews.Templates.Dtos
+namespace NouAssist.WorkManagement.Reviews.Templates.Dtos
 {
     public class ReviewTemplateDto : FullAuditedEntityDto<Guid>
     {

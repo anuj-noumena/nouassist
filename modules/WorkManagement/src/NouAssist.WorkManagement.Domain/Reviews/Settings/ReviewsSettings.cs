@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Reviews.Settings;
+﻿namespace NouAssist.WorkManagement.Reviews.Settings;
 
 public static class ReviewsSettings
 {

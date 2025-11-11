@@ -1,9 +1,9 @@
 using System;
-using NouAssist.CustomFields.Enums;
+using NouAssist.Customization.CustomFields.Enums;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CustomFields.Events
+namespace NouAssist.Customization.CustomFields.Events
 {
     [EventName("NouAssist.CustomFields.DefinitionCreated")]
     public class CustomFieldDefinitionCreatedEto : IMultiTenant

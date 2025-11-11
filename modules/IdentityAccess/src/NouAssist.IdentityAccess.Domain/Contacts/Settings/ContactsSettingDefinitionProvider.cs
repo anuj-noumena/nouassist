@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Contacts.Settings;
+namespace NouAssist.IdentityAccess.Contacts.Settings;
 
 public class ContactsSettingDefinitionProvider : SettingDefinitionProvider
 {

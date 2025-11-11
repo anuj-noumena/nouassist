@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.Goals.Aggregates;
-using NouAssist.Goals.Dtos;
-using NouAssist.Goals.Entities;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Entities;
+using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
 
-namespace NouAssist.Goals
+namespace NouAssist.PersonalDevelopment.Goals
 {
     public class GoalsApplicationAutoMapperProfile : Profile
     {

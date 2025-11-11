@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Activity.EntityHistory.Dtos
+namespace NouAssist.Infrastructure.Activity.EntityHistory.Dtos
 {
     public class GetEntityHistoryListDto
     {

@@ -1,9 +1,9 @@
 using System;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Resources.Entities
+namespace NouAssist.AssetManagement.Resources.Entities
 {
     public class Attachment : Entity
     {

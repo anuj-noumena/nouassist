@@ -1,13 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Data;
-using NouAssist.Habits.Entities;
-using NouAssist.Habits.EntityFrameworkCore.Repositories;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Habits.EntityFrameworkCore
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore
 {
     [DependsOn(
         typeof(NouAssistHabitsDomainModule),

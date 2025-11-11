@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Tasks.ValueObjects
+namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
 {
     /// <summary>
     /// Value object tracking approval status for a task instance

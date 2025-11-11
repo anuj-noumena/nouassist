@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Team.Enums;
+using NouAssist.IdentityAccess.Team.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
-using Volo.Abp.Timing;
 
-namespace NouAssist.Team.Entities
+namespace NouAssist.IdentityAccess.Team.Entities
 {
     public class TeamMember : FullAuditedEntity<Guid>
     {

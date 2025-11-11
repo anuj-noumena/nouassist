@@ -2,17 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Workflow.Data;
-using NouAssist.Workflow.Entities;
-using NouAssist.Workflow.Events;
-using NouAssist.Workflow.Services.Conditions;
+using NouAssist.WorkManagement.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Events;
+using NouAssist.WorkManagement.Workflow.Services.Conditions;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
-using Volo.Abp.MultiTenancy;
-using Volo.Abp.Timing;
 
-
-namespace NouAssist.Workflow.Services
+namespace NouAssist.WorkManagement.Workflow.Services
 
 {
     /// <summary>

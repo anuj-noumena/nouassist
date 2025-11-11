@@ -1,8 +1,7 @@
 using System;
-using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Workflow.Entities
+namespace NouAssist.WorkManagement.Workflow.Entities
 {
     public class WorkflowSchemeMapping : Entity<Guid>
     {

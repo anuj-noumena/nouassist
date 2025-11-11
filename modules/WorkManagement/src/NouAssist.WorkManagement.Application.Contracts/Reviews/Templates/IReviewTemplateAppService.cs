@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Reviews.Enums;
-using NouAssist.Reviews.Templates.Dtos;
+using NouAssist.WorkManagement.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Templates.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Reviews.Templates
+namespace NouAssist.WorkManagement.Reviews.Templates
 {
     public interface IReviewTemplateAppService : IApplicationService
     {

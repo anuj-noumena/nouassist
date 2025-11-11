@@ -1,13 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Notifications.Data;
-using NouAssist.Notifications.Services;
-using Volo.Abp.BackgroundJobs;
+using NouAssist.Notification.Notifications.Data;
+using NouAssist.Notification.Notifications.Services;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Uow;
 
-namespace NouAssist.Notifications.BackgroundJobs
+namespace NouAssist.Notification.Notifications.BackgroundJobs
 {
     public class NotificationDeliveryJobArgs
     {

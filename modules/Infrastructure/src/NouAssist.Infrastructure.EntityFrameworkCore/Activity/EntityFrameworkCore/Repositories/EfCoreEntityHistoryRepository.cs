@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Activity.Aggregates;
-using NouAssist.Activity.Data;
+using NouAssist.Infrastructure.Activity.Aggregates;
+using NouAssist.Infrastructure.Activity.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Activity.EntityFrameworkCore.Repositories
+namespace NouAssist.Infrastructure.Activity.EntityFrameworkCore.Repositories
 {
     public class EfCoreEntityHistoryRepository 
         : EfCoreRepository<IActivityDbContext, EntityHistory, Guid>, IEntityHistoryRepository

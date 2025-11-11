@@ -1,4 +1,4 @@
-namespace NouAssist.Habits.EntityFrameworkCore
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore
 {
     public static class HabitsDbProperties
     {

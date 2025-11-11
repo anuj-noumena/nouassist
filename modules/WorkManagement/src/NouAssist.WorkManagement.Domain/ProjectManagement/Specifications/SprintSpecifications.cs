@@ -1,11 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Core.Specifications;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
-using Volo.Abp.Specifications;
+using NouAssist.SharedKernel.Specifications;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Specifications
+namespace NouAssist.WorkManagement.ProjectManagement.Specifications
 {
     public class ActiveSprintsSpecification : BaseSpecification<ProjectSprint>
     {

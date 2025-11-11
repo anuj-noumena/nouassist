@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Meetings.Aggregates;
+using NouAssist.TimeManagement.Meetings.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Meetings.EntityFrameworkCore
+namespace NouAssist.TimeManagement.Meetings.EntityFrameworkCore
 {
     [ConnectionStringName(MeetingsDbProperties.ConnectionStringName)]
     public class MeetingsDbContext : AbpDbContext<MeetingsDbContext>, IMeetingsDbContext

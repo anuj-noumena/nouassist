@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Meetings;
+﻿namespace NouAssist.TimeManagement.Meetings;
 
 public class MeetingsRemoteServiceConsts
 {

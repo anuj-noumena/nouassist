@@ -1,7 +1,7 @@
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Resources.Books.Dtos
+namespace NouAssist.AssetManagement.Resources.Books.Dtos
 {
     public class GetBookListDto : PagedAndSortedResultRequestDto
     {

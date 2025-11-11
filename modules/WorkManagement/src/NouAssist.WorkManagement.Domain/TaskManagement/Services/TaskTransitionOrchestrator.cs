@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Data;
-using NouAssist.Workflow.Data;
-using NouAssist.Workflow.Services;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Services;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.EventBus.Distributed;
 
-namespace NouAssist.Tasks.Services
+namespace NouAssist.WorkManagement.TaskManagement.Services
 {
     /// <summary>
     /// Orchestrates task transitions by integrating task state changes with workflow execution.

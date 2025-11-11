@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Team.Roles.Dtos
+namespace NouAssist.IdentityAccess.Team.Roles.Dtos
 {
     public class RoleDto : FullAuditedEntityDto<Guid>
     {

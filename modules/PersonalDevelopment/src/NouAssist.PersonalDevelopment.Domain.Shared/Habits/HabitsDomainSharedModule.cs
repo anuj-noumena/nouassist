@@ -1,13 +1,13 @@
-﻿using Volo.Abp.Modularity;
-using Volo.Abp.Localization;
-using NouAssist.Habits.Localization;
+﻿using NouAssist.PersonalDevelopment.Habits.Localization;
 using Volo.Abp.Domain;
+using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
+using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
-namespace NouAssist.Habits;
+namespace NouAssist.PersonalDevelopment.Habits;
 
 [DependsOn(
     typeof(AbpValidationModule),

@@ -1,7 +1,7 @@
 using System.Linq;
-using NouAssist.Tasks.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
 
-namespace NouAssist.Tasks.Policies.impl;
+namespace NouAssist.WorkManagement.TaskManagement.Policies.impl;
 
 public class ApprovalCompletionPolicy : ITaskCompletionPolicy
 {

@@ -1,4 +1,4 @@
-namespace NouAssist.Approval.EntityFrameworkCore
+namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore
 {
     public static class ApprovalDbProperties
     {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Resources.Inventory.Dtos
+namespace NouAssist.AssetManagement.Resources.Inventory.Dtos
 {
     public class CheckInInventoryDto
     {

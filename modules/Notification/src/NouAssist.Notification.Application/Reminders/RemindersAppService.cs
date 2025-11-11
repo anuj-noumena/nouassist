@@ -1,7 +1,7 @@
-﻿using NouAssist.Reminders.Localization;
+﻿using NouAssist.Notification.Reminders.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Reminders;
+namespace NouAssist.Notification.Reminders;
 
 public abstract class RemindersAppService : ApplicationService
 {

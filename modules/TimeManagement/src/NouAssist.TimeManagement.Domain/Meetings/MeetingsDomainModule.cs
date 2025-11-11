@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Meetings;
+namespace NouAssist.TimeManagement.Meetings;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

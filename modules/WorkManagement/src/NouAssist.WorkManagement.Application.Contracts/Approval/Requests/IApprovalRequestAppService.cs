@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Approval.Requests.Dtos;
+using NouAssist.WorkManagement.Approval.Requests.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Approval.Requests
+namespace NouAssist.WorkManagement.Approval.Requests
 {
     public interface IApprovalRequestAppService : IApplicationService
     {

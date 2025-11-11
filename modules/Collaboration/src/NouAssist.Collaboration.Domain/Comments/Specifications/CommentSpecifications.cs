@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Comments.Aggregates;
-using NouAssist.Comments.Enums;
+using NouAssist.Collaboration.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Comments.Specifications
+namespace NouAssist.Collaboration.Comments.Specifications
 {
     public class CommentsByEntitySpecification : Specification<Comment>
     {

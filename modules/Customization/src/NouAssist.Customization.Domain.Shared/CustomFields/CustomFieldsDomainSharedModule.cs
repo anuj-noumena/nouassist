@@ -1,13 +1,13 @@
-﻿using Volo.Abp.Modularity;
-using Volo.Abp.Localization;
-using NouAssist.CustomFields.Localization;
+﻿using NouAssist.Customization.CustomFields.Localization;
 using Volo.Abp.Domain;
+using Volo.Abp.Localization;
 using Volo.Abp.Localization.ExceptionHandling;
+using Volo.Abp.Modularity;
 using Volo.Abp.Validation;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
-namespace NouAssist.CustomFields;
+namespace NouAssist.Customization.CustomFields;
 
 [DependsOn(
     typeof(AbpValidationModule),

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Tasks.ValueObjects
+namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
 {
     public class TaskDiscussion : ValueObject
     {

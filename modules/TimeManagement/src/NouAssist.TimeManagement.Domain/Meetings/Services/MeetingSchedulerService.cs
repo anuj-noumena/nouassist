@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Meetings.Aggregates;
-using NouAssist.Meetings.Enums;
-using NouAssist.Meetings.ValueObjects;
+using NouAssist.TimeManagement.Meetings.Aggregates;
+using NouAssist.TimeManagement.Meetings.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Meetings.Services
+namespace NouAssist.TimeManagement.Meetings.Services
 {
     public class MeetingSchedulerService : DomainService
     {

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Team.Aggregates;
-using NouAssist.Team.Data;
-using NouAssist.Team.Entities;
-using NouAssist.Team.Permissions;
-using NouAssist.Team.Roles.Dtos;
-using NouAssist.Team.Services;
-using NouAssist.Team.Specifications;
+using NouAssist.IdentityAccess.Team.Aggregates;
+using NouAssist.IdentityAccess.Team.Data;
+using NouAssist.IdentityAccess.Team.Entities;
+using NouAssist.IdentityAccess.Team.Permissions;
+using NouAssist.IdentityAccess.Team.Roles.Dtos;
+using NouAssist.IdentityAccess.Team.Services;
+using NouAssist.IdentityAccess.Team.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Team.Roles
+namespace NouAssist.IdentityAccess.Team.Roles
 {
     [Authorize(TeamPermissions.Roles.Default)]
     public class RoleAppService : ApplicationService, IRoleAppService

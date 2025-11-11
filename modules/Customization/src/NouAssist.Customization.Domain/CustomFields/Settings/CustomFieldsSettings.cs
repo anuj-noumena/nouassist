@@ -1,4 +1,4 @@
-﻿namespace NouAssist.CustomFields.Settings;
+﻿namespace NouAssist.Customization.CustomFields.Settings;
 
 public static class CustomFieldsSettings
 {

@@ -1,20 +1,18 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Data;
-using NouAssist.Reminders.Enums;
-using NouAssist.Reminders.Permissions;
-using NouAssist.Reminders.Reminders.Dtos;
-using NouAssist.Reminders.Services;
-using NouAssist.Reminders.Specifications;
+using NouAssist.Notification.Reminders.Aggregates;
+using NouAssist.Notification.Reminders.Data;
+using NouAssist.Notification.Reminders.Permissions;
+using NouAssist.Notification.Reminders.Reminders.Dtos;
+using NouAssist.Notification.Reminders.Services;
+using NouAssist.Notification.Reminders.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Reminders.Reminders
+namespace NouAssist.Notification.Reminders.Reminders
 {
     [Authorize(RemindersPermissions.Reminders.Default)]
     public class ReminderAppService : ApplicationService, IReminderAppService

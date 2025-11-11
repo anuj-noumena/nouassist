@@ -1,8 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.CoreProductivity.ProjectManagement.Constants;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Sprints.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos
 {
     public class CreateSprintDto
     {

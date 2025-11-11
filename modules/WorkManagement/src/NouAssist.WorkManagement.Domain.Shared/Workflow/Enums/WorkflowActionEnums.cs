@@ -1,4 +1,4 @@
-namespace NouAssist.Workflow.Enums
+namespace NouAssist.WorkManagement.Workflow.Enums
 {
     /// <summary>
     /// Types of actions that can be executed after a transition

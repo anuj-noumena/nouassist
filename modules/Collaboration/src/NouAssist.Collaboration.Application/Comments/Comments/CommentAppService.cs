@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Comments.Aggregates;
-using NouAssist.Comments.Data;
-using NouAssist.Comments.Dtos;
-using NouAssist.Comments.Enums;
-using NouAssist.Comments.Permissions;
+using NouAssist.Collaboration.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.Comments.Dtos;
+using NouAssist.Collaboration.Comments.Data;
+using NouAssist.Collaboration.Comments.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Comments.Comments
+namespace NouAssist.Collaboration.Comments.Comments
 {
     [Authorize(CommentsPermissions.Comments.Default)]
     public class CommentAppService : ApplicationService, ICommentAppService

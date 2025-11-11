@@ -1,12 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Calendar.Aggregates;
-using NouAssist.Calendar.Data;
-using NouAssist.Calendar.EntityFrameworkCore.Repositories;
+using NouAssist.TimeManagement.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Calendar.EntityFrameworkCore
+namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore
 {
     [DependsOn(
         typeof(CalendarDomainModule),

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Reviews.Enums;
-using NouAssist.Reviews.ValueObjects;
+using NouAssist.WorkManagement.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Reviews.Aggregates
+namespace NouAssist.WorkManagement.Reviews.Aggregates
 {
     public class ReviewTemplate : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

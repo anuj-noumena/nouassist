@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Meetings.Enums;
+using NouAssist.TimeManagement.Meetings.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Meetings.Meetings.Dtos
+namespace NouAssist.TimeManagement.Meetings.Meetings.Dtos
 {
     public class MeetingDto : FullAuditedEntityDto<Guid>
     {

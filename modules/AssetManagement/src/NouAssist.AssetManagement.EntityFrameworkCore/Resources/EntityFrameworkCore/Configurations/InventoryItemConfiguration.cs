@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Resources.EntityFrameworkCore.Configurations
+namespace NouAssist.AssetManagement.Resources.EntityFrameworkCore.Configurations
 {
     public class InventoryItemConfiguration : IEntityTypeConfiguration<InventoryItem>
     {

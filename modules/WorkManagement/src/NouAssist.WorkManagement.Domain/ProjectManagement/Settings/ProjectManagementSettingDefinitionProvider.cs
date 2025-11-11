@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Settings;
+namespace NouAssist.WorkManagement.ProjectManagement.Settings;
 
 public class ProjectManagementSettingDefinitionProvider : SettingDefinitionProvider
 {

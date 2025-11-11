@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CoreProductivity.ProjectManagement.Requirements.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Requirements.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Requirements
+namespace NouAssist.WorkManagement.ProjectManagement.Requirements
 {
     public interface IProjectRequirementAppService : IApplicationService
     {

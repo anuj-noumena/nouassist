@@ -1,4 +1,4 @@
-﻿namespace NouAssist.CustomFields;
+﻿namespace NouAssist.Customization.CustomFields;
 
 public static class CustomFieldsErrorCodes
 {

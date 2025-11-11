@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Enums;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Calendar.ValueObjects
+namespace NouAssist.TimeManagement.Calendar.ValueObjects
 {
     public class LinkedEntity : ValueObject
     {

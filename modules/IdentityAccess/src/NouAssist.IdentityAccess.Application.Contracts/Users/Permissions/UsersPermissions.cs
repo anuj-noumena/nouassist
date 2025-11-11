@@ -1,4 +1,4 @@
-namespace NouAssist.Users.Permissions
+namespace NouAssist.IdentityAccess.Users.Permissions
 {
     public static class UsersPermissions
     {

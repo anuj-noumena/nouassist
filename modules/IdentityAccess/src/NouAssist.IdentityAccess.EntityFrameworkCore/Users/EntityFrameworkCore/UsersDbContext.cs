@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Users.EntityFrameworkCore
+namespace NouAssist.IdentityAccess.Users.EntityFrameworkCore
 {
     [ConnectionStringName(UsersDbProperties.ConnectionStringName)]
     public class UsersDbContext : AbpDbContext<UsersDbContext>, IUsersDbContext

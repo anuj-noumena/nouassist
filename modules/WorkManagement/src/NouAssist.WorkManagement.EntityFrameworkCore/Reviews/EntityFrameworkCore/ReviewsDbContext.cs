@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Entities;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Reviews.EntityFrameworkCore
+namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore
 {
     [ConnectionStringName(ReviewsDbProperties.ConnectionStringName)]
     public class ReviewsDbContext : AbpDbContext<ReviewsDbContext>, IReviewsDbContext

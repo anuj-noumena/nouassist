@@ -1,10 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Team.Aggregates;
-using NouAssist.Team.Enums;
+using NouAssist.IdentityAccess.Team.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Team.Specifications
+namespace NouAssist.IdentityAccess.Team.Specifications
 {
     public class ActiveTeamsSpecification : Specification<Aggregates.Team>
     {

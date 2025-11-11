@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Contacts.Aggregates;
+using NouAssist.IdentityAccess.Contacts.Aggregates;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Contacts.Services
+namespace NouAssist.IdentityAccess.Contacts.Services
 {
     /// <summary>
     /// Domain service for managing contact relationships and networks

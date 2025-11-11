@@ -1,25 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Data;
-using NouAssist.Tasks.Managers;
-using NouAssist.Tasks.Permissions;
-using NouAssist.Tasks.Specifications;
-using NouAssist.Tasks.Tasks.Dtos;
-using NouAssist.Tasks.ValueObjects;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.TaskManagement.Managers;
+using NouAssist.WorkManagement.TaskManagement.Permissions;
+using NouAssist.WorkManagement.TaskManagement.Specifications;
+using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
-using System.Linq.Dynamic.Core;
-using NouAssist.SharedKernel.Specifications;
 using Task = System.Threading.Tasks.Task;
 
-namespace NouAssist.Tasks.Tasks
+namespace NouAssist.WorkManagement.TaskManagement.Tasks
 {
     [Authorize(TasksPermissions.Tasks.Default)]
     public class TaskAppService : ApplicationService, ITaskAppService

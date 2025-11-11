@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Activity.Settings;
+﻿namespace NouAssist.Infrastructure.Activity.Settings;
 
 public static class ActivitySettings
 {

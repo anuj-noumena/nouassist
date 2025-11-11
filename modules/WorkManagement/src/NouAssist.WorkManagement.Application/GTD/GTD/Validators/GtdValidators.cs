@@ -1,7 +1,9 @@
+using System;
+using System.Linq;
 using FluentValidation;
-using NouAssist.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.GTD.Dtos;
 
-namespace NouAssist.GTD.Validators
+namespace NouAssist.WorkManagement.GTD.GTD.Validators
 {
     public class CreateGtdHorizonDtoValidator : AbstractValidator<CreateGtdHorizonDto>
     {

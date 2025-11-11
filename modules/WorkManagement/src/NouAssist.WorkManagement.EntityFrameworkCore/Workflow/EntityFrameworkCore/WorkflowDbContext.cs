@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NouAssist.Workflow.Aggregates;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Workflow.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore;
 
 [ConnectionStringName(WorkflowDbProperties.ConnectionStringName)]
 public class WorkflowDbContext : AbpDbContext<WorkflowDbContext>, IWorkflowDbContext

@@ -1,8 +1,8 @@
-﻿using NouAssist.Reminders.Localization;
+﻿using NouAssist.Notification.Reminders.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Reminders.Permissions;
+namespace NouAssist.Notification.Reminders.Permissions;
 
 public class RemindersPermissionDefinitionProvider : PermissionDefinitionProvider
 {

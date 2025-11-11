@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Habits.Tracking.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Tracking.Dtos
 {
     public class EnergyTrackingDto : AuditedEntityDto<Guid>
     {

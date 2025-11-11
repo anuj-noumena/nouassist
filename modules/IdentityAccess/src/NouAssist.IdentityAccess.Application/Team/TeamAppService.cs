@@ -1,7 +1,7 @@
-﻿using NouAssist.Team.Localization;
+﻿using NouAssist.IdentityAccess.Team.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Team;
+namespace NouAssist.IdentityAccess.Team;
 
 public abstract class TeamAppService : ApplicationService
 {

@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Team;
+namespace NouAssist.IdentityAccess.Team;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

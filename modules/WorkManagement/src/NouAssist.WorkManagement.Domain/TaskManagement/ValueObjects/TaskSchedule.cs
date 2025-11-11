@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Tasks.ValueObjects;
+namespace NouAssist.WorkManagement.TaskManagement.ValueObjects;
 
 public class TaskSchedule : ValueObject
 {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
-namespace NouAssist.Habits.Samples;
+namespace NouAssist.PersonalDevelopment.Habits.Samples;
 
 public class SampleAppService : HabitsAppService, ISampleAppService
 {

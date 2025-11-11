@@ -1,4 +1,4 @@
-namespace NouAssist.Contacts.Dtos
+namespace NouAssist.IdentityAccess.Contacts.Contacts.Dtos
 {
     public class ContactMethodDto
     {

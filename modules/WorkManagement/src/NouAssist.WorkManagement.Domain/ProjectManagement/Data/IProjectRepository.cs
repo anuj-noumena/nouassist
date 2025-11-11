@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Data
+namespace NouAssist.WorkManagement.ProjectManagement.Data
 {
     public interface IProjectRepository : IRepository<Project, Guid>
     {

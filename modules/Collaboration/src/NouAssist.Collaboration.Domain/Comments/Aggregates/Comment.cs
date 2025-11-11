@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Comments.Enums;
-using NouAssist.Comments.Events;
+using NouAssist.Collaboration.Comments.Enums;
+using NouAssist.Collaboration.Comments.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Comments.Aggregates
+namespace NouAssist.Collaboration.Comments.Aggregates
 {
     public class Comment : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

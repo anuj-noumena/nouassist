@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Reminders.Dtos;
-using NouAssist.Reminders.ValueObjects;
+using NouAssist.Notification.Reminders.Aggregates;
+using NouAssist.Notification.Reminders.Reminders.Dtos;
+using NouAssist.Notification.Reminders.ValueObjects;
 
-namespace NouAssist.Reminders
+namespace NouAssist.Notification.Reminders
 {
     public class RemindersApplicationAutoMapperProfile : Profile
     {

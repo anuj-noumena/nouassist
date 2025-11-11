@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Resources.Resources.Dtos
+namespace NouAssist.AssetManagement.Resources.Resources.Dtos
 {
     public class GetResourceListDto : PagedAndSortedResultRequestDto
     {

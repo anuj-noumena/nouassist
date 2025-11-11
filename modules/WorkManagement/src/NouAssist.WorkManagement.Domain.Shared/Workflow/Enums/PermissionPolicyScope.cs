@@ -1,4 +1,4 @@
-namespace NouAssist.Workflow.Enums
+namespace NouAssist.WorkManagement.Workflow.Enums
 {
     /// <summary>
     /// Defines the scope at which a transition permission policy applies.

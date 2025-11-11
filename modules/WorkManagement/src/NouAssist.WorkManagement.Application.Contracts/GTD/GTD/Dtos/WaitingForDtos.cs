@@ -1,9 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.GTD.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.GTD.Dtos
+namespace NouAssist.WorkManagement.GTD.GTD.Dtos
 {
     public class WaitingForDto : FullAuditedEntityDto<Guid>
     {

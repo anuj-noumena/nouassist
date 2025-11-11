@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Calendar.Aggregates
+namespace NouAssist.TimeManagement.Calendar.Aggregates
 {
     public class Calendar : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

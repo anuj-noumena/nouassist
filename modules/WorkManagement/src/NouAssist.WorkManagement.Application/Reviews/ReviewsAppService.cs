@@ -1,7 +1,7 @@
-﻿using NouAssist.Reviews.Localization;
+﻿using NouAssist.WorkManagement.Reviews.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Reviews;
+namespace NouAssist.WorkManagement.Reviews;
 
 public abstract class ReviewsAppService : ApplicationService
 {

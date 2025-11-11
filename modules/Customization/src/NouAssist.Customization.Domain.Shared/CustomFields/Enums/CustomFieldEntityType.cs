@@ -1,4 +1,4 @@
-namespace NouAssist.CustomFields.Enums
+namespace NouAssist.Customization.CustomFields.Enums
 {
     public enum CustomFieldEntityType : byte
     {

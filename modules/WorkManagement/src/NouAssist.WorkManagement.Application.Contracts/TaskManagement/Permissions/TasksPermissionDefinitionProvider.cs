@@ -1,8 +1,8 @@
-using NouAssist.Tasks.Localization;
+using NouAssist.WorkManagement.TaskManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Tasks.Permissions
+namespace NouAssist.WorkManagement.TaskManagement.Permissions
 {
     public class TasksPermissionDefinitionProvider : PermissionDefinitionProvider
     {

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Comments.Enums;
+using NouAssist.Collaboration.Comments.Enums;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Comments.Data
+namespace NouAssist.Collaboration.Comments.Data
 {
     public interface ICommentRepository : IRepository<Aggregates.Comment, Guid>
     {

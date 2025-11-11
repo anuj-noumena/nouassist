@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.CoreProductivity.TaskManagement.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement;
 
 [DependsOn(
     typeof(TaskManagementDomainModule),

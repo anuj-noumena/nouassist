@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Habits.Planning.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Planning.Dtos
 {
     public class DailyIntentionDto : AuditedEntityDto<Guid>
     {

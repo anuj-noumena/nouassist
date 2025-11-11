@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Search.Aggregates;
+using NouAssist.Infrastructure.Search.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Search.Specifications
+namespace NouAssist.Infrastructure.Search.Specifications
 {
     public class RecentSearchesSpecification : Specification<SearchHistory>
     {

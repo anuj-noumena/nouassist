@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Habits.Enums;
 
-namespace NouAssist.Habits.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Habits.Dtos
 {
     public class UpdateHabitDto
     {

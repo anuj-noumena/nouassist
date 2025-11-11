@@ -1,8 +1,7 @@
-using NouAssist.CoreProductivity.ProjectManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Permissions
+namespace NouAssist.WorkManagement.ProjectManagement.Permissions
 {
     public class ProjectsPermissionDefinitionProvider : PermissionDefinitionProvider
     {

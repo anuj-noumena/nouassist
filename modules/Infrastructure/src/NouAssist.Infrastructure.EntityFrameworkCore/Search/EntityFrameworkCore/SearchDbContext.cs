@@ -2,7 +2,7 @@
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Search.EntityFrameworkCore;
+namespace NouAssist.Infrastructure.Search.EntityFrameworkCore;
 
 [ConnectionStringName(SearchDbProperties.ConnectionStringName)]
 public class SearchDbContext : AbpDbContext<SearchDbContext>, ISearchDbContext

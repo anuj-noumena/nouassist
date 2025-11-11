@@ -1,4 +1,4 @@
-﻿namespace NouAssist.CoreProductivity.TaskManagement;
+﻿namespace NouAssist.WorkManagement.TaskManagement;
 
 public class TasksRemoteServiceConsts
 {

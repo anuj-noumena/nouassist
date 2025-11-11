@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.CustomFields.Values.Dtos;
+using NouAssist.Customization.CustomFields.Values.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CustomFields.Values
+namespace NouAssist.Customization.CustomFields.Values
 {
     public interface ICustomFieldValueAppService : IApplicationService
     {

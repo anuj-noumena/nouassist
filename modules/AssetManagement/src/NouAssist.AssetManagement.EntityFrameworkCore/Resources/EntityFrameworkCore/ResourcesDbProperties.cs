@@ -1,4 +1,4 @@
-namespace NouAssist.Resources.EntityFrameworkCore
+namespace NouAssist.AssetManagement.Resources.EntityFrameworkCore
 {
     public static class ResourcesDbProperties
     {

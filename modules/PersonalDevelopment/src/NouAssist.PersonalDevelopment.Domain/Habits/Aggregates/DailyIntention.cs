@@ -5,7 +5,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Habits.Aggregates
+namespace NouAssist.PersonalDevelopment.Habits.Aggregates
 {
     public class DailyIntention : AuditedAggregateRoot<Guid>, IMultiTenant
     {

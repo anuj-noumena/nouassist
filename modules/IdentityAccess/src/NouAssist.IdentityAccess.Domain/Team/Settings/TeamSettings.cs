@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Team.Settings;
+﻿namespace NouAssist.IdentityAccess.Team.Settings;
 
 public static class TeamSettings
 {

@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Workflow.Entities;
-using NouAssist.Workflow.Services.Actions;
-using Volo.Abp;
+using NouAssist.WorkManagement.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Services.Actions;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Workflow.Services
+namespace NouAssist.WorkManagement.Workflow.Services
 {
     /// <summary>
     /// Service for executing workflow actions using Strategy pattern.

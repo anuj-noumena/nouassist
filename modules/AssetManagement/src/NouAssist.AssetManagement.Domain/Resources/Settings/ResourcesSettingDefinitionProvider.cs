@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Resources.Settings;
+namespace NouAssist.AssetManagement.Resources.Settings;
 
 public class ResourcesSettingDefinitionProvider : SettingDefinitionProvider
 {

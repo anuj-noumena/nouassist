@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Approval.Entities;
+using NouAssist.WorkManagement.Approval.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Approval.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore.Configurations
 {
     public class ApprovalStepConfiguration : IEntityTypeConfiguration<ApprovalStep>
     {

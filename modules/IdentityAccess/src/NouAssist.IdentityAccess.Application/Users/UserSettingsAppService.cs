@@ -1,14 +1,14 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Users.Aggregates;
-using NouAssist.Users.Data;
-using NouAssist.Users.Dtos;
-using NouAssist.Users.Permissions;
+using NouAssist.IdentityAccess.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.Data;
+using NouAssist.IdentityAccess.Users.Permissions;
+using NouAssist.IdentityAccess.Users.Users;
+using NouAssist.IdentityAccess.Users.Users.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Users.Users
+namespace NouAssist.IdentityAccess.Users
 {
     [Authorize(UsersPermissions.Users.ManageSettings)]
     public class UserSettingsAppService : ApplicationService, IUserSettingsAppService

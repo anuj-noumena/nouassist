@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CustomFields.Aggregates;
-using NouAssist.CustomFields.Enums;
+using NouAssist.Customization.CustomFields.Aggregates;
+using NouAssist.Customization.CustomFields.Enums;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.CustomFields.Data
+namespace NouAssist.Customization.CustomFields.Data
 {
     public interface ICustomFieldDefinitionRepository : IRepository<CustomFieldDefinition, Guid>
     {

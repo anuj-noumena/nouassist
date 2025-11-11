@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Team.Enums;
+using NouAssist.IdentityAccess.Team.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Team.Teams.Dtos
+namespace NouAssist.IdentityAccess.Team.Teams.Dtos
 {
     public class TeamDto : FullAuditedEntityDto<Guid>
     {

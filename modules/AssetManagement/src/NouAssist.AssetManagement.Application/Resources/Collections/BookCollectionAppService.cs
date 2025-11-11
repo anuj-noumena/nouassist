@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Collections.Dtos;
-using NouAssist.Resources.Data;
-using NouAssist.Resources.Permissions;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Collections.Dtos;
+using NouAssist.AssetManagement.Resources.Data;
+using NouAssist.AssetManagement.Resources.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Collections
+namespace NouAssist.AssetManagement.Resources.Collections
 {
     [Authorize(ResourcesPermissions.Books.Default)]
     public class BookCollectionAppService : ApplicationService, IBookCollectionAppService

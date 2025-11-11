@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Users.Settings;
+namespace NouAssist.IdentityAccess.Users.Settings;
 
 public class UsersSettingDefinitionProvider : SettingDefinitionProvider
 {

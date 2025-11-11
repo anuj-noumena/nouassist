@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Comments.Dtos
+namespace NouAssist.Collaboration.Comments.Comments.Dtos
 {
     public class UpdateCommentDto
     {

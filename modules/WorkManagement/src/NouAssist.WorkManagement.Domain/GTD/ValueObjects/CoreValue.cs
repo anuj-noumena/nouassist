@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.GTD.ValueObjects
+namespace NouAssist.WorkManagement.GTD.ValueObjects
 {
     public class CoreValue : ValueObject
     {

@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Notifications.Enums;
+using NouAssist.Notification.Notifications.Enums;
 
-namespace NouAssist.Notifications.Notifications.Dtos
+namespace NouAssist.Notification.Notifications.Notifications.Dtos
 {
     public class CreateNotificationDto
     {

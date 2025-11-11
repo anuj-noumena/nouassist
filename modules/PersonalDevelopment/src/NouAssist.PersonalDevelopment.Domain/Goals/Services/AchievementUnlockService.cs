@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Core.Events;
-using NouAssist.Goals.Aggregates;
-using NouAssist.Goals.Data;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Data;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.EventBus.Distributed;
 
-namespace NouAssist.Goals.Services
+namespace NouAssist.PersonalDevelopment.Goals.Services
 {
     public class AchievementUnlockService : DomainService
     {

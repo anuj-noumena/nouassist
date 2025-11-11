@@ -1,7 +1,7 @@
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Resources.Inventory.Dtos
+namespace NouAssist.AssetManagement.Resources.Inventory.Dtos
 {
     public class GetInventoryListDto : PagedAndSortedResultRequestDto
     {

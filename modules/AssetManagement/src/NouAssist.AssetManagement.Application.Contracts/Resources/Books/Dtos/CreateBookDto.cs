@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Enums;
 
-namespace NouAssist.Resources.Books.Dtos
+namespace NouAssist.AssetManagement.Resources.Books.Dtos
 {
     public class CreateBookDto
     {

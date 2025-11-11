@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Resources.Books.Dtos;
+using NouAssist.AssetManagement.Resources.Books.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Books
+namespace NouAssist.AssetManagement.Resources.Books
 {
     public interface IBookAppService : IApplicationService
     {

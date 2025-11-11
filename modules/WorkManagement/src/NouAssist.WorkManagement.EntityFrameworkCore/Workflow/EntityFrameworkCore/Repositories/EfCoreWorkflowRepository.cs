@@ -3,11 +3,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Workflow.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
 {
     public class EfCoreWorkflowRepository
         : EfCoreRepository<IWorkflowDbContext, Aggregates.Workflow, Guid>, IWorkflowRepository

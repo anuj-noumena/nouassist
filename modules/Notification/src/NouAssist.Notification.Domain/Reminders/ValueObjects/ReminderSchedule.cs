@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Reminders.Enums;
+using NouAssist.Notification.Reminders.Enums;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Reminders.ValueObjects
+namespace NouAssist.Notification.Reminders.ValueObjects
 {
     public class ReminderSchedule : ValueObject
     {

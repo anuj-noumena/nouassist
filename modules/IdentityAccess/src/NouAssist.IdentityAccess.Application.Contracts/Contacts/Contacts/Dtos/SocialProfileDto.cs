@@ -1,6 +1,6 @@
-using NouAssist.Contacts.Enums;
+using NouAssist.IdentityAccess.Contacts.Enums;
 
-namespace NouAssist.Contacts.Dtos
+namespace NouAssist.IdentityAccess.Contacts.Contacts.Dtos
 {
     public class SocialProfileDto
     {

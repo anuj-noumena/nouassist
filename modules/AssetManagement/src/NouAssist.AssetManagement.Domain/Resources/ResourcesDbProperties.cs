@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Resources;
+﻿namespace NouAssist.AssetManagement.Resources;
 
 public static class ResourcesDbProperties
 {

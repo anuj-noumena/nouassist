@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Enums;
-using NouAssist.Tasks.Policies;
-using NouAssist.Tasks.ValueObjects;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Policies;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Tasks.Services
+namespace NouAssist.WorkManagement.TaskManagement.Services
 {
     /// <summary>
     /// Coordinates complex operations across Task and TaskInstance aggregates

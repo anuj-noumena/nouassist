@@ -1,12 +1,13 @@
 // src/NouAssist.Workflow.Domain/Data/IWorkflowCustomFieldRepository.cs
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Entities;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Workflow.Data
+namespace NouAssist.WorkManagement.Workflow.Data
 {
     public interface IWorkflowCustomFieldRepository : IRepository<WorkflowCustomField, Guid>
     {

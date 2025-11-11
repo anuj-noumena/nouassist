@@ -1,8 +1,8 @@
-﻿using NouAssist.Search.Localization;
+﻿using NouAssist.Infrastructure.Search.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Search.Permissions;
+namespace NouAssist.Infrastructure.Search.Permissions;
 
 public class SearchPermissionDefinitionProvider : PermissionDefinitionProvider
 {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Tasks.Data
+namespace NouAssist.WorkManagement.TaskManagement.Data
 {
     public interface ITaskRepository : IRepository<Aggregates.Task, Guid>
     {

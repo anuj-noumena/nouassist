@@ -1,12 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NouAssist.Resources.Data;
+using NouAssist.AssetManagement.Resources.Data;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 
-namespace NouAssist.Resources.BackgroundWorkers
+namespace NouAssist.AssetManagement.Resources.BackgroundWorkers
 {
     public class InventoryMaintenanceReminderWorker : AsyncPeriodicBackgroundWorkerBase
     {

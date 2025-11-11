@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Calendar.Settings;
+﻿namespace NouAssist.TimeManagement.Calendar.Settings;
 
 public static class CalendarSettings
 {

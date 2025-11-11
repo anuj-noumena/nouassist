@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Tasks.Entities;
+using NouAssist.WorkManagement.TaskManagement.Entities;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Tasks.Aggregates
+namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 {
     /// <summary>
     /// TaskType - Categorizes tasks (e.g., Bug, Feature, Task, Story)

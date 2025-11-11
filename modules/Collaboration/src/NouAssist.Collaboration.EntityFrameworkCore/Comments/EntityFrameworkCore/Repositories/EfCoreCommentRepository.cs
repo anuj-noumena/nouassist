@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Comments.Aggregates;
-using NouAssist.Comments.Data;
-using NouAssist.Comments.Enums;
+using NouAssist.Collaboration.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.Data;
+using NouAssist.Collaboration.Comments.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Comments.EntityFrameworkCore.Repositories
+namespace NouAssist.Collaboration.Comments.EntityFrameworkCore.Repositories
 {
     public class EfCoreCommentRepository 
         : EfCoreRepository<ICommentsDbContext, Comment, Guid>, ICommentRepository

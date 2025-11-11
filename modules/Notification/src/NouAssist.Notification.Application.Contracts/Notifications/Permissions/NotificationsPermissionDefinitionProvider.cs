@@ -1,8 +1,8 @@
-﻿using NouAssist.Notifications.Localization;
+﻿using NouAssist.Notification.Notifications.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Notifications.Permissions;
+namespace NouAssist.Notification.Notifications.Permissions;
 
 public class NotificationsPermissionDefinitionProvider : PermissionDefinitionProvider
 {

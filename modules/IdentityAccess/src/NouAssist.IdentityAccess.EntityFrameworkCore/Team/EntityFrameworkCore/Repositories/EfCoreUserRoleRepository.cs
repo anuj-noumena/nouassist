@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Team.Data;
-using NouAssist.Team.Entities;
+using NouAssist.IdentityAccess.Team.Data;
+using NouAssist.IdentityAccess.Team.Entities;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Team.EntityFrameworkCore.Repositories
+namespace NouAssist.IdentityAccess.Team.EntityFrameworkCore.Repositories
 {
     public class EfCoreUserRoleRepository 
         : EfCoreRepository<ITeamDbContext, UserRole, Guid>, 

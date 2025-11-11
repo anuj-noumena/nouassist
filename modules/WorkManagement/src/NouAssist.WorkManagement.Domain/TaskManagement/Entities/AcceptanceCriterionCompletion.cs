@@ -1,8 +1,7 @@
 using System;
-using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Tasks.Entities
+namespace NouAssist.WorkManagement.TaskManagement.Entities
 {
     public class AcceptanceCriterionCompletion : FullAuditedEntity
     {

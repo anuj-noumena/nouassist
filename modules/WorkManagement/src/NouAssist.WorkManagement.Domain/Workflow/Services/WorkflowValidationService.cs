@@ -1,14 +1,13 @@
 // src/NouAssist.Workflow.Domain/Services/WorkflowValidationService.cs
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Workflow.Aggregates;
-using NouAssist.Workflow.Entities;
-using NouAssist.Workflow.Enums;
-using Volo.Abp;
+using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Workflow.Services
+namespace NouAssist.WorkManagement.Workflow.Services
 {
     public class WorkflowValidationService : DomainService
     {

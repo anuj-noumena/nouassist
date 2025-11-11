@@ -1,12 +1,11 @@
 using System;
-using NouAssist.Core.Enums;
-using NouAssist.Core.ValueObjects;
-using NouAssist.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Enums;
+using NouAssist.WorkManagement.GTD.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.GTD.Aggregates
+namespace NouAssist.WorkManagement.GTD.Aggregates
 {
     public class SomedayMaybeItem : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.Users.Dtos;
+using NouAssist.IdentityAccess.Users.Users.Dtos;
 
-namespace NouAssist.Users.Validators
+namespace NouAssist.IdentityAccess.Users.Validators
 {
     public class UpdateUserProfileDtoValidator : AbstractValidator<UpdateUserProfileDto>
     {

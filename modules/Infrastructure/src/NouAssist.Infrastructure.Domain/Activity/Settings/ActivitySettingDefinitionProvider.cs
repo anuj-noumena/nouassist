@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Activity.Settings;
+namespace NouAssist.Infrastructure.Activity.Settings;
 
 public class ActivitySettingDefinitionProvider : SettingDefinitionProvider
 {

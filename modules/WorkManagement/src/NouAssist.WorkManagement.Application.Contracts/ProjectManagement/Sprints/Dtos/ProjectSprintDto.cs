@@ -1,8 +1,8 @@
 using System;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Sprints.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos
 {
     public class ProjectSprintDto : FullAuditedEntityDto<Guid>
     {

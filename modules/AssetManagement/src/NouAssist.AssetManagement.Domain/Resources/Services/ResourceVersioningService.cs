@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Data;
-using NouAssist.Resources.Enums;
-using NouAssist.Resources.Events;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Data;
+using NouAssist.AssetManagement.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Events;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Resources.Services
+namespace NouAssist.AssetManagement.Resources.Services
 {
     public class ResourceVersioningService : DomainService
     {

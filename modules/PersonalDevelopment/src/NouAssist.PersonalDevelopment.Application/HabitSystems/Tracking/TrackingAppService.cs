@@ -1,15 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CoreProductivity.HabitSystems.Aggregates;
-using NouAssist.CoreProductivity.HabitSystems.Data;
-using NouAssist.CoreProductivity.HabitSystems.Permissions;
-using NouAssist.CoreProductivity.HabitSystems.Services;
-using NouAssist.CoreProductivity.HabitSystems.Tracking.Dtos;
-using Volo.Abp;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.HabitSystems.Tracking
+namespace NouAssist.PersonalDevelopment.HabitSystems.Tracking
 {
     [Authorize(HabitsPermissions.Tracking.ViewOwn)]
     public class TrackingAppService : ApplicationService, ITrackingAppService

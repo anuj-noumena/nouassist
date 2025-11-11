@@ -1,4 +1,4 @@
-namespace NouAssist.Reminders.Enums
+namespace NouAssist.Notification.Reminders.Enums
 {
     public enum ReminderCategory : byte
     {

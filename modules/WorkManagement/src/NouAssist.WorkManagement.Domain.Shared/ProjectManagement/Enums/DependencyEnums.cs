@@ -1,4 +1,4 @@
-namespace NouAssist.CoreProductivity.ProjectManagement.Enums
+namespace NouAssist.WorkManagement.ProjectManagement.Enums
 {
     public enum ProjectDependencyType : byte
     {

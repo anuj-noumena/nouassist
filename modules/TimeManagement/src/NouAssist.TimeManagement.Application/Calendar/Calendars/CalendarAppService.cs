@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Calendar.Calendars.Dtos;
-using NouAssist.Calendar.Data;
-using NouAssist.Calendar.Permissions;
-using NouAssist.Calendar.Specifications;
+using NouAssist.TimeManagement.Calendar.Calendars.Dtos;
+using NouAssist.TimeManagement.Calendar.Data;
+using NouAssist.TimeManagement.Calendar.Permissions;
+using NouAssist.TimeManagement.Calendar.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Calendar.Calendars
+namespace NouAssist.TimeManagement.Calendar.Calendars
 {
     [Authorize(CalendarPermissions.Calendars.Default)]
     public class CalendarAppService : ApplicationService, ICalendarAppService

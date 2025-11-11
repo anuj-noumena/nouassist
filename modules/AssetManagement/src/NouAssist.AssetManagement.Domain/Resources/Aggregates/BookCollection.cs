@@ -4,7 +4,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Resources.Aggregates
+namespace NouAssist.AssetManagement.Resources.Aggregates
 {
     public class BookCollection : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

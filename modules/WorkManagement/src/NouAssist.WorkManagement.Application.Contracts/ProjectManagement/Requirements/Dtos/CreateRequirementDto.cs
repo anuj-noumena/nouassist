@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Requirements.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Requirements.Dtos
 {
     public class CreateRequirementDto
     {

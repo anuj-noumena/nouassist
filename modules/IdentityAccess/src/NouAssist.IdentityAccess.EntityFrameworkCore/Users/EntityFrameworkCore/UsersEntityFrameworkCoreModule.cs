@@ -1,12 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Users.Aggregates;
-using NouAssist.Users.Data;
-using NouAssist.Users.EntityFrameworkCore.Repositories;
+using NouAssist.IdentityAccess.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Users.EntityFrameworkCore
+namespace NouAssist.IdentityAccess.Users.EntityFrameworkCore
 {
     [DependsOn(
         typeof(UsersDomainModule),

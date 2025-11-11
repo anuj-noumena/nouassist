@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Search.Enums;
-using NouAssist.Search.Events;
+using NouAssist.Infrastructure.Search.Enums;
+using NouAssist.Infrastructure.Search.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Search.Aggregates
+namespace NouAssist.Infrastructure.Search.Aggregates
 {
     public class SearchAnalytics : AggregateRoot<Guid>, IMultiTenant
     {

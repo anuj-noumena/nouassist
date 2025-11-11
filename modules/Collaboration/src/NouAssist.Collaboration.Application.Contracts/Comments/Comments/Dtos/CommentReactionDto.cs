@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Comments.Dtos
+namespace NouAssist.Collaboration.Comments.Comments.Dtos
 {
     public class CommentReactionDto : EntityDto<Guid>
     {

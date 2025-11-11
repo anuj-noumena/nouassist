@@ -5,7 +5,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Calendar.Aggregates
+namespace NouAssist.TimeManagement.Calendar.Aggregates
 {
     /// <summary>
     /// Manages user's weekly availability and specific date overrides

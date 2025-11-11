@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Meetings.Aggregates;
-using NouAssist.Meetings.Enums;
+using NouAssist.TimeManagement.Meetings.Aggregates;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Meetings.Data
+namespace NouAssist.TimeManagement.Meetings.Data
 {
     public interface IMeetingRepository : IRepository<Meeting, Guid>
     {

@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Notifications;
+namespace NouAssist.Notification.Notifications;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

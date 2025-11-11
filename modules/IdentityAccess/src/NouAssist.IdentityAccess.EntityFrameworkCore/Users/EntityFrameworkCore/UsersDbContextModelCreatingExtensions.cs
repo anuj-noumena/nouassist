@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
-using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Users.EntityFrameworkCore
+namespace NouAssist.IdentityAccess.Users.EntityFrameworkCore
 {
     public static class UsersDbContextModelCreatingExtensions
     {

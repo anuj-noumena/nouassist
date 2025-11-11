@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement;
 
 [DependsOn(
     typeof(ProjectManagementDomainModule),

@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
-using NouAssist.Tasks.Enums;
+using NouAssist.WorkManagement.Shared.Enums;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Tasks.ValueObjects
+namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
 {
     public class ImportanceUrgencyMatrix : ValueObject
     {

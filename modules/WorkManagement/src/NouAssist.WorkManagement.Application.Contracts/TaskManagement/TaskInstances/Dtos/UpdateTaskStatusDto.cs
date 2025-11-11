@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Tasks.Enums;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 
-namespace NouAssist.Tasks.TaskInstances.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
     public class UpdateTaskStatusDto : IValidatableObject
     {

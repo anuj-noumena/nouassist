@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Meetings.Enums;
+using NouAssist.TimeManagement.Meetings.Enums;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Meetings.Events
+namespace NouAssist.TimeManagement.Meetings.Events
 {
     [EventName("NouAssist.Meetings.MeetingScheduled")]
     public class MeetingScheduledEto : IMultiTenant

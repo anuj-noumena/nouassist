@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Calendar.Settings;
+namespace NouAssist.TimeManagement.Calendar.Settings;
 
 public class CalendarSettingDefinitionProvider : SettingDefinitionProvider
 {

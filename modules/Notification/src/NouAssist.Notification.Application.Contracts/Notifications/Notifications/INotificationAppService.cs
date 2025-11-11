@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Notifications.Notifications.Dtos;
+using NouAssist.Notification.Notifications.Notifications.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Notifications.Notifications
+namespace NouAssist.Notification.Notifications.Notifications
 {
     public interface INotificationAppService : IApplicationService
     {

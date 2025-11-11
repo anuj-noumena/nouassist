@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Reminders.Reminders.Dtos
+namespace NouAssist.Notification.Reminders.Reminders.Dtos
 {
     public class GetUpcomingRemindersDto
     {

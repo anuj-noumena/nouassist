@@ -1,11 +1,10 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 
-namespace NouAssist.Search.BackgroundWorkers
+namespace NouAssist.Infrastructure.Search.BackgroundWorkers
 {
     public class SearchIndexOptimizationWorker : AsyncPeriodicBackgroundWorkerBase
     {

@@ -1,12 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Data;
-using NouAssist.Resources.EntityFrameworkCore.Repositories;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Resources.EntityFrameworkCore
+namespace NouAssist.AssetManagement.Resources.EntityFrameworkCore
 {
     [DependsOn(
         typeof(NouAssistResourcesDomainModule),

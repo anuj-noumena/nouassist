@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Resources.Storage.Dtos;
+using NouAssist.AssetManagement.Resources.Storage.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Storage
+namespace NouAssist.AssetManagement.Resources.Storage
 {
     public interface IStorageBackendAppService : IApplicationService
     {

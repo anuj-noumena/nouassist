@@ -1,20 +1,12 @@
 using System;
-
 using System.Collections.Generic;
-
 using System.Threading;
-
 using System.Threading.Tasks;
-
-using NouAssist.Workflow.Aggregates;
-
-using NouAssist.Workflow.Enums;
-
+using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp.Domain.Repositories;
 
- 
-
-namespace NouAssist.Workflow.Data
+namespace NouAssist.WorkManagement.Workflow.Data
 
 {
 

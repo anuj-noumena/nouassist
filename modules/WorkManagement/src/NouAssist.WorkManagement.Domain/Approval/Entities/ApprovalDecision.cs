@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Approval.Enums;
-using Volo.Abp;
+using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Approval.Entities
+namespace NouAssist.WorkManagement.Approval.Entities
 {
     public class ApprovalDecision : Entity<Guid>
     {

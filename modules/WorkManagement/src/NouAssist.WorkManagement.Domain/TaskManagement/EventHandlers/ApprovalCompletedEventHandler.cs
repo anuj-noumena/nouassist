@@ -1,12 +1,12 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Approval.Events;
-using NouAssist.Tasks.Data;
+using NouAssist.WorkManagement.Approval.Events;
+using NouAssist.WorkManagement.TaskManagement.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EventBus.Distributed;
 
-namespace NouAssist.Tasks.EventHandlers
+namespace NouAssist.WorkManagement.TaskManagement.EventHandlers
 {
     /// <summary>
     /// Handles approval workflow completion events and updates task instances.

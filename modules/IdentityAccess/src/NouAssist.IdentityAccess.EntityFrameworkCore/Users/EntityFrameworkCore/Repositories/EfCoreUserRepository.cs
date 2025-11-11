@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Users.Aggregates;
-using NouAssist.Users.Data;
+using NouAssist.IdentityAccess.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Users.EntityFrameworkCore.Repositories
+namespace NouAssist.IdentityAccess.Users.EntityFrameworkCore.Repositories
 {
     public class EfCoreUserRepository 
         : EfCoreRepository<IUsersDbContext, User, Guid>, IUserRepository

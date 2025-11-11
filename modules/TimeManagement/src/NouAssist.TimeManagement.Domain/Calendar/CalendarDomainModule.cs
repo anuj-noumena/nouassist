@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Calendar;
+namespace NouAssist.TimeManagement.Calendar;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

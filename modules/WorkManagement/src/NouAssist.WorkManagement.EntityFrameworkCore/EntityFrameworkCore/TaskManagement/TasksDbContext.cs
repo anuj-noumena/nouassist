@@ -2,7 +2,7 @@
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Tasks.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement;
 
 [ConnectionStringName(TasksDbProperties.ConnectionStringName)]
 public class TasksDbContext : AbpDbContext<TasksDbContext>, ITasksDbContext

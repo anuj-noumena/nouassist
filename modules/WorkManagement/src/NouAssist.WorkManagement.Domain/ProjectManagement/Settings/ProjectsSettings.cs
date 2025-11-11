@@ -1,4 +1,4 @@
-﻿namespace NouAssist.CoreProductivity.ProjectManagement.Settings;
+﻿namespace NouAssist.WorkManagement.ProjectManagement.Settings;
 
 public static class ProjectsSettings
 {

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Team.Entities;
+using NouAssist.IdentityAccess.Team.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Team.EntityFrameworkCore.Configurations
+namespace NouAssist.IdentityAccess.Team.EntityFrameworkCore.Configurations
 {
     public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {

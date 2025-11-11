@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Resources.Data
+namespace NouAssist.AssetManagement.Resources.Data
 {
     public interface IStorageBackendRepository : IRepository<StorageBackend, Guid>
     {

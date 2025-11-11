@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Habits.Settings;
+﻿namespace NouAssist.PersonalDevelopment.Habits.Settings;
 
 public static class HabitsSettings
 {

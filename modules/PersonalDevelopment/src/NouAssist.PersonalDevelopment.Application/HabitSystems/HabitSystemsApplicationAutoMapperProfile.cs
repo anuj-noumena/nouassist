@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace NouAssist.CoreProductivity.HabitSystems;
+namespace NouAssist.PersonalDevelopment.HabitSystems;
 
 public class HabitSystemsApplicationAutoMapperProfile : Profile
 {

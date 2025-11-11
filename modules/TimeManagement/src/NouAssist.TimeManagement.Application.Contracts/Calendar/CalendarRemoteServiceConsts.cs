@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Calendar;
+﻿namespace NouAssist.TimeManagement.Calendar;
 
 public class CalendarRemoteServiceConsts
 {

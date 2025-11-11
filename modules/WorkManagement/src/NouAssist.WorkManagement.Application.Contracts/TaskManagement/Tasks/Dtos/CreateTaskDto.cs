@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Tasks.Tasks.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
 {
     public class CreateTaskDto
     {

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Tasks.Entities;
+using NouAssist.WorkManagement.TaskManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Tasks.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurations
 {
     public class AcceptanceCriterionConfiguration : IEntityTypeConfiguration<AcceptanceCriterion>
     {

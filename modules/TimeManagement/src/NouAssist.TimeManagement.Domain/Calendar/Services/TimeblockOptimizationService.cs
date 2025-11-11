@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Calendar.Aggregates;
-using NouAssist.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.Enums;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Calendar.Services
+namespace NouAssist.TimeManagement.Calendar.Services
 {
     /// <summary>
     /// Domain service for optimizing timeblock scheduling and allocation

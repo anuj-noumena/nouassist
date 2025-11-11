@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.EntityFrameworkCore.Projects
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement
 {
     [ConnectionStringName("Projects")]
     public class ProjectsDbContext : AbpDbContext<ProjectsDbContext>, IProjectsDbContext

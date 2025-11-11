@@ -1,4 +1,4 @@
-namespace NouAssist.Habits.Permissions
+namespace NouAssist.PersonalDevelopment.Habits.Permissions
 {
     public static class HabitsPermissions
     {

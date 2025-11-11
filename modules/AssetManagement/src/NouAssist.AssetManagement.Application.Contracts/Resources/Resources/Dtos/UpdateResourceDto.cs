@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Resources.Resources.Dtos
+namespace NouAssist.AssetManagement.Resources.Resources.Dtos
 {
     public class UpdateResourceDto
     {

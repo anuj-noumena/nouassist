@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Habits.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Habits.Dtos
 {
     public class GetHabitListDto : PagedAndSortedResultRequestDto
     {

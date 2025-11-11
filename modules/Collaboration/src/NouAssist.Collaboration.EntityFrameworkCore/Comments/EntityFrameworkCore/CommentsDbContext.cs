@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Comments.EntityFrameworkCore
+namespace NouAssist.Collaboration.Comments.EntityFrameworkCore
 {
     [ConnectionStringName(CommentsDbProperties.ConnectionStringName)]
     public class CommentsDbContext : AbpDbContext<CommentsDbContext>, ICommentsDbContext

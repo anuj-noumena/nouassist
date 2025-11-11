@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Tasks.Events
+namespace NouAssist.WorkManagement.TaskManagement.Events
 {
     [EventName("NouAssist.Tasks.TaskCompleted")]
     public class TaskCompletedEto : IMultiTenant

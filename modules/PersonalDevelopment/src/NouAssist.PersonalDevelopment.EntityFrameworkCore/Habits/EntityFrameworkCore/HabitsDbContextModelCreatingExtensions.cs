@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Habits.EntityFrameworkCore
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore
 {
     public static class HabitsDbContextModelCreatingExtensions
     {

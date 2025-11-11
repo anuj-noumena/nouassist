@@ -1,4 +1,4 @@
-namespace NouAssist.Approval.Enums
+namespace NouAssist.WorkManagement.Approval.Enums
 {
     public enum ApprovalRequirement : byte
     {

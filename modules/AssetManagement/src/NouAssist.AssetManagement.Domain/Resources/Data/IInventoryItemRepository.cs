@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Resources.Aggregates;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Resources.Data
+namespace NouAssist.AssetManagement.Resources.Data
 {
     public interface IInventoryItemRepository : IRepository<InventoryItem, Guid>
     {

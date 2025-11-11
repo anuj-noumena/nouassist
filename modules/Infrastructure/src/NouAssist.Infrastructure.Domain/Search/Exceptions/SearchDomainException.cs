@@ -1,6 +1,6 @@
 using Volo.Abp;
 
-namespace NouAssist.Search.Exceptions
+namespace NouAssist.Infrastructure.Search.Exceptions
 {
     public class SearchDomainException : BusinessException
     {

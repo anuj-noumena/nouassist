@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Approval.Aggregates;
-using NouAssist.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Aggregates;
+using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Approval.Specifications
+namespace NouAssist.WorkManagement.Approval.Specifications
 {
     public class ActiveWorkflowsSpecification : Specification<ApprovalWorkflow>
     {

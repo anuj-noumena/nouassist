@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Team.Settings;
+namespace NouAssist.IdentityAccess.Team.Settings;
 
 public class TeamSettingDefinitionProvider : SettingDefinitionProvider
 {

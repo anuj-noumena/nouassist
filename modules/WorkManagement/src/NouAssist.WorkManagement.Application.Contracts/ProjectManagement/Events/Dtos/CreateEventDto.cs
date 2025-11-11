@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Events.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Events.Dtos
 {
     public class CreateEventDto
     {

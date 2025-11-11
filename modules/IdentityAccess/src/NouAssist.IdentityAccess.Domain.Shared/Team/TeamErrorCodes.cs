@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Team;
+﻿namespace NouAssist.IdentityAccess.Team;
 
 public static class TeamErrorCodes
 {

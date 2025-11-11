@@ -1,12 +1,6 @@
 using AutoMapper;
-using NouAssist.CoreProductivity.TaskManagement.Aggregates;
-using NouAssist.CoreProductivity.TaskManagement.Entities;
-using NouAssist.CoreProductivity.TaskManagement.TaskInstances.Dtos;
-using NouAssist.CoreProductivity.TaskManagement.Tasks.Dtos;
-using NouAssist.CoreProductivity.TaskManagement.TaskTypes.Dtos;
-using NouAssist.CoreProductivity.TaskManagement.ValueObjects;
 
-namespace NouAssist.CoreProductivity.TaskManagement
+namespace NouAssist.WorkManagement.TaskManagement
 {
     public class TasksApplicationAutoMapperProfile : Profile
     {

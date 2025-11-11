@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Activity.Aggregates;
-using NouAssist.Activity.Enums;
+using NouAssist.Infrastructure.Activity.Aggregates;
+using NouAssist.Infrastructure.Activity.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Activity.Specifications
+namespace NouAssist.Infrastructure.Activity.Specifications
 {
     public class AuditLogsByCategorySpecification : Specification<AuditLog>
     {

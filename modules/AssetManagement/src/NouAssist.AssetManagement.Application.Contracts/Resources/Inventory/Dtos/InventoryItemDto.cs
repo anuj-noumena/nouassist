@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Resources.Inventory.Dtos
+namespace NouAssist.AssetManagement.Resources.Inventory.Dtos
 {
     public class InventoryItemDto : FullAuditedEntityDto<Guid>
     {

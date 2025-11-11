@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Contacts;
+namespace NouAssist.IdentityAccess.Contacts;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

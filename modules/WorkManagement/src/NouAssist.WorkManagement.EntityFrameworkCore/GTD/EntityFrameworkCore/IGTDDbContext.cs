@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.GTD.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.GTD.EntityFrameworkCore;
 
 [ConnectionStringName(GTDDbProperties.ConnectionStringName)]
 public interface IGTDDbContext : IEfCoreDbContext

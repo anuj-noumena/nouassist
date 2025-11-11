@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.Calendar.Calendars.Dtos;
+using NouAssist.TimeManagement.Calendar.Calendars.Dtos;
 
-namespace NouAssist.Calendar.Calendars.Validators
+namespace NouAssist.TimeManagement.Calendar.Calendars.Validators
 {
     public class CreateCalendarDtoValidator : AbstractValidator<CreateCalendarDto>
     {

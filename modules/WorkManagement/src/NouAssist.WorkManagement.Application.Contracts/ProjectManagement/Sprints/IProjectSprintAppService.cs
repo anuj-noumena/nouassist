@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CoreProductivity.ProjectManagement.Sprints.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Sprints
+namespace NouAssist.WorkManagement.ProjectManagement.Sprints
 {
     public interface IProjectSprintAppService : IApplicationService
     {

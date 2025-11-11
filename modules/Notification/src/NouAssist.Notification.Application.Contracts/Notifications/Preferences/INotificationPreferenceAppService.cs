@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Notifications.Enums;
-using NouAssist.Notifications.Preferences.Dtos;
+using NouAssist.Notification.Notifications.Enums;
+using NouAssist.Notification.Notifications.Preferences.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Notifications.Preferences
+namespace NouAssist.Notification.Notifications.Preferences
 {
     public interface INotificationPreferenceAppService : IApplicationService
     {

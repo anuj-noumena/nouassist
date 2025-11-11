@@ -1,9 +1,8 @@
 using System;
-using NouAssist.Core.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Users.Aggregates
+namespace NouAssist.IdentityAccess.Users.Aggregates
 {
     public class UserEisenhowerPreference : FullAuditedAggregateRoot<Guid>
     {

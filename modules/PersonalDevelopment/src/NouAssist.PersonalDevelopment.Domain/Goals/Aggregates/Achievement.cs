@@ -1,9 +1,8 @@
 using System;
-using NouAssist.Core.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Goals.Aggregates
+namespace NouAssist.PersonalDevelopment.Goals.Aggregates
 {
     public class Achievement : FullAuditedAggregateRoot<Guid>
     {

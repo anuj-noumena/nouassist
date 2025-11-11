@@ -1,7 +1,7 @@
-﻿using NouAssist.Approval.Localization;
+﻿using NouAssist.WorkManagement.Approval.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Approval;
+namespace NouAssist.WorkManagement.Approval;
 
 public abstract class ApprovalAppService : ApplicationService
 {

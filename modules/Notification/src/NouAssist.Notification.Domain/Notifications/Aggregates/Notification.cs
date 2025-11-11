@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Notifications.Entities;
-using NouAssist.Notifications.Enums;
+using NouAssist.Notification.Notifications.Entities;
+using NouAssist.Notification.Notifications.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Notifications.Aggregates
+namespace NouAssist.Notification.Notifications.Aggregates
 {
     public class Notification : CreationAuditedAggregateRoot<Guid>, IMultiTenant
     {

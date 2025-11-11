@@ -1,10 +1,8 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.SharedKernel.Specifications;
-using NouAssist.Tasks.Aggregates;
-using Volo.Abp.Specifications;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
 
-namespace NouAssist.Tasks.Specifications
+namespace NouAssist.WorkManagement.TaskManagement.Specifications
 {
     public class ActiveTasksSpecification : BaseSpecification<Task>
     {

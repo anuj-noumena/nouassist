@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using NouAssist.Contacts.Enums;
+using NouAssist.IdentityAccess.Contacts.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Contacts.ValueObjects
+namespace NouAssist.IdentityAccess.Contacts.ValueObjects
 {
     public class SocialProfile : ValueObject
     {

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Projects.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Projects.Dtos
 {
     public class UpdateProjectPriorityDto
     {

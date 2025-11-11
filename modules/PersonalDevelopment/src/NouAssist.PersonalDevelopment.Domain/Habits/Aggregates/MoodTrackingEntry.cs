@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Habits.Aggregates
+namespace NouAssist.PersonalDevelopment.Habits.Aggregates
 {
     public class MoodTrackingEntry : AuditedAggregateRoot<Guid>, IMultiTenant
     {

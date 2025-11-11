@@ -1,11 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.SharedKernel.Specifications;
-using NouAssist.Tasks.Aggregates;
-using NouAssist.Tasks.Enums;
-using Volo.Abp.Specifications;
+using NouAssist.WorkManagement.Shared.Enums;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 
-namespace NouAssist.Tasks.Specifications
+namespace NouAssist.WorkManagement.TaskManagement.Specifications
 {
     public class ActiveTaskInstancesSpecification : BaseSpecification<TaskInstance>
     {

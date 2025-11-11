@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Data;
-using NouAssist.Reviews.Dtos;
-using NouAssist.Reviews.Entities;
-using NouAssist.Reviews.Enums;
-using NouAssist.Reviews.Permissions;
-using NouAssist.Reviews.Progress.Dtos;
-using NouAssist.Reviews.Services;
-using NouAssist.Reviews.Specifications;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Data;
+using NouAssist.WorkManagement.Reviews.Entities;
+using NouAssist.WorkManagement.Reviews.Permissions;
+using NouAssist.WorkManagement.Reviews.Progress.Dtos;
+using NouAssist.WorkManagement.Reviews.Reviews.Dtos;
+using NouAssist.WorkManagement.Reviews.Services;
+using NouAssist.WorkManagement.Reviews.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Reviews.Reviews
+namespace NouAssist.WorkManagement.Reviews.Reviews
 {
     [Authorize(ReviewsPermissions.Reviews.ViewOwn)]
     public class ReviewAppService : ApplicationService, IReviewAppService

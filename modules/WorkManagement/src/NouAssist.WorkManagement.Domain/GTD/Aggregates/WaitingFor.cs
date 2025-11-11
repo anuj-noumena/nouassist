@@ -1,11 +1,9 @@
 using System;
-using NouAssist.Core.Enums;
-using NouAssist.GTD.Enums;
-using Volo.Abp;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.GTD.Aggregates
+namespace NouAssist.WorkManagement.GTD.Aggregates
 {
     public class WaitingFor : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

@@ -1,12 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.WorkManagement.Workflow.Aggregates;
 
-using NouAssist.Workflow.Aggregates;
-
- 
-
-namespace NouAssist.Workflow.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Configurations
 
 {
 

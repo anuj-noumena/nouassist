@@ -1,8 +1,8 @@
 using AutoMapper;
-using NouAssist.Users.Aggregates;
-using NouAssist.Users.Dtos;
+using NouAssist.IdentityAccess.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.Users.Dtos;
 
-namespace NouAssist.Users
+namespace NouAssist.IdentityAccess.Users
 {
     public class UsersApplicationAutoMapperProfile : Profile
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Resources.Storage.Dtos
+namespace NouAssist.AssetManagement.Resources.Storage.Dtos
 {
     public class UpdateStorageBackendDto
     {

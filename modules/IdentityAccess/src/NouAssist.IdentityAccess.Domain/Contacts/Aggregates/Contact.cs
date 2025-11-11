@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Contacts.Enums;
-using NouAssist.Contacts.ValueObjects;
+using NouAssist.IdentityAccess.Contacts.Enums;
+using NouAssist.IdentityAccess.Contacts.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Contacts.Aggregates
+namespace NouAssist.IdentityAccess.Contacts.Aggregates
 {
     public class Contact : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

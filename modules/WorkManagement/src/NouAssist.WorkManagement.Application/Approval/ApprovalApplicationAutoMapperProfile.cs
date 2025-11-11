@@ -1,10 +1,10 @@
 using AutoMapper;
-using NouAssist.Approval.Aggregates;
-using NouAssist.Approval.Entities;
-using NouAssist.Approval.Requests.Dtos;
-using NouAssist.Approval.Workflows.Dtos;
+using NouAssist.WorkManagement.Approval.Aggregates;
+using NouAssist.WorkManagement.Approval.Entities;
+using NouAssist.WorkManagement.Approval.Requests.Dtos;
+using NouAssist.WorkManagement.Approval.Workflows.Dtos;
 
-namespace NouAssist.Approval
+namespace NouAssist.WorkManagement.Approval
 {
     public class ApprovalApplicationAutoMapperProfile : Profile
     {

@@ -1,4 +1,4 @@
-namespace NouAssist.Reviews.Enums
+namespace NouAssist.WorkManagement.Reviews.Enums
 {
     public enum ReviewItemDecision : byte
     {

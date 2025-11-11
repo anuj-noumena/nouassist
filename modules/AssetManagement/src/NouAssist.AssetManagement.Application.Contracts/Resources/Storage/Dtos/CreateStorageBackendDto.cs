@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Resources.Enums;
 
-namespace NouAssist.Resources.Storage.Dtos
+namespace NouAssist.AssetManagement.Resources.Storage.Dtos
 {
     public class CreateStorageBackendDto
     {

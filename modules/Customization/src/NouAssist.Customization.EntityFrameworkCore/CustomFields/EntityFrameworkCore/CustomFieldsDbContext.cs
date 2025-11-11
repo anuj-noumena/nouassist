@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.CustomFields.Aggregates;
-using NouAssist.CustomFields.Entities;
+using NouAssist.Customization.CustomFields.Aggregates;
+using NouAssist.Customization.CustomFields.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.CustomFields.EntityFrameworkCore
+namespace NouAssist.Customization.CustomFields.EntityFrameworkCore
 {
     [ConnectionStringName(CustomFieldsDbProperties.ConnectionStringName)]
     public class CustomFieldsDbContext : AbpDbContext<CustomFieldsDbContext>, ICustomFieldsDbContext

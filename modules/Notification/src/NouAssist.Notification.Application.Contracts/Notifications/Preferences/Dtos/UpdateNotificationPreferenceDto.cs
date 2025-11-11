@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Notifications.Preferences.Dtos
+namespace NouAssist.Notification.Notifications.Preferences.Dtos
 {
     public class UpdateNotificationPreferenceDto
     {

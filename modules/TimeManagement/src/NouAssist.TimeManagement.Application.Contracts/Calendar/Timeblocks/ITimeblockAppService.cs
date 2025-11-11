@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Calendar.Timeblocks.Dtos;
+using NouAssist.TimeManagement.Calendar.Timeblocks.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Calendar.Timeblocks
+namespace NouAssist.TimeManagement.Calendar.Timeblocks
 {
     public interface ITimeblockAppService : IApplicationService
     {

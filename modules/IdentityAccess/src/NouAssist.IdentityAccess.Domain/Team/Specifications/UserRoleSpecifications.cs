@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Team.Entities;
+using NouAssist.IdentityAccess.Team.Entities;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Team.Specifications
+namespace NouAssist.IdentityAccess.Team.Specifications
 {
     public class ActiveUserRolesSpecification : Specification<UserRole>
     {

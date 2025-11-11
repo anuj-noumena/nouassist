@@ -1,12 +1,12 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp.Specifications;
-using DayOfWeek = NouAssist.Habits.Enums.DayOfWeek;
+using DayOfWeek = NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek;
 
-namespace NouAssist.Habits.Specifications
+namespace NouAssist.PersonalDevelopment.Habits.Specifications
 {
     public class ActiveHabitsSpecification : Specification<Habit>
     {

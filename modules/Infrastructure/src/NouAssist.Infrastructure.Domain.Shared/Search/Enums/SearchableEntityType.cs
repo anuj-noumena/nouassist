@@ -1,4 +1,4 @@
-namespace NouAssist.Search.Enums
+namespace NouAssist.Infrastructure.Search.Enums
 {
     public enum SearchableEntityType : byte
     {

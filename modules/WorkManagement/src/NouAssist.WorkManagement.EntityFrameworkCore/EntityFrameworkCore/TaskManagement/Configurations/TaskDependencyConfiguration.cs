@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Tasks.Entities;
+using NouAssist.WorkManagement.TaskManagement.Entities;
 
-namespace NouAssist.Tasks.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurations
 {
     public class TaskDependencyConfiguration : IEntityTypeConfiguration<TaskDependency>
     {

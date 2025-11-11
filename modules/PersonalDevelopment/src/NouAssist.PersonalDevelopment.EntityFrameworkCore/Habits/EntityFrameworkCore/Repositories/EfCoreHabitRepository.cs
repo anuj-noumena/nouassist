@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Data;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
+using NouAssist.PersonalDevelopment.Habits.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
+using DayOfWeek = NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek;
 
-namespace NouAssist.Habits.EntityFrameworkCore.Repositories
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore.Repositories
 {
     public class EfCoreHabitRepository 
         : EfCoreRepository<IHabitsDbContext, Habit, Guid>, IHabitRepository
@@ -54,7 +54,7 @@ namespace NouAssist.Habits.EntityFrameworkCore.Repositories
             var query = await GetQueryableAsync();
             
             // For habits without schedule or with matching day
-            var dayOfWeek = (NouAssist.Habits.Enums.DayOfWeek)((int)date.DayOfWeek == 0 ? 7 : (int)date.DayOfWeek);
+            var dayOfWeek = (DayOfWeek)((int)date.DayOfWeek == 0 ? 7 : (int)date.DayOfWeek);
             
             return await query
                 .Where(h => h.OwnerId == ownerId && h.IsActive)

@@ -1,10 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Reviews.Data
+namespace NouAssist.WorkManagement.Reviews.Data
 {
     public interface IReviewProgressRepository : IRepository<ReviewProgress, Guid>
     {

@@ -1,8 +1,8 @@
-﻿using NouAssist.Activity.Localization;
+﻿using NouAssist.Infrastructure.Activity.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Activity.Permissions;
+namespace NouAssist.Infrastructure.Activity.Permissions;
 
 public class ActivityPermissionDefinitionProvider : PermissionDefinitionProvider
 {

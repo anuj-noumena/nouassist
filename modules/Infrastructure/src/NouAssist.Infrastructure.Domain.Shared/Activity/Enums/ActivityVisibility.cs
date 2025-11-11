@@ -1,4 +1,4 @@
-namespace NouAssist.Activity.Enums
+namespace NouAssist.Infrastructure.Activity.Enums
 {
     public enum ActivityVisibility : byte
     {

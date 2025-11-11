@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Tasks.Settings;
+﻿namespace NouAssist.WorkManagement.TaskManagement.Settings;
 
 public static class TasksSettings
 {

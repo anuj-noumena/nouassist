@@ -1,6 +1,6 @@
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Workflow.Workflows.Dtos
+namespace NouAssist.WorkManagement.Workflow.Workflows.Dtos
 {
     public class GetWorkflowListDto : PagedAndSortedResultRequestDto
     {

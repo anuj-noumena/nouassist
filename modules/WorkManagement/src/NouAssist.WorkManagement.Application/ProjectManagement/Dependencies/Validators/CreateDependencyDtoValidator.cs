@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.CoreProductivity.ProjectManagement.Dependencies.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Dependencies.Validators
+namespace NouAssist.WorkManagement.ProjectManagement.Dependencies.Validators
 {
     public class CreateDependencyDtoValidator : AbstractValidator<CreateDependencyDto>
     {

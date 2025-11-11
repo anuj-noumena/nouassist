@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Tasks.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Tasks.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurations
 {
     public class TaskInstanceAggregateConfiguration : IEntityTypeConfiguration<TaskInstance>
     {

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Search.Search.Dtos;
+using NouAssist.Infrastructure.Search.Search.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Search.Search
+namespace NouAssist.Infrastructure.Search.Search
 {
     public interface ISearchAppService : IApplicationService
     {

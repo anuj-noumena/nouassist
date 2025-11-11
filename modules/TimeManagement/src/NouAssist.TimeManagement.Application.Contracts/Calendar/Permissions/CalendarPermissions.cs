@@ -1,4 +1,4 @@
-namespace NouAssist.Calendar.Permissions
+namespace NouAssist.TimeManagement.Calendar.Permissions
 {
     public static class CalendarPermissions
     {

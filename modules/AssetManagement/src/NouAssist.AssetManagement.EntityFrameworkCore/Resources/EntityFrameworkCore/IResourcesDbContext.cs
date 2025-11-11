@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Resources.EntityFrameworkCore
+namespace NouAssist.AssetManagement.Resources.EntityFrameworkCore
 {
     [ConnectionStringName(ResourcesDbProperties.ConnectionStringName)]
     public interface IResourcesDbContext : IEfCoreDbContext

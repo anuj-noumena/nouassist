@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Approval.Entities;
-using NouAssist.Approval.Enums;
-using NouAssist.Approval.Events;
-using NouAssist.SharedKernel.ValueObjects;
+using NouAssist.WorkManagement.Approval.Entities;
+using NouAssist.WorkManagement.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Events;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Approval.Aggregates
+namespace NouAssist.WorkManagement.Approval.Aggregates
 {
     /// <summary>
     /// Represents an approval request initiated against a specific entity (e.g., document, task, purchase order),

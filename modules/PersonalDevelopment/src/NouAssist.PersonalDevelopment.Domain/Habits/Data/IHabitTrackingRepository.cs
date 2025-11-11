@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.Entities;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Habits.Data
+namespace NouAssist.PersonalDevelopment.Habits.Data
 {
     public interface IHabitTrackingRepository : IRepository<HabitTrackingEntry, Guid>
     {

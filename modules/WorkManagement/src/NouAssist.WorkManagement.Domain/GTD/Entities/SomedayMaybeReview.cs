@@ -2,7 +2,7 @@ using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.GTD.Entities
+namespace NouAssist.WorkManagement.GTD.Entities
 {
     public class SomedayMaybeReview : FullAuditedEntity<Guid>
     {

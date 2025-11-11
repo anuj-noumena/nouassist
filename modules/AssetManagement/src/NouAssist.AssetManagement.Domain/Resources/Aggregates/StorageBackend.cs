@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Resources.Aggregates
+namespace NouAssist.AssetManagement.Resources.Aggregates
 {
     public class StorageBackend : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

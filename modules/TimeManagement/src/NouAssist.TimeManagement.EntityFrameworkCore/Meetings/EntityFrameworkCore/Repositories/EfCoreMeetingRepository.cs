@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Meetings.Aggregates;
-using NouAssist.Meetings.Data;
-using NouAssist.Meetings.Enums;
+using NouAssist.TimeManagement.Meetings.Aggregates;
+using NouAssist.TimeManagement.Meetings.Data;
+using NouAssist.TimeManagement.Meetings.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Meetings.EntityFrameworkCore.Repositories
+namespace NouAssist.TimeManagement.Meetings.EntityFrameworkCore.Repositories
 {
     public class EfCoreMeetingRepository 
         : EfCoreRepository<IMeetingsDbContext, Meeting, Guid>, 

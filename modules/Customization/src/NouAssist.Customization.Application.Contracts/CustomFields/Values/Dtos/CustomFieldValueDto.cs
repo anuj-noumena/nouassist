@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CustomFields.Values.Dtos
+namespace NouAssist.Customization.CustomFields.Values.Dtos
 {
     public class CustomFieldValueDto : FullAuditedEntityDto<Guid>
     {

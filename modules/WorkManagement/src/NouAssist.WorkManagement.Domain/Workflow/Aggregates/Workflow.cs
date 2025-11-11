@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Entities;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Workflow.Aggregates
+namespace NouAssist.WorkManagement.Workflow.Aggregates
 {
     /// <summary>
     /// Represents a Workflow aggregate root that defines a process composed of statuses

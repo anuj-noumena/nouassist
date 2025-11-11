@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Reminders.Reminders.Dtos
+namespace NouAssist.Notification.Reminders.Reminders.Dtos
 {
     public class ReminderDto : FullAuditedEntityDto<Guid>
     {

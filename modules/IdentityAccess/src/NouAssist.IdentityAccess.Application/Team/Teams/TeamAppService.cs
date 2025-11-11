@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Team.Data;
-using NouAssist.Team.Enums;
-using NouAssist.Team.Permissions;
-using NouAssist.Team.Services;
-using NouAssist.Team.Specifications;
-using NouAssist.Team.Teams.Dtos;
+using NouAssist.IdentityAccess.Team.Data;
+using NouAssist.IdentityAccess.Team.Enums;
+using NouAssist.IdentityAccess.Team.Permissions;
+using NouAssist.IdentityAccess.Team.Services;
+using NouAssist.IdentityAccess.Team.Specifications;
+using NouAssist.IdentityAccess.Team.Teams.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Team.Teams
+namespace NouAssist.IdentityAccess.Team.Teams
 {
     [Authorize(TeamPermissions.Teams.Default)]
     public class TeamAppService : ApplicationService, ITeamAppService

@@ -1,16 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Goals.Aggregates;
-using NouAssist.Goals.Data;
-using NouAssist.Goals.Dtos;
-using NouAssist.Goals.Permissions;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Data;
+using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
+using NouAssist.PersonalDevelopment.Goals.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Goals.Goals
+namespace NouAssist.PersonalDevelopment.Goals.Goals
 {
     [Authorize(GoalsPermissions.Achievements.Default)]
     public class AchievementAppService : ApplicationService, IAchievementAppService

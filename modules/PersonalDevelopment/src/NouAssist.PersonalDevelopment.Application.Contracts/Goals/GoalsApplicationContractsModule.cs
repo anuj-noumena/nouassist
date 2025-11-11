@@ -1,8 +1,8 @@
 ﻿using Volo.Abp.Application;
-using Volo.Abp.Modularity;
 using Volo.Abp.Authorization;
+using Volo.Abp.Modularity;
 
-namespace NouAssist.Goals;
+namespace NouAssist.PersonalDevelopment.Goals;
 
 [DependsOn(
     typeof(GoalsDomainSharedModule),

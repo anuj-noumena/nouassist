@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Users.Settings;
+﻿namespace NouAssist.IdentityAccess.Users.Settings;
 
 public static class UsersSettings
 {

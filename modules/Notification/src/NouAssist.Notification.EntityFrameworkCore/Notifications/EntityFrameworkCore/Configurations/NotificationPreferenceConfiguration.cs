@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Notifications.Aggregates;
+using NouAssist.Notification.Notifications.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Notifications.EntityFrameworkCore.Configurations
+namespace NouAssist.Notification.Notifications.EntityFrameworkCore.Configurations
 {
     public class NotificationPreferenceConfiguration : IEntityTypeConfiguration<NotificationPreference>
     {

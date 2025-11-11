@@ -1,8 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.CoreProductivity.ProjectManagement.Constants;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Projects.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Projects.Dtos
 {
     public class UpdateProjectDto
     {

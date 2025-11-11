@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Tasks.TaskTypes.Dtos
+namespace NouAssist.WorkManagement.TaskManagement.TaskTypes.Dtos
 {
     public class TaskTypeDto : FullAuditedEntityDto<Guid>
     {

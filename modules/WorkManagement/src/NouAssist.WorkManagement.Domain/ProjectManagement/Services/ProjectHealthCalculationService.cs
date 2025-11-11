@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Services
+namespace NouAssist.WorkManagement.ProjectManagement.Services
 {
     public class ProjectHealthCalculationService : DomainService
     {

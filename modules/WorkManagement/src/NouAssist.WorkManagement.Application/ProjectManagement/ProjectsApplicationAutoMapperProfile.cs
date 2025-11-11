@@ -1,15 +1,14 @@
 using AutoMapper;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Dependencies.Dtos;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.CoreProductivity.ProjectManagement.Events.Dtos;
-using NouAssist.CoreProductivity.ProjectManagement.Projects.Dtos;
-using NouAssist.CoreProductivity.ProjectManagement.Requirements.Dtos;
-using NouAssist.CoreProductivity.ProjectManagement.Sprints.Dtos;
-using NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria.Dtos;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Events.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Projects.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Requirements.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement
+namespace NouAssist.WorkManagement.ProjectManagement
 {
     public class ProjectsApplicationAutoMapperProfile : Profile
     {

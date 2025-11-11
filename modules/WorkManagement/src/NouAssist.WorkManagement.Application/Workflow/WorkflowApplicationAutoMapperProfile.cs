@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using NouAssist.Workflow.Aggregates;
-using NouAssist.Workflow.Entities;
-using NouAssist.Workflow.Permissions.Dtos;
-using NouAssist.Workflow.Workflows.Dtos;
+using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Workflows.Dtos;
 
-namespace NouAssist.Workflow;
+namespace NouAssist.WorkManagement.Workflow;
 
 public class WorkflowApplicationAutoMapperProfile : Profile
 {

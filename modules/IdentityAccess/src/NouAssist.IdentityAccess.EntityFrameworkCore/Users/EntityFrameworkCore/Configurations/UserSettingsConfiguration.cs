@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Users.EntityFrameworkCore.Configurations
+namespace NouAssist.IdentityAccess.Users.EntityFrameworkCore.Configurations
 {
     public class UserSettingsConfiguration : IEntityTypeConfiguration<UserSettings>
     {

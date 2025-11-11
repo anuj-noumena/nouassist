@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp;
 
-namespace NouAssist.Comments.Exceptions
+namespace NouAssist.Collaboration.Comments.Exceptions
 {
     public class CommentDomainException : BusinessException
     {

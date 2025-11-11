@@ -1,6 +1,4 @@
-﻿using Volo.Abp.Reflection;
-
-namespace NouAssist.Workflow.Permissions;
+﻿namespace NouAssist.WorkManagement.Workflow.Permissions;
 
 public class WorkflowPermissions
 {

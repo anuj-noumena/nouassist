@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Habits.Events
+namespace NouAssist.PersonalDevelopment.Habits.Events
 {
     [EventName("NouAssist.Habits.Completed")]
     public class HabitCompletedEto : IMultiTenant

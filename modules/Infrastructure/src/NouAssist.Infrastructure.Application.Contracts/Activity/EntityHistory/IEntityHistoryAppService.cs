@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Activity.EntityHistory.Dtos;
+using NouAssist.Infrastructure.Activity.EntityHistory.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Activity.EntityHistory
+namespace NouAssist.Infrastructure.Activity.EntityHistory
 {
     public interface IEntityHistoryAppService : IApplicationService
     {

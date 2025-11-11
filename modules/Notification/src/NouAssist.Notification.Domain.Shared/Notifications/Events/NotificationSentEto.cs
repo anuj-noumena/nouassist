@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Notifications.Events
+namespace NouAssist.Notification.Notifications.Events
 {
     [EventName("NouAssist.Notifications.Sent")]
     public class NotificationSentEto : IMultiTenant

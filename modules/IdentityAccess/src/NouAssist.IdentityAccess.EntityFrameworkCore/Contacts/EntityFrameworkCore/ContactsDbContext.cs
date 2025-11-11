@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Contacts.Aggregates;
+using NouAssist.IdentityAccess.Contacts.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Contacts.EntityFrameworkCore
+namespace NouAssist.IdentityAccess.Contacts.EntityFrameworkCore
 {
     [ConnectionStringName(ContactsDbProperties.ConnectionStringName)]
     public class ContactsDbContext : AbpDbContext<ContactsDbContext>, IContactsDbContext

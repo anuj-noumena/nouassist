@@ -1,13 +1,13 @@
 using System;
-using NouAssist.Core.Enums;
-using NouAssist.Core.Events;
-using NouAssist.Core.ValueObjects;
-using NouAssist.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Enums;
+using NouAssist.WorkManagement.GTD.Events;
+using NouAssist.WorkManagement.GTD.ValueObjects;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.GTD.Aggregates
+namespace NouAssist.WorkManagement.GTD.Aggregates
 {
     public class TicklerItem : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

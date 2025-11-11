@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Goals.Settings;
+namespace NouAssist.PersonalDevelopment.Goals.Settings;
 
 public class GoalsSettingDefinitionProvider : SettingDefinitionProvider
 {

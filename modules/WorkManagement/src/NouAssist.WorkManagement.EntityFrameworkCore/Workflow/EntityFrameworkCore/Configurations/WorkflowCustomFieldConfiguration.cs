@@ -1,10 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
-using System.Linq.Dynamic.Core;
 
-namespace NouAssist.Workflow.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Configurations
 {
     public class WorkflowCustomFieldConfiguration : IEntityTypeConfiguration<WorkflowCustomField>
     {

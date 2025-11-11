@@ -1,8 +1,8 @@
-using NouAssist.Calendar.Localization;
+using NouAssist.TimeManagement.Calendar.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Calendar.Permissions
+namespace NouAssist.TimeManagement.Calendar.Permissions
 {
     public class CalendarPermissionDefinitionProvider : PermissionDefinitionProvider
     {

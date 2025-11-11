@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Reviews.Dtos;
-using NouAssist.Reviews.Progress.Dtos;
+using NouAssist.WorkManagement.Reviews.Progress.Dtos;
+using NouAssist.WorkManagement.Reviews.Reviews.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Reviews.Reviews
+namespace NouAssist.WorkManagement.Reviews.Reviews
 {
     public interface IReviewAppService : IApplicationService
     {

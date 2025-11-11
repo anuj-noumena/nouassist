@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Tasks.TaskTypes.Dtos;
+using NouAssist.WorkManagement.TaskManagement.TaskTypes.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Tasks.TaskTypes
+namespace NouAssist.WorkManagement.TaskManagement.TaskTypes
 {
     public interface ITaskTypeAppService : IApplicationService
     {

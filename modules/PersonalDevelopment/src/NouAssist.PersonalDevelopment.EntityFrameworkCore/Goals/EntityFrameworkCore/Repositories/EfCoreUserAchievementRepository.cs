@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Goals.Aggregates;
-using NouAssist.Goals.Data;
+using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Goals.EntityFrameworkCore.Repositories
+namespace NouAssist.PersonalDevelopment.Goals.EntityFrameworkCore.Repositories
 {
     public class EfCoreUserAchievementRepository 
         : EfCoreRepository<IGoalsDbContext, UserAchievement, Guid>, IUserAchievementRepository

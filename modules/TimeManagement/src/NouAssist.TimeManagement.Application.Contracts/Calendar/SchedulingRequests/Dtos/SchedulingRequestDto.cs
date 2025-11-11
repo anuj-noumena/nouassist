@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Calendar.Enums;
+using NouAssist.TimeManagement.Calendar.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Calendar.SchedulingRequests.Dtos
+namespace NouAssist.TimeManagement.Calendar.SchedulingRequests.Dtos
 {
     public class SchedulingRequestDto : FullAuditedEntityDto<Guid>
     {

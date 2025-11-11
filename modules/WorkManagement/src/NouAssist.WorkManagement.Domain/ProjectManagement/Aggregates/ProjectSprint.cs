@@ -1,12 +1,12 @@
 using System;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
-using NouAssist.CoreProductivity.ProjectManagement.Events;
-using NouAssist.CoreProductivity.ProjectManagement.ValueObjects;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Events;
+using NouAssist.WorkManagement.ProjectManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Aggregates
+namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
 {
     public class ProjectSprint : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.CoreProductivity.TaskManagement.Settings;
+namespace NouAssist.WorkManagement.TaskManagement.Settings;
 
 public class TaskManagementSettingDefinitionProvider : SettingDefinitionProvider
 {

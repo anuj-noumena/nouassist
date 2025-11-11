@@ -1,10 +1,9 @@
 using System;
-using NouAssist.Habits.Events;
-using Volo.Abp;
+using NouAssist.PersonalDevelopment.Habits.Events;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Habits.Entities
+namespace NouAssist.PersonalDevelopment.Habits.Entities
 {
     public class HabitTrackingEntry : CreationAuditedEntity<Guid>, IMultiTenant
     {

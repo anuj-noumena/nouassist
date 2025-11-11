@@ -1,4 +1,4 @@
-namespace NouAssist.Calendar.EntityFrameworkCore
+namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore
 {
     public static class CalendarDbProperties
     {

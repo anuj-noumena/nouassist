@@ -2,12 +2,12 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NouAssist.Notifications.Data;
+using NouAssist.Notification.Notifications.Data;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 using Volo.Abp.Uow;
 
-namespace NouAssist.Notifications.BackgroundWorkers
+namespace NouAssist.Notification.Notifications.BackgroundWorkers
 {
     public class ExpiredNotificationCleanupWorker : AsyncPeriodicBackgroundWorkerBase
     {

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Reminders.Reminders.Dtos;
+using NouAssist.Notification.Reminders.Reminders.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Reminders.Reminders
+namespace NouAssist.Notification.Reminders.Reminders
 {
     public interface IReminderAppService : IApplicationService
     {

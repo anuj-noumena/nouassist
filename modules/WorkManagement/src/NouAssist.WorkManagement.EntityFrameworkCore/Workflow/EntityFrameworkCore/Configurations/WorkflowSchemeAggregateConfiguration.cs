@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Workflow.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Configurations
 {
     public class WorkflowSchemeAggregateConfiguration : IEntityTypeConfiguration<WorkflowScheme>
     {

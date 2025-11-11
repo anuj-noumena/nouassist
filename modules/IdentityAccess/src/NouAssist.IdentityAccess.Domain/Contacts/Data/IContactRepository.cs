@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Contacts.Data
+namespace NouAssist.IdentityAccess.Contacts.Data
 {
     public interface IContactRepository : IRepository<Aggregates.Contact, Guid>
     {

@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Habits.Planning.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Planning.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Habits.Planning
+namespace NouAssist.PersonalDevelopment.Habits.Planning
 {
     public interface IPlanningAppService : IApplicationService
     {

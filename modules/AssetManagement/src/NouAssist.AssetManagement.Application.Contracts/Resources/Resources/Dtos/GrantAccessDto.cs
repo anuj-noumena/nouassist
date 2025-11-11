@@ -1,8 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Resources.Enums;
+using NouAssist.AssetManagement.Resources.Enums;
 
-namespace NouAssist.Resources.Resources.Dtos
+namespace NouAssist.AssetManagement.Resources.Resources.Dtos
 {
     public class GrantAccessDto
     {

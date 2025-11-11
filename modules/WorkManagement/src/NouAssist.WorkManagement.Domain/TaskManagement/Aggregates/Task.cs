@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Tasks.Entities;
-using NouAssist.Tasks.Enums;
-using NouAssist.Tasks.Events;
-using NouAssist.Tasks.ValueObjects;
+using NouAssist.WorkManagement.TaskManagement.Entities;
+using NouAssist.WorkManagement.TaskManagement.Events;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Tasks.Aggregates
+namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 {
     /// <summary>
     /// Task Blueprint - Defines the template for task instances

@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Activity.Events
+namespace NouAssist.Infrastructure.Activity.Events
 {
     [EventName("NouAssist.Activity.Created")]
     public class ActivityCreatedEto : IMultiTenant

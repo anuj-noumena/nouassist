@@ -1,14 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Tasks.Data;
-using NouAssist.Workflow.Entities;
-using NouAssist.Workflow.Enums;
+using NouAssist.WorkManagement.TaskManagement.Data;
+using NouAssist.WorkManagement.Workflow.Entities;
+using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Workflow.Services.Actions
+namespace NouAssist.WorkManagement.Workflow.Services.Actions
 {
     /// <summary>
     /// Updates custom field values on task instances.

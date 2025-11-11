@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Habits.EntityFrameworkCore.Configurations
+namespace NouAssist.PersonalDevelopment.Habits.EntityFrameworkCore.Configurations
 {
     public class HabitTrackingEntryConfiguration : IEntityTypeConfiguration<HabitTrackingEntry>
     {

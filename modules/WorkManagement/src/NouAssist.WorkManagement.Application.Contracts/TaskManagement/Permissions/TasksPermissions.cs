@@ -1,4 +1,4 @@
-namespace NouAssist.Tasks.Permissions
+namespace NouAssist.WorkManagement.TaskManagement.Permissions
 {
     public static class TasksPermissions
     {

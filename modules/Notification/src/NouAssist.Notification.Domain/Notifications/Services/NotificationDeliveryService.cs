@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Notifications.Aggregates;
-using NouAssist.Notifications.Data;
-using NouAssist.Notifications.Enums;
-using NouAssist.Notifications.Events;
+using NouAssist.Notification.Notifications.Data;
+using NouAssist.Notification.Notifications.Enums;
+using NouAssist.Notification.Notifications.Events;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Notifications.Services
+namespace NouAssist.Notification.Notifications.Services
 {
     public class NotificationDeliveryService : DomainService
     {

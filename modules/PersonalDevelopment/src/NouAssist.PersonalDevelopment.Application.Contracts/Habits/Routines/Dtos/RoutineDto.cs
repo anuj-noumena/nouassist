@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Habits.Routines.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Routines.Dtos
 {
     public class RoutineDto : FullAuditedEntityDto<Guid>
     {

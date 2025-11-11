@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Workflow.Enums;
+using NouAssist.WorkManagement.Workflow.Enums;
 
-namespace NouAssist.Workflow.Workflows.Dtos
+namespace NouAssist.WorkManagement.Workflow.Workflows.Dtos
 {
     public class WorkflowActionDto
     {

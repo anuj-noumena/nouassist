@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Resources.ValueObjects
+namespace NouAssist.AssetManagement.Resources.ValueObjects
 {
     public class FileMetadata : ValueObject
     {

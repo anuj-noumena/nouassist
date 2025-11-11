@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Calendar.Events
+namespace NouAssist.TimeManagement.Calendar.Events
 {
     [EventName("NouAssist.Calendar.EventCreated")]
     public class CalendarEventCreatedEto : IMultiTenant

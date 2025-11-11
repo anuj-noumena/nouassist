@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
-using NouAssist.Workflow.Enums;
+using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp;
 using Volo.Abp.Data;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Workflow.Entities
+namespace NouAssist.WorkManagement.Workflow.Entities
 {
     public class WorkflowStatus : Entity<Guid>, IHasExtraProperties
     {

@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.Comments.Aggregates;
-using NouAssist.Comments.Dtos;
-using NouAssist.Comments.Entities;
+using NouAssist.Collaboration.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.Comments.Dtos;
+using NouAssist.Collaboration.Comments.Entities;
 
-namespace NouAssist.Comments
+namespace NouAssist.Collaboration.Comments
 {
     public class CommentsApplicationAutoMapperProfile : Profile
     {

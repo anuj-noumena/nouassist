@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Contacts.EntityFrameworkCore
+namespace NouAssist.IdentityAccess.Contacts.EntityFrameworkCore
 {
     public static class ContactsDbContextModelCreatingExtensions
     {

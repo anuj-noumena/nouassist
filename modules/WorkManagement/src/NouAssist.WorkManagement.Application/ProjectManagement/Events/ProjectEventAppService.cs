@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CoreProductivity.ProjectManagement.Data;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.CoreProductivity.ProjectManagement.Events.Dtos;
-using NouAssist.CoreProductivity.ProjectManagement.Permissions;
+using NouAssist.WorkManagement.ProjectManagement.Data;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Events.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Permissions;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Events
+namespace NouAssist.WorkManagement.ProjectManagement.Events
 {
     [Authorize(ProjectsPermissions.Events.Default)]
     public class ProjectEventAppService : ApplicationService, IProjectEventAppService

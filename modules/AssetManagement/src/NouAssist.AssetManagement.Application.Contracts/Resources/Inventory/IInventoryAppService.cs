@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Resources.Inventory.Dtos;
+using NouAssist.AssetManagement.Resources.Inventory.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources.Inventory
+namespace NouAssist.AssetManagement.Resources.Inventory
 {
     public interface IInventoryAppService : IApplicationService
     {

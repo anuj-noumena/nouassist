@@ -1,7 +1,7 @@
-﻿using NouAssist.Resources.Localization;
+﻿using NouAssist.AssetManagement.Resources.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Resources;
+namespace NouAssist.AssetManagement.Resources;
 
 public abstract class ResourcesAppService : ApplicationService
 {

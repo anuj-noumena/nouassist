@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Notifications.Enums;
+using NouAssist.Notification.Notifications.Enums;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Notifications.Entities
+namespace NouAssist.Notification.Notifications.Entities
 {
     public class NotificationDeliveryLogEntry : Entity
     {

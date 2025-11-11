@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.CustomFields;
+namespace NouAssist.Customization.CustomFields;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

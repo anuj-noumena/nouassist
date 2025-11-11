@@ -1,10 +1,10 @@
 using System;
-using NouAssist.Notifications.Enums;
+using NouAssist.Notification.Notifications.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Notifications.Aggregates
+namespace NouAssist.Notification.Notifications.Aggregates
 {
     public class NotificationPreference : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

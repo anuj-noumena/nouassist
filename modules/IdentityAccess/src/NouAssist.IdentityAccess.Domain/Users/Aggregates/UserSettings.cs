@@ -2,7 +2,7 @@ using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Users.Aggregates
+namespace NouAssist.IdentityAccess.Users.Aggregates
 {
     public class UserSettings : FullAuditedAggregateRoot<Guid>
     {

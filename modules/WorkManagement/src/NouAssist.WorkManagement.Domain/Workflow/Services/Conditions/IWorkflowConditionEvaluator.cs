@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using NouAssist.Workflow.ValueObjects;
+using NouAssist.WorkManagement.Workflow.ValueObjects;
 
-namespace NouAssist.Workflow.Services.Conditions
+namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 {
     /// <summary>
     /// Interface for evaluating workflow conditions.

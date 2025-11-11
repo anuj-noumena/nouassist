@@ -1,16 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Notifications.Aggregates;
-using NouAssist.Notifications.Data;
-using NouAssist.Notifications.Enums;
-using NouAssist.Notifications.Permissions;
-using NouAssist.Notifications.Preferences.Dtos;
+using NouAssist.Notification.Notifications.Aggregates;
+using NouAssist.Notification.Notifications.Data;
+using NouAssist.Notification.Notifications.Enums;
+using NouAssist.Notification.Notifications.Permissions;
+using NouAssist.Notification.Notifications.Preferences.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Notifications.Preferences
+namespace NouAssist.Notification.Notifications.Preferences
 {
     [Authorize(NotificationsPermissions.Preferences.Default)]
     public class NotificationPreferenceAppService : ApplicationService, INotificationPreferenceAppService

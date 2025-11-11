@@ -1,7 +1,6 @@
-using System;
 using Volo.Abp;
 
-namespace NouAssist.CustomFields.Exceptions
+namespace NouAssist.Customization.CustomFields.Exceptions
 {
     public class CustomFieldException : BusinessException
     {

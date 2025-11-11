@@ -2,7 +2,7 @@
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.CustomFields.EntityFrameworkCore;
+namespace NouAssist.Customization.CustomFields.EntityFrameworkCore;
 
 [DependsOn(
     typeof(CustomFieldsDomainModule),

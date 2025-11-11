@@ -1,4 +1,4 @@
-namespace NouAssist.Resources.Permissions
+namespace NouAssist.AssetManagement.Resources.Permissions
 {
     public static class ResourcesPermissions
     {

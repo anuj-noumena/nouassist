@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Reviews.Aggregates;
-using NouAssist.Reviews.Data;
-using NouAssist.Reviews.Enums;
+using NouAssist.WorkManagement.Reviews.Aggregates;
+using NouAssist.WorkManagement.Reviews.Data;
+using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Reviews.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Repositories
 {
     public class EfCoreReviewRepository 
         : EfCoreRepository<IReviewsDbContext, Review, Guid>, IReviewRepository

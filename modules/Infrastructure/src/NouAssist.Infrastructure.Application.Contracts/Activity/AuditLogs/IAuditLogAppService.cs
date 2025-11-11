@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Activity.AuditLogs.Dtos;
+using NouAssist.Infrastructure.Activity.AuditLogs.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Activity.AuditLogs
+namespace NouAssist.Infrastructure.Activity.AuditLogs
 {
     public interface IAuditLogAppService : IApplicationService
     {

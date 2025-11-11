@@ -1,7 +1,7 @@
-﻿using NouAssist.Goals.Localization;
+﻿using NouAssist.PersonalDevelopment.Goals.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Goals;
+namespace NouAssist.PersonalDevelopment.Goals;
 
 public abstract class GoalsAppService : ApplicationService
 {

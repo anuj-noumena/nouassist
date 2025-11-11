@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Team.Aggregates
+namespace NouAssist.IdentityAccess.Team.Aggregates
 {
     public class Role : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

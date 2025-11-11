@@ -1,4 +1,4 @@
-namespace NouAssist.Goals.Permissions
+namespace NouAssist.PersonalDevelopment.Goals.Permissions
 {
     public static class GoalsPermissions
     {

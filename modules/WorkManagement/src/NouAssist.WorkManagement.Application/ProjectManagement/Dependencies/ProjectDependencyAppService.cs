@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CoreProductivity.ProjectManagement.Data;
-using NouAssist.CoreProductivity.ProjectManagement.Dependencies.Dtos;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
-using NouAssist.CoreProductivity.ProjectManagement.Permissions;
-using NouAssist.CoreProductivity.ProjectManagement.Services;
+using NouAssist.WorkManagement.ProjectManagement.Data;
+using NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Permissions;
+using NouAssist.WorkManagement.ProjectManagement.Services;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Dependencies
+namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
 {
     [Authorize(ProjectsPermissions.Dependencies.Default)]
     public class ProjectDependencyAppService : ApplicationService, IProjectDependencyAppService

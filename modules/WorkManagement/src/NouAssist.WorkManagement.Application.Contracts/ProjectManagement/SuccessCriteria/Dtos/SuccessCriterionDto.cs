@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos
 {
     public class SuccessCriterionDto : FullAuditedEntityDto<Guid>
     {

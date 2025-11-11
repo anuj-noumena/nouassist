@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp;
 
-namespace NouAssist.Calendar.Exceptions
+namespace NouAssist.TimeManagement.Calendar.Exceptions
 {
     public class CalendarDomainException : BusinessException
     {

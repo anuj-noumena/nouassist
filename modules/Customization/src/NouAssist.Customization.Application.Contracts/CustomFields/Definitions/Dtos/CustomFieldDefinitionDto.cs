@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.CustomFields.Enums;
+using NouAssist.Customization.CustomFields.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CustomFields.Definitions.Dtos
+namespace NouAssist.Customization.CustomFields.Definitions.Dtos
 {
     public class CustomFieldDefinitionDto : FullAuditedEntityDto<Guid>
     {

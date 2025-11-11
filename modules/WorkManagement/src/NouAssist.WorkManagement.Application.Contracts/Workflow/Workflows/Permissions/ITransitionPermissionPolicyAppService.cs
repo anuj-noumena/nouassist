@@ -1,18 +1,11 @@
 using System;
-
 using System.Collections.Generic;
-
 using System.Threading.Tasks;
-
-using NouAssist.Workflow.Permissions.Dtos;
-
+using NouAssist.WorkManagement.Workflow.Workflows.Dtos;
 using Volo.Abp.Application.Dtos;
-
 using Volo.Abp.Application.Services;
 
- 
-
-namespace NouAssist.Workflow.Permissions
+namespace NouAssist.WorkManagement.Workflow.Workflows.Permissions
 
 {
 

@@ -1,4 +1,4 @@
-namespace NouAssist.Meetings.Permissions
+namespace NouAssist.TimeManagement.Meetings.Permissions
 {
     public static class MeetingsPermissions
     {

@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Reminders.Settings;
+namespace NouAssist.Notification.Reminders.Settings;
 
 public class RemindersSettingDefinitionProvider : SettingDefinitionProvider
 {

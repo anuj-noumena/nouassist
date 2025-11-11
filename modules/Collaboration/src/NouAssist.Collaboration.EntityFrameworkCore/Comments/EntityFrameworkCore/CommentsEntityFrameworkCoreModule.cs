@@ -1,12 +1,10 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.Comments.Aggregates;
-using NouAssist.Comments.Data;
-using NouAssist.Comments.EntityFrameworkCore.Repositories;
+using NouAssist.Collaboration.Comments.Aggregates;
+using NouAssist.Collaboration.Comments.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Comments.EntityFrameworkCore
+namespace NouAssist.Collaboration.Comments.EntityFrameworkCore
 {
     [DependsOn(
         typeof(CommentsDomainModule),

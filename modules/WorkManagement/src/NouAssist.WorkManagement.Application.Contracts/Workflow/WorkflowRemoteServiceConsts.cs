@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Workflow;
+﻿namespace NouAssist.WorkManagement.Workflow;
 
 public class WorkflowRemoteServiceConsts
 {

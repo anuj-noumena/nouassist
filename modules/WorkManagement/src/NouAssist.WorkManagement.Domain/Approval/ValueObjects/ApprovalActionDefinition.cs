@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using NouAssist.Approval.Enums;
-using Volo.Abp.Domain.Entities;
+using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Approval.ValueObjects
+namespace NouAssist.WorkManagement.Approval.ValueObjects
 {
     /// <summary>
     /// Defines an allowable or automatic action associated with an approval step.

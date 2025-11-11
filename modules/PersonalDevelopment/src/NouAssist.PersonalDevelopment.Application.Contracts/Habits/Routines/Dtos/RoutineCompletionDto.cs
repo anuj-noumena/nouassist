@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Habits.Routines.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Routines.Dtos
 {
     public class RoutineCompletionDto : EntityDto<Guid>
     {

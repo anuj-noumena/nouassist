@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Notifications.EntityFrameworkCore
+namespace NouAssist.Notification.Notifications.EntityFrameworkCore
 {
     public static class NotificationsDbContextModelCreatingExtensions
     {

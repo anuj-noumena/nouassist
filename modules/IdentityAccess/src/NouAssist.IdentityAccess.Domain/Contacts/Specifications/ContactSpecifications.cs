@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Contacts.Aggregates;
-using NouAssist.Contacts.Enums;
+using NouAssist.IdentityAccess.Contacts.Aggregates;
+using NouAssist.IdentityAccess.Contacts.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Contacts.Specifications
+namespace NouAssist.IdentityAccess.Contacts.Specifications
 {
     public class ActiveContactsSpecification : Specification<Contact>
     {

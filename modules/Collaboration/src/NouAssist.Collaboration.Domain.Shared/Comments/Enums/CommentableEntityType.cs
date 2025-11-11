@@ -1,4 +1,4 @@
-namespace NouAssist.Comments.Enums
+namespace NouAssist.Collaboration.Comments.Enums
 {
     public enum CommentableEntityType : byte
     {

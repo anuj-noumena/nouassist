@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Habits.Settings;
+namespace NouAssist.PersonalDevelopment.Habits.Settings;
 
 public class HabitsSettingDefinitionProvider : SettingDefinitionProvider
 {

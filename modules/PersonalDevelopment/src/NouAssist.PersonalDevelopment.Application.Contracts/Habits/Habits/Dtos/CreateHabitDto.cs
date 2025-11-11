@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
+using DayOfWeek = System.DayOfWeek;
 
-namespace NouAssist.Habits.Dtos
+namespace NouAssist.PersonalDevelopment.Habits.Habits.Dtos
 {
     public class CreateHabitDto
     {

@@ -1,7 +1,7 @@
-﻿using NouAssist.GTD.Localization;
+﻿using NouAssist.WorkManagement.GTD.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.GTD;
+namespace NouAssist.WorkManagement.GTD;
 
 public abstract class GTDAppService : ApplicationService
 {

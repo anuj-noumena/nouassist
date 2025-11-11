@@ -1,6 +1,6 @@
 using Volo.Abp;
 
-namespace NouAssist.Reminders.Exceptions
+namespace NouAssist.Notification.Reminders.Exceptions
 {
     public class ReminderDomainException : BusinessException
     {

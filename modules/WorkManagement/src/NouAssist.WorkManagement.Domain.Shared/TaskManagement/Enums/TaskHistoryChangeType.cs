@@ -1,4 +1,4 @@
-namespace NouAssist.Tasks.Enums
+namespace NouAssist.WorkManagement.TaskManagement.Enums
 {
     /// <summary>
     /// Types of changes that can be recorded in task history

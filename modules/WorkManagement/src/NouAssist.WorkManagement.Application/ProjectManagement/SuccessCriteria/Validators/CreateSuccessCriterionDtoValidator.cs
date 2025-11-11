@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria.Validators
+namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Validators
 {
     public class CreateSuccessCriterionDtoValidator : AbstractValidator<CreateSuccessCriterionDto>
     {

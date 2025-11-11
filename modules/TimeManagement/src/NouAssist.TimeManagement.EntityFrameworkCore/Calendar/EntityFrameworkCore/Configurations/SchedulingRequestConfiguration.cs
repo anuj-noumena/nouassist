@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Calendar.EntityFrameworkCore.Configurations
+namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
 {
     public class SchedulingRequestConfiguration : IEntityTypeConfiguration<SchedulingRequest>
     {

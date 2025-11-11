@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Reminders.Aggregates;
-using NouAssist.Reminders.Enums;
+using NouAssist.Notification.Reminders.Aggregates;
+using NouAssist.Notification.Reminders.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Reminders.Specifications
+namespace NouAssist.Notification.Reminders.Specifications
 {
     public class DueRemindersSpecification : Specification<Reminder>
     {

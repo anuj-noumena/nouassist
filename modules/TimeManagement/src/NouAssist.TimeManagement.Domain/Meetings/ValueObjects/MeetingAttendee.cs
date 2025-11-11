@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Meetings.Enums;
+using NouAssist.TimeManagement.Meetings.Enums;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Meetings.ValueObjects
+namespace NouAssist.TimeManagement.Meetings.ValueObjects
 {
     public class MeetingAttendee : ValueObject
     {

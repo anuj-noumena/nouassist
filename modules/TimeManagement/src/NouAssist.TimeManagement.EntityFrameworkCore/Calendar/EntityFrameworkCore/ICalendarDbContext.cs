@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Calendar.EntityFrameworkCore
+namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore
 {
     [ConnectionStringName(CalendarDbProperties.ConnectionStringName)]
     public interface ICalendarDbContext : IEfCoreDbContext

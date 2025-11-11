@@ -1,7 +1,6 @@
-using System;
 using Volo.Abp;
 
-namespace NouAssist.Approval.Exceptions
+namespace NouAssist.WorkManagement.Approval.Exceptions
 {
     public class ApprovalWorkflowException : BusinessException
     {

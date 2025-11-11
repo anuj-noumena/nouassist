@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Workflow.Enums;
+using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Workflow.Aggregates
+namespace NouAssist.WorkManagement.Workflow.Aggregates
 {
     /// <summary>
     /// Aggregate root representing a permission policy for workflow transitions.

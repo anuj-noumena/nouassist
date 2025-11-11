@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Settings;
 
-namespace NouAssist.Reviews.Settings;
+namespace NouAssist.WorkManagement.Reviews.Settings;
 
 public class ReviewsSettingDefinitionProvider : SettingDefinitionProvider
 {

@@ -1,14 +1,13 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.Habits.Aggregates;
-using NouAssist.Habits.Data;
-using NouAssist.Habits.Entities;
-using NouAssist.Habits.Events;
+using NouAssist.PersonalDevelopment.Habits.Data;
+using NouAssist.PersonalDevelopment.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Habits.Services
+namespace NouAssist.PersonalDevelopment.Habits.Services
 {
     public class HabitTrackingService : DomainService
     {

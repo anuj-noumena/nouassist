@@ -1,4 +1,4 @@
-﻿namespace NouAssist.Reminders.Settings;
+﻿namespace NouAssist.Notification.Reminders.Settings;
 
 public static class RemindersSettings
 {

@@ -1,11 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.EntityFrameworkCore.Projects.Repositories;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Entities;
+using NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Repositories;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.EntityFrameworkCore.Projects
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement
 {
     [DependsOn(
         typeof(ProjectManagementDomainModule),

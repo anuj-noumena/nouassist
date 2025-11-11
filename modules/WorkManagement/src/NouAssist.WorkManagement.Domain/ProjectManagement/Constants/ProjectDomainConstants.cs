@@ -1,4 +1,4 @@
-namespace NouAssist.CoreProductivity.ProjectManagement.Constants
+namespace NouAssist.WorkManagement.ProjectManagement.Constants
 {
     public static class ProjectDomainConstants
     {

@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.CoreProductivity.ProjectManagement.Aggregates;
-using NouAssist.CoreProductivity.ProjectManagement.Constants;
+using NouAssist.WorkManagement.ProjectManagement.Aggregates;
+using NouAssist.WorkManagement.ProjectManagement.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.EntityFrameworkCore.Projects.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configurations
 {
     public class ProjectAggregateConfiguration : IEntityTypeConfiguration<Project>
     {

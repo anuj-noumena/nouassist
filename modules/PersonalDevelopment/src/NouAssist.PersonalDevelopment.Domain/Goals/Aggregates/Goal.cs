@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Core.Enums;
-using NouAssist.Core.Events;
-using NouAssist.Core.ValueObjects;
-using NouAssist.Goals.Entities;
+using NouAssist.PersonalDevelopment.Goals.Entities;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Goals.Aggregates
+namespace NouAssist.PersonalDevelopment.Goals.Aggregates
 {
     public class Goal : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

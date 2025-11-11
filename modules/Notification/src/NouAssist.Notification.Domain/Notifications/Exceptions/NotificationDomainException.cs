@@ -1,6 +1,6 @@
 using Volo.Abp;
 
-namespace NouAssist.Notifications.Exceptions
+namespace NouAssist.Notification.Notifications.Exceptions
 {
     public class NotificationDomainException : BusinessException
     {

@@ -1,4 +1,4 @@
-namespace NouAssist.Resources.Enums
+namespace NouAssist.AssetManagement.Resources.Enums
 {
     public enum InventoryStatus : byte
     {

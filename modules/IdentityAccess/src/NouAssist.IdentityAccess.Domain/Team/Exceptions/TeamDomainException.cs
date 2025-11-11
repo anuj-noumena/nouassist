@@ -1,7 +1,6 @@
-using System;
 using Volo.Abp;
 
-namespace NouAssist.Team.Exceptions
+namespace NouAssist.IdentityAccess.Team.Exceptions
 {
     public class TeamException : BusinessException
     {

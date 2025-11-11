@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.SuccessCriteria
+namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
 {
     public interface IProjectSuccessCriterionAppService : IApplicationService
     {

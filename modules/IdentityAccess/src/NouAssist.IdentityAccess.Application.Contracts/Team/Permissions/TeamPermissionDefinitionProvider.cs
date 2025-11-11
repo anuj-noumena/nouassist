@@ -1,8 +1,8 @@
-using NouAssist.Team.Localization;
+using NouAssist.IdentityAccess.Team.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.Team.Permissions
+namespace NouAssist.IdentityAccess.Team.Permissions
 {
     public class TeamPermissionDefinitionProvider : PermissionDefinitionProvider
     {

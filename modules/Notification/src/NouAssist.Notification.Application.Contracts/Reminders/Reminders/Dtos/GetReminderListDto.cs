@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Reminders.Enums;
+using NouAssist.Notification.Reminders.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Reminders.Reminders.Dtos
+namespace NouAssist.Notification.Reminders.Reminders.Dtos
 {
     public class GetReminderListDto : PagedAndSortedResultRequestDto
     {

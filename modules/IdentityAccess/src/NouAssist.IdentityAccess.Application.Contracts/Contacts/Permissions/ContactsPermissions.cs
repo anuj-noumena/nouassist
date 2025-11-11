@@ -1,4 +1,4 @@
-namespace NouAssist.Contacts.Permissions
+namespace NouAssist.IdentityAccess.Contacts.Permissions
 {
     public static class ContactsPermissions
     {

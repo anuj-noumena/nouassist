@@ -1,14 +1,14 @@
 using AutoMapper;
-using NouAssist.Calendar.Aggregates;
-using NouAssist.Calendar.Calendars.Dtos;
-using NouAssist.Calendar.CalendarEvents.Dtos;
-using NouAssist.Calendar.Entities;
-using NouAssist.Calendar.SchedulingRequests.Dtos;
-using NouAssist.Calendar.Timeblocks.Dtos;
-using NouAssist.Calendar.TimeEntries.Dtos;
-using NouAssist.Calendar.ValueObjects;
+using NouAssist.TimeManagement.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.CalendarEvents.Dtos;
+using NouAssist.TimeManagement.Calendar.Calendars.Dtos;
+using NouAssist.TimeManagement.Calendar.Entities;
+using NouAssist.TimeManagement.Calendar.SchedulingRequests.Dtos;
+using NouAssist.TimeManagement.Calendar.Timeblocks.Dtos;
+using NouAssist.TimeManagement.Calendar.TimeEntries.Dtos;
+using NouAssist.TimeManagement.Calendar.ValueObjects;
 
-namespace NouAssist.Calendar
+namespace NouAssist.TimeManagement.Calendar
 {
     public class CalendarApplicationAutoMapperProfile : Profile
     {

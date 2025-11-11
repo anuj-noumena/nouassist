@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Contacts.Dtos
+namespace NouAssist.IdentityAccess.Contacts.Clients.Dtos
 {
     public class UpdateClientDto
     {

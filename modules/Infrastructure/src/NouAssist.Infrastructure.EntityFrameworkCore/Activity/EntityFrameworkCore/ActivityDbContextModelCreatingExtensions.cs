@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
-using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Activity.EntityFrameworkCore
+namespace NouAssist.Infrastructure.Activity.EntityFrameworkCore
 {
     public static class ActivityDbContextModelCreatingExtensions
     {

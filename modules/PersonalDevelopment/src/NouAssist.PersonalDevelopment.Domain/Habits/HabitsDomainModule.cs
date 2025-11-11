@@ -1,7 +1,7 @@
 ﻿using Volo.Abp.Domain;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.Habits;
+namespace NouAssist.PersonalDevelopment.Habits;
 
 [DependsOn(
     typeof(AbpDddDomainModule),

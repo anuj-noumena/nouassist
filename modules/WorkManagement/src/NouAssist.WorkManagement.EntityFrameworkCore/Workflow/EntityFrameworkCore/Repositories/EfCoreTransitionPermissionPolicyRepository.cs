@@ -1,28 +1,16 @@
 using System;
-
 using System.Collections.Generic;
-
 using System.Linq;
-
 using System.Threading;
-
 using System.Threading.Tasks;
-
 using Microsoft.EntityFrameworkCore;
-
-using NouAssist.Workflow.Aggregates;
-
-using NouAssist.Workflow.Data;
-
-using NouAssist.Workflow.Enums;
-
+using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
-
 using Volo.Abp.EntityFrameworkCore;
 
- 
-
-namespace NouAssist.Workflow.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
 
 {
 

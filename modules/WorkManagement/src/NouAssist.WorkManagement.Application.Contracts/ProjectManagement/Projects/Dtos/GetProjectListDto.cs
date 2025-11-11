@@ -1,8 +1,8 @@
 using System;
-using NouAssist.CoreProductivity.ProjectManagement.Enums;
+using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Projects.Dtos
+namespace NouAssist.WorkManagement.ProjectManagement.Projects.Dtos
 {
     public class GetProjectListDto : PagedAndSortedResultRequestDto
     {

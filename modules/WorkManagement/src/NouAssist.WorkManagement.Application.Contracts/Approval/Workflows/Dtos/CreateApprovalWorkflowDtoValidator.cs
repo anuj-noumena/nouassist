@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace NouAssist.Approval.Workflows.Dtos
+namespace NouAssist.WorkManagement.Approval.Workflows.Dtos
 {
     public class CreateApprovalWorkflowDtoValidator : AbstractValidator<CreateApprovalWorkflowDto>
     {

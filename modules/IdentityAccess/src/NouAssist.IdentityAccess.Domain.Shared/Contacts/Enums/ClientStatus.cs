@@ -1,4 +1,4 @@
-namespace NouAssist.Contacts.Enums
+namespace NouAssist.IdentityAccess.Contacts.Enums
 {
     public enum ClientStatus : byte
     {

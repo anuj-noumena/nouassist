@@ -1,6 +1,6 @@
 using System;
 
-namespace NouAssist.Workflow.Workflows.Dtos
+namespace NouAssist.WorkManagement.Workflow.Workflows.Dtos
 {
     public class WorkflowSchemeMappingDto
     {

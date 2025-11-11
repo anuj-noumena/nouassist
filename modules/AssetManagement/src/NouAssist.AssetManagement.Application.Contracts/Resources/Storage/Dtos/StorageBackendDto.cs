@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Resources.Storage.Dtos
+namespace NouAssist.AssetManagement.Resources.Storage.Dtos
 {
     public class StorageBackendDto : FullAuditedEntityDto<Guid>
     {

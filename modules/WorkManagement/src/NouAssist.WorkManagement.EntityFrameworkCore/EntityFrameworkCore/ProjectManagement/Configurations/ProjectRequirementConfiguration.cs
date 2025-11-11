@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Workflow.Entities;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.EntityFrameworkCore.Projects.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configurations
 {
     public class ProjectRequirementConfiguration : IEntityTypeConfiguration<ProjectRequirement>
     {

@@ -1,10 +1,10 @@
 using System;
-using NouAssist.Habits.Enums;
+using NouAssist.PersonalDevelopment.Habits.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Habits.Aggregates
+namespace NouAssist.PersonalDevelopment.Habits.Aggregates
 {
     public class EnergyTrackingEntry : AuditedAggregateRoot<Guid>, IMultiTenant
     {

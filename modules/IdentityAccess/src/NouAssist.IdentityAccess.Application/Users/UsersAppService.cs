@@ -1,7 +1,7 @@
-﻿using NouAssist.Users.Localization;
+﻿using NouAssist.IdentityAccess.Users.Localization;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Users;
+namespace NouAssist.IdentityAccess.Users;
 
 public abstract class UsersAppService : ApplicationService
 {

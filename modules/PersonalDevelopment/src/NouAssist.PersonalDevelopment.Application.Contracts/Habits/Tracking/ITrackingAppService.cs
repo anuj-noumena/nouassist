@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Habits.Tracking.Dtos;
+using NouAssist.PersonalDevelopment.Habits.Tracking.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Habits.Tracking
+namespace NouAssist.PersonalDevelopment.Habits.Tracking
 {
     public interface ITrackingAppService : IApplicationService
     {

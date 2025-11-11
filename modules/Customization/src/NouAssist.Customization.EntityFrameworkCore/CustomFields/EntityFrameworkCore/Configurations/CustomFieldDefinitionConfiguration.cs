@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.CustomFields.Aggregates;
-using NouAssist.CustomFields.ValueObjects;
+using NouAssist.Customization.CustomFields.Aggregates;
+using NouAssist.Customization.CustomFields.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.CustomFields.EntityFrameworkCore.Configurations
+namespace NouAssist.Customization.CustomFields.EntityFrameworkCore.Configurations
 {
     public class CustomFieldDefinitionConfiguration : IEntityTypeConfiguration<CustomFieldDefinition>
     {

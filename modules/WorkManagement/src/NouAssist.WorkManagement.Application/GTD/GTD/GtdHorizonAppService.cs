@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Data;
-using NouAssist.GTD.Dtos;
-using NouAssist.GTD.Enums;
-using NouAssist.GTD.Permissions;
+using NouAssist.WorkManagement.GTD.Aggregates;
+using NouAssist.WorkManagement.GTD.Data;
+using NouAssist.WorkManagement.GTD.GTD.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.GTD.GTD
+namespace NouAssist.WorkManagement.GTD.GTD
 {
     [Authorize(GtdPermissions.Horizons.Default)]
     public class GtdHorizonAppService : ApplicationService, IGtdHorizonAppService

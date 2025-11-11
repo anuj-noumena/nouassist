@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Team.Aggregates;
-using NouAssist.Team.Entities;
+using NouAssist.IdentityAccess.Team.Aggregates;
+using NouAssist.IdentityAccess.Team.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Team.EntityFrameworkCore
+namespace NouAssist.IdentityAccess.Team.EntityFrameworkCore
 {
     [ConnectionStringName(TeamDbProperties.ConnectionStringName)]
     public class TeamDbContext : AbpDbContext<TeamDbContext>, ITeamDbContext

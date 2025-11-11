@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Calendar.Calendars.Dtos
+namespace NouAssist.TimeManagement.Calendar.Calendars.Dtos
 {
     public class CalendarDto : FullAuditedEntityDto<Guid>
     {

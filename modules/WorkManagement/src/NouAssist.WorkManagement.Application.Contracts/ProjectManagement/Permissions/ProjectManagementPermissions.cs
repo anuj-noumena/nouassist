@@ -1,6 +1,6 @@
 ﻿using Volo.Abp.Reflection;
 
-namespace NouAssist.CoreProductivity.ProjectManagement.Permissions;
+namespace NouAssist.WorkManagement.ProjectManagement.Permissions;
 
 public class ProjectManagementPermissions
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using NouAssist.Resources.Aggregates;
+using NouAssist.AssetManagement.Resources.Aggregates;
 
-namespace NouAssist.Resources.Services.Results
+namespace NouAssist.AssetManagement.Resources.Services.Results
 {
     public class CheckOutResult
     {

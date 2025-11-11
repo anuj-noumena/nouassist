@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.AssetManagement.Permissions;
 using NouAssist.AssetManagement.Resources.Aggregates;
 using NouAssist.AssetManagement.Resources.Data;
 using NouAssist.AssetManagement.Resources.Inventory.Dtos;
-using NouAssist.AssetManagement.Resources.Permissions;
 using NouAssist.AssetManagement.Resources.Services;
 using NouAssist.AssetManagement.Resources.Specifications;
 using Volo.Abp;
@@ -15,7 +15,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.AssetManagement.Resources.Inventory
 {
-    [Authorize(ResourcesPermissions.Inventory.Default)]
+    [Authorize(AssetManagementPermissions.Resources.Inventory.Default)]
     public class InventoryAppService : ApplicationService, IInventoryAppService
     {
         private readonly IInventoryItemRepository _inventoryRepository;
@@ -48,7 +48,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             );
         }
 
-        [Authorize(ResourcesPermissions.Inventory.Create)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.Create)]
         public async Task<InventoryItemDto> CreateAsync(CreateInventoryItemDto input)
         {
             var item = new InventoryItem(
@@ -104,14 +104,14 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             return MapToDto(item);
         }
 
-        [Authorize(ResourcesPermissions.Inventory.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.Update)]
         public async Task<InventoryItemDto> UpdateAsync(Guid id, UpdateInventoryItemDto input)
         {
             var item = await _inventoryRepository.GetAsync(id);
 
             // Authorization check (could be owner or admin)
             if (item.OwnerId != CurrentUser.Id.Value && 
-                !await AuthorizationService.IsGrantedAsync(ResourcesPermissions.Inventory.ViewAll))
+                !await AuthorizationService.IsGrantedAsync(AssetManagementPermissions.Resources.Inventory.ViewAll))
             {
                 throw new BusinessException("Inventory:NotAuthorized", "You are not authorized to update this item.");
             }
@@ -135,14 +135,14 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             return MapToDto(item);
         }
 
-        [Authorize(ResourcesPermissions.Inventory.Delete)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var item = await _inventoryRepository.GetAsync(id);
 
             // Authorization check
             if (item.OwnerId != CurrentUser.Id.Value && 
-                !await AuthorizationService.IsGrantedAsync(ResourcesPermissions.Inventory.ViewAll))
+                !await AuthorizationService.IsGrantedAsync(AssetManagementPermissions.Resources.Inventory.ViewAll))
             {
                 throw new BusinessException("Inventory:NotAuthorized", "You are not authorized to delete this item.");
             }
@@ -151,7 +151,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             await _inventoryRepository.UpdateAsync(item);
         }
 
-        [Authorize(ResourcesPermissions.Inventory.CheckOut)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.CheckOut)]
         public async Task<InventoryItemDto> CheckOutAsync(Guid id, CheckOutInventoryDto input)
         {
             var item = await _inventoryRepository.GetAsync(id);
@@ -174,7 +174,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             return MapToDto(result.CheckedOutItem);
         }
 
-        [Authorize(ResourcesPermissions.Inventory.CheckIn)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.CheckIn)]
         public async Task<InventoryItemDto> CheckInAsync(Guid id, CheckInInventoryDto input)
         {
             var item = await _inventoryRepository.GetAsync(id);
@@ -186,7 +186,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             return MapToDto(item);
         }
 
-        [Authorize(ResourcesPermissions.Inventory.ScheduleMaintenance)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.ScheduleMaintenance)]
         public async Task<InventoryItemDto> ScheduleMaintenanceAsync(Guid id, ScheduleMaintenanceDto input)
         {
             var item = await _inventoryRepository.GetAsync(id);
@@ -204,7 +204,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             return MapToDto(item);
         }
 
-        [Authorize(ResourcesPermissions.Inventory.ScheduleMaintenance)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.ScheduleMaintenance)]
         public async Task<InventoryItemDto> CompleteMaintenanceAsync(Guid id, string notes)
         {
             var item = await _inventoryRepository.GetAsync(id);
@@ -216,14 +216,14 @@ namespace NouAssist.AssetManagement.Resources.Inventory
             return MapToDto(item);
         }
 
-        [Authorize(ResourcesPermissions.Inventory.ViewAll)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.ViewAll)]
         public async Task<List<InventoryItemDto>> GetOverdueItemsAsync()
         {
             var items = await _managementService.GetOverdueItemsAsync();
             return items.Select(MapToDto).ToList();
         }
 
-        [Authorize(ResourcesPermissions.Inventory.ViewAll)]
+        [Authorize(AssetManagementPermissions.Resources.Inventory.ViewAll)]
         public async Task<List<InventoryItemDto>> GetItemsDueForMaintenanceAsync()
         {
             var items = await _managementService.GetItemsDueForMaintenanceAsync();

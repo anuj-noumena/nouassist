@@ -2,16 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.SharedKernel.Enums;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
-using NouAssist.WorkManagement.GTD.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Enums;
+using NouAssist.WorkManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.GTD.GTD
 {
-    [Authorize(GtdPermissions.Horizons.Default)]
+    [Authorize(WorkManagementPermissions.GTD.Horizons.Default)]
     public class GtdHorizonAppService : ApplicationService, IGtdHorizonAppService
     {
         private readonly IGtdHorizonRepository _horizonRepository;
@@ -52,7 +56,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return new ListResultDto<GtdHorizonDto>(dtos);
         }
 
-        [Authorize(GtdPermissions.Horizons.Create)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Create)]
         public async Task<GtdHorizonDto> CreateAsync(CreateGtdHorizonDto input)
         {
             var userId = CurrentUser.GetId();
@@ -79,7 +83,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Update)]
         public async Task<GtdHorizonDto> UpdateAsync(Guid id, UpdateGtdHorizonDto input)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -103,13 +107,13 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Delete)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _horizonRepository.DeleteAsync(id);
         }
 
-        [Authorize(GtdPermissions.Horizons.Review)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Review)]
         public async Task<GtdHorizonDto> MarkAsReviewedAsync(Guid id)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -118,7 +122,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Publish)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Publish)]
         public async Task<GtdHorizonDto> PublishAsync(Guid id)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -127,7 +131,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Update)]
         public async Task<GtdHorizonDto> LinkGoalAsync(Guid id, Guid goalId)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -136,7 +140,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Update)]
         public async Task<GtdHorizonDto> LinkAreaAsync(Guid id, Guid areaId)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -145,7 +149,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Update)]
         public async Task<GtdHorizonDto> LinkProjectAsync(Guid id, Guid projectId)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -154,7 +158,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Update)]
         public async Task<GtdHorizonDto> AddCoreValueAsync(Guid id, string value)
         {
             var horizon = await _horizonRepository.GetAsync(id);
@@ -163,7 +167,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
         }
 
-        [Authorize(GtdPermissions.Horizons.Update)]
+        [Authorize(WorkManagementPermissions.GTD.Horizons.Update)]
         public async Task<GtdHorizonDto> AddKeyThemeAsync(Guid id, string theme)
         {
             var horizon = await _horizonRepository.GetAsync(id);

@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
+using NouAssist.SharedKernel.Enums;
 using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.ProjectManagement.Aggregates;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
-using NouAssist.WorkManagement.Shared.Enums;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Specifications
 {

@@ -1,6 +1,8 @@
 using AutoMapper;
 using NouAssist.SharedKernel.Aggregates;
-using NouAssist.SharedKernel.Logs.Dtos;
+using NouAssist.SharedKernel.Areas.Dtos;
+using NouAssist.SharedKernel.Contexts.Dtos;
+using NouAssist.SharedKernel.Inbox.Dtos;
 using NouAssist.SharedKernel.Tags.Dtos;
 
 namespace NouAssist.SharedKernel

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using FluentValidation;
-using NouAssist.WorkManagement.GTD.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Dtos;
 
 namespace NouAssist.WorkManagement.GTD.GTD.Validators
 {

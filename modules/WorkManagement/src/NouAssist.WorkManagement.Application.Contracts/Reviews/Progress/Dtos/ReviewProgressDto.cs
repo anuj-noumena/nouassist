@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.WorkManagement.Reviews.Progress.Dtos

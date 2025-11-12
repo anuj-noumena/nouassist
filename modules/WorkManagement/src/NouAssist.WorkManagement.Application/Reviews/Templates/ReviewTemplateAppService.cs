@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.Reviews.Aggregates;
 using NouAssist.WorkManagement.Reviews.Data;
 using NouAssist.WorkManagement.Reviews.Enums;
-using NouAssist.WorkManagement.Reviews.Permissions;
 using NouAssist.WorkManagement.Reviews.Templates.Dtos;
 using NouAssist.WorkManagement.Reviews.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.Reviews.Templates
 {
-    [Authorize(ReviewsPermissions.Templates.ViewSystem)]
+    [Authorize(WorkManagementPermissions.Reviews.Templates.ViewSystem)]
     public class ReviewTemplateAppService : ApplicationService, IReviewTemplateAppService
     {
         private readonly IReviewTemplateRepository _templateRepository;
@@ -65,7 +66,7 @@ namespace NouAssist.WorkManagement.Reviews.Templates
             return new PagedResultDto<ReviewTemplateDto>(totalCount, dtos);
         }
 
-        [Authorize(ReviewsPermissions.Templates.Create)]
+        [Authorize(WorkManagementPermissions.Reviews.Templates.Create)]
         public async Task<ReviewTemplateDto> CreateAsync(CreateReviewTemplateDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -87,7 +88,7 @@ namespace NouAssist.WorkManagement.Reviews.Templates
             return ObjectMapper.Map<ReviewTemplate, ReviewTemplateDto>(template);
         }
 
-        [Authorize(ReviewsPermissions.Templates.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.Templates.Edit)]
         public async Task<ReviewTemplateDto> UpdateAsync(Guid id, UpdateReviewTemplateDto input)
         {
             var template = await _templateRepository.GetAsync(id);
@@ -117,7 +118,7 @@ namespace NouAssist.WorkManagement.Reviews.Templates
             return ObjectMapper.Map<ReviewTemplate, ReviewTemplateDto>(template);
         }
 
-        [Authorize(ReviewsPermissions.Templates.Delete)]
+        [Authorize(WorkManagementPermissions.Reviews.Templates.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var template = await _templateRepository.GetAsync(id);
@@ -166,7 +167,7 @@ namespace NouAssist.WorkManagement.Reviews.Templates
             return new ListResultDto<ReviewTemplateDto>(dtos);
         }
 
-        [Authorize(ReviewsPermissions.Templates.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.Templates.Edit)]
         public async Task<ReviewTemplateDto> AddChecklistStepAsync(Guid id, AddChecklistStepDto input)
         {
             var template = await _templateRepository.GetAsync(id);
@@ -184,7 +185,7 @@ namespace NouAssist.WorkManagement.Reviews.Templates
             return ObjectMapper.Map<ReviewTemplate, ReviewTemplateDto>(template);
         }
 
-        [Authorize(ReviewsPermissions.Templates.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.Templates.Edit)]
         public async Task<ReviewTemplateDto> RemoveChecklistStepAsync(Guid id, int stepNumber)
         {
             var template = await _templateRepository.GetAsync(id);
@@ -201,7 +202,7 @@ namespace NouAssist.WorkManagement.Reviews.Templates
             return ObjectMapper.Map<ReviewTemplate, ReviewTemplateDto>(template);
         }
 
-        [Authorize(ReviewsPermissions.Templates.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.Templates.Edit)]
         public async Task<ReviewTemplateDto> AddReflectionPromptAsync(Guid id, string prompt)
         {
             var template = await _templateRepository.GetAsync(id);
@@ -218,7 +219,7 @@ namespace NouAssist.WorkManagement.Reviews.Templates
             return ObjectMapper.Map<ReviewTemplate, ReviewTemplateDto>(template);
         }
 
-        [Authorize(ReviewsPermissions.Templates.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.Templates.Edit)]
         public async Task<ReviewTemplateDto> RemoveReflectionPromptAsync(Guid id, string prompt)
         {
             var template = await _templateRepository.GetAsync(id);

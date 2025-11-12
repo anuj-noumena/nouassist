@@ -19,7 +19,7 @@ namespace NouAssist.SharedKernel.Tags
 
     public interface ITagCategoryAppService : IApplicationService
     {
-        Task<ListResultDto<TagCategoryDto>> GetMyCategor iesAsync();
+        Task<ListResultDto<TagCategoryDto>> GetMyCategoriesAsync();
         Task<TagCategoryDto> CreateAsync(CreateTagCategoryDto input);
         Task<TagCategoryDto> UpdateAsync(Guid id, UpdateTagCategoryDto input);
         Task DeleteAsync(Guid id);

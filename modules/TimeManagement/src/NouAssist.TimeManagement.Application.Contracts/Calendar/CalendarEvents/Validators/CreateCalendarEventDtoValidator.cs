@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.TimeManagement.Calendar.CalendarEvents.Dtos;
 
 namespace NouAssist.TimeManagement.Calendar.CalendarEvents.Validators

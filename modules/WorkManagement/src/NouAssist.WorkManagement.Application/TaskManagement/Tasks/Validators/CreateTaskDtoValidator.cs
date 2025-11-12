@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
 
 namespace NouAssist.WorkManagement.TaskManagement.Tasks.Validators

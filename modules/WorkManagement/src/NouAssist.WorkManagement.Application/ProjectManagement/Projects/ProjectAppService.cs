@@ -4,9 +4,10 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.SharedKernel.Specifications;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Aggregates;
 using NouAssist.WorkManagement.ProjectManagement.Data;
-using NouAssist.WorkManagement.ProjectManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Projects.Dtos;
 using NouAssist.WorkManagement.ProjectManagement.Specifications;
 using Volo.Abp.Application.Dtos;
@@ -16,7 +17,7 @@ using Volo.Abp.Specifications;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Projects
 {
-    [Authorize(ProjectsPermissions.Projects.Default)]
+    [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Default)]
     public class ProjectAppService : ApplicationService, IProjectAppService
     {
         private readonly IProjectRepository _projectRepository;
@@ -78,7 +79,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             );
         }
 
-        [Authorize(ProjectsPermissions.Projects.Create)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Create)]
         public async Task<ProjectDto> CreateAsync(CreateProjectDto input)
         {
             var project = new Project(
@@ -104,7 +105,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Update)]
         public async Task<ProjectDto> UpdateAsync(Guid id, UpdateProjectDto input)
         {
             var project = await _projectRepository.GetAsync(id);
@@ -127,13 +128,13 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Delete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _projectRepository.DeleteAsync(id);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Update)]
         public async Task<ProjectDto> StartAsync(Guid id)
         {
             var project = await _projectRepository.GetAsync(id);
@@ -145,7 +146,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Complete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Complete)]
         public async Task<ProjectDto> CompleteAsync(Guid id)
         {
             var project = await _projectRepository.GetAsync(id);
@@ -158,7 +159,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Cancel)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Cancel)]
         public async Task<ProjectDto> CancelAsync(Guid id)
         {
             var project = await _projectRepository.GetAsync(id);
@@ -170,7 +171,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Update)]
         public async Task<ProjectDto> PauseAsync(Guid id)
         {
             var project = await _projectRepository.GetAsync(id);
@@ -182,7 +183,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Archive)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Archive)]
         public async Task<ProjectDto> ArchiveAsync(Guid id)
         {
             var project = await _projectRepository.GetAsync(id);
@@ -194,7 +195,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Update)]
         public async Task<ProjectDto> UpdateProgressAsync(Guid id, UpdateProjectProgressDto input)
         {
             var project = await _projectRepository.GetAsync(id);
@@ -206,7 +207,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects
             return ObjectMapper.Map<Project, ProjectDto>(project);
         }
 
-        [Authorize(ProjectsPermissions.Projects.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Projects.Update)]
         public async Task<ProjectDto> UpdatePriorityAsync(Guid id, UpdateProjectPriorityDto input)
         {
             var project = await _projectRepository.GetAsync(id);

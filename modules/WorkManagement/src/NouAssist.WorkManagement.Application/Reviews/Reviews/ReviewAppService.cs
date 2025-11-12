@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.Reviews.Aggregates;
 using NouAssist.WorkManagement.Reviews.Data;
 using NouAssist.WorkManagement.Reviews.Entities;
-using NouAssist.WorkManagement.Reviews.Permissions;
 using NouAssist.WorkManagement.Reviews.Progress.Dtos;
 using NouAssist.WorkManagement.Reviews.Reviews.Dtos;
 using NouAssist.WorkManagement.Reviews.Services;
@@ -15,10 +15,11 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Specifications;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.Reviews.Reviews
 {
-    [Authorize(ReviewsPermissions.Reviews.ViewOwn)]
+    [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.ViewOwn)]
     public class ReviewAppService : ApplicationService, IReviewAppService
     {
         private readonly IReviewRepository _reviewRepository;
@@ -70,7 +71,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return new PagedResultDto<ReviewDto>(totalCount, dtos);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Create)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Create)]
         public async Task<ReviewDto> CreateAsync(CreateReviewDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -90,7 +91,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Delete)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var review = await _reviewRepository.GetAsync(id);
@@ -109,7 +110,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             await _reviewRepository.DeleteAsync(id);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Edit)]
         public async Task<ReviewDto> UpdateReflectionsAsync(Guid id, UpdateReviewReflectionsDto input)
         {
             var review = await _reviewRepository.GetAsync(id);
@@ -136,7 +137,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Edit)]
         public async Task<ReviewDto> SetScoresAsync(Guid id, SetReviewScoresDto input)
         {
             var review = await _reviewRepository.GetAsync(id);
@@ -158,7 +159,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Complete)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Complete)]
         public async Task<ReviewDto> CompleteAsync(Guid id, CompleteReviewDto input)
         {
             var review = await _reviewRepository.GetAsync(id);
@@ -179,7 +180,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Edit)]
         public async Task<ReviewDto> RecordTimeSpentAsync(Guid id, RecordTimeSpentDto input)
         {
             var review = await _reviewRepository.GetAsync(id);
@@ -196,7 +197,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Edit)]
         public async Task<ReviewDto> AddActionItemAsync(Guid id, AddReviewActionItemDto input)
         {
             var review = await _reviewRepository.GetAsync(id);
@@ -213,7 +214,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Edit)]
         public async Task<ReviewDto> CompleteActionItemAsync(Guid reviewId, int actionItemIndex)
         {
             var review = await _reviewRepository.GetAsync(reviewId);
@@ -230,7 +231,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Edit)]
         public async Task<ReviewDto> AddReviewItemAsync(Guid id, AddReviewItemDto input)
         {
             var review = await _reviewRepository.GetWithDetailsAsync(id);
@@ -252,7 +253,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<Review, ReviewDto>(review);
         }
 
-        [Authorize(ReviewsPermissions.Reviews.Edit)]
+        [Authorize(WorkManagementPermissions.Reviews.ReviewManagement.Edit)]
         public async Task<ReviewItemDto> ReviewItemAsync(Guid reviewId, Guid itemId, ReviewItemDecisionDto input)
         {
             var review = await _reviewRepository.GetWithDetailsAsync(reviewId);
@@ -320,7 +321,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
             return ObjectMapper.Map<ReviewProgress, ReviewProgressDto>(progress);
         }
 
-        [Authorize(ReviewsPermissions.Analytics.ViewOwn)]
+        [Authorize(WorkManagementPermissions.Reviews.Analytics.ViewOwn)]
         public async Task<ReviewQualityAnalysisDto> GetQualityAnalysisAsync(Guid id)
         {
             var review = await _reviewRepository.GetAsync(id);

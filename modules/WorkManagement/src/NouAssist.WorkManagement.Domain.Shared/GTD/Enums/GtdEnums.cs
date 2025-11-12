@@ -140,4 +140,11 @@ namespace NouAssist.WorkManagement.GTD.Enums
         Cancelled = 4,
         Escalated = 5
     }
+    
+    public enum FollowupStatus : byte
+    {
+        Scheduled = 1,
+        Dismissed = 2,
+        Done = 3
+    }
 }

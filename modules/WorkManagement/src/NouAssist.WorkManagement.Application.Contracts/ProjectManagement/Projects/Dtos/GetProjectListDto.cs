@@ -1,4 +1,5 @@
 using System;
+using NouAssist.SharedKernel.Enums;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp.Application.Dtos;
 

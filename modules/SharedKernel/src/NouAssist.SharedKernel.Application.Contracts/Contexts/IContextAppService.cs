@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using NouAssist.SharedKernel.Contexts.Dtos;
 using NouAssist.SharedKernel.Tags.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;

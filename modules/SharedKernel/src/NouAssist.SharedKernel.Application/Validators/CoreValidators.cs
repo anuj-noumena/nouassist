@@ -1,3 +1,7 @@
+using FluentValidation;
+using NouAssist.SharedKernel.Areas.Dtos;
+using NouAssist.SharedKernel.Contexts.Dtos;
+using NouAssist.SharedKernel.Inbox.Dtos;
 using NouAssist.SharedKernel.Tags.Dtos;
 
 namespace NouAssist.SharedKernel.Validators

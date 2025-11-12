@@ -1,11 +1,12 @@
 using System;
+using NouAssist.SharedKernel.ValueObjects;
 using NouAssist.WorkManagement.GTD.Enums;
 using NouAssist.WorkManagement.GTD.Events;
 using NouAssist.WorkManagement.GTD.ValueObjects;
-using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
+using RecurrenceRule = NouAssist.WorkManagement.TaskManagement.ValueObjects.RecurrenceRule;
 
 namespace NouAssist.WorkManagement.GTD.Aggregates
 {

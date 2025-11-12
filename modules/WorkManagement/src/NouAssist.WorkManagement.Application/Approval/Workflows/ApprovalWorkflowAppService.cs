@@ -6,8 +6,8 @@ using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.Approval.Aggregates;
 using NouAssist.WorkManagement.Approval.Data;
 using NouAssist.WorkManagement.Approval.Entities;
-using NouAssist.WorkManagement.Approval.Permissions;
 using NouAssist.WorkManagement.Approval.Workflows.Dtos;
+using NouAssist.WorkManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -15,7 +15,7 @@ using Volo.Abp.Specifications;
 
 namespace NouAssist.WorkManagement.Approval.Workflows
 {
-    [Authorize(ApprovalPermissions.Workflows.Default)]
+    [Authorize(WorkManagementPermissions.Approval.Workflows.Default)]
     public class ApprovalWorkflowAppService : ApplicationService, IApprovalWorkflowAppService
     {
         private readonly IApprovalWorkflowRepository _workflowRepository;
@@ -45,7 +45,7 @@ namespace NouAssist.WorkManagement.Approval.Workflows
             );
         }
 
-        [Authorize(ApprovalPermissions.Workflows.Create)]
+        [Authorize(WorkManagementPermissions.Approval.Workflows.Create)]
         public async Task<ApprovalWorkflowDto> CreateAsync(CreateApprovalWorkflowDto input)
         {
             var workflow = new ApprovalWorkflow(
@@ -62,7 +62,7 @@ namespace NouAssist.WorkManagement.Approval.Workflows
             return ObjectMapper.Map<ApprovalWorkflow, ApprovalWorkflowDto>(workflow);
         }
 
-        [Authorize(ApprovalPermissions.Workflows.Update)]
+        [Authorize(WorkManagementPermissions.Approval.Workflows.Update)]
         public async Task<ApprovalWorkflowDto> UpdateAsync(Guid id, UpdateApprovalWorkflowDto input)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -90,13 +90,13 @@ namespace NouAssist.WorkManagement.Approval.Workflows
             return ObjectMapper.Map<ApprovalWorkflow, ApprovalWorkflowDto>(workflow);
         }
 
-        [Authorize(ApprovalPermissions.Workflows.Delete)]
+        [Authorize(WorkManagementPermissions.Approval.Workflows.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _workflowRepository.DeleteAsync(id);
         }
 
-        [Authorize(ApprovalPermissions.Workflows.Activate)]
+        [Authorize(WorkManagementPermissions.Approval.Workflows.Activate)]
         public async Task<ApprovalWorkflowDto> ActivateAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetWithStepsAsync(id);
@@ -108,7 +108,7 @@ namespace NouAssist.WorkManagement.Approval.Workflows
             return ObjectMapper.Map<ApprovalWorkflow, ApprovalWorkflowDto>(workflow);
         }
 
-        [Authorize(ApprovalPermissions.Workflows.Deactivate)]
+        [Authorize(WorkManagementPermissions.Approval.Workflows.Deactivate)]
         public async Task<ApprovalWorkflowDto> DeactivateAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -120,7 +120,7 @@ namespace NouAssist.WorkManagement.Approval.Workflows
             return ObjectMapper.Map<ApprovalWorkflow, ApprovalWorkflowDto>(workflow);
         }
 
-        [Authorize(ApprovalPermissions.Workflows.Update)]
+        [Authorize(WorkManagementPermissions.Approval.Workflows.Update)]
         public async Task<ApprovalStepDto> AddStepAsync(
             Guid workflowId, 
             CreateApprovalStepDto input)
@@ -181,7 +181,7 @@ namespace NouAssist.WorkManagement.Approval.Workflows
             return ObjectMapper.Map<ApprovalStep, ApprovalStepDto>(step);
         }
 
-        [Authorize(ApprovalPermissions.Workflows.Update)]
+        [Authorize(WorkManagementPermissions.Approval.Workflows.Update)]
         public async Task RemoveStepAsync(Guid workflowId, Guid stepId)
         {
             var workflow = await _workflowRepository.GetWithStepsAsync(workflowId);

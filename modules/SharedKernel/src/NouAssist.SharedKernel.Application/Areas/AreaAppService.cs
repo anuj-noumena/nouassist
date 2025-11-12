@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.SharedKernel.Aggregates;
+using NouAssist.SharedKernel.Areas.Dtos;
 using NouAssist.SharedKernel.Data;
 using NouAssist.SharedKernel.Tags.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.SharedKernel.Areas
 {

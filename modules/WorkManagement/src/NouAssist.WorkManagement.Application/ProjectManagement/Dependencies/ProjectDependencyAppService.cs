@@ -2,17 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Data;
 using NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
-using NouAssist.WorkManagement.ProjectManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Services;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
 {
-    [Authorize(ProjectsPermissions.Dependencies.Default)]
+    [Authorize(WorkManagementPermissions.ProjectManagement.Dependencies.Default)]
     public class ProjectDependencyAppService : ApplicationService, IProjectDependencyAppService
     {
         private readonly IProjectDependencyRepository _dependencyRepository;
@@ -44,7 +44,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
             return ObjectMapper.Map<List<ProjectDependency>, List<ProjectDependencyDto>>(dependencies);
         }
 
-        [Authorize(ProjectsPermissions.Dependencies.Create)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Dependencies.Create)]
         public async Task<ProjectDependencyDto> CreateAsync(CreateDependencyDto input)
         {
             // Validate against circular dependencies
@@ -81,7 +81,23 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
             return ObjectMapper.Map<ProjectDependency, ProjectDependencyDto>(dependency);
         }
 
-        [Authorize(ProjectsPermissions.Dependencies.Resolve)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Dependencies.Update)]
+        public async Task<ProjectDependencyDto> UpdateAsync(Guid id, UpdateDependencyDto input)
+        {
+            var dependency = await _dependencyRepository.GetAsync(id);
+            
+            dependency.Description = input.Description;
+            dependency.Notes = input.Notes;
+            dependency.LagDays = input.LagDays;
+            dependency.IsBlocking = input.IsBlocking;
+            dependency.ExpectedResolutionDate = input.ExpectedResolutionDate;
+            
+            await _dependencyRepository.UpdateAsync(dependency);
+
+            return ObjectMapper.Map<ProjectDependency, ProjectDependencyDto>(dependency);
+        }
+
+        [Authorize(WorkManagementPermissions.ProjectManagement.Dependencies.Resolve)]
         public async Task<ProjectDependencyDto> ResolveAsync(Guid id)
         {
             var dependency = await _dependencyRepository.GetAsync(id);
@@ -94,7 +110,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
             return ObjectMapper.Map<ProjectDependency, ProjectDependencyDto>(dependency);
         }
 
-        [Authorize(ProjectsPermissions.Dependencies.Delete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Dependencies.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _dependencyRepository.DeleteAsync(id);

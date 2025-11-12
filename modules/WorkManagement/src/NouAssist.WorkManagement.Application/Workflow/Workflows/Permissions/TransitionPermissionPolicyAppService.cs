@@ -4,16 +4,17 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.Workflow.Aggregates;
 using NouAssist.WorkManagement.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Dtos;
 using NouAssist.WorkManagement.Workflow.Permissions;
-using NouAssist.WorkManagement.Workflow.Workflows.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkManagement.Workflow.Workflows.Permissions
 {
-    [Authorize(WorkflowPermissions.Workflows.Default)]
+    [Authorize(WorkManagementPermissions.Workflow.Workflows.Default)]
     public class TransitionPermissionPolicyAppService(ITransitionPermissionPolicyRepository permissionPolicyRepository)
         : ApplicationService, ITransitionPermissionPolicyAppService
     {
@@ -37,12 +38,12 @@ namespace NouAssist.WorkManagement.Workflow.Workflows.Permissions
                 input.Description
             );
             // Add allowed roles
-            foreach (var role in input.AllowedRoles ? ? new List<string>())
+            foreach (var role in input.AllowedRoles ?? new List<string>())
             {
                 policy.AddAllowedRole(role);
             }
             // Add allowed users
-            foreach (var userId in input.AllowedUserIds ? ? new List<Guid>())
+            foreach (var userId in input.AllowedUserIds ?? new List<Guid>())
             {
                 policy.AddAllowedUser(userId);
             }
@@ -67,13 +68,13 @@ namespace NouAssist.WorkManagement.Workflow.Workflows.Permissions
 
             // Update roles
             policy.ClearAllowedRoles();
-            foreach (var role in input.AllowedRoles ? ? new List<string>())
+            foreach (var role in input.AllowedRoles ?? new List<string>())
             {
                 policy.AddAllowedRole(role);
             }
             // Update users
             policy.ClearAllowedUsers();
-            foreach (var userId in input.AllowedUserIds ? ? new List<Guid>())
+            foreach (var userId in input.AllowedUserIds ?? new List<Guid>())
             {
                 policy.AddAllowedUser(userId);
             }

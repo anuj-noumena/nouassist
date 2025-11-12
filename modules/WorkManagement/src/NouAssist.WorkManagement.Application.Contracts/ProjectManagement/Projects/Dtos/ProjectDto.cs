@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NouAssist.SharedKernel.Enums;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp.Application.Dtos;
 

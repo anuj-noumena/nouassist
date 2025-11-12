@@ -4,10 +4,11 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.SharedKernel.Specifications;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.TaskManagement.Managers;
-using NouAssist.WorkManagement.TaskManagement.Permissions;
 using NouAssist.WorkManagement.TaskManagement.Specifications;
 using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
 using NouAssist.WorkManagement.TaskManagement.ValueObjects;
@@ -20,7 +21,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace NouAssist.WorkManagement.TaskManagement.Tasks
 {
-    [Authorize(TasksPermissions.Tasks.Default)]
+    [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Default)]
     public class TaskAppService : ApplicationService, ITaskAppService
     {
         private readonly ITaskRepository _taskRepository;
@@ -74,7 +75,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             );
         }
 
-        [Authorize(TasksPermissions.Tasks.Create)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Create)]
         public async Task<TaskDto> CreateAsync(CreateTaskDto input)
         {
             // Use domain manager to create task
@@ -144,7 +145,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Update)]
         public async Task<TaskDto> UpdateAsync(Guid id, UpdateTaskDto input)
         {
             var task = await _taskRepository.GetAsync(id);
@@ -204,13 +205,13 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.Delete)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             _taskManager.DeleteAsync(id, hardDelete: false);
         }
 
-        [Authorize(TasksPermissions.Tasks.ManageActionSteps)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.ManageActionSteps)]
         public async Task<TaskDto> AddActionStepAsync(Guid id, CreateTaskActionStepDto input)
         {
             var task = await _taskRepository.GetWithDetailsAsync(id);
@@ -227,7 +228,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.ManageActionSteps)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.ManageActionSteps)]
         public async Task<TaskDto> UpdateActionStepAsync(Guid id, Guid stepId, CreateTaskActionStepDto input)
         {
             var task = await _taskRepository.GetWithDetailsAsync(id);
@@ -243,7 +244,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.ManageActionSteps)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.ManageActionSteps)]
         public async Task<TaskDto> RemoveActionStepAsync(Guid id, Guid stepId)
         {
             var task = await _taskRepository.GetWithDetailsAsync(id);
@@ -255,7 +256,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.ManageActionSteps)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.ManageActionSteps)]
         public async Task<TaskDto> ReorderActionStepsAsync(Guid id, Guid[] orderedStepIds)
         {
             var task = await _taskRepository.GetWithDetailsAsync(id);
@@ -267,7 +268,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.ManageCriteria)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.ManageCriteria)]
         public async Task<TaskDto> AddAcceptanceCriterionAsync(Guid id, CreateAcceptanceCriterionDto input)
         {
             var task = await _taskRepository.GetWithDetailsAsync(id);
@@ -285,7 +286,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.ManageCriteria)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.ManageCriteria)]
         public async Task<TaskDto> UpdateAcceptanceCriterionAsync(Guid id, Guid criterionId,
             CreateAcceptanceCriterionDto input)
         {
@@ -311,7 +312,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.ManageCriteria)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.ManageCriteria)]
         public async Task<TaskDto> RemoveAcceptanceCriterionAsync(Guid id, Guid criterionId)
         {
             var task = await _taskRepository.GetWithDetailsAsync(id);
@@ -323,7 +324,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Update)]
         public async Task<TaskDto> ActivateAsync(Guid id)
         {
             var task = await _taskRepository.GetAsync(id);
@@ -335,7 +336,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Update)]
         public async Task<TaskDto> DeactivateAsync(Guid id)
         {
             var task = await _taskRepository.GetAsync(id);
@@ -347,7 +348,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.Create)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Create)]
         public async Task<TaskDto> CloneAsync(Guid id, CloneTaskDto input)
         {
             var originalTask = await _taskRepository.GetWithDetailsAsync(id);
@@ -398,7 +399,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(clonedTask);
         }
 
-        [Authorize(TasksPermissions.Tasks.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Update)]
         public async Task<TaskDto> SetRecurrenceAsync(Guid id, RecurrenceRuleDto input)
         {
             var task = await _taskRepository.GetAsync(id);
@@ -418,7 +419,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
         }
 
-        [Authorize(TasksPermissions.Tasks.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Update)]
         public async Task<TaskDto> RemoveRecurrenceAsync(Guid id)
         {
             var task = await _taskRepository.GetAsync(id);

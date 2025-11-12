@@ -1,7 +1,7 @@
 using System;
 using NouAssist.WorkManagement.Workflow.Enums;
 
-namespace NouAssist.WorkManagement.Workflow.Workflows.Dtos
+namespace NouAssist.WorkManagement.Workflow.Dtos
 {
     public class WorkflowStatusDto
     {

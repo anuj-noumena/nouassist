@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos;
 
 namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Validators

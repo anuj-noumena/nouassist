@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.WorkManagement.Workflow.Workflows.Dtos;
+using NouAssist.WorkManagement.Workflow.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.WorkManagement.Workflow.Workflows
+namespace NouAssist.WorkManagement.Workflow
 {
     public interface IWorkflowAppService : IApplicationService
     {

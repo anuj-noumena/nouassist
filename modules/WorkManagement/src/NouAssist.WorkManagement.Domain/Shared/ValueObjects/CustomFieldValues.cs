@@ -59,6 +59,11 @@ namespace NouAssist.WorkManagement.Shared.ValueObjects
         {
             return _values.TryGetValue(key, out var value) ? value : null;
         }
+        
+        public bool ContainsKey(string key)
+        {
+            return _values.TryGetValue(key, out var value);
+        }
 
         /// <summary>
         /// Removes a custom field value by key.

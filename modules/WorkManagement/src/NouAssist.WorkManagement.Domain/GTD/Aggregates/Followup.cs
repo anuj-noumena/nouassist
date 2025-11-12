@@ -1,4 +1,5 @@
 using System;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
@@ -54,12 +55,5 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
         public bool IsDone => Status == FollowupStatus.Done;
         public bool IsPast => DateTime.UtcNow > FollowupAt;
         public bool IsDue => IsScheduled && IsPast;
-    }
-
-    public enum FollowupStatus : byte
-    {
-        Scheduled = 1,
-        Dismissed = 2,
-        Done = 3
     }
 }

@@ -4,14 +4,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
-using NouAssist.WorkManagement.GTD.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Dtos;
+using NouAssist.WorkManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.GTD.GTD
 {
-    [Authorize(GtdPermissions.Horizons.Default)]
+    [Authorize(WorkManagementPermissions.GTD.Horizons.Default)]
     public class GtdHorizonAlignmentAppService : ApplicationService, IGtdHorizonAlignmentAppService
     {
         private readonly IGtdHorizonAlignmentRepository _alignmentRepository;

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.SharedKernel.Specifications;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.TaskManagement.Managers;
-using NouAssist.WorkManagement.TaskManagement.Permissions;
 using NouAssist.WorkManagement.TaskManagement.Specifications;
 using NouAssist.WorkManagement.TaskManagement.TaskTypes.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -18,7 +19,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace NouAssist.WorkManagement.TaskManagement.TaskTypes
 {
-    [Authorize(TasksPermissions.TaskTypes.Default)]
+    [Authorize(WorkManagementPermissions.TaskManagement.TaskTypes.Default)]
     public class TaskTypeAppService : ApplicationService, ITaskTypeAppService
     {
         private readonly ITaskTypeRepository _taskTypeRepository;
@@ -76,7 +77,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskTypes
             );
         }
 
-        [Authorize(TasksPermissions.TaskTypes.Create)]
+        [Authorize(WorkManagementPermissions.TaskManagement.TaskTypes.Create)]
         public async Task<TaskTypeDto> CreateAsync(CreateTaskTypeDto input)
         {
             var taskType = await _taskTypeManager.CreateAsync(
@@ -90,7 +91,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskTypes
             return ObjectMapper.Map<TaskType, TaskTypeDto>(taskType);
         }
 
-        [Authorize(TasksPermissions.TaskTypes.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.TaskTypes.Update)]
         public async Task<TaskTypeDto> UpdateAsync(Guid id, UpdateTaskTypeDto input)
         {
             var taskType = await _taskTypeRepository.GetAsync(id);
@@ -115,13 +116,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskTypes
             return ObjectMapper.Map<TaskType, TaskTypeDto>(taskType);
         }
 
-        [Authorize(TasksPermissions.TaskTypes.Delete)]
+        [Authorize(WorkManagementPermissions.TaskManagement.TaskTypes.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _taskTypeRepository.DeleteAsync(id);
         }
 
-        [Authorize(TasksPermissions.TaskTypes.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.TaskTypes.Update)]
         public async Task<TaskTypeDto> ActivateAsync(Guid id)
         {
             var taskType = await _taskTypeRepository.GetAsync(id);
@@ -133,7 +134,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskTypes
             return ObjectMapper.Map<TaskType, TaskTypeDto>(taskType);
         }
 
-        [Authorize(TasksPermissions.TaskTypes.Update)]
+        [Authorize(WorkManagementPermissions.TaskManagement.TaskTypes.Update)]
         public async Task<TaskTypeDto> DeactivateAsync(Guid id)
         {
             var taskType = await _taskTypeRepository.GetAsync(id);

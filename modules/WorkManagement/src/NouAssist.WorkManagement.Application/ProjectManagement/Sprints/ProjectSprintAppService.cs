@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Aggregates;
 using NouAssist.WorkManagement.ProjectManagement.Data;
-using NouAssist.WorkManagement.ProjectManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Sprints
 {
-    [Authorize(ProjectsPermissions.Sprints.Default)]
+    [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Default)]
     public class ProjectSprintAppService : ApplicationService, IProjectSprintAppService
     {
         private readonly IProjectSprintRepository _sprintRepository;
@@ -45,7 +45,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
             return ObjectMapper.Map<ProjectSprint, ProjectSprintDto>(sprint);
         }
 
-        [Authorize(ProjectsPermissions.Sprints.Create)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Create)]
         public async Task<ProjectSprintDto> CreateAsync(CreateSprintDto input)
         {
             var sprint = new ProjectSprint(
@@ -68,7 +68,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
             return ObjectMapper.Map<ProjectSprint, ProjectSprintDto>(sprint);
         }
 
-        [Authorize(ProjectsPermissions.Sprints.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Update)]
         public async Task<ProjectSprintDto> UpdateAsync(Guid id, UpdateSprintDto input)
         {
             var sprint = await _sprintRepository.GetAsync(id);
@@ -83,7 +83,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
             return ObjectMapper.Map<ProjectSprint, ProjectSprintDto>(sprint);
         }
 
-        [Authorize(ProjectsPermissions.Sprints.Start)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Start)]
         public async Task<ProjectSprintDto> StartAsync(Guid id)
         {
             var sprint = await _sprintRepository.GetAsync(id);
@@ -95,7 +95,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
             return ObjectMapper.Map<ProjectSprint, ProjectSprintDto>(sprint);
         }
 
-        [Authorize(ProjectsPermissions.Sprints.Complete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Complete)]
         public async Task<ProjectSprintDto> CompleteAsync(Guid id, CompleteSprintDto input)
         {
             var sprint = await _sprintRepository.GetAsync(id);
@@ -108,7 +108,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
             return ObjectMapper.Map<ProjectSprint, ProjectSprintDto>(sprint);
         }
 
-        [Authorize(ProjectsPermissions.Sprints.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Update)]
         public async Task<ProjectSprintDto> UpdateStoryPointsAsync(Guid id, UpdateSprintStoryPointsDto input)
         {
             var sprint = await _sprintRepository.GetAsync(id);
@@ -120,7 +120,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
             return ObjectMapper.Map<ProjectSprint, ProjectSprintDto>(sprint);
         }
 
-        [Authorize(ProjectsPermissions.Sprints.Delete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _sprintRepository.DeleteAsync(id);

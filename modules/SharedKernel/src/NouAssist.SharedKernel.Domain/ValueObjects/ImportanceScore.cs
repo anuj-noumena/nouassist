@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using NouAssist.WorkManagement.Shared.Enums;
+using NouAssist.SharedKernel.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.WorkManagement.GTD.ValueObjects
+namespace NouAssist.SharedKernel.ValueObjects
 {
     public class ImportanceScore : ValueObject
     {

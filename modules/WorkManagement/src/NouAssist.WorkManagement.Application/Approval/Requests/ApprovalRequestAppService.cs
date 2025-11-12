@@ -6,10 +6,10 @@ using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.Approval.Aggregates;
 using NouAssist.WorkManagement.Approval.Data;
 using NouAssist.WorkManagement.Approval.Entities;
-using NouAssist.WorkManagement.Approval.Permissions;
 using NouAssist.WorkManagement.Approval.Requests.Dtos;
 using NouAssist.WorkManagement.Approval.Services;
 using NouAssist.WorkManagement.Approval.Specifications;
+using NouAssist.WorkManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -18,7 +18,7 @@ using Volo.Abp.Specifications;
 
 namespace NouAssist.WorkManagement.Approval.Requests
 {
-    [Authorize(ApprovalPermissions.Requests.Default)]
+    [Authorize(WorkManagementPermissions.Approval.Requests.Default)]
     public class ApprovalRequestAppService : ApplicationService, IApprovalRequestAppService
     {
         private readonly IApprovalRequestRepository _requestRepository;
@@ -38,7 +38,7 @@ namespace NouAssist.WorkManagement.Approval.Requests
             _permissionChecker = permissionChecker;
         }
 
-        [Authorize(ApprovalPermissions.Requests.View)]
+        [Authorize(WorkManagementPermissions.Approval.Requests.View)]
         public async Task<ApprovalRequestDto> GetAsync(Guid id)
         {
             var request = await _requestRepository.GetWithDecisionsAsync(id);
@@ -99,7 +99,7 @@ namespace NouAssist.WorkManagement.Approval.Requests
             return new PagedResultDto<ApprovalRequestDto>(totalCount, dtos);
         }
 
-        [Authorize(ApprovalPermissions.Requests.Create)]
+        [Authorize(WorkManagementPermissions.Approval.Requests.Create)]
         public async Task<ApprovalRequestDto> CreateAsync(CreateApprovalRequestDto input)
         {
             var workflow = await _workflowRepository.GetWithStepsAsync(input.WorkflowId);
@@ -133,7 +133,7 @@ namespace NouAssist.WorkManagement.Approval.Requests
             return await MapToDto(request);
         }
 
-        [Authorize(ApprovalPermissions.Requests.Approve)]
+        [Authorize(WorkManagementPermissions.Approval.Requests.Approve)]
         public async Task<ApprovalRequestDto> MakeDecisionAsync(
             Guid id, 
             MakeApprovalDecisionDto input)
@@ -192,7 +192,7 @@ namespace NouAssist.WorkManagement.Approval.Requests
             return await MapToDto(request);
         }
 
-        [Authorize(ApprovalPermissions.Requests.Cancel)]
+        [Authorize(WorkManagementPermissions.Approval.Requests.Cancel)]
         public async Task<ApprovalRequestDto> CancelAsync(Guid id, string reason)
         {
             var request = await _requestRepository.GetAsync(id);
@@ -200,7 +200,7 @@ namespace NouAssist.WorkManagement.Approval.Requests
             // Only requester or admin can cancel
             if (request.RequestedBy != CurrentUser.Id.Value)
             {
-                await AuthorizationService.CheckAsync(ApprovalPermissions.Requests.Cancel);
+                await AuthorizationService.CheckAsync(WorkManagementPermissions.Approval.Requests.Cancel);
             }
 
             request.Cancel(CurrentUser.Id.Value, reason);

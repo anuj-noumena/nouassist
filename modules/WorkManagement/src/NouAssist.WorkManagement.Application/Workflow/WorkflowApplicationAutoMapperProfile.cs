@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using NouAssist.WorkManagement.Workflow.Aggregates;
+using NouAssist.WorkManagement.Workflow.Dtos;
 using NouAssist.WorkManagement.Workflow.Entities;
-using NouAssist.WorkManagement.Workflow.Workflows.Dtos;
 
 namespace NouAssist.WorkManagement.Workflow;
 

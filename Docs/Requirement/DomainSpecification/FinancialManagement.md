@@ -1,10 +1,7 @@
 # Domain-Driven Design Architecture Specification
 ## Financial Management System
-
 ---
-
 ## Table of Contents
-
 1. [Executive Summary](#1-executive-summary)
 2. [Domain Architecture Overview](#2-domain-architecture-overview)
 3. [Bounded Context Catalog](#3-bounded-context-catalog)
@@ -13,78 +10,72 @@
 6. [Implementation Guidelines](#6-implementation-guidelines)
 7. [Cross-Cutting Concerns](#7-cross-cutting-concerns)
 8. [Dependency Matrix](#8-dependency-matrix)
-
 ---
-
 ## 1. Executive Summary
-
 ### 1.1 System Purpose
 A comprehensive financial management platform integrating accounting, bookkeeping, financial planning, investment tracking, and AI-powered analytics to provide complete financial oversight for individuals and businesses.
-
 ### 1.2 Architecture Approach
 - **Pattern**: Domain-Driven Design with CQRS and Event Sourcing
 - **Framework**: .NET with Clean Architecture principles
 - **Integration**: Event-driven architecture with eventual consistency
 - **Scalability**: Microservices-ready bounded contexts with clear boundaries
-
 ### 1.3 Core Domain Classification
 - **Core Domains**: General Ledger, Accounts Payable, Accounts Receivable, Financial Planning & Analysis
 - **Supporting Domains**: Financial Analytics, Debt Management, Tax Management, Credit Score Monitoring, Investment Management
 - **Generic Domains**: Audit Trail, Currency Management, Document Management
-
 ---
-
 ## 2. Domain Architecture Overview
-
 ### 2.1 Context Map
-
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Accounts      │────│  General Ledger │────│   Accounts      │
-│   Payable       │    │      (GL)       │    │  Receivable     │
-│     (AP)        │    │                 │    │     (AR)        │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│  Financial      │────│   Audit Trail   │────│   Currency      │
-│  Planning &     │    │                 │    │  Management     │
-│  Analysis (FP&A)│    │                 │    │                 │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │              ┌─────────────────┐              │
-         └──────────────│  Tax Management │──────────────┘
-                        └─────────────────┘
-                                 │
-         ┌─────────────────┬─────────────────┬─────────────────┐
-         │                 │                 │                 │
-┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
-│ Financial       │ │    Debt         │ │   Credit        │ │ Investment      │
-│ Analytics       │ │ Management      │ │   Score         │ │ Management      │
-│                 │ │                 │ │ Monitoring      │ │                 │
-└─────────────────┘ └─────────────────┘ └─────────────────┘ └─────────────────┘
-         │                       │                       │           │
-         └───────────────────────┼───────────────────────┘           │
-                                 │                                   │
-                    ┌─────────────────┐                             │
-                    │   Document      │─────────────────────────────┘
-                    │  Management     │
-                    │                 │
-                    └─────────────────┘
+┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+│    Accounts     │───│ General Ledger  │───│    Accounts     │
+│     Payable     │   │      (GL)       │   │   Receivable    │
+│      (AP)       │   │                 │   │      (AR)       │
+└─────────────────┘   └─────────────────┘   └─────────────────┘
+         │                     │                     │
+         ▼                     ▼                     ▼
+┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+│    Financial    │───│   Audit Trail   │───│    Currency     │
+│   Planning &    │   │                 │   │   Management    │
+│ Analysis (FP&A) │   │                 │   │                 │
+└─────────────────┘   └─────────────────┘   └─────────────────┘
+         │                     │                     │
+         └─────────────────────┼─────────────────────┘
+                               ▼
+                      ┌─────────────────┐
+                      │ Tax Management  │
+                      └─────────────────┘
+                               │
+         ┌─────────────────────┼─────────────────────┐
+         │                     │                     │
+         ▼                     ▼                     ▼
+┌─────────────────┐   ┌─────────────────┐   ┌─────────────────┐
+│    Financial    │   │      Debt       │   │     Credit      │
+│    Analytics    │   │   Management    │   │      Score      │
+│                 │   │                 │   │   Monitoring    │
+└─────────────────┘   └─────────────────┘   └─────────────────┘
+         │                     │                     │
+         │            ┌─────────────────┐            │
+         │            │   Investment    │            │
+         │            │   Management    │            │
+         │            └─────────────────┘            │
+         │                     │                     │
+         └─────────────────────┼─────────────────────┘
+                               ▼
+                      ┌─────────────────┐
+                      │    Document     │
+                      │   Management    │
+                      └─────────────────┘
 ```
-
 ### 2.2 Strategic Design Principles
-
 1. **Financial Data Integrity**: All financial transactions must maintain double-entry principles
 2. **Regulatory Compliance**: Built-in audit trails and compliance with financial regulations
 3. **Event-Driven Consistency**: Financial state changes propagated through domain events
 4. **Eventual Consistency**: Accept temporary inconsistency for scalability while ensuring financial accuracy
 5. **Anti-Corruption Layers**: Protect financial domain integrity at all boundaries
-
+6. **Multi-Tenancy Support**: All aggregates include `TenantId` for SaaS scalability across individuals and businesses
 ---
-
 ## 3. Bounded Context Catalog
-
 | Context | Type | Priority | Complexity | Team Size |
 |---------|------|----------|------------|-----------|
 | General Ledger | Core | Critical | High | 4-5 |
@@ -99,30 +90,23 @@ A comprehensive financial management platform integrating accounting, bookkeepin
 | Audit Trail | Generic | Critical | Low | 1-2 |
 | Currency Management | Generic | Medium | Low | 1 |
 | Document Management | Generic | Medium | Medium | 2 |
-
 ---
-
 ## 4. Bounded Context Specifications
-
 ### 4.1 General Ledger (GL) Bounded Context
-
 #### 4.1.1 Context Overview
 **Responsibility**: Maintains the authoritative record of financial transactions using double-entry principles, manages the Chart of Accounts, enables period closing, standard financial statement generation, and performs bank reconciliation.
-
 **Strategic Classification**: Core Domain - Strategic
-
 **Subdomains**:
 - Ledger Core: Double-entry accounting and chart of accounts
 - Bank Reconciliation: Automated and manual statement reconciliation
 - Period Management: Financial period closing and opening
 - Financial Reporting: Standard financial statement generation
-
 #### 4.1.2 Core Domain Model
-
 ```mermaid
 classDiagram
     class LedgerAccount {
         +AccountId id
+        +TenantId tenantId
         +AccountNumber accountNumber
         +AccountName name
         +AccountType type
@@ -134,9 +118,10 @@ classDiagram
         +close()
         +reopen()
     }
-    
+   
     class JournalEntryBatch {
         +BatchId id
+        +TenantId tenantId
         +string batchNumber
         +TransactionDate postingDate
         +string description
@@ -149,7 +134,7 @@ classDiagram
         +reverse()
         +validate()
     }
-    
+   
     class JournalEntryLine {
         +LineId id
         +AccountId accountId
@@ -160,9 +145,10 @@ classDiagram
         +EntityId? sourceEntityId
         +EntityType? sourceEntityType
     }
-    
+   
     class AccountingPeriod {
         +PeriodId id
+        +TenantId tenantId
         +int fiscalYear
         +int periodNumber
         +DateTime startDate
@@ -173,7 +159,7 @@ classDiagram
         +close()
         +reopen()
     }
-    
+   
     class BankStatement {
         +StatementId id
         +BankAccountId bankAccountId
@@ -187,7 +173,7 @@ classDiagram
         +importLines()
         +reconcile()
     }
-    
+   
     class BankStatementLine {
         +LineId id
         +DateTime transactionDate
@@ -196,10 +182,19 @@ classDiagram
         +string referenceNumber
         +MatchStatus matchStatus
         +List~ReconciliationMatch~ matches
+        +ReconciliationDiscrepancy? discrepancy
         +match(JournalEntryLine)
         +unmatch()
     }
-    
+   
+    class ReconciliationDiscrepancy {
+        +DiscrepancyId id
+        +MonetaryValue amount
+        +string explanation
+        +DateTime resolvedAt
+        +bool isResolved
+    }
+   
     class ChartOfAccounts {
         +DateTime lastModified
         +int version
@@ -208,20 +203,17 @@ classDiagram
         +moveAccount(AccountId, AccountId?)
         +validateStructure()
     }
-
     ChartOfAccounts "1" -- "0..*" LedgerAccount : contains
     LedgerAccount "1" -- "0..*" LedgerAccount : children
     JournalEntryBatch "1" -- "0..*" JournalEntryLine : contains
     JournalEntryLine "0..*" -- "1" LedgerAccount : posts to
     BankStatement "1" -- "0..*" BankStatementLine : contains
     BankStatementLine "1" -- "0..*" ReconciliationMatch : has
+    BankStatementLine "1" -- "0..1" ReconciliationDiscrepancy : has
 ```
-
 #### 4.1.3 Aggregates Specification
-
 ##### LedgerAccount Aggregate Root
 **Purpose**: Represents an account in the chart of accounts with its current balance and transaction history
-
 **Value Objects**:
 - `AccountId`: Unique identifier with validation
 - `AccountNumber`: Formatted account number (e.g., "1000", "1200.01")
@@ -229,88 +221,71 @@ classDiagram
 - `AccountType`: Asset, Liability, Equity, Revenue, Expense
 - `MonetaryValue`: Amount with currency and precision
 - `DebitCreditIndicator`: Debit or Credit nature
-
 **Business Invariants**:
 - Account number must be unique within chart of accounts
 - Account cannot be deleted if it has transactions
 - Parent-child relationships cannot create cycles
 - Balance calculations must maintain double-entry principles
-
 ##### JournalEntryBatch Aggregate Root
 **Purpose**: Represents a balanced set of journal entries for a single business transaction
-
 **Entities**:
 - `JournalEntryLine`: Individual debit/credit entries within the batch
-
 **Value Objects**:
 - `BatchId`: Unique identifier
 - `BatchNumber`: Sequential or formatted batch identifier
 - `TransactionDate`: When the transaction occurred
 - `BatchStatus`: Draft, Posted, Reversed
 - `UserId`: Who created/posted the batch
-
 **Business Invariants**:
 - Batch must be balanced (total debits = total credits)
 - Cannot post a batch with validation errors
 - Cannot modify a posted batch (must reverse and create new)
 - All lines must have valid account references
-
 ##### AccountingPeriod Aggregate Root
 **Purpose**: Manages fiscal periods and controls when transactions can be posted
-
 **Value Objects**:
 - `PeriodId`: Unique identifier
 - `FiscalYear`: Year for financial reporting
 - `PeriodNumber`: Period within the fiscal year (1-12 typically)
 - `PeriodStatus`: Open, Closed, Permanently Closed
 - `PeriodDates`: Start and end dates for the period
-
 **Business Invariants**:
 - Cannot post transactions to closed periods
 - Periods must be closed in sequential order
 - Cannot have overlapping periods
 - Must have at least one open period
-
 ##### BankStatement Aggregate Root
 **Purpose**: Manages imported bank statements and reconciliation process
-
 **Entities**:
 - `BankStatementLine`: Individual transactions from bank statement
 - `ReconciliationMatch`: Links between statement lines and journal entries
-
 **Value Objects**:
 - `StatementId`: Unique identifier
 - `BankAccountId`: Reference to the bank account
 - `StatementDate`: Date of statement
 - `ReconciliationStatus`: Unreconciled, Partially Reconciled, Fully Reconciled
 - `MatchStatus`: Unmatched, Matched, Suggested Match
-
 **Business Invariants**:
 - Statement lines cannot be modified after import
-- Reconciliation differences must be explained
+- Reconciliation differences must be explained via `ReconciliationDiscrepancy`
 - Matched items cannot be modified without unmatching
-
 ##### ChartOfAccounts Aggregate Root
 **Purpose**: Manages the hierarchical structure of all ledger accounts
-
 **Entities**:
 - `AccountHierarchy`: Represents parent-child relationships
-
 **Value Objects**:
 - `StructureVersion`: Version number for the chart structure
 - `LastModified`: When structure was last changed
-
 **Business Invariants**:
 - Account numbers must follow organizational numbering scheme
 - Cannot delete accounts with balances or children
 - Hierarchy must be acyclic
-
 #### 4.1.4 Commands & Queries (CQRS)
-
 ##### Commands
 **Account Management**:
 ```csharp
 public record CreateLedgerAccount(
+    TenantId TenantId,
     AccountNumber AccountNumber,
     AccountName Name,
     AccountType Type,
@@ -318,7 +293,6 @@ public record CreateLedgerAccount(
     string Description,
     UserId CreatedBy
 );
-
 public record UpdateLedgerAccount(
     AccountId AccountId,
     AccountName? NewName,
@@ -326,29 +300,26 @@ public record UpdateLedgerAccount(
     bool? IsActive,
     UserId UpdatedBy
 );
-
 public record MoveLedgerAccount(
     AccountId AccountId,
     AccountId? NewParentAccountId,
     UserId MovedBy
 );
 ```
-
 **Journal Entry Management**:
 ```csharp
 public record CreateJournalEntryBatch(
+    TenantId TenantId,
     TransactionDate PostingDate,
     string Description,
     List<JournalEntryLineData> Lines,
     string? Reference,
     UserId CreatedBy
 );
-
 public record PostJournalEntryBatch(
     BatchId BatchId,
     UserId PostedBy
 );
-
 public record ReverseJournalEntryBatch(
     BatchId BatchId,
     string ReversalReason,
@@ -356,30 +327,27 @@ public record ReverseJournalEntryBatch(
     UserId ReversedBy
 );
 ```
-
 **Period Management**:
 ```csharp
 public record CreateAccountingPeriod(
+    TenantId TenantId,
     int FiscalYear,
     int PeriodNumber,
     DateTime StartDate,
     DateTime EndDate,
     UserId CreatedBy
 );
-
 public record CloseAccountingPeriod(
     PeriodId PeriodId,
     List<ClosingEntry> ClosingEntries,
     UserId ClosedBy
 );
-
 public record ReopenAccountingPeriod(
     PeriodId PeriodId,
     string ReopenReason,
     UserId ReopenedBy
 );
 ```
-
 **Bank Reconciliation**:
 ```csharp
 public record ImportBankStatement(
@@ -390,7 +358,6 @@ public record ImportBankStatement(
     List<BankTransactionData> Transactions,
     UserId ImportedBy
 );
-
 public record MatchStatementLine(
     StatementId StatementId,
     LineId StatementLineId,
@@ -398,7 +365,6 @@ public record MatchStatementLine(
     MatchType MatchType,
     UserId MatchedBy
 );
-
 public record CreateReconciliationEntry(
     StatementId StatementId,
     LineId StatementLineId,
@@ -406,8 +372,13 @@ public record CreateReconciliationEntry(
     string Explanation,
     UserId CreatedBy
 );
+public record CreateReconciliationDiscrepancy(
+    LineId StatementLineId,
+    MonetaryValue Amount,
+    string Explanation,
+    UserId CreatedBy
+);
 ```
-
 ##### Queries
 **Account Queries**:
 ```csharp
@@ -422,7 +393,6 @@ public record GetAccountTransactionHistory(
     int PageSize = 50
 );
 ```
-
 **Journal Entry Queries**:
 ```csharp
 public record GetJournalEntryBatch(BatchId BatchId);
@@ -436,34 +406,34 @@ public record SearchJournalEntries(
     int PageSize = 50
 );
 ```
-
 **Financial Reporting Queries**:
 ```csharp
-public record GenerateTrialBalance(DateTime AsOfDate);
-public record GenerateBalanceSheet(DateTime AsOfDate);
-public record GenerateIncomeStatement(DateTime StartDate, DateTime EndDate);
-public record GenerateCashFlowStatement(DateTime StartDate, DateTime EndDate);
+public record GenerateTrialBalance(DateTime AsOfDate, string? Currency = null);
+public record GenerateBalanceSheet(DateTime AsOfDate, string? Currency = null);
+public record GenerateIncomeStatement(DateTime StartDate, DateTime EndDate, string? Currency = null);
+public record GenerateCashFlowStatement(DateTime StartDate, DateTime EndDate, string? Currency = null);
 public record GenerateGeneralLedgerReport(
     AccountId? AccountFilter,
     DateTime StartDate,
-    DateTime EndDate
+    DateTime EndDate,
+    string? Currency = null
 );
 ```
-
 **Reconciliation Queries**:
 ```csharp
 public record GetBankStatementById(StatementId StatementId);
 public record GetUnreconciledStatementLines(BankAccountId BankAccountId);
 public record GetReconciliationStatus(BankAccountId BankAccountId, DateTime? AsOfDate = null);
 public record GetSuggestedMatches(LineId StatementLineId);
+public record GetReconciliationDiscrepancies(LineId StatementLineId);
 ```
-
 #### 4.1.5 Events & Integration
-
 ##### Domain Events
+All events include an `IdempotencyKey` for at-least-once delivery handling.
 ```csharp
 public class LedgerAccountCreated : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public AccountId AccountId { get; }
     public AccountNumber AccountNumber { get; }
     public AccountName Name { get; }
@@ -471,9 +441,9 @@ public class LedgerAccountCreated : DomainEvent
     public AccountId? ParentAccountId { get; }
     public UserId CreatedBy { get; }
 }
-
 public class JournalBatchPosted : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public BatchId BatchId { get; }
     public string BatchNumber { get; }
     public TransactionDate PostingDate { get; }
@@ -481,9 +451,9 @@ public class JournalBatchPosted : DomainEvent
     public MonetaryValue TotalAmount { get; }
     public UserId PostedBy { get; }
 }
-
 public class AccountBalanceUpdated : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public AccountId AccountId { get; }
     public MonetaryValue PreviousBalance { get; }
     public MonetaryValue NewBalance { get; }
@@ -491,9 +461,9 @@ public class AccountBalanceUpdated : DomainEvent
     public DebitCreditIndicator ChangeType { get; }
     public BatchId? CausingBatchId { get; }
 }
-
 public class AccountingPeriodClosed : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public PeriodId PeriodId { get; }
     public int FiscalYear { get; }
     public int PeriodNumber { get; }
@@ -501,9 +471,9 @@ public class AccountingPeriodClosed : DomainEvent
     public List<BatchId> ClosingEntries { get; }
     public UserId ClosedBy { get; }
 }
-
 public class BankStatementImported : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public StatementId StatementId { get; }
     public BankAccountId BankAccountId { get; }
     public DateTime StatementDate { get; }
@@ -511,9 +481,9 @@ public class BankStatementImported : DomainEvent
     public MonetaryValue StatementBalance { get; }
     public UserId ImportedBy { get; }
 }
-
 public class StatementLineMatched : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public StatementId StatementId { get; }
     public LineId StatementLineId { get; }
     public List<BatchId> MatchedBatches { get; }
@@ -521,13 +491,20 @@ public class StatementLineMatched : DomainEvent
     public MonetaryValue MatchedAmount { get; }
     public UserId MatchedBy { get; }
 }
+public class ReconciliationDiscrepancyCreated : DomainEvent
+{
+    public string IdempotencyKey { get; }
+    public DiscrepancyId DiscrepancyId { get; }
+    public LineId StatementLineId { get; }
+    public MonetaryValue Amount { get; }
+    public string Explanation { get; }
+    public UserId CreatedBy { get; }
+}
 ```
-
 ##### Critical Event Handlers
-
 **Financial Statement Update Handler**:
 ```csharp
-public class FinancialStatementUpdateHandler : 
+public class FinancialStatementUpdateHandler :
     IEventHandler<JournalBatchPosted>,
     IEventHandler<AccountingPeriodClosed>
 {
@@ -544,20 +521,18 @@ public class FinancialStatementUpdateHandler :
             );
         }
     }
-    
+   
     public async Task Handle(AccountingPeriodClosed eventData)
     {
         // Generate period-end financial statements
         await GeneratePeriodEndStatements(eventData.PeriodId);
-        
+       
         // Archive transaction data for the closed period
         await ArchivePeriodTransactions(eventData.PeriodId);
     }
 }
 ```
-
 #### 4.1.6 Business Rules & Policies
-
 ##### Double-Entry Validation Policy
 ```csharp
 public class DoubleEntryValidationPolicy
@@ -565,30 +540,30 @@ public class DoubleEntryValidationPolicy
     public ValidationResult ValidateBatch(JournalEntryBatch batch)
     {
         var errors = new List<string>();
-        
+       
         // Must have at least 2 lines
         if (batch.Lines.Count < 2)
         {
             errors.Add("Journal entry batch must have at least 2 lines");
         }
-        
+       
         // Calculate totals
         var totalDebits = batch.Lines.Sum(l => l.DebitAmount?.Amount ?? 0);
         var totalCredits = batch.Lines.Sum(l => l.CreditAmount?.Amount ?? 0);
-        
+       
         // Must be balanced
         if (Math.Abs(totalDebits - totalCredits) > 0.01m) // Allow for rounding
         {
             errors.Add($"Batch is out of balance: Debits={totalDebits:C}, Credits={totalCredits:C}");
         }
-        
+       
         // Each line must have either debit or credit (not both, not neither)
         for (int i = 0; i < batch.Lines.Count; i++)
         {
             var line = batch.Lines[i];
             var hasDebit = line.DebitAmount?.Amount > 0;
             var hasCredit = line.CreditAmount?.Amount > 0;
-            
+           
             if (hasDebit && hasCredit)
             {
                 errors.Add($"Line {i + 1}: Cannot have both debit and credit amounts");
@@ -598,12 +573,11 @@ public class DoubleEntryValidationPolicy
                 errors.Add($"Line {i + 1}: Must have either debit or credit amount");
             }
         }
-        
+       
         return new ValidationResult(errors.Count == 0, errors);
     }
 }
 ```
-
 ##### Period Closing Policy
 ```csharp
 public class PeriodClosingPolicy
@@ -614,18 +588,18 @@ public class PeriodClosingPolicy
         IJournalEntryRepository journalRepository)
     {
         var issues = new List<string>();
-        
+       
         // Check for unposted batches in the period
         var unpostedBatches = await journalRepository.GetUnpostedBatchesInPeriod(periodId);
         if (unpostedBatches.Any())
         {
             issues.Add($"Period has {unpostedBatches.Count} unposted journal batches");
         }
-        
+       
         // Check for out-of-balance accounts
         var accounts = await accountRepository.GetAllActiveAccounts();
         var balanceIssues = new List<string>();
-        
+       
         foreach (var account in accounts)
         {
             var calculatedBalance = await CalculateAccountBalance(account.Id, periodId);
@@ -634,59 +608,50 @@ public class PeriodClosingPolicy
                 balanceIssues.Add($"Account {account.AccountNumber}: Balance mismatch");
             }
         }
-        
+       
         if (balanceIssues.Any())
         {
             issues.AddRange(balanceIssues);
         }
-        
+       
         // Check for pending bank reconciliations
         var pendingReconciliations = await GetPendingReconciliations(periodId);
         if (pendingReconciliations.Any())
         {
             issues.Add($"Period has {pendingReconciliations.Count} pending bank reconciliations");
         }
-        
+       
         return new ClosingValidationResult(issues.Count == 0, issues);
     }
 }
 ```
-
 #### 4.1.7 Technical Considerations
-
 ##### Performance Optimization
 - **Account Balance Caching**: Cache frequently accessed account balances with invalidation
 - **Financial Statement Pre-computation**: Maintain running balances for quick report generation
 - **Partitioning**: Partition journal entries by fiscal year for historical data management
 - **Indexing**: Optimize for common queries (by account, by date range, by reference)
-
 ##### Audit and Compliance
 - **Immutable Journal Entries**: Posted entries cannot be modified, only reversed
 - **Audit Trail Integration**: All changes automatically logged for regulatory compliance
 - **Digital Signatures**: Support for digital signing of critical transactions
 - **Backup and Recovery**: Point-in-time recovery capability for financial data
-
 ---
-
 ### 4.2 Accounts Payable (AP) Bounded Context
-
 #### 4.2.1 Context Overview
 **Responsibility**: Managing incoming bills, scheduling/recording payments owed, and initiating payments to vendors with full audit trail and approval workflows.
-
 **Strategic Classification**: Core Domain - Strategic
-
 **Subdomains**:
 - Bill Management: Invoice receipt, processing, and lifecycle management
 - Payment Processing: Payment scheduling, execution, and confirmation
 - Vendor Management: Vendor information and payment preferences
 - Approval Workflows: Multi-level approval processes for bills and payments
-
 #### 4.2.2 Core Domain Model
-
 ```mermaid
 classDiagram
     class Bill {
         +BillId id
+        +TenantId tenantId
         +string billNumber
         +VendorId vendorId
         +MonetaryValue amount
@@ -702,9 +667,10 @@ classDiagram
         +reject(UserId, string)
         +schedulePayment(DateTime)
     }
-    
+   
     class Vendor {
         +VendorId id
+        +TenantId tenantId
         +string name
         +string taxId
         +ContactInfo contactInfo
@@ -715,9 +681,10 @@ classDiagram
         +updateContactInfo(ContactInfo)
         +setPaymentTerms(PaymentTerms)
     }
-    
+   
     class BillPayment {
         +PaymentId id
+        +TenantId tenantId
         +BillId billId
         +MonetaryValue amount
         +DateTime paymentDate
@@ -729,9 +696,10 @@ classDiagram
         +confirm()
         +fail(string)
     }
-    
+   
     class PaymentRun {
         +RunId id
+        +TenantId tenantId
         +DateTime scheduledDate
         +PaymentMethod method
         +List~BillId~ includedBills
@@ -741,7 +709,7 @@ classDiagram
         +execute()
         +cancel()
     }
-    
+   
     class BillApproval {
         +ApprovalId id
         +BillId billId
@@ -751,45 +719,39 @@ classDiagram
         +DateTime? approvedDate
         +string? comments
     }
-    
+   
     class RecurringBill {
         +RecurringBillId id
+        +TenantId tenantId
         +VendorId vendorId
         +MonetaryValue amount
         +RecurrencePattern pattern
+        +EscalationRules? escalationRules
         +CategoryId categoryId
         +bool isActive
         +DateTime nextDueDate
         +generateInstance()
         +updatePattern(RecurrencePattern)
     }
-
     %% A Vendor issues many Bills and can have multiple recurring bill schedules.
     Vendor "1" -- "0..*" Bill : issues
     Vendor "1" -- "0..*" RecurringBill : has schedule for
-
     %% A Bill's lifecycle includes approvals and payments. These are part of the bill.
     Bill "1" o-- "0..*" BillApproval : requires
     Bill "1" o-- "0..*" BillPayment : receives
-
     %% A RecurringBill schedule generates individual Bill instances over time.
     RecurringBill "1" -- "0..*" Bill : generates
-
     %% A Payment Run is a process that selects and pays multiple bills at once.
     %% The bills exist independently of the run.
     PaymentRun "1" -- "0..*" Bill : processes
 ```
-
 #### 4.2.3 Aggregates Specification
-
 ##### Bill Aggregate Root
 **Purpose**: Central entity representing a vendor invoice/bill requiring payment
-
 **Entities**:
 - `BillApproval`: Approval records for multi-level approval workflows
 - `BillLineItem`: Individual line items on the bill
 - `PaymentAllocation`: How payments are allocated to the bill
-
 **Value Objects**:
 - `BillId`: Unique identifier
 - `BillNumber`: Vendor's invoice/bill number
@@ -801,20 +763,16 @@ classDiagram
 - `CategoryId`: Expense category for accounting
 - `ProjectId`: Optional project assignment
 - `DocumentId`: Attached invoice document
-
 **Business Invariants**:
 - Bill cannot be paid without proper approvals (if required)
 - Due date cannot be before issue date
 - Cannot modify paid bills
 - Total payments cannot exceed bill amount
-
 ##### Vendor Aggregate Root
 **Purpose**: Manages vendor master data and payment preferences
-
 **Entities**:
 - `VendorContact`: Multiple contact persons for vendor
 - `VendorPaymentAccount`: Bank/payment account details
-
 **Value Objects**:
 - `VendorId`: Unique identifier
 - `VendorName`: Company name
@@ -823,16 +781,13 @@ classDiagram
 - `PaymentTerms`: Net 30, Net 15, etc.
 - `PaymentMethod`: Check, ACH, Wire, Card
 - `CreditLimit`: Maximum outstanding amount allowed
-
 **Business Invariants**:
 - Tax ID must be unique if provided
 - Cannot delete vendor with outstanding bills
 - Credit limit cannot be exceeded
 - Contact information must be valid
-
 ##### BillPayment Aggregate Root
 **Purpose**: Represents actual payment made against a bill
-
 **Value Objects**:
 - `PaymentId`: Unique identifier
 - `BillId`: Reference to bill being paid
@@ -842,15 +797,12 @@ classDiagram
 - `ConfirmationNumber`: Bank/gateway confirmation
 - `PaymentStatus`: Pending, Processed, Failed, Cancelled
 - `BankReference`: Bank transaction reference
-
 **Business Invariants**:
-- Payment amount must be positive and not exceed bill balance
+- Payment amount must be positive and not exceed bill balance (prevents overpayments)
 - Cannot modify processed payments
 - Confirmation number required for processed payments
-
 ##### PaymentRun Aggregate Root
 **Purpose**: Groups multiple bills for batch payment processing
-
 **Value Objects**:
 - `RunId`: Unique identifier
 - `ScheduledDate`: When payments will be executed
@@ -858,15 +810,12 @@ classDiagram
 - `RunStatus`: Scheduled, Processing, Completed, Failed
 - `TotalAmount`: Sum of all payments in run
 - `BatchReference`: External batch reference
-
 **Business Invariants**:
 - All bills in run must be approved
 - Cannot modify run after execution starts
 - Total amount must equal sum of individual bills
-
 ##### RecurringBill Aggregate Root
 **Purpose**: Template for automatically generating recurring bills
-
 **Value Objects**:
 - `RecurringBillId`: Unique identifier
 - `VendorId`: Vendor for recurring bills
@@ -874,18 +823,17 @@ classDiagram
 - `RecurrencePattern`: Monthly, quarterly, etc.
 - `NextDueDate`: When next bill should be generated
 - `CategoryId`: Default expense category
-
+- `EscalationRules`: Rules for auto-approval of small recurring amounts after cycles
 **Business Invariants**:
 - Cannot generate bills for inactive patterns
 - Next due date must be calculated from pattern
 - Generated bills can be modified independently
-
 #### 4.2.4 Commands & Queries (CQRS)
-
 ##### Commands
 **Bill Management**:
 ```csharp
 public record CreateBill(
+    TenantId TenantId,
     string BillNumber,
     VendorId VendorId,
     MonetaryValue Amount,
@@ -897,7 +845,6 @@ public record CreateBill(
     List<BillLineItemData>? LineItems,
     UserId CreatedBy
 );
-
 public record ApproveBill(
     BillId BillId,
     ApprovalLevel Level,
@@ -905,7 +852,6 @@ public record ApproveBill(
     string? Comments,
     UserId ApprovedBy
 );
-
 public record ScheduleBillPayment(
     BillId BillId,
     DateTime PaymentDate,
@@ -914,22 +860,20 @@ public record ScheduleBillPayment(
     UserId ScheduledBy
 );
 ```
-
 **Payment Processing**:
 ```csharp
 public record CreatePaymentRun(
+    TenantId TenantId,
     DateTime ScheduledDate,
     PaymentMethod Method,
     List<BillId> BillIds,
     string? Description,
     UserId CreatedBy
 );
-
 public record ExecutePaymentRun(
     RunId RunId,
     UserId ExecutedBy
 );
-
 public record RecordBillPayment(
     BillId BillId,
     MonetaryValue Amount,
@@ -940,10 +884,10 @@ public record RecordBillPayment(
     UserId RecordedBy
 );
 ```
-
 **Vendor Management**:
 ```csharp
 public record CreateVendor(
+    TenantId TenantId,
     string Name,
     string? TaxId,
     ContactInfo ContactInfo,
@@ -952,7 +896,6 @@ public record CreateVendor(
     MonetaryValue? CreditLimit,
     UserId CreatedBy
 );
-
 public record UpdateVendorPaymentInfo(
     VendorId VendorId,
     PaymentTerms? Terms,
@@ -961,26 +904,25 @@ public record UpdateVendorPaymentInfo(
     UserId UpdatedBy
 );
 ```
-
 **Recurring Bills**:
 ```csharp
 public record CreateRecurringBill(
+    TenantId TenantId,
     VendorId VendorId,
     MonetaryValue Amount,
     RecurrencePattern Pattern,
+    EscalationRules? EscalationRules,
     CategoryId CategoryId,
     DateTime StartDate,
     string? Description,
     UserId CreatedBy
 );
-
 public record GenerateRecurringBillInstance(
     RecurringBillId RecurringBillId,
     DateTime? AmountOverride,
     UserId GeneratedBy
 );
 ```
-
 ##### Queries
 **Bill Queries**:
 ```csharp
@@ -990,7 +932,6 @@ public record GetBillsByStatus(BillStatus Status, DateTime? DueBefore = null);
 public record GetOverdueBills(UserId? ResponsibleUser = null);
 public record GetBillsRequiringApproval(UserId ApproverId, ApprovalLevel? Level = null);
 ```
-
 **Payment Queries**:
 ```csharp
 public record GetPaymentHistory(BillId BillId);
@@ -998,7 +939,6 @@ public record GetPaymentRunById(RunId RunId);
 public record GetScheduledPayments(DateTime StartDate, DateTime EndDate);
 public record GetPaymentRunStatus(RunId RunId);
 ```
-
 **Vendor Queries**:
 ```csharp
 public record GetVendorById(VendorId VendorId);
@@ -1006,20 +946,19 @@ public record SearchVendors(string? NameFilter, bool? ActiveOnly = true);
 public record GetVendorPaymentHistory(VendorId VendorId, DateTime StartDate, DateTime EndDate);
 public record GetVendorBalance(VendorId VendorId);
 ```
-
 **Reporting Queries**:
 ```csharp
 public record GetAccountsPayableAging(DateTime AsOfDate);
 public record GetCashFlowProjection(DateTime StartDate, DateTime EndDate);
 public record GetVendorSpendAnalysis(DateTime StartDate, DateTime EndDate);
 ```
-
 #### 4.2.5 Events & Integration
-
 ##### Domain Events
+All events include an `IdempotencyKey`.
 ```csharp
 public class BillCreated : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public BillId BillId { get; }
     public string BillNumber { get; }
     public VendorId VendorId { get; }
@@ -1031,9 +970,9 @@ public class BillCreated : DomainEvent
     public bool RequiresApproval { get; }
     public UserId CreatedBy { get; }
 }
-
 public class BillApproved : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public BillId BillId { get; }
     public ApprovalLevel Level { get; }
     public UserId ApprovedBy { get; }
@@ -1041,9 +980,9 @@ public class BillApproved : DomainEvent
     public bool IsFinalApproval { get; }
     public MonetaryValue Amount { get; }
 }
-
 public class BillPaymentInitiated : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public PaymentId PaymentId { get; }
     public BillId BillId { get; }
     public VendorId VendorId { get; }
@@ -1053,9 +992,9 @@ public class BillPaymentInitiated : DomainEvent
     public RunId? PaymentRunId { get; }
     public UserId InitiatedBy { get; }
 }
-
 public class BillPaid : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public BillId BillId { get; }
     public PaymentId PaymentId { get; }
     public VendorId VendorId { get; }
@@ -1066,9 +1005,9 @@ public class BillPaid : DomainEvent
     public CategoryId CategoryId { get; }
     public ProjectId? ProjectId { get; }
 }
-
 public class PaymentRunCompleted : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public RunId RunId { get; }
     public DateTime ExecutedDate { get; }
     public PaymentMethod Method { get; }
@@ -1078,12 +1017,10 @@ public class PaymentRunCompleted : DomainEvent
     public UserId ExecutedBy { get; }
 }
 ```
-
 ##### Critical Event Handlers
-
 **General Ledger Integration Handler**:
 ```csharp
-public class APGeneralLedgerIntegrationHandler : 
+public class APGeneralLedgerIntegrationHandler :
     IEventHandler<BillCreated>,
     IEventHandler<BillPaid>
 {
@@ -1103,7 +1040,7 @@ public class APGeneralLedgerIntegrationHandler :
                 Memo: $"AP - {eventData.VendorName}"
             )
         };
-        
+       
         await CreateJournalEntry(
             $"Bill Accrual - {eventData.BillNumber}",
             journalLines,
@@ -1111,7 +1048,7 @@ public class APGeneralLedgerIntegrationHandler :
             EntityType.Bill
         );
     }
-    
+   
     public async Task Handle(BillPaid eventData)
     {
         // Create journal entry for payment
@@ -1128,7 +1065,7 @@ public class APGeneralLedgerIntegrationHandler :
                 Memo: $"Payment {eventData.ConfirmationNumber}"
             )
         };
-        
+       
         await CreateJournalEntry(
             $"Bill Payment - {eventData.BillId}",
             journalLines,
@@ -1138,41 +1075,45 @@ public class APGeneralLedgerIntegrationHandler :
     }
 }
 ```
-
 #### 4.2.6 Business Rules & Policies
-
 ##### Approval Workflow Policy
 ```csharp
 public class BillApprovalPolicy
 {
+    private readonly IConfiguration _config;
+    public BillApprovalPolicy(IConfiguration config) { _config = config; }
     public async Task<List<ApprovalLevel>> DetermineRequiredApprovals(
         Bill bill,
         IUserRepository userRepository)
     {
         var requiredApprovals = new List<ApprovalLevel>();
-        
-        // Amount-based approval levels
-        if (bill.Amount.Amount > 10000)
+       
+        // Amount-based approval levels (configurable)
+        var largeThreshold = _config.GetValue<decimal>("ApprovalThresholds:Large", 10000);
+        var mediumThreshold = _config.GetValue<decimal>("ApprovalThresholds:Medium", 5000);
+        var smallThreshold = _config.GetValue<decimal>("ApprovalThresholds:Small", 1000);
+       
+        if (bill.Amount.Amount > largeThreshold)
         {
             requiredApprovals.Add(ApprovalLevel.CFO);
         }
-        else if (bill.Amount.Amount > 5000)
+        else if (bill.Amount.Amount > mediumThreshold)
         {
             requiredApprovals.Add(ApprovalLevel.Manager);
             requiredApprovals.Add(ApprovalLevel.Director);
         }
-        else if (bill.Amount.Amount > 1000)
+        else if (bill.Amount.Amount > smallThreshold)
         {
             requiredApprovals.Add(ApprovalLevel.Manager);
         }
-        
+       
         // Category-based rules
         var category = await GetCategoryById(bill.CategoryId);
         if (category.RequiresSpecialApproval)
         {
             requiredApprovals.Add(ApprovalLevel.Department);
         }
-        
+       
         // Project-based rules
         if (bill.ProjectId.HasValue)
         {
@@ -1182,12 +1123,11 @@ public class BillApprovalPolicy
                 requiredApprovals.Add(ApprovalLevel.ProjectManager);
             }
         }
-        
+       
         return requiredApprovals.Distinct().OrderBy(l => l).ToList();
     }
 }
 ```
-
 ##### Payment Scheduling Policy
 ```csharp
 public class PaymentSchedulingPolicy
@@ -1195,64 +1135,66 @@ public class PaymentSchedulingPolicy
     public DateTime CalculateOptimalPaymentDate(
         Bill bill,
         VendorPaymentTerms terms,
-        CashFlowProjection cashFlow)
+        CashFlowProjection? cashFlow = null)
     {
         // Start with due date
         var targetDate = bill.DueDate;
-        
+       
         // Apply early payment discount consideration
         if (terms.EarlyPaymentDiscount != null)
         {
             var discountDeadline = bill.IssueDate.AddDays(terms.EarlyPaymentDiscount.DaysToQualify);
             var discountAmount = bill.Amount.Amount * terms.EarlyPaymentDiscount.DiscountPercentage;
-            
+           
             if (discountAmount > 100 && discountDeadline >= DateTime.Today) // Worth taking discount
             {
                 targetDate = discountDeadline;
             }
         }
-        
-        // Check cash flow constraints
-        var availableCash = cashFlow.GetProjectedBalance(targetDate);
-        if (availableCash < bill.Amount.Amount)
+       
+        // Check cash flow constraints if available
+        if (cashFlow != null)
         {
-            // Find next date with sufficient cash
-            targetDate = cashFlow.FindNextDateWithSufficientCash(bill.Amount.Amount, targetDate);
+            var availableCash = cashFlow.GetProjectedBalance(targetDate);
+            if (availableCash < bill.Amount.Amount)
+            {
+                // Find next date with sufficient cash
+                targetDate = cashFlow.FindNextDateWithSufficientCash(bill.Amount.Amount, targetDate);
+            }
         }
-        
+        else
+        {
+            // Fallback: Use due date without adjustment
+            targetDate = bill.DueDate;
+        }
+       
         // Don't pay too early (cash management)
         var earliestPaymentDate = bill.DueDate.AddDays(-7); // Pay max 7 days early
         if (targetDate < earliestPaymentDate)
         {
             targetDate = earliestPaymentDate;
         }
-        
+       
         return targetDate;
     }
 }
 ```
-
 ---
-
 ### 4.3 Accounts Receivable (AR) Bounded Context
-
 #### 4.3.1 Context Overview
 **Responsibility**: Managing customers, creating/sending invoices, tracking payments received, processing online/gateway payments, and managing collection activities.
-
 **Strategic Classification**: Core Domain - Strategic
-
 **Subdomains**:
 - Customer Management: Customer master data and credit management
 - Invoice Management: Invoice creation, delivery, and lifecycle
 - Payment Processing: Payment receipt and application
 - Collections Management: Overdue account management and collection activities
-
 #### 4.3.2 Core Domain Model
-
 ```mermaid
 classDiagram
     class Customer {
         +CustomerId id
+        +TenantId tenantId
         +string name
         +string taxId
         +ContactInfo contactInfo
@@ -1265,9 +1207,10 @@ classDiagram
         +suspendCredit()
         +restoreCredit()
     }
-    
+   
     class Invoice {
         +InvoiceId id
+        +TenantId tenantId
         +string invoiceNumber
         +CustomerId customerId
         +DateTime issueDate
@@ -1278,11 +1221,12 @@ classDiagram
         +List~InvoiceLineItem~ lineItems
         +TaxCalculation taxCalculation
         +PaymentTerms terms
+        +Dispute? dispute
         +addLineItem(InvoiceLineItem)
         +applyPayment(MonetaryValue, DateTime)
         +calculate()
     }
-    
+   
     class InvoiceLineItem {
         +LineItemId id
         +string description
@@ -1293,9 +1237,10 @@ classDiagram
         +ServiceId? serviceId
         +TaxCode taxCode
     }
-    
+   
     class CustomerPayment {
         +PaymentId id
+        +TenantId tenantId
         +CustomerId customerId
         +MonetaryValue amount
         +DateTime paymentDate
@@ -1306,18 +1251,20 @@ classDiagram
         +apply()
         +reverse()
     }
-    
+   
     class PaymentApplication {
         +ApplicationId id
+        +int version
         +PaymentId paymentId
         +InvoiceId invoiceId
         +MonetaryValue appliedAmount
         +DateTime applicationDate
         +bool isReversed
     }
-    
+   
     class CreditMemo {
         +CreditMemoId id
+        +TenantId tenantId
         +CustomerId customerId
         +MonetaryValue amount
         +DateTime issueDate
@@ -1326,9 +1273,10 @@ classDiagram
         +InvoiceId? originalInvoiceId
         +apply()
     }
-    
+   
     class CollectionCase {
         +CaseId id
+        +TenantId tenantId
         +CustomerId customerId
         +List~InvoiceId~ overdueInvoices
         +MonetaryValue totalOverdueAmount
@@ -1338,41 +1286,41 @@ classDiagram
         +escalate()
         +resolve()
     }
-
+   
+    class Dispute {
+        +DisputeId id
+        +InvoiceId invoiceId
+        +string reason
+        +DisputeStatus status
+        +DateTime raisedAt
+        +resolve()
+    }
     %% --- Core Customer Relationships ---
     Customer "1" o-- "0..*" Invoice : receives
     Customer "1" o-- "0..*" CustomerPayment : makes
     Customer "1" o-- "0..*" CreditMemo : is issued
     Customer "1" o-- "0..*" CollectionCase : has
-
     %% --- Invoice and Payment Application ---
     Invoice "1" o-- "0..*" InvoiceLineItem : consists of
-
+    Invoice "1" o-- "0..1" Dispute : has
     %% A single payment can be applied to multiple invoices.
     CustomerPayment "1" o-- "0..*" PaymentApplication : is applied via
-
     %% An invoice can receive multiple payment applications.
     PaymentApplication "*" -- "1" Invoice : applies to
-
     %% --- Credit Memo Application (New Relationship) ---
     %% A credit memo can also be applied to an invoice to reduce its balance.
     CreditMemo "1" -- "0..*" Invoice : can be applied to
-
     %% --- Collections ---
     %% A collection case tracks one or more overdue invoices.
     CollectionCase "1" -- "1..*" Invoice : tracks
 ```
-
 #### 4.3.3 Aggregates Specification
-
 ##### Customer Aggregate Root
 **Purpose**: Manages customer master data, credit terms, and account status
-
 **Entities**:
 - `CustomerContact`: Multiple contact persons
 - `CustomerAddress`: Billing and shipping addresses
 - `CustomerCreditHistory`: Historical credit decisions
-
 **Value Objects**:
 - `CustomerId`: Unique identifier
 - `CustomerName`: Company or individual name
@@ -1382,21 +1330,18 @@ classDiagram
 - `CreditLimit`: Maximum outstanding amount
 - `CurrentBalance`: Total outstanding receivables
 - `CustomerType`: Individual, Corporate, Government
-
 **Business Invariants**:
 - Credit limit cannot be negative
 - Cannot exceed credit limit without approval
 - Tax ID must be unique if provided
 - Current balance must equal sum of outstanding invoices
-
 ##### Invoice Aggregate Root
 **Purpose**: Represents a bill sent to customer for goods/services
-
 **Entities**:
 - `InvoiceLineItem`: Individual items/services on invoice
 - `InvoiceDelivery`: Delivery tracking (email, postal)
 - `InvoiceReminder`: Payment reminder history
-
+- `Dispute`: Customer dispute tracking (triggers Hold status)
 **Value Objects**:
 - `InvoiceId`: Unique identifier
 - `InvoiceNumber`: Sequential or formatted invoice number
@@ -1405,22 +1350,18 @@ classDiagram
 - `DueDate`: When payment is due
 - `TotalAmount`: Calculated total including taxes
 - `PaidAmount`: Total payments received
-- `InvoiceStatus`: Draft, Sent, Paid, Overdue, Cancelled
+- `InvoiceStatus`: Draft, Sent, Paid, Overdue, Cancelled, Hold
 - `PaymentTerms`: Specific terms for this invoice
-
 **Business Invariants**:
 - Total amount must equal sum of line items plus taxes
 - Cannot modify sent invoices (must credit memo)
 - Paid amount cannot exceed total amount
 - Due date must be after issue date
-
 ##### CustomerPayment Aggregate Root
 **Purpose**: Represents payment received from customer
-
 **Entities**:
 - `PaymentApplication`: How payment is applied to invoices
 - `PaymentReversal`: If payment needs to be reversed
-
 **Value Objects**:
 - `PaymentId`: Unique identifier
 - `CustomerId`: Customer making payment
@@ -1429,15 +1370,12 @@ classDiagram
 - `PaymentMethod`: Cash, Check, ACH, Credit Card, Wire
 - `Reference`: Check number, transaction ID, etc.
 - `PaymentSource`: Manual, Online Portal, Payment Gateway
-
 **Business Invariants**:
 - Payment amount must be positive
 - Total applications cannot exceed payment amount
 - Cannot reverse applied payments without unapplying first
-
 ##### CreditMemo Aggregate Root
 **Purpose**: Reduces customer balance for returns, adjustments, or corrections
-
 **Value Objects**:
 - `CreditMemoId`: Unique identifier
 - `CustomerId`: Customer receiving credit
@@ -1445,19 +1383,15 @@ classDiagram
 - `IssueDate`: When credit was issued
 - `Reason`: Return, Discount, Correction, etc.
 - `OriginalInvoiceId`: Invoice being credited (if applicable)
-
 **Business Invariants**:
 - Credit amount must be positive
 - Cannot exceed original invoice amount (if specified)
 - Must have valid reason for credit
-
 ##### CollectionCase Aggregate Root
 **Purpose**: Manages collection activities for overdue accounts
-
 **Entities**:
 - `CollectionActivity`: Individual collection actions taken
 - `CollectionNote`: Notes and communications log
-
 **Value Objects**:
 - `CaseId`: Unique identifier
 - `CustomerId`: Customer with overdue balance
@@ -1465,18 +1399,16 @@ classDiagram
 - `CaseStatus`: Open, In Progress, On Hold, Resolved, Legal
 - `AssignedTo`: Collection agent responsible
 - `LastActivityDate`: Most recent collection activity
-
 **Business Invariants**:
 - Must have at least one overdue invoice
 - Cannot close case with outstanding overdue balance
 - Activities must be in chronological order
-
 #### 4.3.4 Commands & Queries (CQRS)
-
 ##### Commands
 **Customer Management**:
 ```csharp
 public record CreateCustomer(
+    TenantId TenantId,
     string Name,
     string? TaxId,
     ContactInfo ContactInfo,
@@ -1485,24 +1417,22 @@ public record CreateCustomer(
     MonetaryValue? CreditLimit,
     UserId CreatedBy
 );
-
 public record UpdateCustomerCreditLimit(
     CustomerId CustomerId,
     MonetaryValue NewCreditLimit,
     string Justification,
     UserId UpdatedBy
 );
-
 public record SuspendCustomerCredit(
     CustomerId CustomerId,
     string Reason,
     UserId SuspendedBy
 );
 ```
-
 **Invoice Management**:
 ```csharp
 public record CreateInvoice(
+    TenantId TenantId,
     CustomerId CustomerId,
     DateTime IssueDate,
     DateTime DueDate,
@@ -1511,25 +1441,34 @@ public record CreateInvoice(
     ProjectId? ProjectId,
     UserId CreatedBy
 );
-
 public record SendInvoice(
     InvoiceId InvoiceId,
     DeliveryMethod Method,
     string DeliveryAddress,
     UserId SentBy
 );
-
 public record ApplyPaymentToInvoice(
     InvoiceId InvoiceId,
     PaymentId PaymentId,
     MonetaryValue Amount,
     UserId AppliedBy
 );
+public record RaiseDispute(
+    InvoiceId InvoiceId,
+    string Reason,
+    UserId RaisedBy
+);
+public record ResolveDispute(
+    DisputeId DisputeId,
+    bool IsResolved,
+    string ResolutionNotes,
+    UserId ResolvedBy
+);
 ```
-
 **Payment Processing**:
 ```csharp
 public record RecordCustomerPayment(
+    TenantId TenantId,
     CustomerId CustomerId,
     MonetaryValue Amount,
     DateTime PaymentDate,
@@ -1539,31 +1478,28 @@ public record RecordCustomerPayment(
     List<PaymentApplicationData>? Applications,
     UserId RecordedBy
 );
-
 public record ProcessOnlinePayment(
     InvoiceId InvoiceId,
     MonetaryValue Amount,
     PaymentGatewayTransaction Transaction,
     UserId? ProcessedBy
 );
-
 public record ReverseCustomerPayment(
     PaymentId PaymentId,
     string ReversalReason,
     UserId ReversedBy
 );
 ```
-
 **Collections Management**:
 ```csharp
 public record CreateCollectionCase(
+    TenantId TenantId,
     CustomerId CustomerId,
     List<InvoiceId> OverdueInvoices,
     UserId AssignedTo,
     CasePriority Priority,
     UserId CreatedBy
 );
-
 public record LogCollectionActivity(
     CaseId CaseId,
     ActivityType Type,
@@ -1574,7 +1510,6 @@ public record LogCollectionActivity(
     UserId LoggedBy
 );
 ```
-
 ##### Queries
 **Customer Queries**:
 ```csharp
@@ -1584,7 +1519,6 @@ public record GetCustomerBalance(CustomerId CustomerId);
 public record GetCustomerPaymentHistory(CustomerId CustomerId, DateTime StartDate, DateTime EndDate);
 public record GetCustomerInvoices(CustomerId CustomerId, InvoiceStatus? StatusFilter = null);
 ```
-
 **Invoice Queries**:
 ```csharp
 public record GetInvoiceById(InvoiceId InvoiceId);
@@ -1592,14 +1526,12 @@ public record GetInvoicesByStatus(InvoiceStatus Status, DateTime? IssuedAfter = 
 public record GetOverdueInvoices(int? DaysOverdue = null, CustomerId? CustomerFilter = null);
 public record GetInvoicesForCollection(DateTime? OverdueSince = null);
 ```
-
 **Payment Queries**:
 ```csharp
 public record GetPaymentById(PaymentId PaymentId);
 public record GetUnappliedPayments(CustomerId? CustomerFilter = null);
 public record GetPaymentApplications(PaymentId PaymentId);
 ```
-
 **Reporting Queries**:
 ```csharp
 public record GetAccountsReceivableAging(DateTime AsOfDate);
@@ -1607,13 +1539,13 @@ public record GetCollectionReport(DateTime StartDate, DateTime EndDate, UserId? 
 public record GetSalesReport(DateTime StartDate, DateTime EndDate, CustomerId? CustomerFilter = null);
 public record GetCashReceiptsReport(DateTime StartDate, DateTime EndDate);
 ```
-
 #### 4.3.5 Events & Integration
-
 ##### Domain Events
+All events include an `IdempotencyKey`.
 ```csharp
 public class InvoiceCreated : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public InvoiceId InvoiceId { get; }
     public string InvoiceNumber { get; }
     public CustomerId CustomerId { get; }
@@ -1625,9 +1557,9 @@ public class InvoiceCreated : DomainEvent
     public List<InvoiceLineItemData> LineItems { get; }
     public UserId CreatedBy { get; }
 }
-
 public class InvoiceSent : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public InvoiceId InvoiceId { get; }
     public CustomerId CustomerId { get; }
     public DeliveryMethod Method { get; }
@@ -1635,9 +1567,9 @@ public class InvoiceSent : DomainEvent
     public DateTime SentAt { get; }
     public UserId SentBy { get; }
 }
-
 public class PaymentReceived : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public PaymentId PaymentId { get; }
     public CustomerId CustomerId { get; }
     public MonetaryValue Amount { get; }
@@ -1647,9 +1579,9 @@ public class PaymentReceived : DomainEvent
     public string Reference { get; }
     public UserId RecordedBy { get; }
 }
-
 public class InvoicePaymentApplied : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public InvoiceId InvoiceId { get; }
     public PaymentId PaymentId { get; }
     public MonetaryValue AppliedAmount { get; }
@@ -1657,18 +1589,19 @@ public class InvoicePaymentApplied : DomainEvent
     public bool IsFullyPaid { get; }
     public UserId AppliedBy { get; }
 }
-
 public class InvoiceOverdue : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public InvoiceId InvoiceId { get; }
     public CustomerId CustomerId { get; }
     public MonetaryValue OverdueAmount { get; }
     public int DaysOverdue { get; }
     public DateTime OriginalDueDate { get; }
+    public TimeZoneInfo TimeZone { get; } // Explicit timezone for global ops
 }
-
 public class CollectionCaseCreated : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public CaseId CaseId { get; }
     public CustomerId CustomerId { get; }
     public List<InvoiceId> OverdueInvoices { get; }
@@ -1676,13 +1609,19 @@ public class CollectionCaseCreated : DomainEvent
     public UserId AssignedTo { get; }
     public CasePriority Priority { get; }
 }
+public class DisputeRaised : DomainEvent
+{
+    public string IdempotencyKey { get; }
+    public DisputeId DisputeId { get; }
+    public InvoiceId InvoiceId { get; }
+    public string Reason { get; }
+    public UserId RaisedBy { get; }
+}
 ```
-
 ##### Critical Event Handlers
-
 **General Ledger Integration Handler**:
 ```csharp
-public class ARGeneralLedgerIntegrationHandler : 
+public class ARGeneralLedgerIntegrationHandler :
     IEventHandler<InvoiceCreated>,
     IEventHandler<PaymentReceived>
 {
@@ -1702,7 +1641,7 @@ public class ARGeneralLedgerIntegrationHandler :
                 Memo: $"Sales - {eventData.CustomerName}"
             )
         };
-        
+       
         await CreateJournalEntry(
             $"Invoice - {eventData.InvoiceNumber}",
             journalLines,
@@ -1710,7 +1649,7 @@ public class ARGeneralLedgerIntegrationHandler :
             EntityType.Invoice
         );
     }
-    
+   
     public async Task Handle(PaymentReceived eventData)
     {
         // Create journal entry for payment receipt
@@ -1727,7 +1666,7 @@ public class ARGeneralLedgerIntegrationHandler :
                 Memo: $"Customer payment"
             )
         };
-        
+       
         await CreateJournalEntry(
             $"Customer Payment - {eventData.Reference}",
             journalLines,
@@ -1737,17 +1676,20 @@ public class ARGeneralLedgerIntegrationHandler :
     }
 }
 ```
-
 **Collections Management Handler**:
 ```csharp
-public class CollectionsManagementHandler : 
+public class CollectionsManagementHandler :
     IEventHandler<InvoiceOverdue>
 {
     public async Task Handle(InvoiceOverdue eventData)
     {
+        // Adjust for timezone if needed
+        var localDueDate = TimeZoneInfo.ConvertTime(eventData.OriginalDueDate, eventData.TimeZone, TimeZoneInfo.Utc);
+        var adjustedDaysOverdue = (DateTime.UtcNow - localDueDate).Days;
+       
         // Check if customer already has an open collection case
         var existingCase = await GetOpenCollectionCase(eventData.CustomerId);
-        
+       
         if (existingCase != null)
         {
             // Add invoice to existing case
@@ -1758,26 +1700,24 @@ public class CollectionsManagementHandler :
             // Create new collection case if total overdue amount meets threshold
             var customerOverdueInvoices = await GetCustomerOverdueInvoices(eventData.CustomerId);
             var totalOverdue = customerOverdueInvoices.Sum(i => i.OverdueAmount);
-            
+           
             if (totalOverdue.Amount >= 100) // Minimum threshold for collection case
             {
                 await CreateCollectionCase(
                     eventData.CustomerId,
                     customerOverdueInvoices.Select(i => i.InvoiceId).ToList(),
                     await GetDefaultCollector(),
-                    DetermineCasePriority(totalOverdue, eventData.DaysOverdue)
+                    DetermineCasePriority(totalOverdue, adjustedDaysOverdue)
                 );
             }
         }
-        
+       
         // Send automated reminder if configured
-        await SendPaymentReminder(eventData.InvoiceId, DetermineReminderLevel(eventData.DaysOverdue));
+        await SendPaymentReminder(eventData.InvoiceId, DetermineReminderLevel(adjustedDaysOverdue));
     }
 }
 ```
-
 #### 4.3.6 Business Rules & Policies
-
 ##### Credit Management Policy
 ```csharp
 public class CreditManagementPolicy
@@ -1791,23 +1731,23 @@ public class CreditManagementPolicy
         var customer = await customerRepository.GetByIdAsync(customerId);
         var currentBalance = await CalculateCustomerBalance(customerId);
         var proposedBalance = currentBalance.Amount + requestedAmount.Amount;
-        
+       
         // Check credit limit
         if (proposedBalance > customer.CreditLimit.Amount)
         {
-            return CreditDecision.Declined("Would exceed credit limit", 
+            return CreditDecision.Declined("Would exceed credit limit",
                 customer.CreditLimit.Amount - currentBalance.Amount);
         }
-        
+       
         // Check payment history
         var paymentHistory = await GetCustomerPaymentHistory(customerId, 12); // Last 12 months
         var averageDaysToPayment = CalculateAverageDaysToPayment(paymentHistory);
-        
+       
         if (averageDaysToPayment > 45) // Slow payer
         {
             return CreditDecision.RequiresApproval("Customer has slow payment history");
         }
-        
+       
         // Check for current overdue amounts
         var overdueInvoices = await GetOverdueInvoices(customerId);
         if (overdueInvoices.Any())
@@ -1818,12 +1758,11 @@ public class CreditManagementPolicy
                 return CreditDecision.Declined("Customer has significant overdue balance");
             }
         }
-        
+       
         return CreditDecision.Approved(requestedAmount);
     }
 }
 ```
-
 ##### Collection Escalation Policy
 ```csharp
 public class CollectionEscalationPolicy
@@ -1834,7 +1773,7 @@ public class CollectionEscalationPolicy
     {
         var daysSinceLastActivity = (DateTime.Today - recentActivities.Max(a => a.ActivityDate)).Days;
         var totalDaysInCollection = (DateTime.Today - collectionCase.CreatedDate).Days;
-        
+       
         // Escalation based on time and amount
         if (collectionCase.TotalOverdueAmount.Amount > 10000)
         {
@@ -1847,7 +1786,7 @@ public class CollectionEscalationPolicy
                 return CollectionAction.FormalDemandLetter("Large balance overdue > 30 days");
             }
         }
-        
+       
         // Standard escalation timeline
         if (totalDaysInCollection <= 15)
         {
@@ -1868,29 +1807,23 @@ public class CollectionEscalationPolicy
     }
 }
 ```
-
 ---
-
 ### 4.4 Financial Planning & Analysis (FP&A) Bounded Context
-
 #### 4.4.1 Context Overview
 **Responsibility**: Managing expenses, budgets, financial goals, forecasting, and fetching bank data for reconciliation with comprehensive reporting and analytics.
-
 **Strategic Classification**: Core Domain - Strategic
-
 **Subdomains**:
 - Expense Management: Expense tracking, categorization, and reimbursement
 - Budget Management: Budget creation, monitoring, and variance analysis
 - Financial Forecasting: Predictive financial modeling and scenario planning
 - Bank Integration: Account linking and transaction synchronization
 - Goal Management: Financial target setting and progress tracking
-
 #### 4.4.2 Core Domain Model
-
 ```mermaid
 classDiagram
     class Expense {
         +ExpenseId id
+        +TenantId tenantId
         +UserId userId
         +MonetaryValue amount
         +DateTime expenseDate
@@ -1907,9 +1840,10 @@ classDiagram
         +approve()
         +reimburse()
     }
-    
+   
     class ExpenseReport {
         +ReportId id
+        +TenantId tenantId
         +UserId submitterId
         +string reportName
         +DateTime periodStart
@@ -1923,9 +1857,10 @@ classDiagram
         +approve()
         +reject(string)
     }
-    
+   
     class Budget {
         +BudgetId id
+        +TenantId tenantId
         +UserId userId
         +string name
         +BudgetType type
@@ -1939,7 +1874,7 @@ classDiagram
         +addAllocation(CategoryAllocation)
         +trackActual(CategoryId, MonetaryValue)
     }
-    
+   
     class CategoryAllocation {
         +AllocationId id
         +CategoryId categoryId
@@ -1949,9 +1884,17 @@ classDiagram
         +decimal percentageOfTotal
         +List~BudgetAlert~ alerts
     }
-    
+   
+    class Category {
+        +CategoryId id
+        +string name
+        +bool requiresApproval
+        +TaxDeductible deductible
+    }
+   
     class FinancialGoal {
         +GoalId id
+        +TenantId tenantId
         +UserId userId
         +string name
         +GoalType type
@@ -1964,9 +1907,10 @@ classDiagram
         +updateProgress(MonetaryValue)
         +checkMilestones()
     }
-    
+   
     class LinkedBankAccount {
         +AccountId id
+        +TenantId tenantId
         +UserId userId
         +string bankName
         +string accountNumber
@@ -1978,7 +1922,7 @@ classDiagram
         +sync()
         +reconnect()
     }
-    
+   
     class BankTransaction {
         +TransactionId id
         +AccountId accountId
@@ -1989,13 +1933,15 @@ classDiagram
         +TransactionType type
         +CategoryId? categoryId
         +bool isReconciled
+        +DateTime? categorizationDeadline
         +categorize(CategoryId)
         +markReconciled()
     }
-    
+   
     class BudgetForecast {
         +ForecastId id
         +BudgetId budgetId
+        +ForecastScenario scenario
         +DateTime forecastDate
         +ForecastType type
         +List~CategoryForecast~ categoryForecasts
@@ -2004,41 +1950,41 @@ classDiagram
         +generate()
         +updateAssumptions()
     }
-
+   
+    class ForecastScenario {
+        +ScenarioId id
+        +string name
+        +ScenarioType type // Optimistic, Pessimistic, Base
+        +Dictionary<string, decimal> assumptions
+    }
   %% --- Expense Reporting ---
     %% An Expense Report contains multiple individual expenses.
     ExpenseReport "1" o-- "0..*" Expense : contains
-
     %% --- Budget Structure ---
     %% A Budget has allocations and forecasts, which are broken down by category.
     Budget "1" o-- "0..*" CategoryAllocation : has
     Budget "1" o-- "0..*" BudgetForecast : has
     BudgetForecast "1" o-- "0..*" CategoryForecast : contains
-
+    BudgetForecast "1" o-- "1" ForecastScenario : uses
     %% --- Central Category Links (The Core Fix) ---
     %% The Category is the central pivot connecting spending to budgets.
     CategoryAllocation "1" -- "1" Category : allocates for
     CategoryForecast "1" -- "1" Category : forecasts for
     Expense "1" -- "1" Category : is categorized as
-
+    BankTransaction "1" -- "1" Category : is categorized as
     %% --- Transaction and Expense Classification ---
     %% Transactions are pulled from a bank account.
     LinkedBankAccount "1" o-- "0..*" BankTransaction : has
-
     %% A bank transaction can be classified as a specific expense.
     BankTransaction "1" -- "0..1" Expense : is classified as
 ```
-
 #### 4.4.3 Aggregates Specification
-
 ##### Expense Aggregate Root
 **Purpose**: Represents individual expense transactions with full audit trail
-
 **Entities**:
 - `ExpenseAttachment`: Supporting documentation
 - `MileageRecord`: Detailed mileage information
 - `ExpenseApproval`: Approval workflow tracking
-
 **Value Objects**:
 - `ExpenseId`: Unique identifier
 - `UserId`: Employee who incurred expense
@@ -2049,17 +1995,14 @@ classDiagram
 - `ExpenseStatus`: Draft, Submitted, Approved, Reimbursed, Rejected
 - `ReceiptDocumentId`: Link to receipt image/document
 - `MileageData`: Miles driven, rate, purpose
-
 **Business Invariants**:
 - Expense amount must be positive
 - Expense date cannot be in the future
 - Mileage expenses must have valid mileage data
 - Receipts required for expenses over policy threshold
 - Cannot modify approved/reimbursed expenses
-
 ##### ExpenseReport Aggregate Root
 **Purpose**: Groups expenses for submission and approval workflow
-
 **Value Objects**:
 - `ReportId`: Unique identifier
 - `SubmitterId`: Employee submitting report
@@ -2068,21 +2011,17 @@ classDiagram
 - `ReportStatus`: Draft, Submitted, Under Review, Approved, Paid, Rejected
 - `TotalAmount`: Sum of all included expenses
 - `ApprovedBy`: Manager who approved report
-
 **Business Invariants**:
 - Report must contain at least one expense
 - All expenses must be from same employee
 - Cannot submit report with rejected expenses
 - Total amount must equal sum of included expenses
-
 ##### Budget Aggregate Root
 **Purpose**: Manages budget allocations and tracks actual vs. planned spending
-
 **Entities**:
 - `CategoryAllocation`: Budget allocation per category
 - `BudgetVersion`: Historical versions of budget
 - `BudgetAlert`: Configured alerts for variances
-
 **Value Objects**:
 - `BudgetId`: Unique identifier
 - `UserId`: Budget owner
@@ -2091,20 +2030,16 @@ classDiagram
 - `TotalBudget`: Total budgeted amount
 - `ActualSpent`: Total actual spending
 - `VariancePercentage`: Budget vs. actual variance
-
 **Business Invariants**:
 - Total allocations cannot exceed total budget
 - Cannot modify closed budgets
 - Actual amounts must be calculated from real transactions
 - Budget periods cannot overlap for same user/department
-
 ##### FinancialGoal Aggregate Root
 **Purpose**: Tracks progress toward financial objectives
-
 **Entities**:
 - `GoalMilestone`: Intermediate targets
 - `GoalContribution`: Individual contributions toward goal
-
 **Value Objects**:
 - `GoalId`: Unique identifier
 - `GoalType`: Savings, Debt Reduction, Investment, Purchase
@@ -2113,20 +2048,16 @@ classDiagram
 - `CurrentAmount`: Current progress toward goal
 - `ProgressPercentage`: Calculated progress percentage
 - `GoalStatus`: Active, On Track, Behind, Achieved, Abandoned
-
 **Business Invariants**:
 - Target amount must be positive
 - Target date must be in the future
 - Progress percentage must be calculated correctly
 - Cannot modify achieved goals
-
 ##### LinkedBankAccount Aggregate Root
 **Purpose**: Manages bank account connections and transaction synchronization
-
 **Entities**:
 - `SyncHistory`: Record of synchronization attempts
 - `AccountBalance`: Historical balance records
-
 **Value Objects**:
 - `AccountId`: Unique identifier
 - `BankName`: Financial institution name
@@ -2135,15 +2066,12 @@ classDiagram
 - `CurrentBalance`: Most recent balance
 - `LastSyncDate`: When account was last synchronized
 - `ConnectionStatus`: Active, Error, Disconnected, Expired
-
 **Business Invariants**:
 - Account number must be unique per user
 - Cannot sync disconnected accounts
 - Balance updates must be in chronological order
-
 ##### BankTransaction Aggregate Root
 **Purpose**: Represents individual bank transactions with categorization
-
 **Value Objects**:
 - `TransactionId`: Unique identifier from bank
 - `AccountId`: Source account
@@ -2154,18 +2082,18 @@ classDiagram
 - `TransactionType`: Debit, Credit, Fee, Interest
 - `CategoryId`: User-assigned category
 - `IsReconciled`: Whether transaction has been reconciled
-
+- `CategorizationDeadline`: Timeout for auto-categorization (e.g., 7 days)
 **Business Invariants**:
 - Transaction ID must be unique per account
 - Amount cannot be zero
 - Reconciled transactions cannot be modified
-
+- Uncategorized transactions after deadline trigger auto-suggestion
 #### 4.4.4 Commands & Queries (CQRS)
-
 ##### Commands
 **Expense Management**:
 ```csharp
 public record CreateExpense(
+    TenantId TenantId,
     MonetaryValue Amount,
     DateTime ExpenseDate,
     CategoryId CategoryId,
@@ -2178,15 +2106,14 @@ public record CreateExpense(
     MileageData? MileageInfo,
     UserId CreatedBy
 );
-
 public record SubmitExpenseReport(
+    TenantId TenantId,
     string ReportName,
     DateTime PeriodStart,
     DateTime PeriodEnd,
     List<ExpenseId> ExpenseIds,
     UserId SubmittedBy
 );
-
 public record ApproveExpenseReport(
     ReportId ReportId,
     bool IsApproved,
@@ -2195,10 +2122,10 @@ public record ApproveExpenseReport(
     UserId ApprovedBy
 );
 ```
-
 **Budget Management**:
 ```csharp
 public record CreateBudget(
+    TenantId TenantId,
     string Name,
     BudgetType Type,
     DateTime PeriodStart,
@@ -2206,7 +2133,6 @@ public record CreateBudget(
     List<CategoryAllocationData> Allocations,
     UserId CreatedBy
 );
-
 public record UpdateBudgetAllocation(
     BudgetId BudgetId,
     CategoryId CategoryId,
@@ -2214,7 +2140,6 @@ public record UpdateBudgetAllocation(
     string? Justification,
     UserId UpdatedBy
 );
-
 public record TrackBudgetActual(
     BudgetId BudgetId,
     CategoryId CategoryId,
@@ -2223,10 +2148,10 @@ public record TrackBudgetActual(
     string? Reference
 );
 ```
-
 **Goal Management**:
 ```csharp
 public record CreateFinancialGoal(
+    TenantId TenantId,
     string Name,
     GoalType Type,
     MonetaryValue TargetAmount,
@@ -2234,7 +2159,6 @@ public record CreateFinancialGoal(
     string Description,
     UserId CreatedBy
 );
-
 public record UpdateGoalProgress(
     GoalId GoalId,
     MonetaryValue ContributionAmount,
@@ -2243,30 +2167,27 @@ public record UpdateGoalProgress(
     UserId UpdatedBy
 );
 ```
-
 **Bank Integration**:
 ```csharp
 public record LinkBankAccount(
+    TenantId TenantId,
     string BankName,
     string AccountNumber,
     AccountType AccountType,
     BankConnectionCredentials Credentials,
     UserId LinkedBy
 );
-
 public record SyncBankAccount(
     AccountId AccountId,
     DateTime? SyncFromDate,
     UserId SyncedBy
 );
-
 public record CategorizeBankTransaction(
     TransactionId TransactionId,
     CategoryId CategoryId,
     UserId CategorizedBy
 );
 ```
-
 ##### Queries
 **Expense Queries**:
 ```csharp
@@ -2276,7 +2197,6 @@ public record GetExpensesByCategory(CategoryId CategoryId, DateTime StartDate, D
 public record GetPendingExpenseReports(UserId? ApproverId = null);
 public record GetExpenseReport(ReportId ReportId);
 ```
-
 **Budget Queries**:
 ```csharp
 public record GetBudgetById(BudgetId BudgetId);
@@ -2285,7 +2205,6 @@ public record GetBudgetPerformance(BudgetId BudgetId, DateTime? AsOfDate = null)
 public record GetBudgetVarianceReport(BudgetId BudgetId);
 public record GetCategorySpending(CategoryId CategoryId, DateTime StartDate, DateTime EndDate);
 ```
-
 **Financial Analysis Queries**:
 ```csharp
 public record GetCashFlowProjection(UserId UserId, DateTime StartDate, DateTime EndDate);
@@ -2293,7 +2212,6 @@ public record GetSpendingTrends(UserId UserId, int MonthCount = 12);
 public record GetGoalProgress(GoalId GoalId);
 public record GetGoalsByUser(UserId UserId, GoalStatus? StatusFilter = null);
 ```
-
 **Bank Account Queries**:
 ```csharp
 public record GetLinkedBankAccounts(UserId UserId, bool? ActiveOnly = true);
@@ -2305,13 +2223,13 @@ public record GetBankTransactions(
 );
 public record GetAccountBalance(AccountId AccountId, DateTime? AsOfDate = null);
 ```
-
 #### 4.4.5 Events & Integration
-
 ##### Domain Events
+All events include an `IdempotencyKey`.
 ```csharp
 public class ExpenseCreated : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public ExpenseId ExpenseId { get; }
     public UserId UserId { get; }
     public MonetaryValue Amount { get; }
@@ -2321,9 +2239,9 @@ public class ExpenseCreated : DomainEvent
     public ProjectId? ProjectId { get; }
     public bool IsReimbursable { get; }
 }
-
 public class ExpenseReportSubmitted : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public ReportId ReportId { get; }
     public UserId SubmitterId { get; }
     public MonetaryValue TotalAmount { get; }
@@ -2331,9 +2249,9 @@ public class ExpenseReportSubmitted : DomainEvent
     public DateTime SubmittedDate { get; }
     public UserId? RequiresApprovalFrom { get; }
 }
-
 public class BudgetVarianceExceeded : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public BudgetId BudgetId { get; }
     public CategoryId CategoryId { get; }
     public MonetaryValue BudgetedAmount { get; }
@@ -2341,9 +2259,9 @@ public class BudgetVarianceExceeded : DomainEvent
     public decimal VariancePercentage { get; }
     public DateTime DetectedDate { get; }
 }
-
 public class FinancialGoalMilestoneReached : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public GoalId GoalId { get; }
     public UserId UserId { get; }
     public string GoalName { get; }
@@ -2351,9 +2269,9 @@ public class FinancialGoalMilestoneReached : DomainEvent
     public MonetaryValue CurrentAmount { get; }
     public MonetaryValue TargetAmount { get; }
 }
-
 public class BankAccountSynced : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public AccountId AccountId { get; }
     public UserId UserId { get; }
     public DateTime SyncDate { get; }
@@ -2361,9 +2279,9 @@ public class BankAccountSynced : DomainEvent
     public MonetaryValue UpdatedBalance { get; }
     public DateTime LastTransactionDate { get; }
 }
-
 public class BankStatementDataRetrieved : DomainEvent
 {
+    public string IdempotencyKey { get; }
     public AccountId AccountId { get; }
     public DateTime StatementDate { get; }
     public MonetaryValue OpeningBalance { get; }
@@ -2371,13 +2289,18 @@ public class BankStatementDataRetrieved : DomainEvent
     public List<BankTransactionData> Transactions { get; }
     public string StatementPeriod { get; }
 }
+public class BankTransactionUncategorizedTimeout : DomainEvent
+{
+    public string IdempotencyKey { get; }
+    public TransactionId TransactionId { get; }
+    public AccountId AccountId { get; }
+    public DateTime Deadline { get; }
+}
 ```
-
 ##### Critical Event Handlers
-
 **Budget Tracking Handler**:
 ```csharp
-public class BudgetTrackingHandler : 
+public class BudgetTrackingHandler :
     IEventHandler<ExpenseCreated>,
     IEventHandler<BankTransactionCategorized>
 {
@@ -2385,7 +2308,7 @@ public class BudgetTrackingHandler :
     {
         // Find active budgets for this user and category
         var activeBudgets = await GetActiveBudgets(eventData.UserId);
-        
+       
         foreach (var budget in activeBudgets)
         {
             var allocation = budget.GetAllocation(eventData.CategoryId);
@@ -2393,7 +2316,7 @@ public class BudgetTrackingHandler :
             {
                 // Update actual spending
                 await UpdateBudgetActual(budget.BudgetId, eventData.CategoryId, eventData.Amount);
-                
+               
                 // Check for variance alerts
                 var updatedAllocation = await GetUpdatedAllocation(budget.BudgetId, eventData.CategoryId);
                 if (updatedAllocation.VariancePercentage > 10) // 10% over budget
@@ -2402,16 +2325,15 @@ public class BudgetTrackingHandler :
                 }
             }
         }
-        
+       
         // Update financial goal progress if expense reduces goal (e.g., debt payment)
         await UpdateGoalProgressForExpense(eventData);
     }
 }
 ```
-
 **General Ledger Integration Handler**:
 ```csharp
-public class FPAGeneralLedgerIntegrationHandler : 
+public class FPAGeneralLedgerIntegrationHandler :
     IEventHandler<ExpenseReportApproved>
 {
     public async Task Handle(ExpenseReportApproved eventData)
@@ -2419,11 +2341,11 @@ public class FPAGeneralLedgerIntegrationHandler :
         // Create journal entries for reimbursable expenses
         var expenses = await GetExpensesInReport(eventData.ReportId);
         var reimbursableExpenses = expenses.Where(e => e.IsReimbursable).ToList();
-        
+       
         if (reimbursableExpenses.Any())
         {
             var totalReimbursable = reimbursableExpenses.Sum(e => e.Amount.Amount);
-            
+           
             var journalLines = new List<JournalEntryLineData>
             {
                 new(
@@ -2437,7 +2359,7 @@ public class FPAGeneralLedgerIntegrationHandler :
                     Memo: $"Reimbursement owed"
                 )
             };
-            
+           
             await CreateJournalEntry(
                 $"Employee Expense Reimbursement - {eventData.ReportId}",
                 journalLines,
@@ -2448,32 +2370,67 @@ public class FPAGeneralLedgerIntegrationHandler :
     }
 }
 ```
-
+**Uncategorized Transaction Handler**:
+```csharp
+public class UncategorizedTransactionHandler : IEventHandler<BankAccountSynced>
+{
+    public async Task Handle(BankAccountSynced eventData)
+    {
+        var newTransactions = await GetNewTransactions(eventData.AccountId, eventData.SyncDate);
+        foreach (var transaction in newTransactions.Where(t => t.CategoryId == null))
+        {
+            transaction.CategorizationDeadline = eventData.SyncDate.AddDays(7); // 7-day timeout
+            if (transaction.CategorizationDeadline < DateTime.UtcNow)
+            {
+                // Trigger auto-categorization or alert
+                var suggestedCategory = await SuggestCategory(transaction);
+                if (suggestedCategory.Confidence > 0.7m)
+                {
+                    await CategorizeBankTransaction(transaction.Id, suggestedCategory.CategoryId, SystemUser.Id);
+                }
+                else
+                {
+                    await PublishEvent(new BankTransactionUncategorizedTimeout(transaction.Id, eventData.AccountId, transaction.CategorizationDeadline));
+                }
+            }
+        }
+    }
+}
+```
 #### 4.4.6 Business Rules & Policies
-
 ##### Expense Approval Policy
 ```csharp
 public class ExpenseApprovalPolicy
 {
+    private readonly IConfiguration _config;
+    private readonly ITaxManagementService _taxService;
+    public ExpenseApprovalPolicy(IConfiguration config, ITaxManagementService taxService)
+    {
+        _config = config;
+        _taxService = taxService;
+    }
     public async Task<ApprovalRequirement> DetermineApprovalRequirement(
         ExpenseReport report,
         IUserRepository userRepository)
     {
         var requirements = new List<ApprovalLevel>();
-        
+       
         // Amount-based approval
-        if (report.TotalAmount.Amount > 5000)
+        var directorThreshold = _config.GetValue<decimal>("ApprovalThresholds:Director", 5000);
+        var managerThreshold = _config.GetValue<decimal>("ApprovalThresholds:Manager", 1000);
+       
+        if (report.TotalAmount.Amount > directorThreshold)
         {
             requirements.Add(ApprovalLevel.Director);
         }
-        else if (report.TotalAmount.Amount > 1000)
+        else if (report.TotalAmount.Amount > managerThreshold)
         {
             requirements.Add(ApprovalLevel.Manager);
         }
-        
+       
         // Check for policy violations
         var expenses = await GetExpensesInReport(report.ReportId);
-        
+       
         foreach (var expense in expenses)
         {
             // Receipt requirement
@@ -2481,43 +2438,54 @@ public class ExpenseApprovalPolicy
             {
                 requirements.Add(ApprovalLevel.Manager);
             }
-            
+           
             // High-risk categories
             var category = await GetCategoryById(expense.CategoryId);
             if (category.RequiresApproval)
             {
                 requirements.Add(ApprovalLevel.Manager);
             }
-            
+           
             // International expenses
             if (expense.Amount.Currency != "USD")
             {
                 requirements.Add(ApprovalLevel.Finance);
             }
+           
+            // Tax deductibility check
+            var taxCheck = await _taxService.IsDeductible(expense.CategoryId, expense.Description);
+            if (!taxCheck.IsDeductible && expense.IsReimbursable)
+            {
+                requirements.Add(ApprovalLevel.Finance); // Review non-deductible reimbursements
+            }
         }
-        
+       
         return new ApprovalRequirement(requirements.Distinct().ToList());
     }
 }
 ```
-
 ##### Budget Variance Policy
 ```csharp
 public class BudgetVariancePolicy
 {
+    private readonly IConfiguration _config;
+    public BudgetVariancePolicy(IConfiguration config) { _config = config; }
     public async Task<List<BudgetAlert>> EvaluateBudgetVariances(
         BudgetId budgetId,
         IBudgetRepository budgetRepository)
     {
         var budget = await budgetRepository.GetByIdAsync(budgetId);
         var alerts = new List<BudgetAlert>();
-        
+       
+        var warningThreshold = _config.GetValue<decimal>("VarianceThresholds:Warning", 80);
+        var criticalThreshold = _config.GetValue<decimal>("VarianceThresholds:Critical", 90);
+       
         foreach (var allocation in budget.Allocations)
         {
             var variancePercentage = CalculateVariancePercentage(allocation);
-            
+           
             // Warning at 80% of budget
-            if (variancePercentage >= 80 && variancePercentage < 100)
+            if (variancePercentage >= warningThreshold && variancePercentage < 100)
             {
                 alerts.Add(new BudgetAlert(
                     BudgetAlertType.Warning,
@@ -2527,7 +2495,7 @@ public class BudgetVariancePolicy
                 ));
             }
             // Critical at 90% of budget
-            else if (variancePercentage >= 90 && variancePercentage < 100)
+            else if (variancePercentage >= criticalThreshold && variancePercentage < 100)
             {
                 alerts.Add(new BudgetAlert(
                     BudgetAlertType.Critical,
@@ -2547,64 +2515,57 @@ public class BudgetVariancePolicy
                 ));
             }
         }
-        
+       
         return alerts;
     }
 }
 ```
-
 ---
-
 ## 5. Integration Patterns
-
 ### 5.1 Event-Driven Integration
-
 #### 5.1.1 Event Flow Architecture
 ```mermaid
 graph TD
     A[AP BC] -->|BillPaid| B[Event Bus]
     A -->|BillCreated| B
-    
+   
     C[AR BC] -->|InvoiceCreated| B
     C -->|PaymentReceived| B
-    
+   
     D[FP&A BC] -->|ExpenseCreated| B
     D -->|BankStatementDataRetrieved| B
-    
+   
     E[GL BC] -->|JournalBatchPosted| B
     E -->|AccountBalanceUpdated| B
-    
+   
     B -->|BillPaid| F[GL BC - Journal Entry Handler]
     B -->|PaymentReceived| F
     B -->|ExpenseCreated| G[Budget Tracking Handler]
     B -->|BankStatementDataRetrieved| H[GL BC - Reconciliation Handler]
-    
+   
     B -->|All Financial Events| I[Audit Trail BC]
     B -->|Relevant Events| J[Analytics BC]
     B -->|Alert Events| K[Notifications BC]
 ```
-
 #### 5.1.2 Financial Event Design Standards
-
 **Event Naming Convention**:
 - Format: `{Entity}{FinancialAction}` (e.g., `BillPaid`, `InvoiceCreated`)
 - Include monetary impact in event name when relevant
 - Past tense for completed financial transactions
-
 **Financial Event Payload Design**:
 ```csharp
 public abstract class FinancialDomainEvent : DomainEvent
 {
+    public string IdempotencyKey { get; protected set; } // For at-least-once handling
     public MonetaryValue? Amount { get; protected set; }
     public string? AccountingReference { get; protected set; }
     public DateTime EffectiveDate { get; protected set; }
     public UserId? AuthorizedBy { get; protected set; }
-    
+   
     // Compliance and audit fields
     public string ComplianceContext { get; protected set; }
     public bool RequiresAuditEntry { get; protected set; } = true;
 }
-
 // Example implementation
 public class BillPaid : FinancialDomainEvent
 {
@@ -2616,14 +2577,15 @@ public class BillPaid : FinancialDomainEvent
     public string ConfirmationNumber { get; }
     public CategoryId CategoryId { get; }
     public ProjectId? ProjectId { get; }
-    
+   
     // Include financial context to avoid query-back
     public AccountId ExpenseAccountId { get; }
     public AccountId PayableAccountId { get; }
     public AccountId CashAccountId { get; }
-    
+   
     public BillPaid(Bill bill, BillPayment payment, FinancialContext context)
     {
+        IdempotencyKey = Guid.NewGuid().ToString();
         BillId = bill.Id;
         VendorId = bill.VendorId;
         VendorName = bill.VendorName;
@@ -2634,19 +2596,17 @@ public class BillPaid : FinancialDomainEvent
         CategoryId = bill.CategoryId;
         ProjectId = bill.ProjectId;
         EffectiveDate = payment.PaymentDate;
-        
+       
         // Financial context for GL integration
         ExpenseAccountId = context.ExpenseAccountId;
         PayableAccountId = context.PayableAccountId;
         CashAccountId = context.CashAccountId;
-        
+       
         ComplianceContext = "AP_PAYMENT";
     }
 }
 ```
-
 ### 5.2 Saga Pattern for Financial Workflows
-
 #### 5.2.1 Bill Payment Saga
 ```csharp
 public class BillPaymentSaga : ISaga<BillPaymentInitiated>
@@ -2662,15 +2622,15 @@ public class BillPaymentSaga : ISaga<BillPaymentInitiated>
             PaymentMethod = @event.PaymentMethod,
             InitiatedBy = @event.InitiatedBy
         };
-        
+       
         try
         {
             // Step 1: Validate payment authorization
             await ValidatePaymentAuthorization(@event.PaymentId);
-            
+           
             // Step 2: Process payment through external system
             var paymentResult = await ProcessExternalPayment(@event);
-            
+           
             if (paymentResult.IsSuccessful)
             {
                 // Step 3: Record successful payment in AP
@@ -2680,7 +2640,7 @@ public class BillPaymentSaga : ISaga<BillPaymentInitiated>
                     paymentResult.ConfirmationNumber,
                     @event.InitiatedBy
                 ));
-                
+               
                 // Step 4: Create GL journal entry (handled by event handler)
                 // Step 5: Update budget actuals (handled by event handler)
                 // Step 6: Update cash flow projections (handled by event handler)
@@ -2698,19 +2658,18 @@ public class BillPaymentSaga : ISaga<BillPaymentInitiated>
             await HandlePaymentFailure(@event.PaymentId, ex.Message);
         }
     }
-    
+   
     // Compensating actions
     public async Task Handle(PaymentProcessingFailed @event)
     {
         // Reverse any partial state changes
         await SendCommand(new CancelBillPayment(@event.PaymentId, @event.FailureReason));
-        
+       
         // Notify stakeholders
         await SendCommand(new NotifyPaymentFailure(@event.BillId, @event.FailureReason));
     }
 }
 ```
-
 #### 5.2.2 Invoice to Cash Saga
 ```csharp
 public class InvoiceToCashSaga : ISaga<InvoiceCreated>
@@ -2724,7 +2683,7 @@ public class InvoiceToCashSaga : ISaga<InvoiceCreated>
             Amount = @event.TotalAmount,
             DueDate = @event.DueDate
         };
-        
+       
         // Step 1: Create GL journal entry for invoice
         await SendCommand(new CreateJournalEntryForInvoice(
             @event.InvoiceId,
@@ -2732,31 +2691,31 @@ public class InvoiceToCashSaga : ISaga<InvoiceCreated>
             @event.TotalAmount,
             @event.LineItems
         ));
-        
+       
         // Step 2: Check customer credit limit
         var creditCheck = await CheckCustomerCredit(@event.CustomerId, @event.TotalAmount);
         if (!creditCheck.IsApproved)
         {
             await SendCommand(new FlagInvoiceForCreditReview(@event.InvoiceId, creditCheck.Reason));
         }
-        
+       
         // Step 3: Schedule invoice delivery
         await SendCommand(new ScheduleInvoiceDelivery(
             @event.InvoiceId,
             @event.CustomerId,
             DeliveryMethod.Email
         ));
-        
+       
         // Step 4: Set up payment reminders
         await SendCommand(new SchedulePaymentReminders(
             @event.InvoiceId,
             @event.DueDate
         ));
-        
+       
         // Step 5: Update AR aging schedule
         await SendCommand(new UpdateARAgingSchedule(@event.InvoiceId, @event.DueDate));
     }
-    
+   
     public async Task Handle(PaymentReceived @event)
     {
         // Apply payment to outstanding invoices
@@ -2765,14 +2724,14 @@ public class InvoiceToCashSaga : ISaga<InvoiceCreated>
             @event.CustomerId,
             @event.Amount
         ));
-        
+       
         // Update cash flow projections
         await SendCommand(new UpdateCashFlowActuals(
             @event.Amount,
             @event.PaymentDate,
             CashFlowCategory.CustomerPayments
         ));
-        
+       
         // Create GL journal entry for payment
         await SendCommand(new CreateJournalEntryForPayment(
             @event.PaymentId,
@@ -2782,16 +2741,14 @@ public class InvoiceToCashSaga : ISaga<InvoiceCreated>
     }
 }
 ```
-
 ### 5.3 Anti-Corruption Layer (ACL) Pattern
-
 #### 5.3.1 Financial Data Translation Layer
 ```csharp
 public class FinancialDataTranslationService
 {
     private readonly IGeneralLedgerService _glService;
     private readonly ICurrencyService _currencyService;
-    
+   
     public async Task<JournalEntryBatch> TranslateBillToJournalEntry(
         BillPaid billPaidEvent,
         ChartOfAccountsMapping accountMapping)
@@ -2800,7 +2757,7 @@ public class FinancialDataTranslationService
         await ValidateAccountExists(accountMapping.ExpenseAccountId);
         await ValidateAccountExists(accountMapping.AccountsPayableAccountId);
         await ValidateAccountExists(accountMapping.CashAccountId);
-        
+       
         // Handle currency conversion if needed
         var baseAmount = billPaidEvent.Amount;
         if (billPaidEvent.Amount.Currency != "USD")
@@ -2810,7 +2767,7 @@ public class FinancialDataTranslationService
                 billPaidEvent.EffectiveDate
             );
         }
-        
+       
         // Create journal entry lines
         var lines = new List<JournalEntryLine>
         {
@@ -2830,7 +2787,7 @@ public class FinancialDataTranslationService
                 SourceEntityType: EntityType.Payment
             )
         };
-        
+       
         // Handle foreign exchange gain/loss if applicable
         if (billPaidEvent.Amount.Currency != "USD")
         {
@@ -2839,7 +2796,7 @@ public class FinancialDataTranslationService
                 baseAmount,
                 billPaidEvent.EffectiveDate
             );
-            
+           
             if (fxGainLoss.Amount != 0)
             {
                 lines.Add(new JournalEntryLine(
@@ -2850,7 +2807,7 @@ public class FinancialDataTranslationService
                 ));
             }
         }
-        
+       
         return new JournalEntryBatch(
             PostingDate: billPaidEvent.EffectiveDate,
             Description: $"Bill Payment - {billPaidEvent.VendorName}",
@@ -2861,14 +2818,13 @@ public class FinancialDataTranslationService
     }
 }
 ```
-
 #### 5.3.2 Bank Integration ACL
 ```csharp
 public class BankIntegrationService
 {
     private readonly IBankDataProvider _bankProvider;
     private readonly ITransactionCategorizer _categorizer;
-    
+   
     public async Task<BankStatementImportResult> ImportBankStatement(
         LinkedBankAccount account,
         DateTime startDate,
@@ -2882,11 +2838,11 @@ public class BankIntegrationService
                 startDate,
                 endDate
             );
-            
+           
             // Transform to domain model
-            var bankTransactions = rawBankData.Transactions.Select(raw => 
+            var bankTransactions = rawBankData.Transactions.Select(raw =>
                 TransformRawTransaction(raw, account.AccountId)).ToList();
-            
+           
             // Auto-categorize transactions
             foreach (var transaction in bankTransactions)
             {
@@ -2895,13 +2851,13 @@ public class BankIntegrationService
                     transaction.MerchantName,
                     transaction.Amount
                 );
-                
+               
                 if (suggestedCategory.ConfidenceLevel > 0.8m)
                 {
                     transaction.CategoryId = suggestedCategory.CategoryId;
                 }
             }
-            
+           
             // Create bank statement
             var bankStatement = new BankStatement(
                 account.AccountId,
@@ -2912,7 +2868,7 @@ public class BankIntegrationService
                 rawBankData.ClosingBalance,
                 bankTransactions
             );
-            
+           
             return new BankStatementImportResult(
                 bankStatement,
                 bankTransactions.Count,
@@ -2924,7 +2880,7 @@ public class BankIntegrationService
             return BankStatementImportResult.Failed(ex.Message);
         }
     }
-    
+   
     private BankTransaction TransformRawTransaction(
         RawBankTransaction raw,
         AccountId accountId)
@@ -2938,17 +2894,16 @@ public class BankIntegrationService
             MerchantName: ExtractMerchantName(raw.Description),
             TransactionType: DetermineTransactionType(raw.Amount, raw.Type),
             CategoryId: null, // Will be determined by categorizer
-            IsReconciled: false
+            IsReconciled: false,
+            CategorizationDeadline: DateTime.UtcNow.AddDays(7)
         );
     }
 }
 ```
-
 ### 5.4 Read Model Synchronization
-
 #### 5.4.1 Financial Analytics Projections
 ```csharp
-public class FinancialAnalyticsProjection : 
+public class FinancialAnalyticsProjection :
     IEventHandler<JournalBatchPosted>,
     IEventHandler<BillPaid>,
     IEventHandler<PaymentReceived>,
@@ -2956,7 +2911,8 @@ public class FinancialAnalyticsProjection :
 {
     private readonly IFinancialAnalyticsRepository _repository;
     private readonly IAccountRepository _accountRepository;
-    
+    private readonly IAnomalyDetectionService _mlService; // ML for anomaly detection
+   
     public async Task Handle(JournalBatchPosted @event)
     {
         foreach (var line in @event.Lines)
@@ -2965,43 +2921,46 @@ public class FinancialAnalyticsProjection :
             await UpdateCashFlowAnalytics(line, @event.PostingDate);
             await UpdateProfitLossAnalytics(line, @event.PostingDate);
         }
+       
+        // ML anomaly check
+        await _mlService.DetectAnomalies(@event);
     }
-    
+   
     public async Task Handle(BillPaid @event)
     {
         // Update vendor spending analytics
         await UpdateVendorSpendingAnalytics(@event.VendorId, @event.Amount, @event.EffectiveDate);
-        
+       
         // Update category spending analytics
         await UpdateCategorySpendingAnalytics(@event.CategoryId, @event.Amount, @event.EffectiveDate);
-        
+       
         // Update project cost analytics if applicable
         if (@event.ProjectId.HasValue)
         {
             await UpdateProjectCostAnalytics(@event.ProjectId.Value, @event.Amount, @event.EffectiveDate);
         }
-        
+       
         // Update cash flow projections
         await UpdateCashFlowProjections(@event.Amount, @event.EffectiveDate, CashFlowType.Outflow);
     }
-    
+   
     public async Task Handle(PaymentReceived @event)
     {
         // Update customer payment analytics
         await UpdateCustomerPaymentAnalytics(@event.CustomerId, @event.Amount, @event.PaymentDate);
-        
+       
         // Update cash flow projections
         await UpdateCashFlowProjections(@event.Amount, @event.PaymentDate, CashFlowType.Inflow);
-        
+       
         // Update AR aging analytics
         await UpdateARAgingAnalytics(@event.CustomerId, @event.Amount, @event.PaymentDate);
     }
-    
+   
     private async Task UpdateAccountAnalytics(JournalEntryLinePosted line, DateTime postingDate)
     {
         var account = await _accountRepository.GetByIdAsync(line.AccountId);
         var analytics = await _repository.GetAccountAnalytics(line.AccountId, postingDate.Year, postingDate.Month);
-        
+       
         if (analytics == null)
         {
             analytics = new AccountAnalytics(
@@ -3013,60 +2972,59 @@ public class FinancialAnalyticsProjection :
                 postingDate.Month
             );
         }
-        
+       
         // Update monthly totals
         if (line.DebitAmount.HasValue)
         {
             analytics.AddDebitAmount(line.DebitAmount.Value);
         }
-        
+       
         if (line.CreditAmount.HasValue)
         {
             analytics.AddCreditAmount(line.CreditAmount.Value);
         }
-        
+       
         analytics.UpdateLastTransactionDate(postingDate);
-        
+       
         await _repository.UpsertAccountAnalytics(analytics);
     }
 }
 ```
-
 #### 5.4.2 Financial Dashboard Projections
 ```csharp
-public class FinancialDashboardProjection : 
+public class FinancialDashboardProjection :
     IEventHandler<AccountBalanceUpdated>,
     IEventHandler<BudgetVarianceExceeded>,
     IEventHandler<InvoiceOverdue>
 {
     private readonly IDashboardRepository _repository;
-    
+   
     public async Task Handle(AccountBalanceUpdated @event)
     {
         var dashboard = await GetOrCreateUserDashboard(@event.AccountId);
-        
+       
         // Update account balance summary
         await UpdateAccountBalanceSummary(dashboard, @event);
-        
+       
         // Update net worth calculation if personal account
         if (IsPersonalAccount(@event.AccountId))
         {
             await RecalculateNetWorth(dashboard.UserId);
         }
-        
+       
         // Update cash position
         if (IsCashAccount(@event.AccountId))
         {
             await UpdateCashPosition(dashboard, @event.NewBalance);
         }
-        
+       
         await _repository.UpdateDashboard(dashboard);
     }
-    
+   
     public async Task Handle(BudgetVarianceExceeded @event)
     {
         var dashboard = await GetUserDashboardForBudget(@event.BudgetId);
-        
+       
         dashboard.AddAlert(new DashboardAlert(
             AlertType.BudgetVariance,
             AlertSeverity.Warning,
@@ -3078,14 +3036,14 @@ public class FinancialDashboardProjection :
                 VariancePercentage = @event.VariancePercentage
             }
         ));
-        
+       
         await _repository.UpdateDashboard(dashboard);
     }
-    
+   
     public async Task Handle(InvoiceOverdue @event)
     {
         var dashboard = await GetUserDashboardForCustomer(@event.CustomerId);
-        
+       
         dashboard.AddAlert(new DashboardAlert(
             AlertType.OverdueInvoice,
             AlertSeverity.High,
@@ -3098,20 +3056,15 @@ public class FinancialDashboardProjection :
                 DaysOverdue = @event.DaysOverdue
             }
         ));
-        
+       
         await _repository.UpdateDashboard(dashboard);
     }
 }
 ```
-
 ---
-
 ## 6. Implementation Guidelines
-
 ### 6.1 Development Standards
-
 #### 6.1.1 Financial Aggregate Design Principles
-
 **Monetary Value Consistency**:
 ```csharp
 public class MonetaryValue : ValueObject
@@ -3119,37 +3072,37 @@ public class MonetaryValue : ValueObject
     public decimal Amount { get; }
     public string Currency { get; }
     public int DecimalPlaces { get; }
-    
+   
     public MonetaryValue(decimal amount, string currency)
     {
         if (currency == null) throw new ArgumentNullException(nameof(currency));
         if (string.IsNullOrWhiteSpace(currency)) throw new ArgumentException("Currency cannot be empty");
-        
+       
         Amount = Math.Round(amount, GetDecimalPlaces(currency));
         Currency = currency.ToUpperInvariant();
         DecimalPlaces = GetDecimalPlaces(currency);
     }
-    
+   
     public MonetaryValue Add(MonetaryValue other)
     {
         if (Currency != other.Currency)
             throw new InvalidOperationException($"Cannot add different currencies: {Currency} and {other.Currency}");
-            
+           
         return new MonetaryValue(Amount + other.Amount, Currency);
     }
-    
+   
     public MonetaryValue Subtract(MonetaryValue other)
     {
         if (Currency != other.Currency)
             throw new InvalidOperationException($"Cannot subtract different currencies: {Currency} and {other.Currency}");
-            
+           
         return new MonetaryValue(Amount - other.Amount, Currency);
     }
-    
+   
     public bool IsZero => Amount == 0;
     public bool IsPositive => Amount > 0;
     public bool IsNegative => Amount < 0;
-    
+   
     private static int GetDecimalPlaces(string currency)
     {
         return currency switch
@@ -3161,40 +3114,43 @@ public class MonetaryValue : ValueObject
             _ => 2
         };
     }
-    
+   
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Amount;
         yield return Currency;
     }
-    
+   
     public override string ToString()
     {
         return $"{Amount:F{DecimalPlaces}} {Currency}";
     }
 }
 ```
-
 **Financial Transaction Aggregate**:
+All aggregates include `TenantId` and `Version` for multi-tenancy and optimistic concurrency.
 ```csharp
 public abstract class FinancialTransaction : AggregateRoot<TransactionId>
 {
+    public TenantId TenantId { get; protected set; }
+    public int Version { get; protected set; }
     public DateTime TransactionDate { get; protected set; }
     public MonetaryValue Amount { get; protected set; }
     public string Description { get; protected set; }
     public string Reference { get; protected set; }
     public UserId AuthorizedBy { get; protected set; }
     public TransactionStatus Status { get; protected set; }
-    
+   
     // Audit trail
     public DateTime CreatedAt { get; protected set; }
     public UserId CreatedBy { get; protected set; }
     public DateTime? ModifiedAt { get; protected set; }
     public UserId? ModifiedBy { get; protected set; }
-    
+   
     protected FinancialTransaction() { } // For EF
-    
+   
     protected FinancialTransaction(
+        TenantId tenantId,
         TransactionId id,
         DateTime transactionDate,
         MonetaryValue amount,
@@ -3203,15 +3159,17 @@ public abstract class FinancialTransaction : AggregateRoot<TransactionId>
         UserId authorizedBy,
         UserId createdBy) : base(id)
     {
+        TenantId = tenantId;
+        Version = 0;
         if (transactionDate > DateTime.UtcNow.AddDays(1))
             throw new DomainException("Transaction date cannot be more than 1 day in the future");
-            
+           
         if (amount.IsNegative)
             throw new DomainException("Transaction amount must be positive");
-            
+           
         if (string.IsNullOrWhiteSpace(description))
             throw new DomainException("Transaction description is required");
-        
+       
         TransactionDate = transactionDate;
         Amount = amount;
         Description = description;
@@ -3221,84 +3179,84 @@ public abstract class FinancialTransaction : AggregateRoot<TransactionId>
         CreatedAt = DateTime.UtcNow;
         CreatedBy = createdBy;
     }
-    
+   
     public virtual void Authorize(UserId authorizedBy)
     {
         if (Status != TransactionStatus.Pending)
             throw new DomainException($"Cannot authorize transaction in {Status} status");
-            
+           
         Status = TransactionStatus.Authorized;
         AuthorizedBy = authorizedBy;
         ModifiedAt = DateTime.UtcNow;
         ModifiedBy = authorizedBy;
-        
+        Version++;
+       
         RaiseDomainEvent(new TransactionAuthorized(Id, Amount, authorizedBy));
     }
-    
+   
     public virtual void Complete(UserId completedBy)
     {
         if (Status != TransactionStatus.Authorized)
             throw new DomainException($"Cannot complete transaction in {Status} status");
-            
+           
         Status = TransactionStatus.Completed;
         ModifiedAt = DateTime.UtcNow;
         ModifiedBy = completedBy;
-        
+        Version++;
+       
         RaiseDomainEvent(new TransactionCompleted(Id, Amount, TransactionDate, completedBy));
     }
 }
 ```
-
 #### 6.1.2 Double-Entry Accounting Enforcement
-
 **Journal Entry Validation Service**:
 ```csharp
 public class JournalEntryValidationService
 {
     private readonly IChartOfAccountsService _chartService;
     private readonly IAccountingPeriodService _periodService;
-    
+   
     public async Task<ValidationResult> ValidateJournalEntry(JournalEntryBatch batch)
     {
         var errors = new List<string>();
-        
+       
         // Basic validations
         errors.AddRange(await ValidateBasicStructure(batch));
         errors.AddRange(await ValidateAccountReferences(batch));
         errors.AddRange(await ValidateBalancing(batch));
         errors.AddRange(await ValidateAccountingPeriod(batch));
         errors.AddRange(await ValidateBusinessRules(batch));
-        
+       
         return new ValidationResult(errors.Count == 0, errors);
     }
-    
+   
     private async Task<List<string>> ValidateBasicStructure(JournalEntryBatch batch)
     {
         var errors = new List<string>();
-        
+       
         if (batch.Lines.Count < 2)
         {
             errors.Add("Journal entry must have at least 2 lines");
         }
-        
+       
         if (batch.PostingDate == default)
         {
             errors.Add("Posting date is required");
         }
-        
+       
         if (string.IsNullOrWhiteSpace(batch.Description))
         {
             errors.Add("Description is required");
         }
-        
+       
         return errors;
     }
-    
+   
     private async Task<List<string>> ValidateAccountReferences(JournalEntryBatch batch)
     {
         var errors = new List<string>();
         var accountIds = batch.Lines.Select(l => l.AccountId).Distinct();
-        
+       
         foreach (var accountId in accountIds)
         {
             var account = await _chartService.GetAccountAsync(accountId);
@@ -3315,18 +3273,18 @@ public class JournalEntryValidationService
                 errors.Add($"Account {account.AccountNumber} does not allow direct posting");
             }
         }
-        
+       
         return errors;
     }
-    
+   
     private async Task<List<string>> ValidateBalancing(JournalEntryBatch batch)
     {
         var errors = new List<string>();
-        
+       
         // Group by currency
-        var currencyGroups = batch.Lines.GroupBy(l => 
+        var currencyGroups = batch.Lines.GroupBy(l =>
             l.DebitAmount?.Currency ?? l.CreditAmount?.Currency);
-        
+       
         foreach (var currencyGroup in currencyGroups)
         {
             var currency = currencyGroup.Key;
@@ -3336,7 +3294,7 @@ public class JournalEntryValidationService
             var totalCredits = currencyGroup
                 .Where(l => l.CreditAmount != null)
                 .Sum(l => l.CreditAmount.Amount);
-            
+           
             var difference = Math.Abs(totalDebits - totalCredits);
             if (difference > 0.01m) // Allow for small rounding differences
             {
@@ -3345,14 +3303,14 @@ public class JournalEntryValidationService
                           $"Difference={difference:C}");
             }
         }
-        
+       
         // Validate each line has either debit or credit (not both, not neither)
         for (int i = 0; i < batch.Lines.Count; i++)
         {
             var line = batch.Lines[i];
             var hasDebit = line.DebitAmount?.Amount > 0;
             var hasCredit = line.CreditAmount?.Amount > 0;
-            
+           
             if (hasDebit && hasCredit)
             {
                 errors.Add($"Line {i + 1}: Cannot have both debit and credit amounts");
@@ -3362,14 +3320,14 @@ public class JournalEntryValidationService
                 errors.Add($"Line {i + 1}: Must have either debit or credit amount");
             }
         }
-        
+       
         return errors;
     }
-    
+   
     private async Task<List<string>> ValidateAccountingPeriod(JournalEntryBatch batch)
     {
         var errors = new List<string>();
-        
+       
         var period = await _periodService.GetPeriodForDateAsync(batch.PostingDate);
         if (period == null)
         {
@@ -3379,55 +3337,52 @@ public class JournalEntryValidationService
         {
             errors.Add($"Cannot post to closed period {period.PeriodName}");
         }
-        
+       
         return errors;
     }
 }
 ```
-
 #### 6.1.3 Financial Command and Query Patterns
-
 **Financial Command with Validation**:
 ```csharp
 public record CreateBill : ICommand<BillId>
 {
     [Required]
     public string BillNumber { get; init; }
-    
+   
     [Required]
     public VendorId VendorId { get; init; }
-    
+   
     [Required]
     [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be positive")]
     public MonetaryValue Amount { get; init; }
-    
+   
     [Required]
     public DateTime IssueDate { get; init; }
-    
+   
     [Required]
     [DateGreaterThan(nameof(IssueDate), ErrorMessage = "Due date must be after issue date")]
     public DateTime DueDate { get; init; }
-    
+   
     [Required]
     public CategoryId CategoryId { get; init; }
-    
+   
     public ProjectId? ProjectId { get; init; }
-    
+   
     public DocumentId? AttachedDocument { get; init; }
-    
+   
     public List<BillLineItemData>? LineItems { get; init; }
-    
+   
     [Required]
     public UserId CreatedBy { get; init; }
 }
-
 public class CreateBillHandler : ICommandHandler<CreateBill, BillId>
 {
     private readonly IBillRepository _billRepository;
     private readonly IVendorRepository _vendorRepository;
     private readonly IProjectQueryService _projectService;
     private readonly IBillValidationService _validationService;
-    
+   
     public async Task<BillId> Handle(CreateBill command)
     {
         // Validate vendor exists and is active
@@ -3436,7 +3391,7 @@ public class CreateBillHandler : ICommandHandler<CreateBill, BillId>
             throw new BusinessRuleException("VENDOR_NOT_FOUND", "Vendor does not exist");
         if (!vendor.IsActive)
             throw new BusinessRuleException("VENDOR_INACTIVE", "Vendor is inactive");
-        
+       
         // Validate project if specified
         if (command.ProjectId.HasValue)
         {
@@ -3444,20 +3399,20 @@ public class CreateBillHandler : ICommandHandler<CreateBill, BillId>
             if (!projectExists)
                 throw new BusinessRuleException("PROJECT_NOT_FOUND", "Project does not exist");
         }
-        
+       
         // Check for duplicate bill number
         var existingBill = await _billRepository.GetByBillNumberAsync(
             command.VendorId, command.BillNumber);
         if (existingBill != null)
-            throw new BusinessRuleException("DUPLICATE_BILL", 
+            throw new BusinessRuleException("DUPLICATE_BILL",
                 "Bill number already exists for this vendor");
-        
+       
         // Validate business rules
         var validationResult = await _validationService.ValidateNewBill(command);
         if (!validationResult.IsValid)
-            throw new BusinessRuleException("VALIDATION_FAILED", 
+            throw new BusinessRuleException("VALIDATION_FAILED",
                 string.Join("; ", validationResult.Errors));
-        
+       
         // Create the bill
         var bill = Bill.Create(
             command.BillNumber,
@@ -3471,14 +3426,13 @@ public class CreateBillHandler : ICommandHandler<CreateBill, BillId>
             command.LineItems,
             command.CreatedBy
         );
-        
+       
         await _billRepository.SaveAsync(bill);
-        
+       
         return bill.Id;
     }
 }
 ```
-
 **Financial Query with Rich Projections**:
 ```csharp
 public record GetAccountsPayableAging : IQuery<AccountsPayableAgingReport>
@@ -3488,31 +3442,30 @@ public record GetAccountsPayableAging : IQuery<AccountsPayableAgingReport>
     public MonetaryValue? MinimumAmount { get; init; }
     public bool IncludeInactiveBills { get; init; } = false;
 }
-
 public class GetAccountsPayableAgingHandler : IQueryHandler<GetAccountsPayableAging, AccountsPayableAgingReport>
 {
     private readonly IBillReadRepository _billRepository;
     private readonly IVendorReadRepository _vendorRepository;
-    
+   
     public async Task<AccountsPayableAgingReport> Handle(GetAccountsPayableAging query)
     {
         var spec = new UnpaidBillsSpecification(query.AsOfDate)
             .And(query.VendorFilter, b => b.VendorId == query.VendorFilter)
             .And(query.MinimumAmount, b => b.OutstandingAmount >= query.MinimumAmount.Amount)
             .And(!query.IncludeInactiveBills, b => b.BillStatus != BillStatus.Cancelled);
-        
+       
         var unpaidBills = await _billRepository.GetBySpecificationAsync(spec);
-        
+       
         var agingBuckets = new Dictionary<AgingBucket, List<BillAgingDetail>>();
-        
+       
         foreach (var bill in unpaidBills)
         {
             var daysOutstanding = (query.AsOfDate - bill.DueDate).Days;
             var bucket = DetermineAgingBucket(daysOutstanding);
-            
+           
             if (!agingBuckets.ContainsKey(bucket))
                 agingBuckets[bucket] = new List<BillAgingDetail>();
-            
+           
             agingBuckets[bucket].Add(new BillAgingDetail(
                 bill.BillId,
                 bill.BillNumber,
@@ -3523,7 +3476,7 @@ public class GetAccountsPayableAgingHandler : IQueryHandler<GetAccountsPayableAg
                 daysOutstanding
             ));
         }
-        
+       
         var summary = agingBuckets.ToDictionary(
             kvp => kvp.Key,
             kvp => new AgingBucketSummary(
@@ -3532,7 +3485,7 @@ public class GetAccountsPayableAgingHandler : IQueryHandler<GetAccountsPayableAg
                 kvp.Value.Sum(b => b.OutstandingAmount.Amount) / unpaidBills.Sum(b => b.OutstandingAmount.Amount) * 100
             )
         );
-        
+       
         return new AccountsPayableAgingReport(
             query.AsOfDate,
             summary,
@@ -3540,7 +3493,7 @@ public class GetAccountsPayableAgingHandler : IQueryHandler<GetAccountsPayableAg
             unpaidBills.Sum(b => b.OutstandingAmount.Amount)
         );
     }
-    
+   
     private AgingBucket DetermineAgingBucket(int daysOutstanding)
     {
         return daysOutstanding switch
@@ -3554,79 +3507,75 @@ public class GetAccountsPayableAgingHandler : IQueryHandler<GetAccountsPayableAg
     }
 }
 ```
-
 ### 6.2 Financial Data Security and Compliance
-
 #### 6.2.1 Financial Data Encryption
-
 ```csharp
 public class FinancialDataProtectionService
 {
     private readonly IDataProtector _protector;
     private readonly IKeyVault _keyVault;
-    
+   
     public FinancialDataProtectionService(IDataProtectionProvider provider, IKeyVault keyVault)
     {
         _protector = provider.CreateProtector("FinancialData.SensitiveFields");
         _keyVault = keyVault;
     }
-    
+   
     public string ProtectSensitiveFinancialData(string data, string context)
     {
         if (string.IsNullOrEmpty(data)) return data;
-        
+       
         // Use context-specific protection for different types of financial data
         var contextProtector = _protector.CreateProtector(context);
         return contextProtector.Protect(data);
     }
-    
+   
     public string UnprotectSensitiveFinancialData(string protectedData, string context)
     {
         if (string.IsNullOrEmpty(protectedData)) return protectedData;
-        
+       
         var contextProtector = _protector.CreateProtector(context);
         return contextProtector.Unprotect(protectedData);
     }
-    
+   
     public async Task<string> EncryptBankAccountNumber(string accountNumber)
     {
         var key = await _keyVault.GetKeyAsync("bank-account-encryption");
         return await EncryptWithKey(accountNumber, key);
     }
-    
+   
     public async Task<string> DecryptBankAccountNumber(string encryptedAccountNumber)
     {
         var key = await _keyVault.GetKeyAsync("bank-account-encryption");
         return await DecryptWithKey(encryptedAccountNumber, key);
     }
 }
-
 // Entity configuration for automatic encryption
 public class BillConfiguration : IEntityTypeConfiguration<Bill>
 {
     public void Configure(EntityTypeBuilder<Bill> builder)
     {
         builder.HasKey(b => b.Id);
-        
+       
         // Encrypt sensitive fields
         builder.Property(b => b.VendorTaxId)
             .HasConversion(
                 v => FinancialDataProtection.Protect(v, "VendorTaxId"),
                 v => FinancialDataProtection.Unprotect(v, "VendorTaxId"));
-        
+       
         // Configure monetary values
         builder.OwnsOne(b => b.Amount, amount =>
         {
             amount.Property(a => a.Amount).HasColumnName("Amount").HasPrecision(18, 4);
             amount.Property(a => a.Currency).HasColumnName("Currency").HasMaxLength(3);
         });
-        
+       
         // Audit fields
         builder.Property(b => b.CreatedAt).IsRequired();
         builder.Property(b => b.CreatedBy).IsRequired();
         builder.Property(b => b.ModifiedAt);
         builder.Property(b => b.ModifiedBy);
-        
+       
         // Indexes for financial queries
         builder.HasIndex(b => b.VendorId);
         builder.HasIndex(b => b.DueDate);
@@ -3635,9 +3584,7 @@ public class BillConfiguration : IEntityTypeConfiguration<Bill>
     }
 }
 ```
-
 #### 6.2.2 Financial Authorization Policies
-
 ```csharp
 public static class FinancialPolicyNames
 {
@@ -3648,7 +3595,6 @@ public static class FinancialPolicyNames
     public const string CanCloseAccountingPeriods = "CanCloseAccountingPeriods";
     public const string CanManageChartOfAccounts = "CanManageChartOfAccounts";
 }
-
 public class FinancialAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, IFinancialEntity>
 {
     protected override Task HandleRequirementAsync(
@@ -3658,7 +3604,7 @@ public class FinancialAuthorizationHandler : AuthorizationHandler<OperationAutho
     {
         var userId = context.User.GetUserId();
         var userRoles = context.User.GetRoles();
-        
+       
         if (requirement == FinancialOperations.Create)
         {
             if (CanCreateFinancialEntity(context.User, resource))
@@ -3680,31 +3626,31 @@ public class FinancialAuthorizationHandler : AuthorizationHandler<OperationAutho
                 context.Succeed(requirement);
             }
         }
-        
+       
         return Task.CompletedTask;
     }
-    
+   
     private bool CanCreateFinancialEntity(ClaimsPrincipal user, IFinancialEntity entity)
     {
         // Basic permission check
         if (!user.HasClaim("permission", "financial:create"))
             return false;
-        
+       
         // Amount-based restrictions
         if (entity is Bill bill && bill.Amount.Amount > 10000)
         {
             return user.HasClaim("permission", "financial:create:large_amounts");
         }
-        
+       
         return true;
     }
-    
+   
     private bool CanApproveFinancialEntity(ClaimsPrincipal user, IFinancialEntity entity, UserId userId)
     {
         // Cannot approve own transactions
         if (entity.CreatedBy == userId)
             return false;
-        
+       
         // Role-based approval limits
         if (user.IsInRole("Manager"))
         {
@@ -3718,42 +3664,38 @@ public class FinancialAuthorizationHandler : AuthorizationHandler<OperationAutho
         {
             return true; // No limit for CFO
         }
-        
+       
         return false;
     }
 }
-
 // Usage in command handler
 public class ApproveBillHandler : ICommandHandler<ApproveBill>
 {
     private readonly IBillRepository _repository;
     private readonly IAuthorizationService _authorizationService;
     private readonly ICurrentUserService _currentUserService;
-    
+   
     public async Task Handle(ApproveBill command)
     {
         var bill = await _repository.GetByIdAsync(command.BillId);
         if (bill == null)
             throw new AggregateNotFoundException(nameof(Bill), command.BillId.ToString());
-        
+       
         var authResult = await _authorizationService.AuthorizeAsync(
             _currentUserService.User,
             bill,
             FinancialOperations.Approve);
-        
+       
         if (!authResult.Succeeded)
             throw new ForbiddenException("You don't have permission to approve this bill");
-        
+       
         bill.Approve(command.ApprovedBy, command.Comments);
         await _repository.SaveAsync(bill);
     }
 }
 ```
-
 ### 6.3 Financial Performance Optimization
-
 #### 6.3.1 Financial Data Caching Strategy
-
 ```csharp
 public class CachedAccountBalanceService : IAccountBalanceService
 {
@@ -3761,97 +3703,94 @@ public class CachedAccountBalanceService : IAccountBalanceService
     private readonly IDistributedCache _cache;
     private readonly IMemoryCache _memoryCache;
     private readonly ILogger<CachedAccountBalanceService> _logger;
-    
+   
     private const int MEMORY_CACHE_MINUTES = 5;
     private const int DISTRIBUTED_CACHE_MINUTES = 30;
-    
+   
     public async Task<MonetaryValue> GetAccountBalanceAsync(AccountId accountId, DateTime? asOfDate = null)
     {
         var cacheKey = GenerateBalanceCacheKey(accountId, asOfDate);
-        
+       
         // Try memory cache first (fastest)
         if (_memoryCache.TryGetValue(cacheKey, out MonetaryValue memoryBalance))
         {
             _logger.LogDebug("Account balance cache hit (memory): {AccountId}", accountId);
             return memoryBalance;
         }
-        
+       
         // Try distributed cache
         var distributedBalanceJson = await _cache.GetStringAsync(cacheKey);
         if (!string.IsNullOrEmpty(distributedBalanceJson))
         {
             var distributedBalance = JsonSerializer.Deserialize<MonetaryValue>(distributedBalanceJson);
-            
+           
             // Populate memory cache
             _memoryCache.Set(cacheKey, distributedBalance, TimeSpan.FromMinutes(MEMORY_CACHE_MINUTES));
-            
+           
             _logger.LogDebug("Account balance cache hit (distributed): {AccountId}", accountId);
             return distributedBalance;
         }
-        
+       
         // Calculate balance from source
         var balance = await _inner.GetAccountBalanceAsync(accountId, asOfDate);
-        
+       
         // Cache the result
         await CacheBalance(cacheKey, balance);
-        
+       
         _logger.LogDebug("Account balance calculated and cached: {AccountId}", accountId);
         return balance;
     }
-    
+   
     private async Task CacheBalance(string cacheKey, MonetaryValue balance)
     {
         var balanceJson = JsonSerializer.Serialize(balance);
-        
+       
         // Cache in both memory and distributed cache
         _memoryCache.Set(cacheKey, balance, TimeSpan.FromMinutes(MEMORY_CACHE_MINUTES));
-        
+       
         await _cache.SetStringAsync(cacheKey, balanceJson, new DistributedCacheEntryOptions
         {
             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(DISTRIBUTED_CACHE_MINUTES)
         });
     }
-    
+   
     private string GenerateBalanceCacheKey(AccountId accountId, DateTime? asOfDate)
     {
         var dateKey = asOfDate?.ToString("yyyy-MM-dd") ?? "current";
         return $"account-balance:{accountId}:{dateKey}";
     }
 }
-
 // Cache invalidation on balance changes
 public class AccountBalanceCacheInvalidationHandler : IEventHandler<AccountBalanceUpdated>
 {
     private readonly IDistributedCache _distributedCache;
     private readonly IMemoryCache _memoryCache;
-    
+   
     public async Task Handle(AccountBalanceUpdated @event)
     {
         // Invalidate current balance
         var currentBalanceKey = $"account-balance:{@event.AccountId}:current";
         await _distributedCache.RemoveAsync(currentBalanceKey);
         _memoryCache.Remove(currentBalanceKey);
-        
+       
         // Invalidate date-specific balance
         var dateBalanceKey = $"account-balance:{@event.AccountId}:{DateTime.Today:yyyy-MM-dd}";
         await _distributedCache.RemoveAsync(dateBalanceKey);
         _memoryCache.Remove(dateBalanceKey);
-        
+       
         // Invalidate related financial reports cache
         await InvalidateRelatedReportCache(@event.AccountId);
     }
 }
 ```
-
 #### 6.3.2 Financial Database Optimization
-
 ```csharp
 // Optimized repository with read/write separation
 public class BillRepository : IBillRepository
 {
     private readonly FinancialDbContext _writeContext;
     private readonly IFinancialReadDbContext _readContext;
-    
+   
     public async Task<Bill?> GetByIdAsync(BillId id)
     {
         return await _readContext.Bills
@@ -3860,30 +3799,30 @@ public class BillRepository : IBillRepository
             .Include(b => b.Payments)
             .FirstOrDefaultAsync(b => b.Id == id);
     }
-    
+   
     public async Task<PagedList<BillSummary>> GetBillsPagedAsync(
         BillSearchCriteria criteria,
         int pageNumber,
         int pageSize)
     {
         var query = _readContext.BillSummaries.AsQueryable();
-        
+       
         // Apply filters
         if (criteria.VendorId.HasValue)
             query = query.Where(b => b.VendorId == criteria.VendorId);
-        
+       
         if (criteria.Status.HasValue)
             query = query.Where(b => b.Status == criteria.Status);
-        
+       
         if (criteria.DueDateFrom.HasValue)
             query = query.Where(b => b.DueDate >= criteria.DueDateFrom);
-        
+       
         if (criteria.DueDateTo.HasValue)
             query = query.Where(b => b.DueDate <= criteria.DueDateTo);
-        
+       
         if (criteria.MinAmount.HasValue)
             query = query.Where(b => b.Amount >= criteria.MinAmount.Value.Amount);
-        
+       
         // Apply sorting
         query = criteria.SortBy switch
         {
@@ -3892,28 +3831,27 @@ public class BillRepository : IBillRepository
             BillSortBy.Vendor => query.OrderBy(b => b.VendorName),
             _ => query.OrderByDescending(b => b.CreatedAt)
         };
-        
+       
         var totalCount = await query.CountAsync();
         var items = await query
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-        
+       
         return new PagedList<BillSummary>(items, totalCount, pageNumber, pageSize);
     }
-    
+   
     public async Task SaveAsync(Bill bill)
     {
         // Use write context for modifications
         _writeContext.Bills.Update(bill);
-        
+       
         // Dispatch domain events
         await DispatchDomainEventsAsync(bill);
-        
+       
         await _writeContext.SaveChangesAsync();
     }
 }
-
 // Read model for optimized queries
 public class BillSummaryReadModel
 {
@@ -3931,13 +3869,12 @@ public class BillSummaryReadModel
     public bool RequiresApproval { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? LastModified { get; set; }
-    
+   
     // Calculated fields
     public int DaysUntilDue => (DueDate - DateTime.Today).Days;
     public bool IsOverdue => DateTime.Today > DueDate && Status != BillStatus.Paid;
     public decimal OutstandingAmount { get; set; }
 }
-
 // Database configuration for performance
 public class FinancialDbContextConfiguration
 {
@@ -3947,24 +3884,24 @@ public class FinancialDbContextConfiguration
         modelBuilder.Entity<JournalEntryBatch>()
             .ToTable("JournalEntryBatches", b => b.IsPartitioned()
                 .Partition("FiscalYear", x => x.HasRange("FiscalYear")));
-        
+       
         // Index optimization for common financial queries
         modelBuilder.Entity<Bill>()
             .HasIndex(b => new { b.VendorId, b.Status, b.DueDate })
             .HasDatabaseName("IX_Bills_Vendor_Status_DueDate");
-        
+       
         modelBuilder.Entity<Bill>()
             .HasIndex(b => new { b.Status, b.DueDate })
             .HasDatabaseName("IX_Bills_Status_DueDate")
             .HasFilter("[Status] IN ('Approved', 'PendingPayment')");
-        
+       
         // Covering index for accounts payable aging
         modelBuilder.Entity<Bill>()
             .HasIndex(b => new { b.DueDate, b.Status })
             .HasDatabaseName("IX_Bills_Aging")
             .IncludeProperties(b => new { b.VendorId, b.Amount })
             .HasFilter("[Status] <> 'Paid'");
-        
+       
         // Account balance calculation optimization
         modelBuilder.Entity<JournalEntryLine>()
             .HasIndex(l => new { l.AccountId, l.PostingDate })
@@ -3973,22 +3910,21 @@ public class FinancialDbContextConfiguration
     }
 }
 ```
-
+#### 6.1.4 Testing Guidelines
+- **Property-Based Testing**: Use for monetary arithmetic (e.g., `MonetaryValue.Add/Subtract` with random currencies/amounts via FsCheck).
+- **Saga Simulations**: Test multi-step workflows with event replay and compensating actions.
+- **Event Idempotency**: Verify handling of duplicate `IdempotencyKey` in projections.
 ---
-
 ## 7. Cross-Cutting Concerns
-
 ### 7.1 Financial Auditing and Compliance
-
 #### 7.1.1 Comprehensive Audit Trail
-
 ```csharp
 public class FinancialAuditService
 {
     private readonly IAuditRepository _auditRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTimeProvider _dateTimeProvider;
-    
+   
     public async Task LogFinancialTransaction(
         string transactionType,
         string entityId,
@@ -4016,10 +3952,10 @@ public class FinancialAuditService
             ComplianceFlags: DetermineComplianceFlags(transactionType, entityType),
             RetentionPeriod: DetermineRetentionPeriod(transactionType)
         );
-        
+       
         await _auditRepository.SaveAsync(auditEntry);
     }
-    
+   
     public async Task<AuditTrailReport> GenerateAuditTrail(
         DateTime startDate,
         DateTime endDate,
@@ -4034,9 +3970,9 @@ public class FinancialAuditService
             UserId: userId,
             MinimumSeverity: minimumSeverity
         );
-        
+       
         var auditEntries = await _auditRepository.SearchAsync(criteria);
-        
+       
         var summary = new AuditTrailSummary(
             TotalEntries: auditEntries.Count,
             UniqueUsers: auditEntries.Select(e => e.UserId).Distinct().Count(),
@@ -4044,7 +3980,7 @@ public class FinancialAuditService
             HighRiskOperations: auditEntries.Count(e => e.ComplianceFlags.Contains("HIGH_RISK")),
             SuspiciousActivity: auditEntries.Count(e => e.ComplianceFlags.Contains("SUSPICIOUS"))
         );
-        
+       
         return new AuditTrailReport(
             GeneratedAt: _dateTimeProvider.UtcNow,
             ReportPeriod: new DateRange(startDate, endDate),
@@ -4052,42 +3988,41 @@ public class FinancialAuditService
             Entries: auditEntries.OrderBy(e => e.Timestamp).ToList()
         );
     }
-    
+   
     private List<string> DetermineComplianceFlags(string transactionType, string entityType)
     {
         var flags = new List<string>();
-        
+       
         // High-value transaction monitoring
         if (transactionType.Contains("PAYMENT") || transactionType.Contains("TRANSFER"))
         {
             flags.Add("FINANCIAL_TRANSACTION");
         }
-        
+       
         // Regulatory compliance flags
         if (entityType == "JournalEntry" || entityType == "Bill" || entityType == "Invoice")
         {
             flags.Add("SOX_COMPLIANCE");
         }
-        
+       
         // Anti-money laundering monitoring
         if (transactionType.Contains("LARGE_AMOUNT"))
         {
             flags.Add("AML_MONITORING");
         }
-        
+       
         return flags;
     }
 }
-
 // Automatic audit logging through events
-public class FinancialAuditEventHandler : 
+public class FinancialAuditEventHandler :
     IEventHandler<JournalBatchPosted>,
     IEventHandler<BillPaid>,
     IEventHandler<PaymentReceived>,
     IEventHandler<AccountingPeriodClosed>
 {
     private readonly IFinancialAuditService _auditService;
-    
+   
     public async Task Handle(JournalBatchPosted @event)
     {
         await _auditService.LogFinancialTransaction(
@@ -4106,7 +4041,7 @@ public class FinancialAuditEventHandler :
             }
         );
     }
-    
+   
     public async Task Handle(AccountingPeriodClosed @event)
     {
         await _auditService.LogFinancialTransaction(
@@ -4126,9 +4061,7 @@ public class FinancialAuditEventHandler :
     }
 }
 ```
-
 #### 7.1.2 Regulatory Compliance Framework
-
 ```csharp
 public class ComplianceValidationService
 {
@@ -4136,7 +4069,7 @@ public class ComplianceValidationService
         JournalEntryBatch journalEntry)
     {
         var violations = new List<ComplianceViolation>();
-        
+       
         // SOX Section 302 - Financial statement accuracy
         if (journalEntry.Amount.Amount > 10000 && string.IsNullOrEmpty(journalEntry.SupportingDocumentation))
         {
@@ -4146,7 +4079,7 @@ public class ComplianceValidationService
                 ComplianceSeverity.High
             ));
         }
-        
+       
         // SOX Section 404 - Internal controls
         if (!await HasRequiredApprovals(journalEntry))
         {
@@ -4156,7 +4089,7 @@ public class ComplianceValidationService
                 ComplianceSeverity.Critical
             ));
         }
-        
+       
         // Segregation of duties
         if (journalEntry.CreatedBy == journalEntry.ApprovedBy)
         {
@@ -4166,29 +4099,29 @@ public class ComplianceValidationService
                 ComplianceSeverity.High
             ));
         }
-        
+       
         return new ComplianceValidationResult(violations.Count == 0, violations);
     }
-    
+   
     public async Task<ComplianceValidationResult> ValidateGAAPCompliance(
         FinancialTransaction transaction)
     {
         var violations = new List<ComplianceViolation>();
-        
+       
         // Revenue recognition principles
         if (transaction is Invoice invoice)
         {
             var revenueRecognitionResult = await ValidateRevenueRecognition(invoice);
             violations.AddRange(revenueRecognitionResult.Violations);
         }
-        
+       
         // Matching principle
         if (transaction is Bill bill)
         {
             var matchingResult = await ValidateMatchingPrinciple(bill);
             violations.AddRange(matchingResult.Violations);
         }
-        
+       
         // Materiality principle
         if (RequiresMaterialityDisclosure(transaction))
         {
@@ -4198,17 +4131,16 @@ public class ComplianceValidationService
                 ComplianceSeverity.Medium
             ));
         }
-        
+       
         return new ComplianceValidationResult(violations.Count == 0, violations);
     }
 }
-
 // Compliance monitoring background service
 public class ComplianceMonitoringService : BackgroundService
 {
     private readonly IComplianceRepository _repository;
     private readonly INotificationService _notificationService;
-    
+   
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -4225,7 +4157,7 @@ public class ComplianceMonitoringService : BackgroundService
             }
         }
     }
-    
+   
     private async Task RunComplianceChecks()
     {
         // Check for aging audit items
@@ -4236,7 +4168,7 @@ public class ComplianceMonitoringService : BackgroundService
                 "Audit items aging over 30 days",
                 agingAuditItems);
         }
-        
+       
         // Check for missing reconciliations
         var unreconciledAccounts = await _repository.GetUnreconciledAccountsAsync(TimeSpan.FromDays(30));
         if (unreconciledAccounts.Any())
@@ -4245,7 +4177,7 @@ public class ComplianceMonitoringService : BackgroundService
                 "Bank accounts not reconciled in 30+ days",
                 unreconciledAccounts);
         }
-        
+       
         // Check for unusual transaction patterns
         var suspiciousTransactions = await DetectSuspiciousTransactions();
         if (suspiciousTransactions.Any())
@@ -4257,24 +4189,21 @@ public class ComplianceMonitoringService : BackgroundService
     }
 }
 ```
-
 ### 7.2 Financial Data Privacy and Security
-
 #### 7.2.1 PII and Financial Data Protection
-
 ```csharp
 public class FinancialDataPrivacyService
 {
     private readonly IDataProtectionProvider _dataProtection;
     private readonly IPIIDetectionService _piiDetection;
-    
+   
     public async Task<string> SanitizeFinancialDescription(string description)
     {
         if (string.IsNullOrEmpty(description)) return description;
-        
+       
         // Detect and mask PII in financial descriptions
         var piiItems = await _piiDetection.DetectPIIAsync(description);
-        
+       
         var sanitized = description;
         foreach (var pii in piiItems)
         {
@@ -4287,38 +4216,38 @@ public class FinancialDataPrivacyService
                 _ => sanitized
             };
         }
-        
+       
         return sanitized;
     }
-    
+   
     public async Task<FinancialDataExportPackage> PrepareDataExport(
         UserId userId,
         ExportScope scope,
         bool anonymize = true)
     {
         var exportData = new Dictionary<string, object>();
-        
+       
         // Export bills
         if (scope.IncludeBills)
         {
             var bills = await GetUserBills(userId);
             exportData["bills"] = anonymize ? AnonymizeBills(bills) : bills;
         }
-        
+       
         // Export invoices
         if (scope.IncludeInvoices)
         {
             var invoices = await GetUserInvoices(userId);
             exportData["invoices"] = anonymize ? AnonymizeInvoices(invoices) : invoices;
         }
-        
+       
         // Export expenses
         if (scope.IncludeExpenses)
         {
             var expenses = await GetUserExpenses(userId);
             exportData["expenses"] = anonymize ? AnonymizeExpenses(expenses) : expenses;
         }
-        
+       
         return new FinancialDataExportPackage(
             UserId: userId,
             ExportDate: DateTime.UtcNow,
@@ -4328,7 +4257,7 @@ public class FinancialDataPrivacyService
             RetentionPolicy: GetRetentionPolicy(scope)
         );
     }
-    
+   
     public async Task ExecuteDataDeletion(UserId userId, DeletionScope scope)
     {
         // Validate deletion request
@@ -4339,26 +4268,26 @@ public class FinancialDataPrivacyService
                 "Cannot delete data due to compliance requirements",
                 validationResult.Restrictions);
         }
-        
+       
         // Create audit record before deletion
         await CreateDeletionAuditRecord(userId, scope);
-        
+       
         // Perform soft deletion (required for financial data)
         if (scope.IncludeBills)
         {
             await SoftDeleteUserBills(userId);
         }
-        
+       
         if (scope.IncludePersonalData)
         {
             await AnonymizePersonalFinancialData(userId);
         }
-        
+       
         // Some financial data must be retained for compliance
         // Mark as anonymized but keep for audit trail
         await MarkFinancialDataAsAnonymized(userId);
     }
-    
+   
     private async Task<List<BillExportData>> AnonymizeBills(List<Bill> bills)
     {
         return bills.Select(b => new BillExportData
@@ -4373,18 +4302,15 @@ public class FinancialDataPrivacyService
     }
 }
 ```
-
 ### 7.3 Financial System Monitoring and Alerting
-
 #### 7.3.1 Financial Health Monitoring
-
 ```csharp
 public class FinancialSystemHealthCheck : IHealthCheck
 {
     private readonly IFinancialDbContext _dbContext;
     private readonly IBankConnectionService _bankService;
     private readonly IPaymentGatewayService _paymentService;
-    
+   
     public async Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context,
         CancellationToken cancellationToken = default)
@@ -4392,7 +4318,7 @@ public class FinancialSystemHealthCheck : IHealthCheck
         var healthData = new Dictionary<string, object>();
         var isHealthy = true;
         var issues = new List<string>();
-        
+       
         try
         {
             // Check database connectivity and performance
@@ -4403,7 +4329,7 @@ public class FinancialSystemHealthCheck : IHealthCheck
                 isHealthy = false;
                 issues.Add("Database connectivity issues");
             }
-            
+           
             // Check critical financial balances
             var balanceHealth = await CheckCriticalBalances();
             healthData["balances"] = balanceHealth;
@@ -4412,7 +4338,7 @@ public class FinancialSystemHealthCheck : IHealthCheck
                 isHealthy = false;
                 issues.Add("Critical balance validation failures");
             }
-            
+           
             // Check external service connectivity
             var externalHealth = await CheckExternalServices();
             healthData["externalServices"] = externalHealth;
@@ -4421,7 +4347,7 @@ public class FinancialSystemHealthCheck : IHealthCheck
                 // External services are important but not critical
                 healthData["warnings"] = "Some external services unavailable";
             }
-            
+           
             // Check for stale reconciliations
             var reconciliationHealth = await CheckReconciliationStatus();
             healthData["reconciliation"] = reconciliationHealth;
@@ -4429,7 +4355,7 @@ public class FinancialSystemHealthCheck : IHealthCheck
             {
                 issues.Add("Overdue bank reconciliations detected");
             }
-            
+           
             // Check audit trail integrity
             var auditHealth = await CheckAuditTrailIntegrity();
             healthData["auditTrail"] = auditHealth;
@@ -4438,88 +4364,87 @@ public class FinancialSystemHealthCheck : IHealthCheck
                 isHealthy = false;
                 issues.Add("Audit trail integrity issues");
             }
-            
+           
         }
         catch (Exception ex)
         {
             return HealthCheckResult.Unhealthy(
                 "Financial system health check failed", ex, healthData);
         }
-        
+       
         return isHealthy
             ? HealthCheckResult.Healthy("Financial system is healthy", healthData)
             : HealthCheckResult.Degraded(
-                $"Financial system issues detected: {string.Join(", ", issues)}", 
+                $"Financial system issues detected: {string.Join(", ", issues)}",
                 null, healthData);
     }
-    
+   
     private async Task<ServiceHealthStatus> CheckCriticalBalances()
     {
         var issues = new List<string>();
-        
+       
         // Check for out-of-balance conditions
         var unbalancedBatches = await _dbContext.JournalEntryBatches
             .Where(b => b.Status == BatchStatus.Posted && !b.IsBalanced)
             .CountAsync();
-        
+       
         if (unbalancedBatches > 0)
         {
             issues.Add($"{unbalancedBatches} unbalanced journal batches detected");
         }
-        
+       
         // Check for negative cash balances
         var negativeCashAccounts = await GetAccountsWithNegativeBalances(AccountType.Asset);
         if (negativeCashAccounts.Any())
         {
             issues.Add($"{negativeCashAccounts.Count} cash accounts with negative balances");
         }
-        
+       
         // Check trial balance
         var trialBalance = await CalculateTrialBalance();
         if (!trialBalance.IsBalanced)
         {
             issues.Add($"Trial balance out of balance by {trialBalance.Difference:C}");
         }
-        
+       
         return new ServiceHealthStatus(issues.Count == 0, issues);
     }
-    
+   
     private async Task<ServiceHealthStatus> CheckReconciliationStatus()
     {
         var issues = new List<string>();
         var staleThreshold = DateTime.Today.AddDays(-30);
-        
+       
         // Check for bank accounts not reconciled in 30+ days
         var staleReconciliations = await _dbContext.BankAccounts
             .Where(a => a.IsActive && a.LastReconciliationDate < staleThreshold)
             .CountAsync();
-        
+       
         if (staleReconciliations > 0)
         {
             issues.Add($"{staleReconciliations} bank accounts not reconciled in 30+ days");
         }
-        
+       
         // Check for large unreconciled differences
         var largeReconciliationDifferences = await _dbContext.BankStatements
-            .Where(s => s.Status == ReconciliationStatus.PartiallyReconciled && 
+            .Where(s => s.Status == ReconciliationStatus.PartiallyReconciled &&
                        Math.Abs(s.UnreconciledDifference) > 100)
             .CountAsync();
-        
+       
         if (largeReconciliationDifferences > 0)
         {
             issues.Add($"{largeReconciliationDifferences} statements with large unreconciled differences");
         }
-        
+       
         return new ServiceHealthStatus(issues.Count == 0, issues);
     }
 }
-
 // Financial alerting service
 public class FinancialAlertingService
 {
     private readonly INotificationService _notificationService;
     private readonly IFinancialMetricsService _metricsService;
-    
+   
     public async Task MonitorFinancialThresholds()
     {
         // Monitor cash flow
@@ -4533,7 +4458,7 @@ public class FinancialAlertingService
                 new { ProjectedBalance = cashFlow.ProjectedBalance, Days = 30 }
             ));
         }
-        
+       
         // Monitor overdue receivables
         var overdueReceivables = await _metricsService.GetOverdueReceivables();
         if (overdueReceivables.TotalAmount > 50000)
@@ -4545,7 +4470,7 @@ public class FinancialAlertingService
                 new { TotalAmount = overdueReceivables.TotalAmount, Count = overdueReceivables.Count }
             ));
         }
-        
+       
         // Monitor expense variances
         var budgetVariances = await _metricsService.GetBudgetVariances();
         foreach (var variance in budgetVariances.Where(v => v.VariancePercentage > 20))
@@ -4560,13 +4485,9 @@ public class FinancialAlertingService
     }
 }
 ```
-
 ---
-
 ## 8. Dependency Matrix
-
 ### 8.1 Bounded Context Dependencies
-
 | From Context | To Context | Dependency Type | Purpose | Coupling Level |
 |--------------|------------|-----------------|---------|----------------|
 | Accounts Payable | General Ledger | Event Publishing | Journal entry creation | Loose |
@@ -4583,9 +4504,7 @@ public class FinancialAlertingService
 | Investment Management | General Ledger | Event Publishing | Investment transactions | Loose |
 | Credit Score Monitoring | Financial Analytics | Query Service | Credit utilization data | Medium |
 | Audit Trail | All BCs | Event Subscription | Audit logging | Loose |
-
 ### 8.2 External System Dependencies
-
 ```mermaid
 graph TD
     A[Financial Management System] --> B[Banking APIs]
@@ -4596,66 +4515,59 @@ graph TD
     A --> G[Currency Exchange APIs]
     A --> H[OCR Services]
     A --> I[Document Storage]
-    
+   
     B --> B1[Plaid]
     B --> B2[Yodlee]
     B --> B3[Open Banking APIs]
-    
+   
     C --> C1[Stripe]
     C --> C2[PayPal]
     C --> C3[ACH Networks]
-    
+   
     D --> D1[Experian]
     D --> D2[Equifax]
     D --> D3[TransUnion]
-    
+   
     E --> E1[Brokerage APIs]
     E --> E2[Financial Data Providers]
-    
+   
     F --> F1[IRS APIs]
     F --> F2[State Tax Systems]
-    
+   
     G --> G1[Exchange Rate APIs]
     G --> G2[Central Bank Rates]
 ```
-
 ### 8.3 Technology Stack Dependencies
-
 **Core Framework Dependencies**:
 - .NET 8.0+ with Entity Framework Core
 - SQL Server for transactional data
 - Redis for caching and session management
 - Azure Service Bus for event messaging
 - Azure Key Vault for encryption keys
-
 **Financial-Specific Dependencies**:
 - Decimal precision libraries for monetary calculations
 - Multi-currency support libraries
 - Financial calculation engines (compound interest, amortization)
 - Tax calculation services
 - Banking integration SDKs
-
 **Compliance and Security Dependencies**:
 - Audit logging frameworks
 - Data encryption libraries
 - Digital signature services
 - Compliance validation engines
 - PCI DSS compliant payment processing
-
 ### 8.4 Data Consistency Patterns
-
 **Financial Transaction Consistency**:
 1. **Strong Consistency**: Within GL bounded context for journal entries
 2. **Eventual Consistency**: Cross-context financial event propagation
 3. **Compensating Transactions**: For failed payment processing
 4. **Audit Trail**: Immutable record of all financial state changes
-
 **Multi-Currency Handling**:
 1. **Base Currency**: All internal calculations in organization base currency
 2. **Exchange Rate Point-in-Time**: Rates captured at transaction time
 3. **Revaluation**: Periodic foreign currency revaluation for reporting
-
 **Financial Reporting Consistency**:
 1. **Read Models**: Pre-computed financial statements for performance
 2. **Event Sourcing**: Rebuilding financial positions from events
 3. **Snapshot Strategy**: Period-end financial snapshots for historical reporting
+---

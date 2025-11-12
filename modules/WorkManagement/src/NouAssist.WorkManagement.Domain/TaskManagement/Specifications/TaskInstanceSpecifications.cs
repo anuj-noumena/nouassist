@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.WorkManagement.Shared.Enums;
+using NouAssist.SharedKernel.Enums;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Enums;
 

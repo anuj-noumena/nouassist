@@ -6,18 +6,20 @@ using NouAssist.TimeManagement.Calendar.Aggregates;
 using NouAssist.TimeManagement.Calendar.CalendarEvents.Dtos;
 using NouAssist.TimeManagement.Calendar.Data;
 using NouAssist.TimeManagement.Calendar.Enums;
-using NouAssist.TimeManagement.Calendar.Permissions;
 using NouAssist.TimeManagement.Calendar.Services;
 using NouAssist.TimeManagement.Calendar.Specifications;
 using NouAssist.TimeManagement.Calendar.ValueObjects;
+using NouAssist.TimeManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
+using Volo.Abp.Users;
 
 namespace NouAssist.TimeManagement.Calendar.CalendarEvents
 {
-    [Authorize(CalendarPermissions.CalendarEvents.Default)]
+    [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Default)]
     public class CalendarEventAppService : ApplicationService, ICalendarEventAppService
     {
         private readonly ICalendarEventRepository _eventRepository;
@@ -44,7 +46,7 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
         {
             var spec = CreateListSpecification(input);
 
-            var totalCount = await _eventRepository.GetCountAsync(spec);
+            var totalCount = await _eventRepository.CountAsync(spec.ToExpression());
             var events = await _eventRepository.GetListAsync(
                 spec,
                 input.MaxResultCount,
@@ -57,7 +59,7 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
             );
         }
 
-        [Authorize(CalendarPermissions.CalendarEvents.Create)]
+        [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Create)]
         public async Task<CalendarEventDto> CreateAsync(CreateCalendarEventDto input)
         {
             // Validate scheduling conflicts
@@ -117,7 +119,7 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
             return ObjectMapper.Map<CalendarEvent, CalendarEventDto>(calendarEvent);
         }
 
-        [Authorize(CalendarPermissions.CalendarEvents.Edit)]
+        [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Edit)]
         public async Task<CalendarEventDto> UpdateAsync(Guid id, UpdateCalendarEventDto input)
         {
             var calendarEvent = await _eventRepository.GetAsync(id);
@@ -132,13 +134,13 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
             return ObjectMapper.Map<CalendarEvent, CalendarEventDto>(calendarEvent);
         }
 
-        [Authorize(CalendarPermissions.CalendarEvents.Delete)]
+        [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _eventRepository.DeleteAsync(id);
         }
 
-        [Authorize(CalendarPermissions.CalendarEvents.Edit)]
+        [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Edit)]
         public async Task<CalendarEventDto> RescheduleAsync(Guid id, RescheduleEventDto input)
         {
             var calendarEvent = await _eventRepository.GetAsync(id);
@@ -149,7 +151,7 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
             return ObjectMapper.Map<CalendarEvent, CalendarEventDto>(calendarEvent);
         }
 
-        [Authorize(CalendarPermissions.CalendarEvents.Cancel)]
+        [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Cancel)]
         public async Task<CalendarEventDto> CancelAsync(Guid id, CancelEventDto input)
         {
             var calendarEvent = await _eventRepository.GetAsync(id);
@@ -160,7 +162,7 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
             return ObjectMapper.Map<CalendarEvent, CalendarEventDto>(calendarEvent);
         }
 
-        [Authorize(CalendarPermissions.CalendarEvents.Edit)]
+        [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Edit)]
         public async Task<CalendarEventDto> LinkEntityAsync(Guid id, LinkEntityToEventDto input)
         {
             var calendarEvent = await _eventRepository.GetAsync(id);
@@ -171,7 +173,7 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
             return ObjectMapper.Map<CalendarEvent, CalendarEventDto>(calendarEvent);
         }
 
-        [Authorize(CalendarPermissions.CalendarEvents.Edit)]
+        [Authorize(TimeManagementPermissions.Calendar.CalendarEvents.Edit)]
         public async Task<CalendarEventDto> UnlinkEntityAsync(Guid id, Guid entityId, string entityType)
         {
             var calendarEvent = await _eventRepository.GetAsync(id);

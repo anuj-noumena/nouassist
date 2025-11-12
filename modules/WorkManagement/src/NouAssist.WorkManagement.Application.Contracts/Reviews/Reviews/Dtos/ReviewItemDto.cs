@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Application.Dtos;
 

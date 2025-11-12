@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Data;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.ProjectManagement.Events.Dtos;
-using NouAssist.WorkManagement.ProjectManagement.Permissions;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Events
 {
-    [Authorize(ProjectsPermissions.Events.Default)]
+    [Authorize(WorkManagementPermissions.ProjectManagement.Events.Default)]
     public class ProjectEventAppService : ApplicationService, IProjectEventAppService
     {
         private readonly IProjectEventRepository _eventRepository;
@@ -39,7 +39,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Events
             return ObjectMapper.Map<List<ProjectEvent>, List<ProjectEventDto>>(events);
         }
 
-        [Authorize(ProjectsPermissions.Events.Create)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Events.Create)]
         public async Task<ProjectEventDto> CreateAsync(CreateEventDto input)
         {
             var projectEvent = new ProjectEvent(
@@ -70,7 +70,41 @@ namespace NouAssist.WorkManagement.ProjectManagement.Events
             return ObjectMapper.Map<ProjectEvent, ProjectEventDto>(projectEvent);
         }
 
-        [Authorize(ProjectsPermissions.Events.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Events.Update)]
+        public async Task<ProjectEventDto> UpdateAsync(Guid id, UpdateEventDto input)
+        {
+            var projectEvent = await _eventRepository.GetAsync(id);
+            
+            projectEvent.Title = input.Title;
+            projectEvent.Description = input.Description;
+            projectEvent.EventDate = input.EventDate;
+            projectEvent.EndDate = input.EndDate;
+            projectEvent.IsAllDay = input.IsAllDay;
+            projectEvent.Location = input.Location;
+            
+            await _eventRepository.UpdateAsync(projectEvent);
+
+            return ObjectMapper.Map<ProjectEvent, ProjectEventDto>(projectEvent);
+        }
+
+        [Authorize(WorkManagementPermissions.ProjectManagement.Events.Update)]
+        public async Task<ProjectEventDto> RescheduleAsync(Guid id, RescheduleEventDto input)
+        {
+            var projectEvent = await _eventRepository.GetAsync(id);
+            
+            projectEvent.Reschedule(input.NewEventDate);
+            
+            if (input.NewEndDate.HasValue)
+            {
+                projectEvent.EndDate = input.NewEndDate;
+            }
+            
+            await _eventRepository.UpdateAsync(projectEvent);
+
+            return ObjectMapper.Map<ProjectEvent, ProjectEventDto>(projectEvent);
+        }
+
+        [Authorize(WorkManagementPermissions.ProjectManagement.Events.Update)]
         public async Task<ProjectEventDto> MarkAsCompletedAsync(Guid id)
         {
             var projectEvent = await _eventRepository.GetAsync(id);
@@ -82,7 +116,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Events
             return ObjectMapper.Map<ProjectEvent, ProjectEventDto>(projectEvent);
         }
 
-        [Authorize(ProjectsPermissions.Events.Delete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Events.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _eventRepository.DeleteAsync(id);

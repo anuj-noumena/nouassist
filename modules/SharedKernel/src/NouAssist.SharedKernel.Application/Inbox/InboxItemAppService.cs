@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.SharedKernel.Aggregates;
 using NouAssist.SharedKernel.Data;
 using NouAssist.SharedKernel.Enums;
+using NouAssist.SharedKernel.Inbox.Dtos;
 using NouAssist.SharedKernel.Tags.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.SharedKernel.Inbox
 {

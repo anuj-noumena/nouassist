@@ -1,4 +1,4 @@
-namespace NouAssist.WorkManagement.Shared.Enums
+namespace NouAssist.SharedKernel.Enums
 {
     public enum EisenhowerQuadrant : byte
     {

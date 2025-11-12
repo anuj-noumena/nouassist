@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Data;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
-using NouAssist.WorkManagement.ProjectManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Requirements.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Requirements
 {
-    [Authorize(ProjectsPermissions.Requirements.Default)]
+    [Authorize(WorkManagementPermissions.ProjectManagement.Requirements.Default)]
     public class ProjectRequirementAppService : ApplicationService, IProjectRequirementAppService
     {
         private readonly IProjectRequirementRepository _requirementRepository;
@@ -38,7 +38,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Requirements
             return ObjectMapper.Map<List<ProjectRequirement>, List<ProjectRequirementDto>>(requirements);
         }
 
-        [Authorize(ProjectsPermissions.Requirements.Create)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Requirements.Create)]
         public async Task<ProjectRequirementDto> CreateAsync(CreateRequirementDto input)
         {
             var requirement = new ProjectRequirement(
@@ -53,7 +53,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Requirements
             return ObjectMapper.Map<ProjectRequirement, ProjectRequirementDto>(requirement);
         }
 
-        [Authorize(ProjectsPermissions.Requirements.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Requirements.Update)]
         public async Task<ProjectRequirementDto> UpdateAsync(Guid id, UpdateRequirementDto input)
         {
             var requirement = await _requirementRepository.GetAsync(id);
@@ -66,7 +66,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Requirements
             return ObjectMapper.Map<ProjectRequirement, ProjectRequirementDto>(requirement);
         }
 
-        [Authorize(ProjectsPermissions.Requirements.Delete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.Requirements.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _requirementRepository.DeleteAsync(id);

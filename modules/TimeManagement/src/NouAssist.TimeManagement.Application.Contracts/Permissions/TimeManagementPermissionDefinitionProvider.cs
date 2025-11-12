@@ -39,31 +39,31 @@ public class TimeManagementPermissionDefinitionProvider : PermissionDefinitionPr
 
         // Meetings Permissions
         var meetingsPermission = timeManagementGroup.AddPermission(
-            TimeManagementPermissions.Meetings.Meetings.Default,
+            TimeManagementPermissions.Meeting.Meetings.Default,
             L("Permission:Meetings"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.Create,
+            TimeManagementPermissions.Meeting.Meetings.Create,
             L("Permission:Meetings.Create"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.Update,
+            TimeManagementPermissions.Meeting.Meetings.Update,
             L("Permission:Meetings.Update"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.Delete,
+            TimeManagementPermissions.Meeting.Meetings.Delete,
             L("Permission:Meetings.Delete"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.Cancel,
+            TimeManagementPermissions.Meeting.Meetings.Cancel,
             L("Permission:Meetings.Cancel"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.Start,
+            TimeManagementPermissions.Meeting.Meetings.Start,
             L("Permission:Meetings.Start"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.Complete,
+            TimeManagementPermissions.Meeting.Meetings.Complete,
             L("Permission:Meetings.Complete"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.ManageAttendees,
+            TimeManagementPermissions.Meeting.Meetings.ManageAttendees,
             L("Permission:Meetings.ManageAttendees"));
         meetingsPermission.AddChild(
-            TimeManagementPermissions.Meetings.Meetings.ManageAgenda,
+            TimeManagementPermissions.Meeting.Meetings.ManageAgenda,
             L("Permission:Meetings.ManageAgenda"));
     }
 

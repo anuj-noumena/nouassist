@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.WorkManagement.GTD.GTD.Dtos
+namespace NouAssist.WorkManagement.GTD.Dtos
 {
     public class GtdHorizonDto : FullAuditedEntityDto<Guid>
     {

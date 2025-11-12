@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Dependencies.Validators

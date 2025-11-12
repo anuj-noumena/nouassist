@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NouAssist.WorkManagement.TaskManagement.Data;
@@ -7,6 +8,7 @@ using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.Workflow.Services.Actions
 {
@@ -14,8 +16,10 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
     /// Updates custom field values on task instances.
     /// Follows Single Responsibility Principle - only handles field updates
     /// </summary>
-    public class UpdateFieldActionExecutor : DomainService, IWorkflowActionExecutor, ITransientDependency
+    public class UpdateFieldActionExecutor(ICurrentUser currentUser)
+        : DomainService, IWorkflowActionExecutor, ITransientDependency
     {
+
         public bool CanExecute(WorkflowAction action)
         {
             return action?.ActionType == WorkflowActionType.UpdateField ||
@@ -40,16 +44,12 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
 
                 // Update custom field value
-                if (taskInstance.CustomFieldValues == null)
-                {
-                    taskInstance.CustomFieldValues = new System.Collections.Generic.Dictionary<string, object>();
-                }
 
                 var oldValue = taskInstance.CustomFieldValues.ContainsKey(fieldName)
-                    ? taskInstance.CustomFieldValues[fieldName]
+                    ? taskInstance.CustomFieldValues.GetValue(fieldName)
                     : null;
 
-                taskInstance.CustomFieldValues[fieldName] = fieldValue;
+                taskInstance.UpdateCustomFieldValue(fieldName, fieldValue, currentUser.GetId());
 
                 await taskInstanceRepo.UpdateAsync(taskInstance);
 

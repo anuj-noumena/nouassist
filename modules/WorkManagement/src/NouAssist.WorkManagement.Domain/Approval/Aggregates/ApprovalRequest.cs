@@ -420,5 +420,10 @@ namespace NouAssist.WorkManagement.Approval.Aggregates
         }
 
         #endregion
+
+        public void SetCustomFieldValue(string kvpKey, object kvpValue)
+        {
+            CustomFields = CustomFields.SetValue(kvpKey, kvpValue);
+        }
     }
 }

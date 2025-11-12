@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using NouAssist.WorkManagement.TaskManagement.Entities;
 using NouAssist.WorkManagement.TaskManagement.Enums;
 using NouAssist.WorkManagement.TaskManagement.Events;
@@ -32,7 +33,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public TaskApproval Approval { get; internal set; }
 
         // Status
-        
+
         public TaskProgress Progress { get; internal set; }
 
         // Importance/Urgency
@@ -61,7 +62,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public ResolutionInfo Resolution { get; private set; } = ResolutionInfo.Unresolved;
 
         // Custom Fields & Labels
-        public Dictionary<string, object> CustomFieldValues { get; private set; }
+        public CustomFieldValues CustomFieldValues { get; private set; }
 
 
         public int EntityVersion { get; }
@@ -144,7 +145,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             Schedule = new TaskSchedule(null, null);
             Hierarchy = new TaskHierarchy(0, null);
             Discussion = TaskDiscussion.Empty();
-            CustomFieldValues = new Dictionary<string, object>();
+            CustomFieldValues = CustomFieldValues.Create();
 
             // Add creation history entry
             AddSimpleHistoryEntry(
@@ -164,7 +165,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         }
 
         // Properties
-        
+
         public bool IsDelegated => DelegationInfo != null;
 
         public bool IsWaitingOnDelegation => IsDelegated &&
@@ -172,7 +173,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 
         public bool IsCancelled => TaskStatus == WorkflowStatusCategory.Cancelled;
         public bool IsInProgress => TaskStatus == WorkflowStatusCategory.InProgress;
-        
+
         // State Transitions
         public void Start(ITaskStartPolicy startPolicy, Guid startedBy)
         {
@@ -268,6 +269,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             {
                 throw new BusinessException(policyCheck.FailureReason);
             }
+
             var completedAt = DateTime.UtcNow;
             Schedule = Schedule.MarkCompleted(completedAt);
 
@@ -598,6 +600,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 $"Dependency added: {dependencyType} on task {dependsOnTaskId}");
         }
 
+
         public void RemoveDependency(Guid dependsOnTaskId)
         {
             var dependency = _dependencies.FirstOrDefault(d => d.DependsOnTaskId == dependsOnTaskId);
@@ -713,6 +716,20 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 workflowStatusId.ToString());
         }
 
+        public void UpdateCustomFieldValue(string fieldName, object value, Guid updatedBy)
+        {
+            Check.NotNullOrWhiteSpace(fieldName, nameof(fieldName));
+            var oldValue = CustomFieldValues.GetValue(fieldName);
+            CustomFieldValues.SetValue(fieldName, value);
+
+            AddFieldChangeHistoryEntry(
+                TaskHistoryChangeType.FieldUpdated,
+                $"CustomField:{fieldName}",
+                oldValue?.ToString(),
+                value?.ToString(),
+                changedBy: updatedBy);
+        }
+
         public void RevokeDelegation()
         {
             var delegatedTo = DelegationInfo?.DelegatedTo;
@@ -727,7 +744,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 delegatedTo?.ToString(),
                 OwnerId.ToString());
         }
-        
+
+
         public void MoveToProject(Guid projectId, Guid workflowStatusId)
         {
             var oldProjectId = ProjectId;

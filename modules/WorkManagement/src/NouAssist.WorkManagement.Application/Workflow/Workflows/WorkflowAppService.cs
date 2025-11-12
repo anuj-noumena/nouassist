@@ -4,15 +4,16 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.Workflow.Data;
+using NouAssist.WorkManagement.Workflow.Dtos;
 using NouAssist.WorkManagement.Workflow.Permissions;
-using NouAssist.WorkManagement.Workflow.Workflows.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkManagement.Workflow.Workflows
 {
-    [Authorize(WorkflowPermissions.Workflows.Default)]
+    [Authorize(WorkManagementPermissions.Workflow.Workflows.Default)]
     public class WorkflowAppService : ApplicationService, IWorkflowAppService
     {
         private readonly IWorkflowRepository _workflowRepository;
@@ -75,7 +76,7 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
             );
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Create)]
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Create)]
         public async Task<WorkflowDto> CreateAsync(CreateWorkflowDto input)
         {
             var workflow = new Aggregates.Workflow(
@@ -90,7 +91,7 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
             return ObjectMapper.Map<Aggregates.Workflow, WorkflowDto>(workflow);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Update)]
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
         public async Task<WorkflowDto> UpdateAsync(Guid id, UpdateWorkflowDto input)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -103,13 +104,13 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
             return ObjectMapper.Map<Aggregates.Workflow, WorkflowDto>(workflow);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Delete)]
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _workflowRepository.DeleteAsync(id);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Update)]
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
         public async Task<WorkflowDto> SetAsDefaultAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -119,7 +120,7 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
             return ObjectMapper.Map<Aggregates.Workflow, WorkflowDto>(workflow);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Update)]
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
         public async Task<WorkflowDto> ActivateAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetAsync(id);
@@ -129,7 +130,7 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
             return ObjectMapper.Map<Aggregates.Workflow, WorkflowDto>(workflow);
         }
 
-        [Authorize(WorkflowPermissions.Workflows.Update)]
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
         public async Task<WorkflowDto> DeactivateAsync(Guid id)
         {
             var workflow = await _workflowRepository.GetAsync(id);

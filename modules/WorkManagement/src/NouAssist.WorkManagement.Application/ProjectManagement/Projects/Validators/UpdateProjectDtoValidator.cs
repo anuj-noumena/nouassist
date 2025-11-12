@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.WorkManagement.ProjectManagement.Constants;
 using NouAssist.WorkManagement.ProjectManagement.Projects.Dtos;
 

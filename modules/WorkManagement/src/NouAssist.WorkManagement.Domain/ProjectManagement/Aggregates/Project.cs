@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NouAssist.SharedKernel.Enums;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 using NouAssist.WorkManagement.ProjectManagement.Events;
-using NouAssist.WorkManagement.Shared.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;

@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Data;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
-using NouAssist.WorkManagement.ProjectManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
 {
-    [Authorize(ProjectsPermissions.SuccessCriteria.Default)]
+    [Authorize(WorkManagementPermissions.ProjectManagement.SuccessCriteria.Default)]
     public class ProjectSuccessCriterionAppService : ApplicationService, IProjectSuccessCriterionAppService
     {
         private readonly IProjectSuccessCriterionRepository _criterionRepository;
@@ -39,7 +39,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
             return ObjectMapper.Map<List<ProjectSuccessCriterion>, List<SuccessCriterionDto>>(criteria);
         }
 
-        [Authorize(ProjectsPermissions.SuccessCriteria.Create)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.SuccessCriteria.Create)]
         public async Task<SuccessCriterionDto> CreateAsync(CreateSuccessCriterionDto input)
         {
             var criterion = new ProjectSuccessCriterion(
@@ -72,7 +72,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
             return ObjectMapper.Map<ProjectSuccessCriterion, SuccessCriterionDto>(criterion);
         }
 
-        [Authorize(ProjectsPermissions.SuccessCriteria.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.SuccessCriteria.Update)]
         public async Task<SuccessCriterionDto> UpdateAsync(Guid id, UpdateSuccessCriterionDto input)
         {
             var criterion = await _criterionRepository.GetAsync(id);
@@ -92,7 +92,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
             return ObjectMapper.Map<ProjectSuccessCriterion, SuccessCriterionDto>(criterion);
         }
 
-        [Authorize(ProjectsPermissions.SuccessCriteria.Update)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.SuccessCriteria.Update)]
         public async Task<SuccessCriterionDto> UpdateActualValueAsync(Guid id, UpdateActualValueDto input)
         {
             var criterion = await _criterionRepository.GetAsync(id);
@@ -104,7 +104,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
             return ObjectMapper.Map<ProjectSuccessCriterion, SuccessCriterionDto>(criterion);
         }
 
-        [Authorize(ProjectsPermissions.SuccessCriteria.MarkAsMet)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.SuccessCriteria.MarkAsMet)]
         public async Task<SuccessCriterionDto> MarkAsMetAsync(Guid id, MarkCriterionAsMetDto input)
         {
             var criterion = await _criterionRepository.GetAsync(id);
@@ -117,7 +117,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria
             return ObjectMapper.Map<ProjectSuccessCriterion, SuccessCriterionDto>(criterion);
         }
 
-        [Authorize(ProjectsPermissions.SuccessCriteria.Delete)]
+        [Authorize(WorkManagementPermissions.ProjectManagement.SuccessCriteria.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _criterionRepository.DeleteAsync(id);

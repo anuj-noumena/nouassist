@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
-using NouAssist.WorkManagement.GTD.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

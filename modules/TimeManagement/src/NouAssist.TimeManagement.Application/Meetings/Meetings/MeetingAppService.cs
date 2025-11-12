@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.TimeManagement.Meetings.Aggregates;
 using NouAssist.TimeManagement.Meetings.Data;
 using NouAssist.TimeManagement.Meetings.Meetings.Dtos;
-using NouAssist.TimeManagement.Meetings.Permissions;
 using NouAssist.TimeManagement.Meetings.Services;
 using NouAssist.TimeManagement.Meetings.Specifications;
 using NouAssist.TimeManagement.Meetings.ValueObjects;
+using NouAssist.TimeManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -17,7 +17,7 @@ using Volo.Abp.Specifications;
 
 namespace NouAssist.TimeManagement.Meetings.Meetings
 {
-    [Authorize(MeetingsPermissions.Meetings.Default)]
+    [Authorize(TimeManagementPermissions.Meeting.Meetings.Default)]
     public class MeetingAppService : ApplicationService, IMeetingAppService
     {
         private readonly IMeetingRepository _meetingRepository;
@@ -103,7 +103,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return dtos;
         }
 
-        [Authorize(MeetingsPermissions.Meetings.Create)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.Create)]
         public async Task<MeetingDto> CreateAsync(CreateMeetingDto input)
         {
             // Load existing meetings to check for conflicts
@@ -191,7 +191,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return await MapToDto(meeting);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.Update)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.Update)]
         public async Task<MeetingDto> UpdateAsync(Guid id, UpdateMeetingDto input)
         {
             var meeting = await _meetingRepository.GetAsync(id);
@@ -220,7 +220,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return await MapToDto(meeting);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.Delete)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var meeting = await _meetingRepository.GetAsync(id);
@@ -233,7 +233,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             await _meetingRepository.DeleteAsync(id);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.Start)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.Start)]
         public async Task<MeetingDto> StartAsync(Guid id)
         {
             var meeting = await _meetingRepository.GetAsync(id);
@@ -245,7 +245,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return await MapToDto(meeting);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.Complete)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.Complete)]
         public async Task<MeetingDto> CompleteAsync(Guid id, CompleteMeetingDto input)
         {
             var meeting = await _meetingRepository.GetAsync(id);
@@ -257,7 +257,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return await MapToDto(meeting);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.Cancel)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.Cancel)]
         public async Task<MeetingDto> CancelAsync(Guid id, string reason)
         {
             var meeting = await _meetingRepository.GetAsync(id);
@@ -274,7 +274,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return await MapToDto(meeting);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.ManageAttendees)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.ManageAttendees)]
         public async Task<MeetingDto> AddAttendeeAsync(Guid id, AddMeetingAttendeeDto input)
         {
             var meeting = await _meetingRepository.GetAsync(id);
@@ -296,7 +296,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return await MapToDto(meeting);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.ManageAttendees)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.ManageAttendees)]
         public async Task<MeetingDto> RemoveAttendeeAsync(Guid id, Guid userId)
         {
             var meeting = await _meetingRepository.GetAsync(id);

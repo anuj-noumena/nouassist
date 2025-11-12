@@ -4,14 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.WorkManagement.GTD.Aggregates;
-using NouAssist.WorkManagement.GTD.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Dtos;
+using NouAssist.WorkManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.GTD.GTD
 {
-    [Authorize(GtdPermissions.WaitingFor.Default)]
+    [Authorize(WorkManagementPermissions.GTD.WaitingFor.Default)]
     public class FollowupAppService : ApplicationService, IFollowupAppService
     {
         private readonly IRepository<Followup, Guid> _followupRepository;

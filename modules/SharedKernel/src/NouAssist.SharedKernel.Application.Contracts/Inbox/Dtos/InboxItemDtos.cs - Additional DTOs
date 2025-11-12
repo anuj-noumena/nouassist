@@ -1,8 +1,0 @@
-namespace NouAssist.Core.Dtos
-{
-    public class UpdateInboxItemDto
-    {
-        public string? InboxContent { get; set; }
-        public string? Notes { get; set; }
-    }
-}

@@ -1,4 +1,10 @@
 using AutoMapper;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Entities;
+using NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos;
+using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
+using NouAssist.WorkManagement.TaskManagement.TaskTypes.Dtos;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 
 namespace NouAssist.WorkManagement.TaskManagement
 {

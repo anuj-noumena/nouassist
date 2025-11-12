@@ -52,7 +52,7 @@ public class TimeManagementPermissions
     }
 
     // Meetings Permissions
-    public static class Meetings
+    public static class Meeting
     {
         public const string GroupName = "Meetings";
 

@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 
 namespace NouAssist.WorkManagement.TaskManagement.Specifications

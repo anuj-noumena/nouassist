@@ -1,10 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.WorkManagement.GTD.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Dtos;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.WorkManagement.GTD.GTD
+namespace NouAssist.WorkManagement.GTD
 {
     public interface ITicklerAppService : IApplicationService
     {

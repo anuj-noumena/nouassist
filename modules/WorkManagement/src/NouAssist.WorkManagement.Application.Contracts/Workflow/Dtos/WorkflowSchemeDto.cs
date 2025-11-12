@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.WorkManagement.Workflow.Workflows.Dtos
+namespace NouAssist.WorkManagement.Workflow.Dtos
 {
     public class WorkflowSchemeDto : FullAuditedEntityDto<Guid>
     {

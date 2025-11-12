@@ -84,8 +84,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                 ownerId,
                 taskBlueprint.DefaultImportance,
                 taskBlueprint.DefaultUrgency,
-                taskBlueprint.TenantId,
-                assigneeId);
+                tenantId: taskBlueprint.TenantId,
+                assigneeId:assigneeId);
 
             // Apply default due date from blueprint if not provided
             instance.Schedule = instance.Schedule.WithPlannedDates(due: plannedDueDate ?? taskBlueprint.DefaultDueDate);

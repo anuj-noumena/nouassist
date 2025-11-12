@@ -45,8 +45,8 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
 
                 // Update custom field value
 
-                var oldValue = taskInstance.CustomFieldValues.ContainsKey(fieldName)
-                    ? taskInstance.CustomFieldValues.GetValue(fieldName)
+                var oldValue = taskInstance.CustomField.ContainsKey(fieldName)
+                    ? taskInstance.CustomField.GetValue(fieldName)
                     : null;
 
                 taskInstance.UpdateCustomFieldValue(fieldName, fieldValue, currentUser.GetId());

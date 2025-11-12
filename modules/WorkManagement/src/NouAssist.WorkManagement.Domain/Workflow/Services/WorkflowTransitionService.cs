@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using NouAssist.WorkManagement.Workflow.Data;
 using NouAssist.WorkManagement.Workflow.Entities;
 using NouAssist.WorkManagement.Workflow.Events;
@@ -47,15 +48,13 @@ namespace NouAssist.WorkManagement.Workflow.Services
             Guid currentUserId,
             List<string> userRoles,
             Guid? projectId = null,
-            Dictionary<string, object> taskCustomFields = null,
+            CustomFieldValues taskCustomFields = null,
             string comment = null)
 
         {
             var result = new TransitionExecutionResult { IsSuccessful = true };
-
-
+            
             // Validate transition (includes condition evaluation)
-
             var validationResult = await ValidateTransitionAsync(
                 workflow, transition, currentUserId, userRoles, projectId, taskCustomFields, comment);
             if (!validationResult.IsValid)
@@ -108,7 +107,7 @@ namespace NouAssist.WorkManagement.Workflow.Services
             Guid currentUserId,
             List<string> userRoles,
             Guid? projectId = null,
-            Dictionary<string, object> taskCustomFields = null,
+            CustomFieldValues taskCustomFields = null,
             string comment = null)
 
         {
@@ -153,7 +152,7 @@ namespace NouAssist.WorkManagement.Workflow.Services
                 {
                     CurrentUserId = currentUserId,
                     UserRoles = userRoles,
-                    CustomFieldValues = taskCustomFields ?? new Dictionary<string, object>()
+                    CustomFieldValues = taskCustomFields ??  CustomFieldValues.Create()
                 };
 
                 var conditionResult = await _conditionEvaluationService.EvaluateAllAsync(

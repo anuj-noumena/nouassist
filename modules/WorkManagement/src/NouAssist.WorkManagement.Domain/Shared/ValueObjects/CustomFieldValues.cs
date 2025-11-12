@@ -55,7 +55,7 @@ namespace NouAssist.WorkManagement.Shared.ValueObjects
         /// <summary>
         /// Gets a custom field value by key, or null if not found.
         /// </summary>
-        public object GetValue(string key)
+        public object? GetValue(string key)
         {
             return _values.TryGetValue(key, out var value) ? value : null;
         }

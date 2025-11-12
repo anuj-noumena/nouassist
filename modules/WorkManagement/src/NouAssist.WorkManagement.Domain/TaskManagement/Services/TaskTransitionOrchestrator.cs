@@ -91,7 +91,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                     currentUserId,
                     userRoles,
                     taskInstance.ProjectId, // Pass project context for permission checking
-                    taskInstance.CustomFieldValues,
+                    taskInstance.CustomField,
                     comment);
 
                 if (!transitionResult.IsSuccessful)

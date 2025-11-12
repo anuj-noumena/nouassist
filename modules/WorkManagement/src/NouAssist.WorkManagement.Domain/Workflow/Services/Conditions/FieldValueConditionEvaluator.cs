@@ -37,7 +37,8 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
             }
 
             // Get the field value from context
-            if (!context.CustomFieldValues.TryGetValue(condition.Key, out var actualValue))
+             var actualValue = context.CustomFieldValues.GetValue(condition.Key);
+            if (actualValue == null)
             {
                 // Field not found in custom fields, check additional data
                 if (!context.AdditionalData.TryGetValue(condition.Key, out actualValue))

@@ -78,6 +78,12 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             });
         }
 
+        
+        public void MoveToProject(Guid projectId, Guid workflowStatusId)
+        {
+            ProjectId = projectId;
+        }
+
         // Action Steps Management
         public void AddActionStep(string title, string notes = null, bool isRequired = false, int seq = 0)
         {

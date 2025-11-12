@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NouAssist.WorkManagement.Workflow.Entities;
 using Volo.Abp;
+using Volo.Abp.Data;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace NouAssist.WorkManagement.Workflow.Aggregates
@@ -63,13 +64,8 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
         /// Custom properties associated with this workflow.
         /// Can store arbitrary key-value pairs (e.g., settings, metadata).
         /// </summary>
-        private Dictionary<string, object> _properties;
+        public ExtraPropertyDictionary ExtraProperties { get; }
 
-        /// <summary>
-        /// Exposes workflow properties as a read-only dictionary.
-        /// </summary>
-        public IReadOnlyDictionary<string, object> Properties =>
-            _properties?.AsReadOnly();
 
         /// <summary>
         /// Protected parameterless constructor required by EF Core and ABP.
@@ -77,7 +73,7 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
         /// </summary>
         protected Workflow()
         {
-            _properties = new Dictionary<string, object>();
+            ExtraProperties = new ExtraPropertyDictionary();
         }
 
         /// <summary>
@@ -100,7 +96,7 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
             // Workflows are active upon creation by default
             IsActive = true;
 
-            _properties = new Dictionary<string, object>();
+            ExtraProperties = new ExtraPropertyDictionary();
         }
 
         /// <summary>
@@ -207,32 +203,6 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
 
             IsActive = false;
         }
-
-        /// <summary>
-        /// Adds or updates a custom property key-value pair for this workflow.
-        /// Useful for storing additional configuration metadata.
-        /// </summary>
-        /// <param name="key">Property name (case-sensitive).</param>
-        /// <param name="value">Property value.</param>
-        public void SetProperty(string key, object value)
-        {
-            if (_properties == null)
-            {
-                _properties = new Dictionary<string, object>();
-            }
-
-            _properties[key] = value;
-        }
-
-        /// <summary>
-        /// Retrieves a property value by key.
-        /// Returns null if the property does not exist.
-        /// </summary>
-        /// <param name="key">Property key.</param>
-        /// <returns>Property value or null if not found.</returns>
-        public object GetProperty(string key)
-        {
-            return _properties?.GetValueOrDefault(key);
-        }
+        
     }
 }

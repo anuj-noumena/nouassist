@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using NouAssist.WorkManagement.Workflow.ValueObjects;
 
 namespace NouAssist.WorkManagement.Workflow.Services.Conditions
@@ -31,13 +32,13 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
         public System.Guid TaskInstanceId { get; set; }
         public System.Guid CurrentUserId { get; set; }
         public System.Collections.Generic.List<string> UserRoles { get; set; }
-        public System.Collections.Generic.Dictionary<string, object> CustomFieldValues { get; set; }
+        public CustomFieldValues CustomFieldValues { get; set; }
         public System.Collections.Generic.Dictionary<string, object> AdditionalData { get; set; }
 
         public WorkflowConditionContext()
         {
             UserRoles = new System.Collections.Generic.List<string>();
-            CustomFieldValues = new System.Collections.Generic.Dictionary<string, object>();
+            CustomFieldValues = CustomFieldValues.Create();
             AdditionalData = new System.Collections.Generic.Dictionary<string, object>();
         }
     }

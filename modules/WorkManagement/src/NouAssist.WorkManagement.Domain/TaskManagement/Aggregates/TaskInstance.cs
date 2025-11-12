@@ -20,9 +20,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
     public class TaskInstance : FullAuditedAggregateRoot<Guid>, IMultiTenant, IHasEntityVersion
     {
         public Guid TaskId { get; private set; }
-        public Guid ProjectId { get; private set; }
         public Guid WorkflowId { get; private set; }
-
+        
+        // Ownership
         public Guid OwnerId { get; private set; }
         public Guid? AssigneeId { get; private set; }
         public Guid? ReporterId { get; private set; }
@@ -62,7 +62,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public ResolutionInfo Resolution { get; private set; } = ResolutionInfo.Unresolved;
 
         // Custom Fields & Labels
-        public CustomFieldValues CustomFieldValues { get; private set; }
+        public CustomFieldValues CustomField { get; private set; }
 
 
         public int EntityVersion { get; }
@@ -114,28 +114,27 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         private readonly List<TaskHistoryEntry> _history = new();
         public IReadOnlyCollection<TaskHistoryEntry> History => _history.AsReadOnly();
 
-        protected TaskInstance()
+        protected TaskInstance(int entityVersion)
         {
+            EntityVersion = entityVersion;
         }
 
         public TaskInstance(
             Guid id,
             Guid taskId,
-            Guid projectId,
             Guid workflowId,
             Guid workflowStatusId,
             Guid ownerId,
             double importance,
-            double urgency,
-            Guid? reporterId = null,
+            double urgency, int entityVersion, Guid? reporterId = null,
             Guid? tenantId = null,
             Guid? assigneeId = null) : base(id)
         {
             TaskId = Check.NotNull(taskId, nameof(taskId));
-            ProjectId = Check.NotNull(projectId, nameof(projectId));
             WorkflowId = Check.NotNull(workflowId, nameof(workflowId));
             OwnerId = Check.NotNull(ownerId, nameof(ownerId));
             ReporterId = reporterId ?? ownerId;
+            EntityVersion = entityVersion;
             AssigneeId = assigneeId;
             TenantId = tenantId;
 
@@ -145,7 +144,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             Schedule = new TaskSchedule(null, null);
             Hierarchy = new TaskHierarchy(0, null);
             Discussion = TaskDiscussion.Empty();
-            CustomFieldValues = CustomFieldValues.Create();
+            CustomField = CustomFieldValues.Create();
 
             // Add creation history entry
             AddSimpleHistoryEntry(
@@ -159,7 +158,6 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 TaskId = TaskId,
                 TenantId = TenantId,
                 OwnerId = OwnerId,
-                ProjectId = ProjectId,
                 CreatedAt = DateTime.UtcNow
             });
         }
@@ -719,8 +717,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public void UpdateCustomFieldValue(string fieldName, object value, Guid updatedBy)
         {
             Check.NotNullOrWhiteSpace(fieldName, nameof(fieldName));
-            var oldValue = CustomFieldValues.GetValue(fieldName);
-            CustomFieldValues.SetValue(fieldName, value);
+            var oldValue = CustomField.GetValue(fieldName);
+            CustomField.SetValue(fieldName, value);
 
             AddFieldChangeHistoryEntry(
                 TaskHistoryChangeType.FieldUpdated,
@@ -744,23 +742,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 delegatedTo?.ToString(),
                 OwnerId.ToString());
         }
-
-
-        public void MoveToProject(Guid projectId, Guid workflowStatusId)
-        {
-            var oldProjectId = ProjectId;
-            ProjectId = projectId;
-            WorkflowStatusId = workflowStatusId;
-
-            AddHistoryEntry(
-                TaskHistoryChangeType.MovedToProject,
-                $"Moved to project {projectId}",
-                null,
-                "ProjectId",
-                oldProjectId.ToString(),
-                projectId.ToString());
-        }
-
+        
         // History tracking methods
         private void AddHistoryEntry(
             TaskHistoryChangeType changeType,

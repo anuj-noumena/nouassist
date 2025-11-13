@@ -9,7 +9,7 @@ using NouAssist.WorkManagement.Workflow.Entities;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
 {
     public class EfCoreWorkflowCustomFieldRepository
         : EfCoreRepository<IWorkflowDbContext, WorkflowCustomField, Guid>, IWorkflowCustomFieldRepository

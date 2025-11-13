@@ -1,12 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Data;
-using NouAssist.GTD.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
-using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.GTD.EntityFrameworkCore
+namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD
 {
     [DependsOn(
         typeof(GtdDomainModule),

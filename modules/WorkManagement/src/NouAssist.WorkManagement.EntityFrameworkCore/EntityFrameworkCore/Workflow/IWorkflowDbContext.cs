@@ -4,12 +4,12 @@ using NouAssist.WorkManagement.Workflow.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow;
 
 [ConnectionStringName(WorkflowDbProperties.ConnectionStringName)]
 public interface IWorkflowDbContext : IEfCoreDbContext
 {
-    DbSet<Aggregates.Workflow> Workflows { get; }
+    DbSet<WorkManagement.Workflow.Aggregates.Workflow> Workflows { get; }
     DbSet<WorkflowScheme> WorkflowSchemes { get; }
     DbSet<WorkflowCustomField> WorkflowCustomFields { get; }
     DbSet<WorkflowStatus> WorkflowStatuses { get; }

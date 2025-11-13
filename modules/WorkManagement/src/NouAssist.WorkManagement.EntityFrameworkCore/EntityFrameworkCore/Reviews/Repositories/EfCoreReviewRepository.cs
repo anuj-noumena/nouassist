@@ -11,7 +11,7 @@ using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Repositories
 {
     public class EfCoreReviewRepository 
         : EfCoreRepository<IReviewsDbContext, Review, Guid>, IReviewRepository

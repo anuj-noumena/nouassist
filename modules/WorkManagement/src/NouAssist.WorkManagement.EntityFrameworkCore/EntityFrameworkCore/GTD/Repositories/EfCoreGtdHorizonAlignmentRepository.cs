@@ -8,7 +8,7 @@ using NouAssist.WorkManagement.GTD.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.GTD.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD.Repositories
 {
     public class EfCoreGtdHorizonAlignmentRepository 
         : EfCoreRepository<IGtdDbContext, GtdHorizonAlignment, Guid>, IGtdHorizonAlignmentRepository

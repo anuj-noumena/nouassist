@@ -11,7 +11,7 @@ using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
 {
     public class EfCoreApprovalRequestRepository 
         : EfCoreRepository<IApprovalDbContext, ApprovalRequest, Guid>, 

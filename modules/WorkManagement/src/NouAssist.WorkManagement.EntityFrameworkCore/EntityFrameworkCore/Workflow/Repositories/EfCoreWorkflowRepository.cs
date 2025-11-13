@@ -7,10 +7,10 @@ using NouAssist.WorkManagement.Workflow.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
 {
     public class EfCoreWorkflowRepository
-        : EfCoreRepository<IWorkflowDbContext, Aggregates.Workflow, Guid>, IWorkflowRepository
+        : EfCoreRepository<IWorkflowDbContext, WorkManagement.Workflow.Aggregates.Workflow, Guid>, IWorkflowRepository
     {
         public EfCoreWorkflowRepository(
             IDbContextProvider<IWorkflowDbContext> dbContextProvider)
@@ -18,7 +18,7 @@ namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
         {
         }
 
-        public async Task<Aggregates.Workflow> GetWithDetailsAsync(
+        public async Task<WorkManagement.Workflow.Aggregates.Workflow> GetWithDetailsAsync(
             Guid id,
             CancellationToken cancellationToken = default)
         {
@@ -30,7 +30,7 @@ namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
                 .FirstOrDefaultAsync(w => w.Id == id, cancellationToken);
         }
 
-        public async Task<Aggregates.Workflow> GetDefaultWorkflowAsync(
+        public async Task<WorkManagement.Workflow.Aggregates.Workflow> GetDefaultWorkflowAsync(
             CancellationToken cancellationToken = default)
         {
             var dbSet = await GetDbSetAsync();
@@ -41,7 +41,7 @@ namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
                 .FirstOrDefaultAsync(w => w.IsDefault && w.IsActive, cancellationToken);
         }
 
-        public override async Task<IQueryable<Aggregates.Workflow>> WithDetailsAsync()
+        public override async Task<IQueryable<WorkManagement.Workflow.Aggregates.Workflow>> WithDetailsAsync()
         {
             return (await GetQueryableAsync())
                 .Include(w => w.Statuses)

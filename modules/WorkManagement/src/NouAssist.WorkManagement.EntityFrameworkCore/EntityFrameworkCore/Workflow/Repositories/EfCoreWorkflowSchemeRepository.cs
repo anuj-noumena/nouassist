@@ -8,7 +8,7 @@ using NouAssist.WorkManagement.Workflow.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
 {
     public class EfCoreWorkflowSchemeRepository
         : EfCoreRepository<IWorkflowDbContext, WorkflowScheme, Guid>, IWorkflowSchemeRepository

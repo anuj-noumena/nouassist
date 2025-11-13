@@ -1,11 +1,11 @@
 using Microsoft.Extensions.DependencyInjection;
+using NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Repositories;
 using NouAssist.WorkManagement.Reviews.Aggregates;
 using NouAssist.WorkManagement.Reviews.Entities;
-using NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews
 {
     [DependsOn(
         typeof(NouAssistReviewsDomainModule),

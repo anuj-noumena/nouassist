@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.GTD.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD.Repositories
 {
     public class EfCoreWaitingForRepository 
         : EfCoreRepository<IGtdDbContext, WaitingFor, Guid>, IWaitingForRepository

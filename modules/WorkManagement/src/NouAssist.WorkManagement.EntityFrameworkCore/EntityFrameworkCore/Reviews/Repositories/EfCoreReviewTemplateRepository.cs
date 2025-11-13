@@ -10,7 +10,7 @@ using NouAssist.WorkManagement.Reviews.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Repositories
 {
     public class EfCoreReviewTemplateRepository 
         : EfCoreRepository<IReviewsDbContext, ReviewTemplate, Guid>, IReviewTemplateRepository

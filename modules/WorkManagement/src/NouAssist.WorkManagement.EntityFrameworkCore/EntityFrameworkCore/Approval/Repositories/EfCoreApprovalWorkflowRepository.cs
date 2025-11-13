@@ -10,7 +10,7 @@ using NouAssist.WorkManagement.Approval.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore.Repositories
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
 {
     public class EfCoreApprovalWorkflowRepository 
         : EfCoreRepository<IApprovalDbContext, ApprovalWorkflow, Guid>, 

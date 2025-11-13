@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.WorkManagement.GTD.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD;
 
 public static class GTDDbContextModelCreatingExtensions
 {

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.Approval.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
 {
     public class ApprovalStepConfiguration : IEntityTypeConfiguration<ApprovalStep>
     {

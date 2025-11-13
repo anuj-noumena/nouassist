@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.Reviews.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Configurations
 {
     public class ReviewItemConfiguration : IEntityTypeConfiguration<ReviewItem>
     {

@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.GTD.EntityFrameworkCore
+namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD
 {
     [ConnectionStringName(GtdDbProperties.ConnectionStringName)]
     public class GtdDbContext : AbpDbContext<GtdDbContext>, IGtdDbContext

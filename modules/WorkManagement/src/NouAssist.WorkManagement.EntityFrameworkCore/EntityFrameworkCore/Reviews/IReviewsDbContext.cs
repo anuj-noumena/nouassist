@@ -4,7 +4,7 @@ using NouAssist.WorkManagement.Reviews.Entities;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews
 {
     [ConnectionStringName(ReviewsDbProperties.ConnectionStringName)]
     public interface IReviewsDbContext : IEfCoreDbContext

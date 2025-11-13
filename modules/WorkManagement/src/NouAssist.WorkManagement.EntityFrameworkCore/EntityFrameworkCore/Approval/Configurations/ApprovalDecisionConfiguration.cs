@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.Approval.Entities;
 
-namespace NouAssist.WorkManagement.Approval.EntityFrameworkCore.Configurations
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
 {
     public class ApprovalDecisionConfiguration : IEntityTypeConfiguration<ApprovalDecision>
     {

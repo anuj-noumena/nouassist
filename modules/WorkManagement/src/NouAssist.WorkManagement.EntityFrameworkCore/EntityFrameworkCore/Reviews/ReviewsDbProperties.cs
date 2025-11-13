@@ -1,4 +1,4 @@
-namespace NouAssist.WorkManagement.Reviews.EntityFrameworkCore
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews
 {
     public static class ReviewsDbProperties
     {

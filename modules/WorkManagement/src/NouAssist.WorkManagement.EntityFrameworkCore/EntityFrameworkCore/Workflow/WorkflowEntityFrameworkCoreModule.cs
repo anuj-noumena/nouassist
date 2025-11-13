@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories;
 using NouAssist.WorkManagement.Workflow.Aggregates;
 using NouAssist.WorkManagement.Workflow.Entities;
-using NouAssist.WorkManagement.Workflow.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.WorkManagement.Workflow.EntityFrameworkCore;
+namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow;
 
 [DependsOn(
     typeof(WorkflowDomainModule),
@@ -17,7 +17,7 @@ public class WorkflowEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<WorkflowDbContext>(options =>
         {
-            options.AddRepository<Aggregates.Workflow, EfCoreWorkflowRepository>();
+            options.AddRepository<WorkManagement.Workflow.Aggregates.Workflow, EfCoreWorkflowRepository>();
             options.AddRepository<WorkflowScheme, EfCoreWorkflowSchemeRepository>();
             options.AddRepository<WorkflowCustomField, EfCoreWorkflowCustomFieldRepository>();
 

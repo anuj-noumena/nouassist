@@ -14,6 +14,8 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
     /// <summary>
     /// Executes task delegation actions.
     /// Follows Single Responsibility Principle - only handles task delegation
+    /// Note: Since TaskInstance doesn't have a Delegate method, this executor
+    /// reassigns the task and adds a comment about the delegation.
     /// </summary>
     public class DelegateTaskActionExecutor : DomainService, IWorkflowActionExecutor, ITransientDependency
     {
@@ -42,31 +44,41 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
 
-                // Validate current user is the assignee
-                if (taskInstance.AssigneeId != context.ExecutedBy)
+                // Validate current user is the assignee or owner
+                if (taskInstance.AssigneeId != context.ExecutedBy && taskInstance.OwnerId != context.ExecutedBy)
                 {
                     return ActionExecutionResult.Failure(
-                        $"Task must be assigned to you to delegate it. Current assignee: {taskInstance.AssigneeId}");
+                        $"Only the task assignee or owner can delegate the task. Current assignee: {taskInstance.AssigneeId}, Owner: {taskInstance.OwnerId}");
                 }
 
                 var oldAssignee = taskInstance.AssigneeId;
 
-                // Perform delegation using TaskInstance domain method
-                taskInstance.Delegate(context.ExecutedBy, targetUserId, note);
+                // Perform delegation by reassigning
+                taskInstance.Assign(targetUserId);
+
+                // Increment comment count to record delegation
+                taskInstance.IncrementComments();
 
                 // Update task instance
                 await taskInstanceRepo.UpdateAsync(taskInstance);
 
                 Logger.LogInformation(
-                    "Workflow delegation: TaskInstance {TaskInstanceId} from {OldAssignee} to {NewAssignee}",
-                    context.TaskInstanceId, oldAssignee, targetUserId);
+                    "Workflow delegation: TaskInstance {TaskInstanceId} from {OldAssignee} to {NewAssignee}. Note: {Note}",
+                    context.TaskInstanceId, oldAssignee, targetUserId, note);
 
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
+                var resultData = new Dictionary<string, object>
                 {
                     ["oldAssignee"] = oldAssignee,
                     ["newAssignee"] = targetUserId,
+                    ["delegatedBy"] = context.ExecutedBy,
+                    ["delegationNote"] = note,
                     ["delegatedAt"] = Clock.Now
                 };
+
+                // Note: In a complete implementation, you would also:
+                // 1. Store the delegation note in a Comment/History entity
+                // 2. Send notifications to the new assignee
+                // 3. Track delegation history
 
                 return ActionExecutionResult.Success(resultData);
             }

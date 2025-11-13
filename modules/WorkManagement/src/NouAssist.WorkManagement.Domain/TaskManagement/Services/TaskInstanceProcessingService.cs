@@ -15,19 +15,19 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
     public class TaskInstanceProcessingService : DomainService
     {
         private readonly ILogger<TaskInstanceProcessingService> _logger;
-        private readonly ITaskCompletionPolicy _taskCompleteionPolicy;
+        private readonly ITaskCompletionPolicy _taskCompletionPolicy;
 
-        public TaskInstanceProcessingService(ITaskCompletionPolicy taskCompleteionPolicy,
+        public TaskInstanceProcessingService(
+            ITaskCompletionPolicy taskCompletionPolicy,
             ILogger<TaskInstanceProcessingService> logger)
         {
-            _taskCompleteionPolicy = taskCompleteionPolicy;
+            _taskCompletionPolicy = taskCompletionPolicy;
             _logger = logger;
         }
 
         public TaskInstanceProcessingResult ProcessTaskCompletion(
             TaskInstance taskInstance,
             Task taskBlueprint,
-            Guid completedBy,
             string resolution = null,
             string resolutionNote = null)
         {
@@ -43,15 +43,26 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                     return result;
                 }
 
+                // Apply completion policy if needed
+                if (_taskCompletionPolicy != null)
+                {
+                    PolicyResult policyResult = _taskCompletionPolicy.CanComplete(taskInstance);
+                    if (!policyResult.IsAllowed)
+                    {
+                        result.Errors.Add(policyResult.Reason);
+                        return result;
+                    }
+                }
+
                 // Complete the task instance
-                taskInstance.Complete(completedBy, _taskCompleteionPolicy, resolution, resolutionNote);
+                taskInstance.Complete(resolution ?? "Completed", resolutionNote);
 
                 result.ProcessedTaskInstance = taskInstance;
                 result.IsSuccessful = true;
 
                 _logger.LogInformation(
-                    "Task instance {TaskInstanceId} completed successfully by user {UserId}",
-                    taskInstance.Id, completedBy);
+                    "Task instance {TaskInstanceId} completed successfully",
+                    taskInstance.Id);
             }
             catch (BusinessException ex)
             {
@@ -64,9 +75,12 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
 
         public TaskInstance CreateTaskInstanceFromBlueprint(
             Task taskBlueprint,
-            Guid projectId,
+            Guid workflowId,
             Guid workflowStatusId,
             Guid ownerId,
+            Guid? projectId = null,
+            Guid? areaId = null,
+            Guid? contextId = null,
             Guid? assigneeId = null,
             DateTime? plannedDueDate = null)
         {
@@ -75,27 +89,53 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                 throw new BusinessException("Tasks:CannotCreateInstanceFromInactiveTask");
             }
 
+            // Determine effective area and context from blueprint if not provided
+            var effectiveAreaId = areaId ?? taskBlueprint.GetEffectiveAreaForInstance();
+            var effectiveContextId = contextId ?? taskBlueprint.GetEffectiveContextForInstance();
+
+            // Validate: cannot be in both project and area
+            if (projectId.HasValue && effectiveAreaId.HasValue)
+            {
+                throw new BusinessException("Tasks:CannotBeInBothProjectAndArea");
+            }
+
             // Create instance with default values from blueprint
             var instance = new TaskInstance(
                 Guid.NewGuid(),
                 taskBlueprint.Id,
-                projectId,
+                workflowId,
                 workflowStatusId,
                 ownerId,
+                projectId,
+                effectiveAreaId,
+                effectiveContextId,
                 taskBlueprint.DefaultImportance,
                 taskBlueprint.DefaultUrgency,
                 tenantId: taskBlueprint.TenantId,
-                assigneeId:assigneeId);
+                assigneeId: assigneeId);
 
             // Apply default due date from blueprint if not provided
-            instance.Schedule = instance.Schedule.WithPlannedDates(due: plannedDueDate ?? taskBlueprint.DefaultDueDate);
-            // Initialize step completions from blueprint action steps
-            var actionStepIds = taskBlueprint.ActionSteps.Select(s => s.Id).ToList();
-            instance.InitializeStepCompletions(actionStepIds);
+            var dueDate = plannedDueDate ?? taskBlueprint.DefaultDueDate;
+            if (dueDate.HasValue)
+            {
+                instance.SetPlannedDates(null, dueDate);
+            }
 
-            // Initialize criterion completions from blueprint acceptance criteria
-            var criterionIds = taskBlueprint.AcceptanceCriteria.Select(c => c.Id).ToList();
-            instance.InitializeCriterionCompletions(criterionIds);
+            // Apply default estimate if available
+            if (taskBlueprint.DefaultEstimateMinutes.HasValue)
+            {
+                instance.SetEstimate(taskBlueprint.DefaultEstimateMinutes.Value);
+            }
+
+            // Initialize checklist from blueprint
+            if (taskBlueprint.HasChecklist)
+            {
+                var checklistItemIds = taskBlueprint.ChecklistItems.Select(s => s.Id).ToList();
+                instance.InitializeChecklist(checklistItemIds);
+            }
+
+            // Note: Acceptance criteria completions are tracked separately
+            // They can be managed through a separate aggregate or service if needed
 
             _logger.LogInformation(
                 "Created task instance {InstanceId} from blueprint {TaskId}",
@@ -104,15 +144,11 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             return instance;
         }
 
-        public void ProcessRecurringTaskOccurrence(
-            Task taskBlueprint,
-            Guid projectId,
-            Guid workflowStatusId,
-            DateTime occurrenceDate)
+        public DateTime? CalculateNextRecurrenceDate(Task taskBlueprint, DateTime currentDate)
         {
             if (!taskBlueprint.IsRecurring)
             {
-                throw new BusinessException("Tasks:TaskIsNotRecurring");
+                return null;
             }
 
             if (taskBlueprint.RecurrenceRule == null)
@@ -121,14 +157,13 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             }
 
             // Calculate next occurrence
-            var nextOccurrence = taskBlueprint.RecurrenceRule.CalculateNextOccurrence(occurrenceDate);
+            var nextOccurrence = taskBlueprint.RecurrenceRule.CalculateNextOccurrence(currentDate);
 
             _logger.LogInformation(
-                "Processing recurring task {TaskId}, next occurrence: {NextOccurrence}",
+                "Calculated next recurrence for task {TaskId}: {NextOccurrence}",
                 taskBlueprint.Id, nextOccurrence);
 
-            // This service doesn't create the instance directly - it delegates to the application layer
-            // But it can validate and calculate the next occurrence date
+            return nextOccurrence;
         }
 
         private ValidationResult ValidateCompletionPrerequisites(
@@ -142,26 +177,62 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                 result.AddError("Task is already completed");
             }
 
-            if (taskInstance.BlockingInfo.IsBlocked)
+            if (taskInstance.IsBlocked)
             {
                 result.AddError("Cannot complete a blocked task");
             }
 
-            // Verify all required action steps are completed
-            var requiredStepIds = taskBlueprint.ActionSteps
-                .Where(s => s.IsRequired)
-                .Select(s => s.Id)
-                .ToList();
-
-            foreach (var requiredStepId in requiredStepIds)
+            // Check if task has blocking dependencies
+            if (taskInstance.HasBlockingDependencies)
             {
-                var completion = taskInstance.StepCompletions
-                    .FirstOrDefault(sc => sc.TaskActionStepId == requiredStepId);
+                result.AddError("Task has blocking dependencies that are not completed");
+            }
 
-                if (completion == null || !completion.IsDone)
+            // Verify all required checklist items are completed
+            if (taskBlueprint.HasChecklist)
+            {
+                var requiredItemIds = taskBlueprint.ChecklistItems
+                    .Where(s => s.IsRequired)
+                    .Select(s => s.Id)
+                    .ToList();
+
+                foreach (var requiredItemId in requiredItemIds)
                 {
-                    result.AddError($"Required step {requiredStepId} is not completed");
+                    var completion = taskInstance.ChecklistItems
+                        .FirstOrDefault(sc => sc.ChecklistItemId == requiredItemId);
+
+                    if (completion == null || !completion.IsChecked)
+                    {
+                        var itemTitle = taskBlueprint.ChecklistItems
+                            .FirstOrDefault(ci => ci.Id == requiredItemId)?.Title ?? "Unknown";
+                        result.AddError($"Required checklist item '{itemTitle}' is not completed");
+                    }
                 }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Validates if a task can be started
+        /// </summary>
+        public ValidationResult ValidateStartPrerequisites(TaskInstance taskInstance)
+        {
+            var result = new ValidationResult();
+
+            if (taskInstance.WorkTracking.HasStarted)
+            {
+                result.AddError("Task has already been started");
+            }
+
+            if (taskInstance.IsBlocked)
+            {
+                result.AddError("Cannot start a blocked task");
+            }
+
+            if (taskInstance.HasBlockingDependencies)
+            {
+                result.AddError("Task has blocking dependencies that must be completed first");
             }
 
             return result;
@@ -178,7 +249,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
     public class ValidationResult
     {
         public bool IsValid => Errors.Count == 0;
-        public List<string> Errors { get; set; } = new();
+        public System.Collections.Generic.List<string> Errors { get; set; } = new();
 
         public void AddError(string error)
         {

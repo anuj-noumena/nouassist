@@ -3,14 +3,13 @@ using System.Linq.Expressions;
 using NouAssist.SharedKernel.Enums;
 using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
-using NouAssist.WorkManagement.TaskManagement.Enums;
 
 namespace NouAssist.WorkManagement.TaskManagement.Specifications
 {
     public class ActiveTaskInstancesSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => !ti.IsDeleted && !ti.Schedule.IsCompleted && !ti.IsCancelled;
+            ti => !ti.IsDeleted && !ti.Schedule.IsCompleted;
     }
 
     public class OverdueTaskInstancesSpecification : BaseSpecification<TaskInstance>
@@ -26,7 +25,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Specifications
             ti => ti.Schedule.ActualDueDate.HasValue &&
                   ti.Schedule.ActualDueDate.Value < _now &&
                   !ti.Schedule.IsCompleted &&
-                  !ti.IsCancelled;
+                  !ti.IsDeleted;
     }
 
     public class TaskInstancesByAssigneeSpecification : BaseSpecification<TaskInstance>
@@ -45,36 +44,26 @@ namespace NouAssist.WorkManagement.TaskManagement.Specifications
     public class HighPriorityTaskInstancesSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.PriorityMatrix.Quadrant == EisenhowerQuadrant.Q1DoFirst &&
+            ti => ti.Priority.Quadrant == EisenhowerQuadrant.Q1DoFirst &&
                   !ti.Schedule.IsCompleted;
     }
 
     public class BlockedTaskInstancesSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.BlockingInfo.IsBlocked && !ti.Schedule.IsCompleted;
+            ti => ti.IsBlocked && !ti.Schedule.IsCompleted;
     }
 
     public class NextActionTasksSpecification : BaseSpecification<TaskInstance>
     {
         public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.IsNextAction && !ti.Schedule.IsCompleted && !ti.BlockingInfo.IsBlocked;
+            ti => ti.WorkTracking.IsNextAction && 
+                  !ti.Schedule.IsCompleted && 
+                  !ti.IsBlocked;
     }
 
-    public class DelegatedTasksSpecification : BaseSpecification<TaskInstance>
-    {
-        private readonly Guid _delegatedTo;
-
-        public DelegatedTasksSpecification(Guid delegatedTo)
-        {
-            _delegatedTo = delegatedTo;
-        }
-
-        public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.DelegationInfo != null &&
-                  ti.DelegationInfo.DelegatedTo == _delegatedTo &&
-                  ti.DelegationInfo.Status == DelegationStatus.Delegated;
-    }
+    // Removed DelegatedTasksSpecification as DelegationInfo doesn't exist in current model
+    // If delegation is needed, it should be added back to the TaskInstance aggregate
 
     public class CompletedInDateRangeSpecification : BaseSpecification<TaskInstance>
     {
@@ -92,5 +81,18 @@ namespace NouAssist.WorkManagement.TaskManagement.Specifications
                   ti.Schedule.CompletedAt.HasValue &&
                   ti.Schedule.CompletedAt.Value >= _startDate &&
                   ti.Schedule.CompletedAt.Value <= _endDate;
+    }
+
+    public class TaskInstancesByProjectSpecification : BaseSpecification<TaskInstance>
+    {
+        private readonly Guid _projectId;
+
+        public TaskInstancesByProjectSpecification(Guid projectId)
+        {
+            _projectId = projectId;
+        }
+
+        public override Expression<Func<TaskInstance, bool>> ToExpression() =>
+            ti => ti.ProjectId == _projectId && !ti.Schedule.IsCompleted && !ti.IsDeleted;
     }
 }

@@ -76,20 +76,20 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 foreach (var fieldName in fieldNames)
                 {
                     // Check if field exists in custom fields
-                    if (!taskInstance.CustomField.ContainsKey(fieldName))
+                    var fieldValue = taskInstance.CustomFields.GetValue(fieldName);
+                    
+                    if (fieldValue == null)
                     {
                         missingFields.Add(fieldName);
                         continue;
                     }
 
-                    var fieldValue = taskInstance.CustomField.GetValue(fieldName);
                     fieldValues[fieldName] = fieldValue;
 
                     // Check if field is empty (null or empty string)
                     if (!allowEmpty)
                     {
-                        if (fieldValue == null ||
-                            (fieldValue is string strValue && string.IsNullOrWhiteSpace(strValue)))
+                        if (fieldValue is string strValue && string.IsNullOrWhiteSpace(strValue))
                         {
                             emptyFields.Add(fieldName);
                         }

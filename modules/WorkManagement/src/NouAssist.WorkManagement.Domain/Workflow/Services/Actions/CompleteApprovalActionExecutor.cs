@@ -34,19 +34,19 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
 
-                if (taskInstance.Approval == null || !taskInstance.Approval.RequiresApproval)
+                if (!taskInstance.RequiresApproval)
                 {
                     return ActionExecutionResult.Failure("Task does not require approval");
                 }
 
-                if (!taskInstance.Approval.IsLinkedToApproval)
+                if (!taskInstance.ApprovalRequestId.HasValue)
                 {
                     return ActionExecutionResult.Failure("Task is not linked to an approval request");
                 }
 
                 // Load the approval request to check its status
                 var approvalRequestRepo = LazyServiceProvider.LazyGetRequiredService<IApprovalRequestRepository>();
-                var approvalRequest = await approvalRequestRepo.GetAsync(taskInstance.Approval.ApprovalRequestId.Value);
+                var approvalRequest = await approvalRequestRepo.GetAsync(taskInstance.ApprovalRequestId.Value);
 
                 // Check if approval is completed
                 if (!approvalRequest.IsComplete)
@@ -77,7 +77,7 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                     "Approval validation passed for task instance {TaskInstanceId}, approval request {RequestId}",
                     context.TaskInstanceId, approvalRequest.Id);
 
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
+                var resultData = new Dictionary<string, object>
                 {
                     ["approvalRequestId"] = approvalRequest.Id,
                     ["approvalStatus"] = approvalRequest.Status.ToString(),

@@ -5,18 +5,32 @@ namespace NouAssist.WorkManagement.TaskManagement.Policies.impl;
 
 public class ApprovalCompletionPolicy : ITaskCompletionPolicy
 {
-    public (bool CanComplete, string FailureReason) Check(TaskInstance taskInstance)
+    public PolicyResult CanComplete(TaskInstance taskInstance)
     {
-        if (taskInstance.StepCompletions.Any(sc => !sc.IsDone))
+        // Check if all required checklist items are completed
+        if (taskInstance.ChecklistItems.Any(ci => !ci.IsChecked))
         {
-            return (false, "Tasks:RequiredStepsNotCompleted");
+            return PolicyResult.Deny("Tasks:RequiredChecklistItemsNotCompleted");
         }
 
-        if (taskInstance.RequiresApproval && !taskInstance.ApprovalRequestId.HasValue) // Or whatever your logic is
+        // Check if task requires approval and has approval request linked
+        if (taskInstance.RequiresApproval && !taskInstance.ApprovalRequestId.HasValue)
         {
-            return (false, "Tasks:ApprovalRequired");
+            return PolicyResult.Deny("Tasks:ApprovalRequired");
         }
 
-        return (true, string.Empty);
+        // Check if task is blocked
+        if (taskInstance.IsBlocked)
+        {
+            return PolicyResult.Deny("Tasks:TaskIsBlocked");
+        }
+
+        // Check if task has blocking dependencies
+        if (taskInstance.HasBlockingDependencies)
+        {
+            return PolicyResult.Deny("Tasks:HasBlockingDependencies");
+        }
+
+        return PolicyResult.Allow();
     }
 }

@@ -115,5 +115,19 @@ namespace NouAssist.WorkManagement.TaskManagement.Specifications
                          !ti.IsBlocked &&
                          !ti.IsDeleted;
         }
+        
+    }
+    
+    public class TaskInstancesByContextSpecification : BaseSpecification<TaskInstance>
+    {
+        private readonly Guid _contextId;
+
+        public TaskInstancesByContextSpecification(Guid contextId)
+        {
+            _contextId = contextId;
+        }
+
+        public override Expression<Func<TaskInstance, bool>> ToExpression() =>
+            ti => ti.ContextId == _contextId && !ti.Schedule.IsCompleted && !ti.IsDeleted;
     }
 }

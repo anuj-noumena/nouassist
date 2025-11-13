@@ -62,12 +62,20 @@ namespace NouAssist.WorkManagement.ProjectManagement.Services
                 return ProjectDomainConstants.DefaultSprintVelocity;
             }
 
+            // Filter completed sprints and order by completion date
             var recentSprints = completedSprints
-                .OrderByDescending(s => s.CompletedAt)
+                .Where(s => s.Status == Enums.SprintStatus.Completed && s.Timeline.ActualEndDate.HasValue)
+                .OrderByDescending(s => s.Timeline.ActualEndDate!.Value)
                 .Take(lastNSprints)
                 .ToList();
 
-            return (int)recentSprints.Average(s => s.ActualVelocity);
+            if (!recentSprints.Any())
+            {
+                return ProjectDomainConstants.DefaultSprintVelocity;
+            }
+
+            // Calculate average velocity from completed sprints
+            return (int)recentSprints.Average(s => s.Metrics.ActualVelocity);
         }
     }
 

@@ -16,8 +16,8 @@ namespace NouAssist.WorkManagement.ProjectManagement.Specifications
     public class OverdueProjectsSpecification : BaseSpecification<Project>
     {
         public override Expression<Func<Project, bool>> ToExpression() =>
-            p => p.DueDate.HasValue &&
-                 p.DueDate.Value < DateTime.UtcNow &&
+            p => p.Timeline.PlannedDueDate.HasValue &&
+                 p.Timeline.PlannedDueDate.Value < DateTime.UtcNow &&
                  p.Status != ProjectStatus.Completed &&
                  p.Status != ProjectStatus.Cancelled;
     }
@@ -52,8 +52,23 @@ namespace NouAssist.WorkManagement.ProjectManagement.Specifications
             _quadrant = quadrant;
         }
 
-        public override Expression<Func<Project, bool>> ToExpression() =>
-            p => p.EisenhowerQuadrant == _quadrant && !p.IsArchived;
+        public override Expression<Func<Project, bool>> ToExpression()
+        {
+            // Map quadrant to importance/urgency thresholds
+            // Assuming values above 0.5 are "high"
+            return _quadrant switch
+            {
+                EisenhowerQuadrant.Q1DoFirst => 
+                    p => p.Priority.Importance > 0.5 && p.Priority.Urgency > 0.5 && !p.IsArchived,
+                EisenhowerQuadrant.Q2Schedule => 
+                    p => p.Priority.Importance > 0.5 && p.Priority.Urgency <= 0.5 && !p.IsArchived,
+                EisenhowerQuadrant.Q3Delegate => 
+                    p => p.Priority.Importance <= 0.5 && p.Priority.Urgency > 0.5 && !p.IsArchived,
+                EisenhowerQuadrant.Q4Eliminate => 
+                    p => p.Priority.Importance <= 0.5 && p.Priority.Urgency <= 0.5 && !p.IsArchived,
+                _ => p => !p.IsArchived
+            };
+        }
     }
 
     public class ProjectsDueInNextDaysSpecification : BaseSpecification<Project>
@@ -68,9 +83,9 @@ namespace NouAssist.WorkManagement.ProjectManagement.Specifications
         public override Expression<Func<Project, bool>> ToExpression()
         {
             var endDate = DateTime.UtcNow.AddDays(_days);
-            return p => p.DueDate.HasValue &&
-                       p.DueDate.Value <= endDate &&
-                       p.DueDate.Value >= DateTime.UtcNow &&
+            return p => p.Timeline.PlannedDueDate.HasValue &&
+                       p.Timeline.PlannedDueDate.Value <= endDate &&
+                       p.Timeline.PlannedDueDate.Value >= DateTime.UtcNow &&
                        p.Status == ProjectStatus.Active;
         }
     }

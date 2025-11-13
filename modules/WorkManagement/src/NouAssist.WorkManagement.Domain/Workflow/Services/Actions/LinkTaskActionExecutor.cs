@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NouAssist.WorkManagement.TaskManagement.Data;
@@ -65,8 +66,8 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
 
-                // Verify the linked task exists
-                var linkedTaskExists = await taskInstanceRepo.AnyAsync(linkedTaskId);
+                // Verify the linked task exists using proper AnyAsync signature
+                var linkedTaskExists = await taskInstanceRepo.AnyAsync(t => t.Id == linkedTaskId);
                 if (!linkedTaskExists)
                 {
                     return ActionExecutionResult.Failure($"Linked task instance {linkedTaskId} does not exist");
@@ -81,7 +82,7 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                     "Linked task instance {TaskInstanceId} to {LinkedTaskId} with dependency type {DependencyType}",
                     context.TaskInstanceId, linkedTaskId, dependencyType);
 
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
+                var resultData = new Dictionary<string, object>
                 {
                     ["linkedTaskId"] = linkedTaskId,
                     ["dependencyType"] = dependencyType.ToString(),

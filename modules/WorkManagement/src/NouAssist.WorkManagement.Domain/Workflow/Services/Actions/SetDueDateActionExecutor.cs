@@ -31,52 +31,101 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
 
-                DateTime? dueDate = null;
+                DateTime? newDueDate = null;
+                DateTime? newStartDate = null;
                 var oldDueDate = taskInstance.Schedule.PlannedDueDate;
+                var oldStartDate = taskInstance.Schedule.PlannedStartDate;
 
-                // Check if a specific date is provided
+                // Check if a specific due date is provided
                 var dueDateObj = action.Configuration.GetValueOrDefault("dueDate");
                 if (dueDateObj != null)
                 {
                     if (dueDateObj is DateTime dt)
                     {
-                        dueDate = dt;
+                        newDueDate = dt;
                     }
                     else if (DateTime.TryParse(dueDateObj.ToString(), out var parsedDate))
                     {
-                        dueDate = parsedDate;
+                        newDueDate = parsedDate;
                     }
                 }
 
-                // Check if an offset in days is provided
+                // Check if an offset in days is provided (relative to current time)
                 var offsetDaysObj = action.Configuration.GetValueOrDefault("offsetDays");
-                if (offsetDaysObj != null && dueDate == null)
+                if (offsetDaysObj != null && newDueDate == null)
                 {
                     var offsetDays = Convert.ToInt32(offsetDaysObj);
-                    dueDate = Clock.Now.AddDays(offsetDays);
+                    newDueDate = Clock.Now.AddDays(offsetDays);
                 }
 
-                // Check if offset in hours is provided
+                // Check if offset in hours is provided (relative to current time)
                 var offsetHoursObj = action.Configuration.GetValueOrDefault("offsetHours");
-                if (offsetHoursObj != null && dueDate == null)
+                if (offsetHoursObj != null && newDueDate == null)
                 {
                     var offsetHours = Convert.ToInt32(offsetHoursObj);
-                    dueDate = Clock.Now.AddHours(offsetHours);
+                    newDueDate = Clock.Now.AddHours(offsetHours);
                 }
 
-                // Update the schedule with the new due date
-                taskInstance.Schedule = taskInstance.Schedule.WithPlannedDates(due: dueDate);
+                // Check if offset in minutes is provided (relative to current time)
+                var offsetMinutesObj = action.Configuration.GetValueOrDefault("offsetMinutes");
+                if (offsetMinutesObj != null && newDueDate == null)
+                {
+                    var offsetMinutes = Convert.ToInt32(offsetMinutesObj);
+                    newDueDate = Clock.Now.AddMinutes(offsetMinutes);
+                }
+
+                // Optional: Also set start date
+                var startDateObj = action.Configuration.GetValueOrDefault("startDate");
+                if (startDateObj != null)
+                {
+                    if (startDateObj is DateTime startDt)
+                    {
+                        newStartDate = startDt;
+                    }
+                    else if (DateTime.TryParse(startDateObj.ToString(), out var parsedStartDate))
+                    {
+                        newStartDate = parsedStartDate;
+                    }
+                }
+
+                // Optional: Keep existing start date flag
+                var keepExistingStartDate = action.Configuration.GetValueOrDefault("keepExistingStartDate");
+                bool shouldKeepStartDate = keepExistingStartDate != null && Convert.ToBoolean(keepExistingStartDate);
+
+                if (shouldKeepStartDate && newStartDate == null)
+                {
+                    newStartDate = oldStartDate;
+                }
+
+                // Validate: start date should be before due date
+                if (newStartDate.HasValue && newDueDate.HasValue && newStartDate.Value > newDueDate.Value)
+                {
+                    return ActionExecutionResult.Failure(
+                        $"Start date ({newStartDate.Value:yyyy-MM-dd HH:mm}) cannot be after due date ({newDueDate.Value:yyyy-MM-dd HH:mm})");
+                }
+
+                // Update the schedule with the new dates
+                // SetPlannedDates method signature: SetPlannedDates(DateTime? start, DateTime? due)
+                taskInstance.SetPlannedDates(newStartDate, newDueDate);
 
                 await taskInstanceRepo.UpdateAsync(taskInstance);
 
                 Logger.LogInformation(
-                    "Updated due date for task instance {TaskInstanceId} from {OldDueDate} to {NewDueDate}",
-                    context.TaskInstanceId, oldDueDate, dueDate);
+                    "Updated schedule for task instance {TaskInstanceId}. Start: {OldStart} -> {NewStart}, Due: {OldDue} -> {NewDue}",
+                    context.TaskInstanceId, 
+                    oldStartDate?.ToString("yyyy-MM-dd HH:mm") ?? "null",
+                    newStartDate?.ToString("yyyy-MM-dd HH:mm") ?? "null",
+                    oldDueDate?.ToString("yyyy-MM-dd HH:mm") ?? "null", 
+                    newDueDate?.ToString("yyyy-MM-dd HH:mm") ?? "null");
 
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
+                var resultData = new Dictionary<string, object>
                 {
+                    ["oldStartDate"] = oldStartDate,
+                    ["newStartDate"] = newStartDate,
                     ["oldDueDate"] = oldDueDate,
-                    ["newDueDate"] = dueDate,
+                    ["newDueDate"] = newDueDate,
+                    ["isOverdue"] = taskInstance.Schedule.IsOverdue,
+                    ["timeRemaining"] = taskInstance.Schedule.TimeRemaining,
                     ["updatedAt"] = Clock.Now
                 };
 

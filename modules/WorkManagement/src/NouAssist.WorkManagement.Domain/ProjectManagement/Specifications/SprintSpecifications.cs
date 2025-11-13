@@ -10,8 +10,8 @@ namespace NouAssist.WorkManagement.ProjectManagement.Specifications
     {
         public override Expression<Func<ProjectSprint, bool>> ToExpression() =>
             s => s.Status == SprintStatus.InProgress &&
-                 s.StartDate <= DateTime.UtcNow &&
-                 s.EndDate >= DateTime.UtcNow;
+                 s.Timeline.StartDate <= DateTime.UtcNow &&
+                 s.Timeline.EndDate >= DateTime.UtcNow;
     }
 
     public class SprintsByProjectSpecification : BaseSpecification<ProjectSprint>
@@ -31,5 +31,30 @@ namespace NouAssist.WorkManagement.ProjectManagement.Specifications
     {
         public override Expression<Func<ProjectSprint, bool>> ToExpression() =>
             s => s.Status == SprintStatus.Completed;
+    }
+
+    public class UpcomingSprintsSpecification : BaseSpecification<ProjectSprint>
+    {
+        public override Expression<Func<ProjectSprint, bool>> ToExpression() =>
+            s => s.Status == SprintStatus.Planned &&
+                 s.Timeline.StartDate > DateTime.UtcNow;
+    }
+
+    public class SprintsEndingInNextDaysSpecification : BaseSpecification<ProjectSprint>
+    {
+        private readonly int _days;
+
+        public SprintsEndingInNextDaysSpecification(int days)
+        {
+            _days = days;
+        }
+
+        public override Expression<Func<ProjectSprint, bool>> ToExpression()
+        {
+            var endDate = DateTime.UtcNow.AddDays(_days);
+            return s => s.Status == SprintStatus.InProgress &&
+                       s.Timeline.EndDate <= endDate &&
+                       s.Timeline.EndDate >= DateTime.UtcNow;
+        }
     }
 }

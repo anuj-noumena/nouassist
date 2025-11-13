@@ -41,18 +41,18 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
 
                 // Increment comment count - actual comment storage would be handled by a comment service
-                taskInstance.IncrementCommentsCount();
+                taskInstance.IncrementComments();
 
                 await taskInstanceRepo.UpdateAsync(taskInstance);
 
                 Logger.LogInformation(
                     "Added workflow comment to task instance {TaskInstanceId}. Total comments: {CommentCount}",
-                    context.TaskInstanceId, taskInstance.CommentsCount);
+                    context.TaskInstanceId, taskInstance.Collaboration.CommentCount);
 
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
+                var resultData = new Dictionary<string, object>
                 {
                     ["commentText"] = commentText,
-                    ["totalComments"] = taskInstance.CommentsCount,
+                    ["totalComments"] = taskInstance.Collaboration.CommentCount,
                     ["addedAt"] = Clock.Now,
                     ["addedBy"] = context.ExecutedBy
                 };

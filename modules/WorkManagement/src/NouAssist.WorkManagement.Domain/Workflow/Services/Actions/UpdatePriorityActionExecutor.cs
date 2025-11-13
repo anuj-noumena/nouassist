@@ -39,33 +39,40 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 var importance = Convert.ToDouble(importanceObj);
                 var urgency = Convert.ToDouble(urgencyObj);
 
-                // Validate range (0-10)
-                if (importance < 0 || importance > 10 || urgency < 0 || urgency > 10)
+                // Validate range (0.0-1.0 based on ImportanceUrgencyMatrix validation)
+                if (importance < 0.0 || importance > 1.0 || urgency < 0.0 || urgency > 1.0)
                 {
-                    return ActionExecutionResult.Failure("Importance and urgency must be between 0 and 10");
+                    return ActionExecutionResult.Failure("Importance and urgency must be between 0.0 and 1.0");
                 }
 
                 var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
 
-                var oldImportance = taskInstance.PriorityMatrix.Importance;
-                var oldUrgency = taskInstance.PriorityMatrix.Urgency;
+                var oldImportance = taskInstance.Priority.Importance;
+                var oldUrgency = taskInstance.Priority.Urgency;
+                var oldQuadrant = taskInstance.Priority.Quadrant;
 
                 taskInstance.UpdatePriority(importance, urgency);
 
                 await taskInstanceRepo.UpdateAsync(taskInstance);
 
                 Logger.LogInformation(
-                    "Updated priority for task instance {TaskInstanceId} from I:{OldImportance}/U:{OldUrgency} to I:{NewImportance}/U:{NewUrgency}",
-                    context.TaskInstanceId, oldImportance, oldUrgency, importance, urgency);
+                    "Updated priority for task instance {TaskInstanceId} from I:{OldImportance}/U:{OldUrgency} ({OldQuadrant}) to I:{NewImportance}/U:{NewUrgency} ({NewQuadrant})",
+                    context.TaskInstanceId, oldImportance, oldUrgency, oldQuadrant, 
+                    importance, urgency, taskInstance.Priority.Quadrant);
 
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
+                var resultData = new Dictionary<string, object>
                 {
                     ["oldImportance"] = oldImportance,
                     ["oldUrgency"] = oldUrgency,
+                    ["oldQuadrant"] = oldQuadrant.ToString(),
                     ["newImportance"] = importance,
                     ["newUrgency"] = urgency,
-                    ["quadrant"] = taskInstance.PriorityMatrix.Quadrant.ToString(),
+                    ["newQuadrant"] = taskInstance.Priority.Quadrant.ToString(),
+                    ["isHighPriority"] = taskInstance.Priority.IsHighPriority,
+                    ["shouldSchedule"] = taskInstance.Priority.ShouldSchedule,
+                    ["shouldDelegate"] = taskInstance.Priority.ShouldDelegate,
+                    ["shouldEliminate"] = taskInstance.Priority.ShouldEliminate,
                     ["updatedAt"] = Clock.Now
                 };
 

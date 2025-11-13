@@ -5,17 +5,32 @@ namespace NouAssist.WorkManagement.TaskManagement.Policies.impl;
 
 public class DefaultCompletionPolicy : ITaskCompletionPolicy
 {
-    public (bool CanComplete, string FailureReason) Check(TaskInstance taskInstance)
+    public PolicyResult CanComplete(TaskInstance taskInstance)
     {
+        // Check if task is already completed
         if (taskInstance.Schedule.IsCompleted)
         {
-            return (false, "Tasks:AlreadyCompleted");
+            return PolicyResult.Deny("Tasks:AlreadyCompleted");
         }
 
-        if (taskInstance.StepCompletions.Any(sc => !sc.IsDone))
+        // Check if task is blocked
+        if (taskInstance.IsBlocked)
         {
-            return (false, "Tasks:RequiredStepsNotCompleted");
+            return PolicyResult.Deny("Tasks:TaskIsBlocked");
         }
-        return (true, string.Empty);
+
+        // Check if all checklist items are completed
+        if (taskInstance.ChecklistItems.Any(ci => !ci.IsChecked))
+        {
+            return PolicyResult.Deny("Tasks:RequiredChecklistItemsNotCompleted");
+        }
+
+        // Check if task has blocking dependencies
+        if (taskInstance.HasBlockingDependencies)
+        {
+            return PolicyResult.Deny("Tasks:HasBlockingDependencies");
+        }
+
+        return PolicyResult.Allow();
     }
 }

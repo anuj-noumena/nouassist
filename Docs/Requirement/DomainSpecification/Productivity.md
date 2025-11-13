@@ -1,1508 +1,2125 @@
-# Domain-Driven Design Architecture Specification
-
-## Productivity Management Platform - Updated
-
------
+# Work Management System - Domain Model Documentation
 
 ## Table of Contents
+1. [System Overview](#system-overview)
+2. [Bounded Contexts](#bounded-contexts)
+3. [Approval Context](#approval-context)
+4. [Project Management Context](#project-management-context)
+5. [Task Management Context](#task-management-context)
+6. [Workflow Context](#workflow-context)
+7. [Domain Events](#domain-events)
+8. [Cross-Context Integration](#cross-context-integration)
 
-1. [Executive Summary](#1-executive-summary)
-2. [Domain Architecture Overview](#2-domain-architecture-overview)
-3. [Bounded Context Catalog](#3-bounded-context-catalog)
-4. [Bounded Context Specifications](#4-bounded-context-specifications)
-5. [Integration Patterns](#5-integration-patterns)
-6. [Implementation Guidelines](#6-implementation-guidelines)
-7. [Cross-Cutting Concerns](#7-cross-cutting-concerns)
-8. [Dependency Matrix](#8-dependency-matrix)
+---
 
------
+## System Overview
 
-## 1. Executive Summary
+The Work Management System is a comprehensive domain-driven design (DDD) implementation built on ABP Framework. It manages the complete lifecycle of tasks, projects, and approval workflows within an organization.
 
-### 1.1 System Purpose
+### Core Principles
+- **Multi-tenancy**: Full tenant isolation across all modules
+- **Audit Trail**: Complete tracking of all changes via FullAuditedEntity
+- **Event-Driven Architecture**: Domain events for cross-context communication
+- **Separation of Concerns**: Clear bounded contexts with well-defined interfaces
 
-A comprehensive productivity management platform integrating task management, project coordination, agile methodologies, requirements management, GTD workflow, time management, and AI-powered insights to optimize personal and team productivity across the complete software development lifecycle.
+---
 
-### 1.2 Architecture Approach
+## Bounded Contexts
 
-- **Pattern**: Domain-Driven Design with CQRS and Event Sourcing
-- **Framework**: ABP Framework (.NET)
-- **Integration**: Event-driven architecture with eventual consistency
-- **Scalability**: Microservices-ready bounded contexts
+### 1. Approval Context
+**Purpose**: Manages multi-step approval workflows with configurable rules and policies.
 
-### 1.3 Core Domain Classification
+### 2. Project Management Context
+**Purpose**: Handles project planning, execution, tracking, and success criteria management.
 
-- **Core Domains**: Task Management, Project Management, Work Management (GTD), Agile Management, Requirements Management
-- **Supporting Domains**: Work Items, WBS Management, Time Management, Notifications & Reminders
-- **Generic Domains**: Identity & Access Management, Analytics Platform, Learning System
+### 3. Task Management Context
+**Purpose**: Manages task blueprints and their runtime instances with full lifecycle support.
 
------
+### 4. Workflow Context
+**Purpose**: Provides flexible status workflows with transitions, conditions, and automated actions.
 
-## 2. Domain Architecture Overview
+---
 
-### 2.1 Context Map
+## Approval Context
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│ Task Management │────│Project Management│────│ WBS Management  │
-│     (Core)      │    │     (Core)      │    │  (Supporting)   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│Work Management  │    │ Requirements    │    │   Work Items    │
-│  GTD (Core)     │    │     (Core)      │    │  (Supporting)   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│Time Management  │    │Agile Management │    │Notifications &  │
-│  (Supporting)   │    │     (Core)      │    │   Reminders     │
-└─────────────────┘    └─────────────────┘    │  (Supporting)   │
-         │                       │            └─────────────────┘
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-        ┌────────────────────────┼────────────────────────┐
-        │                       │                        │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│      IAM        │    │Analytics Platform│    │Learning System  │
-│   (Generic)     │    │  (Generic)      │    │   (Generic)     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
+### Aggregates
 
-### 2.2 Strategic Design Principles
+#### **ApprovalWorkflow**
+**Root Entity**: `ApprovalWorkflow`
+**Responsibility**: Defines approval process structure and execution rules.
 
-1. **Bounded Context Autonomy**: Each context owns its data and business logic
-2. **Event-Driven Integration**: Loose coupling through domain events
-3. **Eventual Consistency**: Accept temporary inconsistency for scalability
-4. **Single Responsibility**: Each context has a clear, focused purpose
-5. **Anti-Corruption Layers**: Protect domain integrity at context boundaries
-
------
-
-## 3. Bounded Context Catalog
-
-| Context | Type | Priority | Complexity | Team Size |
-|---------|------|----------|------------|-----------|
-| Task Management | Core | Critical | High | 3-4 |
-| Project Management | Core | Critical | High | 3-4 |
-| Work Management (GTD) | Core | High | Medium | 2-3 |
-| Agile Management | Core | High | Medium | 2-3 |
-| Requirements Management | Core | High | Medium | 2-3 |
-| Work Items | Supporting | Medium | Medium | 2-3 |
-| WBS Management | Supporting | Medium | Medium | 2 |
-| Time Management | Supporting | High | High | 3-4 |
-| Notifications & Reminders | Supporting | Medium | Medium | 2 |
-| Analytics Platform | Generic | Medium | Medium | 2-3 |
-| Learning System | Generic | Low | High | 2-3 |
-| IAM | Generic | Critical | Medium | 2 |
-
------
-
-## 4. Bounded Context Specifications
-
-### 4.1 Task Management Bounded Context
-
-*[Previous Task Management specification remains largely the same, with the following updates]*
-
-#### 4.1.1 Context Overview
-
-**Responsibility**: Manages the complete lifecycle of individual tasks, including creation, modification, assignment, dependencies, and templating. Integrates with Work Items and WBS contexts for comprehensive work tracking.
-
-**Strategic Classification**: Core Domain - Strategic
-
-**New Integration Points**:
-- **Work Items BC**: Tasks can be derived from or linked to work items (user stories, bugs)
-- **WBS BC**: Tasks can be associated with WBS nodes for project structure
-- **Requirements BC**: Tasks can be traced to requirements for compliance
-
-#### 4.1.2 Enhanced Domain Model
-
-```mermaid
-classDiagram
-    class Task {
-        +TaskId id
-        +TaskTitle title
-        +TaskDescription description
-        +DueDate dueDate
-        +TaskPriority priority
-        +TaskStatus status
-        +WorkItemId? linkedWorkItemId
-        +WBSNodeId? linkedWBSNodeId
-        +RequirementId? linkedRequirementId
-        +ExecutiveFunctionSupport support
-        +addSubtask(Subtask)
-        +assignTo(UserId)
-        +updateStatus(TaskStatus)
-        +linkToWorkItem(WorkItemId)
-        +linkToWBSNode(WBSNodeId)
-    }
-
-    class TaskPriority {
-        <<ValueObject>>
-        +decimal urgency
-        +decimal importance
-        +calculateEisenhowerQuadrant()
-    }
-
-    class ExecutiveFunctionSupport {
-        <<ValueObject>>
-        +List~string~ breakdownSuggestions
-        +List~string~ executionPrompts
-        +string motivationalMessage
-    }
-
-    class TaskEstimate {
-        <<ValueObject>>
-        +ComplexityMethod method
-        +int storyPoints
-        +TimeSpan estimatedHours
-        +decimal confidenceLevel
-    }
-
-    Task *-- TaskPriority
-    Task *-- ExecutiveFunctionSupport
-    Task *-- TaskEstimate
-```
-
-#### 4.1.3 Updated Events & Integration
-
+**Key Properties**:
 ```csharp
-// New integration events
-public class TaskLinkedToWorkItem : DomainEvent
-{
-    public TaskId TaskId { get; }
-    public WorkItemId WorkItemId { get; }
-    public UserId LinkedBy { get; }
-    public DateTime LinkedAt { get; }
-}
-
-public class TaskLinkedToWBSNode : DomainEvent
-{
-    public TaskId TaskId { get; }
-    public WBSNodeId WBSNodeId { get; }
-    public ProjectId ProjectId { get; }
-    public UserId LinkedBy { get; }
-}
-
-public class TaskLinkedToRequirement : DomainEvent
-{
-    public TaskId TaskId { get; }
-    public RequirementId RequirementId { get; }
-    public UserId LinkedBy { get; }
-}
+- Name: string
+- WorkflowType: ApprovalWorkflowType
+- Strategy: ApprovalStrategy (Sequential, Parallel, Custom)
+- IsActive: bool
+- AllowReassign: bool
+- AllowDelegate: bool
+- TimeoutDays: int?
+- TimeoutAction: string
+- CustomFields: CustomFieldValues
 ```
 
------
+**Child Entities**:
+- `ApprovalStep`: Individual approval stages with requirements and approvers
 
-### 4.2 Agile Management Bounded Context
+**Invariants**:
+- Cannot activate without at least one step
+- Cannot modify active workflow
+- Step order indices must be unique and sequential
 
-#### 4.2.1 Context Overview
-
-**Responsibility**: Manages agile development practices including story mapping, sprint retrospectives, daily standups, and agile ceremonies. Provides insights and metrics for continuous improvement.
-
-**Strategic Classification**: Core Domain - Strategic
-
-**Subdomains**:
-- Story Mapping: User journey visualization and story prioritization
-- Sprint Ceremonies: Retrospectives, standups, and reviews
-- Agile Metrics: Velocity, burn-down, team performance
-
-#### 4.2.2 Core Domain Model
-
-```mermaid
-classDiagram
-    class StoryMapping {
-        +StoryMappingId id
-        +ProjectId projectId
-        +string title
-        +UserId facilitatorId
-        +DateTime sessionDate
-        +StoryMappingStatus status
-        +addActivity(StoryMappingActivity)
-        +addStoryToActivity(ActivityId, StoryMappingStory)
-        +prioritizeStories()
-    }
-
-    class StoryMappingActivity {
-        +ActivityId id
-        +string name
-        +string description
-        +int displayOrder
-        +ActivityType type
-    }
-
-    class StoryMappingStory {
-        +StoryId id
-        +ActivityId activityId
-        +string title
-        +string userStory
-        +Priority priority
-        +WorkItemId? linkedWorkItemId
-        +moveToActivity(ActivityId)
-    }
-
-    class SprintRetrospective {
-        +RetrospectiveId id
-        +ProjectId projectId
-        +SprintId? sprintId
-        +RetrospectiveType type
-        +RetrospectiveStatus status
-        +DateTime sessionDate
-        +RetrospectiveInsights insights
-        +addParticipant(UserId)
-        +addFeedback(RetrospectiveFeedback)
-        +generateInsights()
-    }
-
-    class DailyStandup {
-        +StandupId id
-        +ProjectId projectId
-        +DateTime meetingDate
-        +Duration plannedDuration
-        +addParticipant(StandupParticipant)
-        +addBlocker(StandupBlocker)
-        +complete()
-    }
-
-    class RetrospectiveInsights {
-        <<ValueObject>>
-        +List~string~ whatWentWell
-        +List~string~ whatToImprove
-        +List~ActionItem~ actionItems
-        +decimal teamMoodScore
-        +List~string~ keyThemes
-    }
-
-    class ActionItem {
-        <<ValueObject>>
-        +string description
-        +UserId assignedTo
-        +DateTime dueDate
-        +Priority priority
-        +ActionItemStatus status
-    }
-
-    StoryMapping "1" *-- "*" StoryMappingActivity
-    StoryMappingActivity "1" *-- "*" StoryMappingStory
-    SprintRetrospective "1" *-- "*" RetrospectiveFeedback
-    SprintRetrospective *-- RetrospectiveInsights
-    DailyStandup "1" *-- "*" StandupParticipant
-    RetrospectiveInsights *-- "*" ActionItem
-```
-
-#### 4.2.3 Aggregates Specification
-
-##### StoryMapping Aggregate Root
-
-**Purpose**: Manages user story mapping sessions and story prioritization
-
-**Entities**:
-- `StoryMappingActivity`: High-level user activities or journey steps
-- `StoryMappingStory`: Individual user stories mapped to activities
-
-**Value Objects**:
-- `StoryMappingId`: Unique identifier
-- `ProjectId`: Link to project context
-- `StoryMappingStatus`: Planning, InProgress, Completed
-- `ActivityType`: UserJourney, Epic, Feature
-
-**Business Invariants**:
-- Must have at least one activity before adding stories
-- Stories must be assigned to valid activities
-- Cannot complete mapping with unresolved story conflicts
-
-##### SprintRetrospective Aggregate Root
-
-**Purpose**: Manages sprint retrospective sessions and continuous improvement
-
-**Entities**:
-- `RetrospectiveParticipant`: Team members participating
-- `RetrospectiveFeedback`: Individual feedback items
-
-**Value Objects**:
-- `RetrospectiveType`: StartStopContinue, Mad_Sad_Glad, FourLs
-- `RetrospectiveInsights`: Generated insights and action items
-
-##### DailyStandup Aggregate Root
-
-**Purpose**: Manages daily standup meetings and team coordination
-
-**Entities**:
-- `StandupParticipant`: Team members with their updates
-- `StandupBlocker`: Impediments raised during standup
-
-#### 4.2.4 Events & Integration
-
+**Key Behaviors**:
 ```csharp
-public class StoryMappingCompleted : DomainEvent
-{
-    public StoryMappingId MappingId { get; }
-    public ProjectId ProjectId { get; }
-    public List<StoryMappingStory> PrioritizedStories { get; }
-    public DateTime CompletedAt { get; }
-}
-
-public class RetrospectiveInsightsGenerated : DomainEvent
-{
-    public RetrospectiveId RetrospectiveId { get; }
-    public ProjectId ProjectId { get; }
-    public RetrospectiveInsights Insights { get; }
-    public List<ActionItem> ActionItems { get; }
-}
-
-public class StandupBlockerRaised : DomainEvent
-{
-    public StandupId StandupId { get; }
-    public ProjectId ProjectId { get; }
-    public UserId RaisedBy { get; }
-    public string BlockerDescription { get; }
-    public Priority Severity { get; }
-}
+void Activate()
+void Deactivate()
+ApprovalStep AddStep(name, orderIndex, requirement, description)
+void RemoveStep(stepId)
+void ReorderSteps()
+ApprovalStep GetNextStep(currentStepId)
+bool IsLastStep(stepId)
 ```
 
------
+---
 
-### 4.3 Requirements Management Bounded Context
+#### **ApprovalRequest**
+**Root Entity**: `ApprovalRequest`
+**Responsibility**: Tracks approval request lifecycle and decision history.
 
-#### 4.3.1 Context Overview
-
-**Responsibility**: Manages the complete lifecycle of requirements including elicitation, analysis, specification, validation, and traceability throughout the project.
-
-**Strategic Classification**: Core Domain - Strategic
-
-**Subdomains**:
-- Requirements Core: Requirement definition and lifecycle
-- Traceability: Links between requirements and implementation
-- Validation: Acceptance criteria and verification
-
-#### 4.3.2 Core Domain Model
-
-```mermaid
-classDiagram
-    class Requirement {
-        +RequirementId id
-        +ProjectId projectId
-        +string title
-        +string description
-        +RequirementType type
-        +RequirementPriority priority
-        +RequirementStatus status
-        +AcceptanceCriteria acceptanceCriteria
-        +UserId stakeholderId
-        +addDependency(RequirementId)
-        +addTrace(EntityId, EntityType)
-        +updateStatus(RequirementStatus)
-        +validate()
-    }
-
-    class AcceptanceCriteria {
-        <<ValueObject>>
-        +List~string~ criteria
-        +string testableConditions
-        +string definitionOfDone
-        +validateCompleteness()
-    }
-
-    class RequirementDependency {
-        +RequirementId predecessorId
-        +RequirementId successorId
-        +DependencyType type
-        +string rationale
-    }
-
-    class RequirementTrace {
-        +RequirementId requirementId
-        +EntityId tracedToId
-        +EntityType tracedToType
-        +TraceType traceType
-        +DateTime establishedAt
-    }
-
-    Requirement *-- AcceptanceCriteria
-    Requirement "1" *-- "*" RequirementDependency
-    Requirement "1" *-- "*" RequirementTrace
-```
-
-#### 4.3.3 Aggregates Specification
-
-##### Requirement Aggregate Root
-
-**Purpose**: Central entity for managing requirement lifecycle and traceability
-
-**Entities**:
-- `RequirementDependency`: Dependencies between requirements
-- `RequirementTrace`: Traceability links to work items, tasks, tests
-
-**Value Objects**:
-- `RequirementId`: Unique identifier
-- `RequirementType`: Functional, NonFunctional, Business, Technical
-- `RequirementPriority`: Critical, High, Medium, Low
-- `RequirementStatus`: Draft, Approved, Implemented, Verified, Rejected
-- `AcceptanceCriteria`: Structured criteria for requirement acceptance
-
-**Business Invariants**:
-- Requirements must have acceptance criteria before approval
-- Cannot delete requirement with active traces
-- Dependencies cannot create circular references
-- Status transitions must follow defined workflow
-
-#### 4.3.4 Events & Integration
-
+**Key Properties**:
 ```csharp
-public class RequirementCreated : DomainEvent
-{
-    public RequirementId RequirementId { get; }
-    public ProjectId ProjectId { get; }
-    public string Title { get; }
-    public RequirementType Type { get; }
-    public UserId CreatedBy { get; }
-}
-
-public class RequirementTraceEstablished : DomainEvent
-{
-    public RequirementId RequirementId { get; }
-    public EntityId TracedToId { get; }
-    public EntityType TracedToType { get; }
-    public TraceType TraceType { get; }
-    public UserId EstablishedBy { get; }
-}
-
-public class RequirementStatusUpdated : DomainEvent
-{
-    public RequirementId RequirementId { get; }
-    public RequirementStatus PreviousStatus { get; }
-    public RequirementStatus NewStatus { get; }
-    public string? Reason { get; }
-    public UserId UpdatedBy { get; }
-}
+- WorkflowId: Guid
+- EntityType: string
+- EntityId: Guid
+- RequestedBy: Guid
+- Status: ApprovalStatus (Pending, InProgress, Approved, Rejected, Cancelled)
+- CurrentStepId: Guid?
+- Priority: int (0-10)
+- DueDate: DateTime?
+- CustomFields: CustomFieldValues
 ```
 
------
+**Child Entities**:
+- `ApprovalDecision`: Individual approval/rejection decisions
 
-### 4.4 Work Items Bounded Context
-
-#### 4.4.1 Context Overview
-
-**Responsibility**: Manages work items derived from requirements, including user stories, bugs, tasks, and epics. Provides detailed work tracking and progress management.
-
-**Strategic Classification**: Supporting Domain
-
-**Subdomains**:
-- Work Item Core: User stories, bugs, tasks, and epic management
-- Estimation: Story points, effort estimation, and capacity planning
-- Progress Tracking: Work completion and time logging
-
-#### 4.4.2 Core Domain Model
-
-```mermaid
-classDiagram
-    class Epic {
-        +EpicId id
-        +ProjectId projectId
-        +string title
-        +string description
-        +EpicStatus status
-        +BusinessValue businessValue
-        +addWorkItem(WorkItem)
-        +calculateProgress()
-        +estimateEffort()
-    }
-
-    class WorkItem {
-        +WorkItemId id
-        +EpicId? epicId
-        +RequirementId? requirementId
-        +string title
-        +string description
-        +WorkItemType type
-        +WorkItemStatus status
-        +WorkItemPriority priority
-        +EstimationDetails estimation
-        +UserId? assigneeId
-        +addTask(WorkItemTask)
-        +logTime(TimeLog)
-        +updateStatus(WorkItemStatus)
-    }
-
-    class EstimationDetails {
-        <<ValueObject>>
-        +int storyPoints
-        +TimeSpan estimatedHours
-        +TimeSpan actualHours
-        +decimal confidenceLevel
-        +EstimationMethod method
-        +calculateVelocity()
-    }
-
-    class WorkItemTask {
-        +TaskId taskId
-        +WorkItemId workItemId
-        +string title
-        +TaskStatus status
-        +TimeSpan estimatedHours
-        +TimeSpan actualHours
-        +UserId? assigneeId
-    }
-
-    class TimeLog {
-        +TimeLogId id
-        +WorkItemId workItemId
-        +UserId userId
-        +DateTime startTime
-        +DateTime endTime
-        +string description
-        +string category
-    }
-
-    Epic "1" *-- "*" WorkItem
-    WorkItem *-- EstimationDetails
-    WorkItem "1" *-- "*" WorkItemTask
-    WorkItem "1" *-- "*" TimeLog
+**State Machine**:
+```
+Pending → InProgress → [Approved | Rejected]
+         ↓
+      Cancelled
 ```
 
-#### 4.4.3 Events & Integration
-
+**Key Behaviors**:
 ```csharp
-public class WorkItemCreated : DomainEvent
-{
-    public WorkItemId WorkItemId { get; }
-    public EpicId? EpicId { get; }
-    public RequirementId? RequirementId { get; }
-    public WorkItemType Type { get; }
-    public string Title { get; }
-    public UserId CreatedBy { get; }
-}
-
-public class WorkItemCompleted : DomainEvent
-{
-    public WorkItemId WorkItemId { get; }
-    public EpicId? EpicId { get; }
-    public TimeSpan ActualEffort { get; }
-    public EstimationDetails FinalEstimation { get; }
-    public UserId CompletedBy { get; }
-    public DateTime CompletedAt { get; }
-}
-
-public class EpicCompleted : DomainEvent
-{
-    public EpicId EpicId { get; }
-    public ProjectId ProjectId { get; }
-    public List<WorkItemId> CompletedWorkItems { get; }
-    public BusinessValue DeliveredValue { get; }
-    public DateTime CompletedAt { get; }
-}
+void MoveToStep(stepId)
+void CompleteStep(stepId)
+void Approve(userId)
+void Reject(userId)
+void Cancel(cancelledBy, reason)
+void AddDecision(decision)
 ```
 
------
-
-### 4.5 WBS Management Bounded Context
-
-#### 4.5.1 Context Overview
-
-**Responsibility**: Manages hierarchical Work Breakdown Structure for projects, providing scope definition, cost tracking, and schedule management through decomposition of project work.
-
-**Strategic Classification**: Supporting Domain
-
-**Subdomains**:
-- WBS Core Structure: Hierarchical work organization
-- WBS Dictionary & Scope: Detailed work descriptions
-- WBS Roll-up & Analytics: Progress and cost aggregation
-
-#### 4.5.2 Core Domain Model
-
-```mermaid
-classDiagram
-    class WBSNodeAggregate {
-        +WBSNodeId nodeId
-        +ProjectId projectId
-        +WBSNodeId? parentNodeId
-        +WBSCode wbsCode
-        +string nodeTitle
-        +NodeType nodeType
-        +NodeStatus nodeStatus
-        +Budget budget
-        +Schedule schedule
-        +Progress progress
-        +UserId responsibleParty
-        +addChildNode(WBSNodeAggregate)
-        +updateBudget(Budget)
-        +updateProgress(Progress)
-        +rollupFromChildren()
-    }
-
-    class WBSDictionaryAggregate {
-        +WBSNodeId nodeId
-        +StatementOfWork statementOfWork
-        +AcceptanceCriteria acceptanceCriteria
-        +List~string~ assumptions
-        +List~string~ constraints
-        +List~DocumentLink~ technicalReferences
-        +updateStatement(StatementOfWork)
-        +addTechnicalReference(DocumentLink)
-    }
-
-    class Budget {
-        <<ValueObject>>
-        +decimal plannedValue
-        +decimal actualCost
-        +decimal earnedValue
-        +decimal estimateAtCompletion
-        +decimal budgetVariance
-        +decimal scheduleVariance
-        +calculateCPI()
-        +calculateSPI()
-    }
-
-    class Schedule {
-        <<ValueObject>>
-        +DateTime plannedStartDate
-        +DateTime plannedEndDate
-        +DateTime? actualStartDate
-        +DateTime? actualEndDate
-        +Duration plannedDuration
-        +Duration? actualDuration
-        +calculateScheduleVariance()
-    }
-
-    class Progress {
-        <<ValueObject>>
-        +decimal percentComplete
-        +CalculationMethod calculationMethod
-        +DateTime lastUpdated
-        +string progressNotes
-        +validateProgress()
-    }
-
-    WBSNodeAggregate *-- Budget
-    WBSNodeAggregate *-- Schedule
-    WBSNodeAggregate *-- Progress
-    WBSDictionaryAggregate --> WBSNodeAggregate : describes
-```
-
-#### 4.5.3 Business Rules & Policies
-
+**Derived State Properties**:
 ```csharp
-public class WBSHierarchyPolicy
-{
-    public bool CanSetParent(WBSNodeId nodeId, WBSNodeId? newParentId)
-    {
-        // Prevent circular references
-        if (newParentId.HasValue && WouldCreateCircularReference(nodeId, newParentId.Value))
-            return false;
-            
-        // Control accounts can only have work packages as children
-        var parentNode = GetNode(newParentId.Value);
-        if (parentNode.NodeType == NodeType.ControlAccount)
-        {
-            var childNode = GetNode(nodeId);
-            return childNode.NodeType == NodeType.WorkPackage;
-        }
-        
-        return true;
-    }
-    
-    public bool CanDelete(WBSNodeId nodeId)
-    {
-        var node = GetNode(nodeId);
-        return !HasChildNodes(nodeId) && !HasLinkedTasks(nodeId);
-    }
-}
-
-public class WBSRollupPolicy
-{
-    public Budget CalculateRollupBudget(WBSNodeId parentNodeId)
-    {
-        var childNodes = GetChildNodes(parentNodeId);
-        
-        return new Budget(
-            plannedValue: childNodes.Sum(n => n.Budget.PlannedValue),
-            actualCost: childNodes.Sum(n => n.Budget.ActualCost),
-            earnedValue: childNodes.Sum(n => n.Budget.EarnedValue),
-            estimateAtCompletion: childNodes.Sum(n => n.Budget.EstimateAtCompletion)
-        );
-    }
-}
+bool IsOverdue
+TimeSpan? TimeRemaining
+bool IsNearingDeadline(hoursThreshold)
 ```
 
-#### 4.5.4 Events & Integration
+---
 
+### Entities
+
+#### **ApprovalStep**
+**Parent**: ApprovalWorkflow
+**Responsibility**: Defines approval requirements and approver assignments.
+
+**Key Properties**:
 ```csharp
-public class WBSNodeCreated : DomainEvent
-{
-    public WBSNodeId NodeId { get; }
-    public ProjectId ProjectId { get; }
-    public WBSNodeId? ParentNodeId { get; }
-    public WBSCode WBSCode { get; }
-    public string NodeTitle { get; }
-    public NodeType NodeType { get; }
-    public UserId CreatedBy { get; }
-}
-
-public class WBSNodeProgressRecorded : DomainEvent
-{
-    public WBSNodeId NodeId { get; }
-    public ProjectId ProjectId { get; }
-    public Progress NewProgress { get; }
-    public Progress? PreviousProgress { get; }
-    public CalculationMethod Method { get; }
-    public UserId UpdatedBy { get; }
-}
-
-public class WBSNodeBudgetUpdated : DomainEvent
-{
-    public WBSNodeId NodeId { get; }
-    public ProjectId ProjectId { get; }
-    public Budget NewBudget { get; }
-    public Budget? PreviousBudget { get; }
-    public string? UpdateReason { get; }
-    public UserId UpdatedBy { get; }
-}
-
-// Critical integration handler
-public class TaskWBSIntegrationHandler : IEventHandler<TaskCompleted>
-{
-    public async Task Handle(TaskCompleted eventData)
-    {
-        if (eventData.WBSNodeId.HasValue)
-        {
-            // Update WBS node progress based on linked task completion
-            var wbsNode = await GetWBSNodeById(eventData.WBSNodeId.Value);
-            var linkedTasks = await GetTasksLinkedToWBSNode(eventData.WBSNodeId.Value);
-            
-            var completedTasks = linkedTasks.Count(t => t.Status == TaskStatus.Completed);
-            var progressPercentage = (decimal)completedTasks / linkedTasks.Count * 100;
-            
-            await UpdateWBSNodeProgress(eventData.WBSNodeId.Value, progressPercentage, CalculationMethod.TaskBased);
-        }
-    }
-}
+- Name: string
+- OrderIndex: int
+- Requirement: ApprovalRequirement (Any, All, Majority, Custom)
+- RequiredApprovals: int?
+- AllowSelfApproval: bool
+- TimeoutHours: int?
+- TimeoutAction: string
+- ApproverUserIds: IReadOnlyCollection<Guid>
+- ApproverRoleIds: IReadOnlyCollection<Guid>
+- ApproverTeamIds: IReadOnlyCollection<Guid>
+- Conditions: Dictionary<string, object>
 ```
 
------
-
-### 4.6 Notifications & Reminders Bounded Context
-
-#### 4.6.1 Context Overview
-
-**Responsibility**: Handles all user-facing notifications and scheduled reminders across the application, with intelligent delivery based on user preferences and context.
-
-**Strategic Classification**: Supporting Domain
-
-**Subdomains**:
-- Notification Core: Notification creation and delivery
-- Reminder Management: Scheduled and recurring reminders
-- Preference Management: User notification preferences
-
-#### 4.6.2 Core Domain Model
-
-```mermaid
-classDiagram
-    class Notification {
-        +NotificationId id
-        +NotificationType type
-        +UserId? targetUserId
-        +List~UserId~ targetUserIds
-        +NotificationContent content
-        +Priority priority
-        +DateTime createdAt
-        +dispatch(List~ChannelType~)
-        +markAsRead(UserId)
-    }
-
-    class Reminder {
-        +ReminderId id
-        +UserId userId
-        +EntityId targetEntityId
-        +EntityType targetEntityType
-        +ReminderSchedule schedule
-        +NotificationContent content
-        +ReminderStatus status
-        +schedule()
-        +trigger()
-        +reschedule(ReminderSchedule)
-    }
-
-    class NotificationContent {
-        <<ValueObject>>
-        +string title
-        +string body
-        +Dictionary~string,string~ metadata
-        +string? deepLinkUrl
-        +string? iconUrl
-        +List~NotificationAction~ actions
-    }
-
-    class ReminderSchedule {
-        <<ValueObject>>
-        +DateTime triggerTime
-        +string? cronExpression
-        +bool isRecurring
-        +DateTime? endDate
-        +TimeZone timeZone
-        +calculateNextTrigger()
-    }
-
-    class UserNotificationPreferences {
-        +UserId userId
-        +Dictionary~NotificationType,ChannelPreference~ preferences
-        +QuietHours quietHours
-        +bool enableDigestMode
-        +updatePreference(NotificationType, ChannelPreference)
-        +isQuietTime(DateTime)
-    }
-
-    Notification *-- NotificationContent
-    Reminder *-- ReminderSchedule
-    Reminder *-- NotificationContent
-```
-
-#### 4.6.3 Events & Integration
-
+**Key Behaviors**:
 ```csharp
-public class NotificationDispatched : DomainEvent
-{
-    public NotificationId NotificationId { get; }
-    public NotificationType Type { get; }
-    public List<UserId> TargetUsers { get; }
-    public List<ChannelType> DeliveryChannels { get; }
-    public DateTime DispatchedAt { get; }
-}
-
-public class ReminderTriggered : DomainEvent
-{
-    public ReminderId ReminderId { get; }
-    public UserId UserId { get; }
-    public EntityId TargetEntityId { get; }
-    public EntityType TargetEntityType { get; }
-    public DateTime TriggeredAt { get; }
-    public DateTime? NextTriggerTime { get; }
-}
-
-// Smart notification handler
-public class SmartNotificationHandler : 
-    IEventHandler<TaskAssigned>,
-    IEventHandler<ProjectStatusChanged>,
-    IEventHandler<RequirementStatusUpdated>
-{
-    public async Task Handle(TaskAssigned eventData)
-    {
-        var preferences = await GetUserNotificationPreferences(eventData.AssigneeId);
-        
-        if (preferences.ShouldNotify(NotificationType.TaskAssigned, DateTime.Now))
-        {
-            var notification = new Notification(
-                NotificationType.TaskAssigned,
-                eventData.AssigneeId,
-                new NotificationContent(
-                    title: $"New task assigned: {eventData.TaskTitle}",
-                    body: $"You have been assigned a new task with priority {eventData.Priority}",
-                    deepLinkUrl: $"/tasks/{eventData.TaskId}"
-                ),
-                Priority.Normal
-            );
-            
-            await notification.Dispatch(preferences.GetPreferredChannels(NotificationType.TaskAssigned));
-        }
-        
-        // Set up due date reminder if task has due date
-        if (eventData.DueDate.HasValue)
-        {
-            var reminder = new Reminder(
-                eventData.AssigneeId,
-                eventData.TaskId,
-                EntityType.Task,
-                new ReminderSchedule(eventData.DueDate.Value.AddHours(-24)), // 24h before due
-                new NotificationContent(
-                    title: "Task due tomorrow",
-                    body: $"Task '{eventData.TaskTitle}' is due tomorrow"
-                )
-            );
-            
-            await reminder.Schedule();
-        }
-    }
-}
+void AddApproverUser(userId)
+void AddApproverRole(roleId)
+void AddApproverTeam(teamId)
+bool HasApprovers()
+void ValidateApprovers()
+bool EvaluateConditions(context)
 ```
 
------
+---
 
-## 5. Integration Patterns
+#### **ApprovalDecision**
+**Parent**: ApprovalRequest
+**Responsibility**: Records individual approval decisions with full audit trail.
 
-### 5.1 Event-Driven Integration - Updated
-
-#### 5.1.1 Enhanced Event Flow Architecture
-
-```mermaid
-graph TD
-    A[Task BC] -->|TaskCreated, TaskCompleted| B[Event Bus]
-    C[Project BC] -->|ProjectCreated, ProjectStatusChanged| B
-    D[GTD BC] -->|ActionCompleted, ActionLinkedToEntity| B
-    E[Time BC] -->|FocusSessionCompleted, TimeEntryLogged| B
-    F[Agile BC] -->|StoryMappingCompleted, RetrospectiveInsightsGenerated| B
-    G[Requirements BC] -->|RequirementCreated, RequirementTraceEstablished| B
-    H[Work Items BC] -->|WorkItemCompleted, EpicCompleted| B
-    I[WBS BC] -->|WBSNodeProgressRecorded, WBSNodeBudgetUpdated| B
-    
-    B -->|TaskCompleted| J[WBS BC - Progress Handler]
-    B -->|RequirementCreated| K[Work Items BC - Story Creation Handler]
-    B -->|WorkItemCompleted| L[Task BC - Completion Handler]
-    B -->|StoryMappingCompleted| M[Work Items BC - Backlog Creation Handler]
-    B -->|WBSNodeProgressRecorded| N[Project BC - Progress Rollup Handler]
-    
-    B -->|All Events| O[Analytics BC]
-    B -->|Relevant Events| P[Notifications & Reminders BC]
-```
-
-### 5.2 Cross-Context Workflows
-
-#### 5.2.1 Requirement-to-Delivery Workflow
-
+**Key Properties**:
 ```csharp
-public class RequirementToDeliveryWorkflow : ISaga
-{
-    public async Task Handle(RequirementCreated @event)
-    {
-        // Step 1: Create work items from requirement
-        if (@event.Type == RequirementType.Functional)
-        {
-            await CreateUserStoryFromRequirement(@event.RequirementId);
-        }
-        
-        // Step 2: Add to story mapping if project has active mapping
-        var activeMapping = await GetActiveStoryMapping(@event.ProjectId);
-        if (activeMapping != null)
-        {
-            await AddRequirementToStoryMapping(activeMapping.Id, @event.RequirementId);
-        }
-    }
-    
-    public async Task Handle(WorkItemCreated @event)
-    {
-        // Step 3: Break down work item into tasks
-        if (@event.Type == WorkItemType.UserStory)
-        {
-            var tasks = await GenerateTasksFromWorkItem(@event.WorkItemId);
-            
-            // Step 4: Create WBS nodes if project uses WBS
-            var project = await GetProject(@event.ProjectId);
-            if (project.UsesWBS)
-            {
-                await CreateWBSNodesForTasks(tasks, @event.ProjectId);
-            }
-        }
-    }
-}
+- RequestId: Guid
+- StepId: Guid
+- ApproverId: Guid
+- Action: ApprovalAction (Approved, Rejected, Abstained)
+- Comments: string
+- Signature: string
+- DecidedAt: DateTime
+- IsDelegated: bool
+- DelegatedFrom: Guid?
 ```
 
-#### 5.2.2 Agile Sprint Planning Integration
-
+**Derived Properties**:
 ```csharp
-public class SprintPlanningIntegrationHandler : IEventHandler<StoryMappingCompleted>
-{
-    public async Task Handle(StoryMappingCompleted @event)
-    {
-        // Convert prioritized stories to work items
-        foreach (var story in @event.PrioritizedStories.Take(20)) // Top 20 stories
-        {
-            var workItem = await CreateWorkItemFromMappedStory(story);
-            
-            // Link back to story mapping
-            await LinkWorkItemToStoryMapping(workItem.Id, @event.MappingId);
-        }
-        
-        // Create sprint backlog
-        await CreateSprintBacklog(@event.ProjectId, @event.PrioritizedStories);
-        
-        // Generate sprint retrospective reminder
-        await ScheduleSprintRetrospectiveReminder(@event.ProjectId);
-    }
-}
+bool IsApproval
+bool IsRejection
+bool IsAbstained
 ```
 
-### 5.3 Anti-Corruption Layers - Enhanced
+---
 
-#### 5.3.1 Requirements-Work Items ACL
+### Domain Services
 
+#### **ApprovalWorkflowEngine**
+**Responsibility**: Orchestrates approval workflow execution and decision processing.
+
+**Key Operations**:
 ```csharp
-public class RequirementsWorkItemsIntegrationService
-{
-    public async Task<WorkItemId> CreateWorkItemFromRequirement(RequirementId requirementId)
-    {
-        var requirement = await _requirementsService.GetRequirementById(requirementId);
-        
-        // Translate requirement to work item
-        var workItemType = TranslateRequirementTypeToWorkItemType(requirement.Type);
-        var priority = TranslateRequirementPriorityToWorkItemPriority(requirement.Priority);
-        
-        var createWorkItemCommand = new CreateWorkItem
-        {
-            Title = requirement.Title,
-            Description = requirement.Description,
-            Type = workItemType,
-            Priority = priority,
-            RequirementId = requirementId,
-            AcceptanceCriteria = TranslateAcceptanceCriteria(requirement.AcceptanceCriteria)
-        };
-        
-        var workItemId = await _workItemsService.CreateWorkItem(createWorkItemCommand);
-        
-        // Establish traceability
-        await _requirementsService.AddTrace(requirementId, workItemId, EntityType.WorkItem);
-        
-        return workItemId;
-    }
-    
-    private WorkItemType TranslateRequirementTypeToWorkItemType(RequirementType reqType)
-    {
-        return reqType switch
-        {
-            RequirementType.Functional => WorkItemType.UserStory,
-            RequirementType.NonFunctional => WorkItemType.Task,
-            RequirementType.Business => WorkItemType.Epic,
-            RequirementType.Technical => WorkItemType.TechnicalStory,
-            _ => WorkItemType.Task
-        };
-    }
-}
+WorkflowExecutionResult ProcessDecision(
+    request, workflow, decision, userId)
+
+ApprovalRequest InitiateApprovalRequest(
+    workflow, entityType, entityId, requestedBy, tenantId, customFields)
 ```
 
------
+**Business Rules**:
+- Validates step completion based on approval requirements
+- Handles step-to-step transitions
+- Processes rejections (terminates workflow)
+- Emits workflow completion events
 
-## 6. Implementation Guidelines - Updated
+---
 
-### 6.1 Bounded Context Communication Patterns
+#### **ApprovalPermissionChecker**
+**Responsibility**: Validates user permissions for approval actions.
 
-#### 6.1.1 Synchronous Integration Services
-
+**Key Operations**:
 ```csharp
-// Requirements BC querying Work Items for traceability
-public interface IWorkItemsQueryService
-{
-    Task<List<WorkItemSummary>> GetWorkItemsForRequirement(RequirementId requirementId);
-    Task<WorkItemDetails?> GetWorkItemById(WorkItemId workItemId);
-    Task<bool> WorkItemExists(WorkItemId workItemId);
-}
+bool CanUserApproveStep(
+    userId, step, userRoleIds, userTeamIds, requestedBy)
 
-// Agile BC coordinating with multiple contexts
-public interface ISprintPlanningCoordinationService
-{
-    Task<List<WorkItemSummary>> GetBacklogFromStoryMapping(StoryMappingId mappingId);
-    Task<SprintCapacity> CalculateTeamCapacity(ProjectId projectId, DateTime sprintStart, DateTime sprintEnd);
-    Task<List<TaskSummary>> GetTasksForSprint(SprintId sprintId);
-}
-
-// WBS BC integrating with Task BC
-public interface ITaskWBSIntegrationService
-{
-    Task LinkTaskToWBSNode(TaskId taskId, WBSNodeId wbsNodeId);
-    Task<WBSNodeProgress> CalculateProgressFromTasks(WBSNodeId wbsNodeId);
-    Task<List<TaskId>> GetTasksLinkedToWBSNode(WBSNodeId wbsNodeId);
-}
+List<Guid> GetEligibleApprovers(
+    step, userRoles, userTeams)
 ```
 
-#### 6.1.2 Event-Driven Consistency Management
+**Permission Logic**:
+- Direct user assignment
+- Role-based assignment
+- Team-based assignment
+- Self-approval validation
 
+---
+
+### Value Objects
+
+#### **ApprovalActionDefinition**
 ```csharp
-public class CrossContextConsistencyHandler : 
-    IEventHandler<RequirementStatusUpdated>,
-    IEventHandler<WorkItemCompleted>,
-    IEventHandler<TaskCompleted>
-{
-    public async Task Handle(RequirementStatusUpdated @event)
-    {
-        if (@event.NewStatus == RequirementStatus.Implemented)
-        {
-            // Find all work items traced to this requirement
-            var workItems = await _workItemsQuery.GetWorkItemsForRequirement(@event.RequirementId);
-            
-            // Verify all work items are completed
-            if (workItems.All(wi => wi.Status == WorkItemStatus.Done))
-            {
-                // Requirement can be verified
-                await _requirementsService.UpdateRequirementStatus(
-                    @event.RequirementId, 
-                    RequirementStatus.Verified,
-                    "All traced work items completed"
-                );
-            }
-        }
-    }
-    
-    public async Task Handle(WorkItemCompleted @event)
-    {
-        // Update linked requirement progress
-        if (@event.RequirementId.HasValue)
-        {
-            await UpdateRequirementProgress(@event.RequirementId.Value);
-        }
-        
-        // Update epic progress if part of epic
-        if (@event.EpicId.HasValue)
-        {
-            await UpdateEpicProgress(@event.EpicId.Value);
-        }
-        
-        // Complete linked tasks if they exist
-        var linkedTasks = await _taskQuery.GetTasksForWorkItem(@event.WorkItemId);
-        foreach (var task in linkedTasks.Where(t => t.Status != TaskStatus.Completed))
-        {
-            await _taskService.CompleteTask(task.TaskId, @event.CompletedBy);
-        }
-    }
-}
+- ActionType: ApprovalActionType
+- Label: string
+- IsUserAction: bool
+- IsAutomatic: bool
+- ConditionKey: string
 ```
 
-### 6.2 Domain Service Coordination
+---
 
-#### 6.2.1 Multi-Context Domain Services
+### Specifications
 
+#### **PendingApprovalRequestsSpecification**
 ```csharp
-public class ProjectDeliveryOrchestrationService
-{
-    private readonly IRequirementsQueryService _requirementsQuery;
-    private readonly IWorkItemsQueryService _workItemsQuery;
-    private readonly ITaskQueryService _taskQuery;
-    private readonly IWBSQueryService _wbsQuery;
-    
-    public async Task<ProjectDeliveryStatus> CalculateProjectDeliveryStatus(ProjectId projectId)
-    {
-        // Get all requirements for project
-        var requirements = await _requirementsQuery.GetRequirementsForProject(projectId);
-        
-        // Calculate requirement completion
-        var completedRequirements = requirements.Count(r => r.Status == RequirementStatus.Verified);
-        var requirementProgress = (decimal)completedRequirements / requirements.Count * 100;
-        
-        // Get work item completion
-        var workItems = await _workItemsQuery.GetWorkItemsForProject(projectId);
-        var completedWorkItems = workItems.Count(wi => wi.Status == WorkItemStatus.Done);
-        var workItemProgress = (decimal)completedWorkItems / workItems.Count * 100;
-        
-        // Get task completion
-        var tasks = await _taskQuery.GetTasksForProject(projectId);
-        var completedTasks = tasks.Count(t => t.Status == TaskStatus.Completed);
-        var taskProgress = (decimal)completedTasks / tasks.Count * 100;
-        
-        // Get WBS progress if project uses WBS
-        decimal? wbsProgress = null;
-        if (await _wbsQuery.ProjectUsesWBS(projectId))
-        {
-            var rootNode = await _wbsQuery.GetRootNodeForProject(projectId);
-            wbsProgress = rootNode?.Progress.PercentComplete;
-        }
-        
-        return new ProjectDeliveryStatus
-        {
-            ProjectId = projectId,
-            RequirementProgress = requirementProgress,
-            WorkItemProgress = workItemProgress,
-            TaskProgress = taskProgress,
-            WBSProgress = wbsProgress,
-            OverallProgress = CalculateOverallProgress(requirementProgress, workItemProgress, taskProgress, wbsProgress),
-            LastUpdated = DateTime.UtcNow
-        };
-    }
-    
-    private decimal CalculateOverallProgress(decimal reqProgress, decimal wiProgress, decimal taskProgress, decimal? wbsProgress)
-    {
-        var weights = new List<(decimal progress, decimal weight)>
-        {
-            (reqProgress, 0.3m),    // Requirements: 30%
-            (wiProgress, 0.4m),     // Work Items: 40%
-            (taskProgress, 0.3m)    // Tasks: 30%
-        };
-        
-        // Adjust weights if WBS is available
-        if (wbsProgress.HasValue)
-        {
-            weights = new List<(decimal progress, decimal weight)>
-            {
-                (reqProgress, 0.25m),
-                (wiProgress, 0.25m),
-                (taskProgress, 0.25m),
-                (wbsProgress.Value, 0.25m)
-            };
-        }
-        
-        return weights.Sum(w => w.progress * w.weight);
-    }
-}
+Status == Pending || Status == InProgress
 ```
 
------
-
-## 7. Cross-Cutting Concerns - Updated
-
-### 7.1 Distributed Event Management
-
-#### 7.1.1 Event Ordering and Consistency
-
+#### **OverdueApprovalRequestsSpecification**
 ```csharp
-public class EventOrderingService
-{
-    private readonly IEventStore _eventStore;
-    private readonly IEventBus _eventBus;
-    
-    public async Task PublishOrderedEvents(List<DomainEvent> events, string streamId)
-    {
-        // Store events in order
-        await _eventStore.AppendToStream(streamId, events);
-        
-        // Publish with sequence numbers
-        for (int i = 0; i < events.Count; i++)
-        {
-            events[i].SequenceNumber = i + 1;
-            events[i].StreamId = streamId;
-            
-            await _eventBus.PublishAsync(events[i]);
-        }
-    }
-}
-
-public class OrderedEventHandler<T> : IEventHandler<T> where T : DomainEvent
-{
-    private readonly Dictionary<string, long> _lastProcessedSequence = new();
-    
-    public async Task Handle(T @event)
-    {
-        // Ensure events are processed in order per stream
-        if (@event.StreamId != null)
-        {
-            var lastSequence = _lastProcessedSequence.GetValueOrDefault(@event.StreamId, 0);
-            
-            if (@event.SequenceNumber <= lastSequence)
-            {
-                // Already processed or out of order - ignore
-                return;
-            }
-            
-            if (@event.SequenceNumber > lastSequence + 1)
-            {
-                // Missing events - defer processing
-                await DeferProcessing(@event);
-                return;
-            }
-            
-            _lastProcessedSequence[@event.StreamId] = @event.SequenceNumber;
-        }
-        
-        await ProcessEvent(@event);
-    }
-    
-    protected abstract Task ProcessEvent(T @event);
-    protected abstract Task DeferProcessing(T @event);
-}
+DueDate < Now && (Status == Pending || Status == InProgress)
 ```
 
-#### 7.1.2 Event Saga Coordination
-
+#### **ApprovalRequestsByWorkflowSpecification**
 ```csharp
-public class ProjectSetupSaga : ISaga<ProjectCreated>
-{
-    public async Task Handle(ProjectCreated @event)
-    {
-        var sagaId = Guid.NewGuid();
-        var sagaData = new ProjectSetupSagaData
-        {
-            SagaId = sagaId,
-            ProjectId = @event.ProjectId,
-            ProjectType = @event.ProjectType,
-            UseAgile = @event.UseAgile,
-            UseWBS = @event.UseWBS,
-            UseRequirements = @event.UseRequirements,
-            CompletedSteps = new List<string>()
-        };
-        
-        await SaveSagaData(sagaData);
-        
-        // Step 1: Set up requirements management if needed
-        if (@event.UseRequirements)
-        {
-            await SendCommand(new InitializeProjectRequirements(@event.ProjectId));
-        }
-        else
-        {
-            sagaData.CompletedSteps.Add("Requirements");
-        }
-        
-        // Step 2: Set up agile artifacts if needed
-        if (@event.UseAgile)
-        {
-            await SendCommand(new SetupAgileProject(@event.ProjectId));
-        }
-        else
-        {
-            sagaData.CompletedSteps.Add("Agile");
-        }
-        
-        // Step 3: Set up WBS if needed
-        if (@event.UseWBS)
-        {
-            await SendCommand(new CreateProjectWBS(@event.ProjectId));
-        }
-        else
-        {
-            sagaData.CompletedSteps.Add("WBS");
-        }
-        
-        await CheckSagaCompletion(sagaId);
-    }
-    
-    public async Task Handle(RequirementsInitialized @event)
-    {
-        var sagaData = await GetSagaDataByProjectId(@event.ProjectId);
-        sagaData.CompletedSteps.Add("Requirements");
-        await SaveSagaData(sagaData);
-        await CheckSagaCompletion(sagaData.SagaId);
-    }
-    
-    // Similar handlers for AgileProjectSetupCompleted, ProjectWBSCreated
-    
-    private async Task CheckSagaCompletion(Guid sagaId)
-    {
-        var sagaData = await GetSagaData(sagaId);
-        var requiredSteps = new[] { "Requirements", "Agile", "WBS" };
-        
-        if (requiredSteps.All(step => sagaData.CompletedSteps.Contains(step)))
-        {
-            await SendCommand(new CompleteProjectSetup(sagaData.ProjectId));
-            await CompleteSaga(sagaId);
-        }
-    }
-}
+WorkflowId == {workflowId}
 ```
 
-### 7.2 Multi-Context Query Optimization
+---
 
-#### 7.2.1 Cross-Context Read Models
+## Project Management Context
 
+### Aggregates
+
+#### **Project**
+**Root Entity**: `Project`
+**Responsibility**: Central project planning and execution management.
+
+**Key Properties**:
 ```csharp
-public class ProjectDashboardReadModel
-{
-    public ProjectId ProjectId { get; set; }
-    public string ProjectName { get; set; }
-    public ProjectStatus Status { get; set; }
-    
-    // Requirements summary
-    public int TotalRequirements { get; set; }
-    public int CompletedRequirements { get; set; }
-    public decimal RequirementProgress => TotalRequirements > 0 ? (decimal)CompletedRequirements / TotalRequirements * 100 : 0;
-    
-    // Work items summary
-    public int TotalWorkItems { get; set; }
-    public int CompletedWorkItems { get; set; }
-    public decimal WorkItemProgress => TotalWorkItems > 0 ? (decimal)CompletedWorkItems / TotalWorkItems * 100 : 0;
-    
-    // Task summary
-    public int TotalTasks { get; set; }
-    public int CompletedTasks { get; set; }
-    public decimal TaskProgress => TotalTasks > 0 ? (decimal)CompletedTasks / TotalTasks * 100 : 0;
-    
-    // WBS summary (optional)
-    public decimal? WBSProgress { get; set; }
-    public decimal? BudgetUtilization { get; set; }
-    
-    // Agile metrics (optional)
-    public decimal? SprintVelocity { get; set; }
-    public int? ActiveSprintId { get; set; }
-    
-    public DateTime LastUpdated { get; set; }
-}
+- OwnerId: Guid
+- Title: string
+- Status: ProjectStatus (Planned, Active, OnHold, Completed, Cancelled)
+- IsArchived: bool
+- Importance: double (0-1)
+- Urgency: double (0-1)
+- EisenhowerQuadrant: enum
+- StartDate: DateTime?
+- DueDate: DateTime?
+- Progress: double (0-100)
+- ExpectedOutcome: string
+```
 
-public class ProjectDashboardProjection : 
-    IEventHandler<RequirementStatusUpdated>,
-    IEventHandler<WorkItemCompleted>,
-    IEventHandler<TaskCompleted>,
-    IEventHandler<WBSNodeProgressRecorded>
-{
-    private readonly IProjectDashboardRepository _repository;
-    
-    public async Task Handle(RequirementStatusUpdated @event)
-    {
-        var dashboard = await _repository.GetByProjectId(@event.ProjectId);
-        
-        if (@event.NewStatus == RequirementStatus.Verified && 
-            @event.PreviousStatus != RequirementStatus.Verified)
-        {
-            dashboard.CompletedRequirements++;
-        }
-        else if (@event.PreviousStatus == RequirementStatus.Verified && 
-                 @event.NewStatus != RequirementStatus.Verified)
-        {
-            dashboard.CompletedRequirements--;
-        }
-        
-        dashboard.LastUpdated = DateTime.UtcNow;
-        await _repository.UpdateAsync(dashboard);
-    }
-    
-    // Similar handlers for other events...
+**Relationships**:
+```csharp
+- ParentProjectId: Guid?
+- GoalId: Guid?
+- WorkflowSchemeId: Guid?
+- SuccessCriterionIds: IReadOnlyCollection<Guid>
+- CollaboratingTeamIds: IReadOnlyCollection<Guid>
+```
+
+**State Machine**:
+```
+Planned → Active → [Completed | Cancelled]
+         ↓    ↑
+      OnHold──┘
+```
+
+**Key Behaviors**:
+```csharp
+void SetPriority(importance, urgency)
+void Start()
+void Complete(completedBy)
+void Cancel()
+void Pause()
+void Archive()
+void UpdateProgress(newProgress)
+void AddSuccessCriterion(criterionId)
+void MarkSuccessCriterionMet(index, metBy)
+```
+
+**Derived Properties**:
+```csharp
+bool IsOverdue
+TimeSpan? TimeRemaining
+ProjectHealth Health  // Healthy, AtRisk, Critical, Completed, Cancelled
+bool AllSuccessCriteriaMet
+double SuccessCriteriaCompletionRate
+```
+
+**Health Calculation Factors**:
+1. Progress vs. time elapsed
+2. Success criteria completion
+3. Overdue status
+
+---
+
+#### **ProjectSprint**
+**Root Entity**: `ProjectSprint`
+**Responsibility**: Manages time-boxed development iterations.
+
+**Key Properties**:
+```csharp
+- Name: string
+- Goal: string
+- StartDate: DateTime
+- EndDate: DateTime
+- PlannedStoryPoints: int
+- CompletedStoryPoints: int
+- VelocityEstimate: int
+- ActualVelocity: int
+- Status: SprintStatus (Planned, InProgress, Completed)
+- RetrospectiveNotes: string
+```
+
+**Invariants**:
+- Duration must be 7-30 days
+- EndDate must be after StartDate
+- CompletedStoryPoints cannot exceed PlannedStoryPoints
+
+**Key Behaviors**:
+```csharp
+void SetDates(startDate, endDate)
+void Start()
+void Complete(completedBy, retrospectiveNotes)
+void UpdateStoryPoints(planned, completed)
+```
+
+**Derived Properties**:
+```csharp
+int DurationInDays
+bool IsActive
+TimeSpan? TimeRemaining
+double CompletionRate
+double VelocityAccuracy
+SprintHealth Health  // OnTrack, AtRisk, BehindSchedule, Completed
+```
+
+---
+
+### Entities
+
+#### **ProjectDependency**
+**Parent**: Project
+**Responsibility**: Manages project-level dependencies and blocking relationships.
+
+**Key Properties**:
+```csharp
+- ProjectId: Guid
+- DependsOnProjectId: Guid
+- DependencyType: ProjectDependencyType
+- LagDays: int
+- IsBlocking: bool
+- Status: ProjectDependencyStatus (Active, Resolved, Blocked, Obsolete)
+- ExpectedResolutionDate: DateTime?
+- ApprovalRequestId: Guid?
+```
+
+**Dependency Types**:
+- FinishToStart
+- StartToStart
+- FinishToFinish
+- StartToFinish
+- Deliverable
+- Resource
+- Approval
+- Information
+
+**Key Behaviors**:
+```csharp
+void Resolve(resolvedBy)
+void MarkAsObsolete()
+void Block()
+void Reactivate()
+```
+
+**Invariants**:
+- Project cannot depend on itself
+- Circular dependencies are validated
+
+---
+
+#### **ProjectSuccessCriterion**
+**Parent**: Project
+**Responsibility**: Tracks measurable project success indicators.
+
+**Key Properties**:
+```csharp
+- Title: string
+- CriterionType: SuccessCriterionType (Quantitative, Qualitative, Binary)
+- MeasurementMethod: string
+- TargetValue: string
+- ActualValue: string
+- TargetNumeric: double?
+- ActualNumeric: double?
+- Weight: double (0-10)
+- IsMet: bool
+- TargetDate: DateTime?
+```
+
+**Key Behaviors**:
+```csharp
+void SetWeight(weight)
+void MarkAsMet(metBy, notes, evidenceUrl)
+void UnmarkAsMet()
+void UpdateActualValue(actualValue, actualNumeric)
+```
+
+**Derived Properties**:
+```csharp
+double? AchievementPercentage
+bool IsOverdue
+bool HasEvidence
+```
+
+---
+
+#### **ProjectRequirement**
+**Parent**: Project
+**Responsibility**: Manages project requirements with approval workflow.
+
+**Key Properties**:
+```csharp
+- Title: string
+- RequirementType: ProjectRequirementType
+- Status: ProjectRequirementStatus 
+  (Proposed, Approved, InProgress, Implemented, Verified, Rejected)
+- Priority: PriorityLevel
+- AcceptanceCriteria: string
+- StoryPoints: int?
+- BusinessValue: int?
+```
+
+**State Machine**:
+```
+Proposed → Approved → InProgress → Implemented → Verified
+   ↓
+Rejected
+```
+
+---
+
+#### **ProjectEvent**
+**Parent**: Project
+**Responsibility**: Tracks project timeline events and milestones.
+
+**Key Properties**:
+```csharp
+- Title: string
+- EventType: ProjectEventType
+- EventDate: DateTime
+- EndDate: DateTime?
+- IsAllDay: bool
+- Location: string
+- IsCompleted: bool
+```
+
+---
+
+### Domain Services
+
+#### **ProjectHealthCalculationService**
+**Responsibility**: Computes comprehensive project health metrics.
+
+**Output**: `ProjectHealthReport`
+```csharp
+- BaseHealth: ProjectHealth
+- OverallHealth: ProjectHealth
+- BlockedDependenciesCount: int
+- HasCriticalBlockers: bool
+- Recommendations: List<string>
+```
+
+---
+
+#### **ProjectDependencyManagementService**
+**Responsibility**: Validates and manages project dependency graphs.
+
+**Key Operations**:
+```csharp
+DependencyValidationResult ValidateDependencyChain(
+    projectId, dependsOnProjectId, allDependencies)
+
+CriticalPathResult CalculateCriticalPath(
+    dependencies, projectDurations)
+```
+
+**Algorithms**:
+- Circular dependency detection
+- Topological sorting
+- Critical path calculation
+- Earliest start date computation
+
+---
+
+#### **SprintPlanningService**
+**Responsibility**: Assists in sprint planning and capacity management.
+
+**Key Operations**:
+```csharp
+SprintPlanResult PlanSprint(
+    project, startDate, endDate, availableCapacity, backlogItems)
+
+int CalculateTeamVelocity(
+    completedSprints, lastNSprints)
+```
+
+---
+
+### Value Objects
+
+#### **SprintMetrics**
+```csharp
+- PlannedStoryPoints: int
+- CompletedStoryPoints: int
+- VelocityEstimate: int
+- ActualVelocity: int
+- CompletionRate: double
+- VelocityAccuracy: double
+```
+
+#### **DateRange**
+```csharp
+- StartDate: DateTime
+- EndDate: DateTime
+- DurationInDays: int
+- IsActive: bool
+- TimeRemaining: TimeSpan?
+```
+
+---
+
+## Task Management Context
+
+### Aggregates
+
+#### **Task** (Blueprint)
+**Root Entity**: `Task`
+**Responsibility**: Template definition for task instances.
+
+**Key Properties**:
+```csharp
+- OwnerId: Guid
+- Title: string
+- ProjectId: Guid?
+- Description: string
+- DefaultImportance: double
+- DefaultUrgency: double
+- EstimateMinutes: int?
+- DefaultDueDate: DateTime?
+- IsRecurring: bool
+- RecurrenceRule: RecurrenceRule
+- IsActive: bool
+- Version: int
+```
+
+**Child Collections**:
+- `ActionSteps`: List<TaskActionStep> (max 50)
+- `AcceptanceCriteria`: List<AcceptanceCriterion> (max 20)
+
+**Key Behaviors**:
+```csharp
+void AddActionStep(title, notes, isRequired, sequence)
+void RemoveActionStep(stepId)
+void ReorderActionSteps(orderedStepIds)
+void AddAcceptanceCriterion(description, priority, given, when, then)
+void MakeRecurring(recurrenceRule)
+void RemoveRecurrence()
+void Activate()
+void Deactivate()
+void SoftDelete()
+```
+
+**Invariants**:
+- Maximum 50 action steps
+- Maximum 20 acceptance criteria
+- Title required and unique within project
+- Importance and urgency between 0-1
+
+---
+
+#### **TaskInstance** (Runtime)
+**Root Entity**: `TaskInstance`
+**Responsibility**: Executable instance with full state tracking.
+
+**Key Value Objects**:
+```csharp
+- Progress: TaskProgress
+- Schedule: TaskSchedule
+- PriorityMatrix: ImportanceUrgencyMatrix
+- DelegationInfo: DelegationInfo?
+- Hierarchy: TaskHierarchy
+- Discussion: TaskDiscussion
+- BlockingInfo: BlockingInfo
+- FlagInfo: FlagInfo
+- Resolution: ResolutionInfo
+- TimeTracking: TimeTrackingInfo
+- Approval: TaskApproval
+```
+
+**Child Entities**:
+- `StepCompletions`: List<TaskActionStepCompletion>
+- `CriterionCompletions`: List<AcceptanceCriterionCompletion>
+- `Dependencies`: List<TaskDependency>
+- `History`: List<TaskHistoryEntry>
+
+**State Machine** (via WorkflowStatusCategory):
+```
+Todo → InProgress → Done
+  ↓         ↓         ↑
+Blocked  Cancelled  (can reopen)
+```
+
+**Key Behaviors**:
+```csharp
+// Lifecycle
+void Start(startPolicy, startedBy)
+void Complete(completedBy, completionPolicy, resolution, note)
+void Cancel(reason)
+void ResetStatus()
+
+// Assignment
+void Assign(assigneeId, assignedBy)
+void Unassign()
+
+// Delegation
+void Delegate(delegatedBy, delegatedTo, note)
+void AcceptDelegation(acceptedBy, responseNote)
+void DeclineDelegation(declinedBy, responseNote)
+void RevokeDelegation()
+
+// Blocking
+void Block(reason)
+void BlockWaitingForUser(userName, context)
+void Unblock()
+
+// Progress Tracking
+void CompleteStep(stepId, completedBy)
+void UncompleteStep(stepId)
+void MarkCriterionAsMet(criterionId, metBy)
+
+// Collaboration
+void AddWatcher(userId)
+void RemoveWatcher(userId)
+void IncrementCommentsCount()
+void IncrementAttachmentsCount()
+void LockDiscussion()
+void UnlockDiscussion()
+
+// Dependencies
+void AddDependency(dependsOnTaskId, type, lagMinutes, isBlocking)
+void RemoveDependency(dependsOnTaskId)
+
+// Metadata
+void MarkAsNextAction()
+void UpdatePriority(importance, urgency)
+void UpdateFlag(isFlagged, reason)
+void UpdateWorkflowStatus(statusId)
+void UpdateCustomFieldValue(fieldName, value, updatedBy)
+```
+
+**Derived Properties**:
+```csharp
+bool IsDelegated
+bool IsWaitingOnDelegation
+bool IsOverdue
+TimeSpan? TimeRemaining
+```
+
+---
+
+#### **TaskType**
+**Root Entity**: `TaskType`
+**Responsibility**: Categorizes tasks with custom field schemas.
+
+**Key Properties**:
+```csharp
+- Name: string
+- Description: string
+- Color: string (hex format)
+- IsActive: bool
+- CustomFields: IReadOnlyCollection<TaskTypeCustomField>
+```
+
+**Key Behaviors**:
+```csharp
+void AddCustomField(definitionId, isRequired, defaultValue, displayOrder)
+void RemoveCustomField(definitionId)
+void ReorderCustomFields(orderedFieldIds)
+```
+
+---
+
+### Entities
+
+#### **TaskActionStep**
+**Parent**: Task
+**Responsibility**: Individual step in task execution checklist.
+
+**Key Properties**:
+```csharp
+- TaskId: Guid
+- Title: string
+- Notes: string
+- IsRequired: bool
+- Sequence: int
+```
+
+---
+
+#### **AcceptanceCriterion**
+**Parent**: Task
+**Responsibility**: Defines success conditions using Given-When-Then format.
+
+**Key Properties**:
+```csharp
+- Description: string
+- Priority: int?
+- GivenContext: string
+- WhenAction: string
+- ThenOutcome: string
+- TestScenario: string
+```
+
+**Behaviors**:
+```csharp
+bool HasGivenWhenThen
+string GetFormattedGWT()
+```
+
+---
+
+#### **TaskDependency**
+**Composite Entity**: Links tasks/instances
+**Responsibility**: Manages task execution dependencies.
+
+**Key Properties**:
+```csharp
+- TaskId/TaskInstanceId: Guid?
+- DependsOnTaskId/DependsOnTaskInstanceId: Guid?
+- DependencyType: DependencyType
+- LagMinutes: int
+- IsBlocking: bool
+```
+
+**Dependency Types**:
+- FinishToStart
+- StartToStart
+- FinishToFinish
+- StartToFinish
+
+---
+
+#### **TaskHistoryEntry**
+**Parent**: TaskInstance
+**Responsibility**: Audit trail of all task changes.
+
+**Key Properties**:
+```csharp
+- ChangeType: TaskHistoryChangeType
+- ChangedBy: Guid?
+- ChangedAt: DateTime
+- Description: string
+- FieldName: string
+- OldValue: string
+- NewValue: string
+- Metadata: string (JSON)
+```
+
+**Change Types** (enum):
+- Created, Started, Completed, Cancelled
+- Assigned, Unassigned, Reassigned
+- Delegated, DelegationAccepted, DelegationDeclined, DelegationRevoked
+- StatusChanged, PriorityChanged
+- StepCompleted, CriterionMet
+- Blocked, Unblocked
+- Flagged, Unflagged
+- And many more...
+
+---
+
+### Domain Services
+
+#### **TaskInstanceManager**
+**Responsibility**: High-level task instance operations and coordination.
+
+**Key Operations**:
+```csharp
+TaskInstance CreateFromBlueprintAsync(
+    taskId, projectId, workflowStatusId, ownerId, assigneeId, plannedDueDate)
+
+TaskInstance StartAsync(taskInstanceId, startedBy)
+
+TaskInstance CompleteAsync(
+    taskInstanceId, completedBy, resolution, resolutionNote)
+
+TaskInstance DelegateAsync(
+    taskInstanceId, fromUserId, toUserId, dueBy, followupRequired)
+```
+
+---
+
+#### **TaskInstanceProcessingService**
+**Responsibility**: Coordinates complex task processing workflows.
+
+**Key Operations**:
+```csharp
+TaskInstanceProcessingResult ProcessTaskCompletion(
+    taskInstance, taskBlueprint, completedBy, resolution, resolutionNote)
+
+TaskInstance CreateTaskInstanceFromBlueprint(
+    taskBlueprint, projectId, workflowStatusId, ownerId, assigneeId, plannedDueDate)
+
+void ProcessRecurringTaskOccurrence(
+    taskBlueprint, projectId, workflowStatusId, occurrenceDate)
+```
+
+**Validation Logic**:
+- Validates completion prerequisites
+- Checks required step completion
+- Enforces blocking conditions
+- Applies completion policies
+
+---
+
+#### **TaskDependencyService**
+**Responsibility**: Manages task dependency chains and validation.
+
+**Key Operations**:
+```csharp
+bool CanStartTask(taskInstance, dependentInstances, dependencies)
+
+DateTime? CalculateEarliestStartDate(
+    taskInstance, dependentInstances, dependencies)
+
+List<Guid> DetectCircularDependencies(taskId, allDependencies)
+```
+
+**Dependency Evaluation**:
+- FinishToStart: predecessor must be completed
+- StartToStart: predecessor must be started
+- Lag time calculation
+- Blocking dependency enforcement
+
+---
+
+#### **TaskTransitionOrchestrator**
+**Responsibility**: Integrates task state changes with workflow system.
+
+**Key Operations**:
+```csharp
+TaskTransitionResult TransitionTaskAsync(
+    taskInstanceId, transitionId, currentUserId, userRoles, comment)
+
+List<AvailableTransition> GetAvailableTransitionsAsync(
+    taskInstanceId, currentUserId, userRoles)
+```
+
+**Orchestration Flow**:
+1. Load task instance and workflow
+2. Validate transition permissions
+3. Evaluate transition conditions
+4. Execute workflow actions
+5. Update task status
+6. Publish transition events
+
+---
+
+#### **TaskRecurrenceService**
+**Responsibility**: Handles recurring task scheduling and occurrence calculation.
+
+**Key Operations**:
+```csharp
+List<DateTime> CalculateNextOccurrences(
+    recurrenceRule, startDate, maxOccurrences)
+
+bool ShouldCreateOccurrence(
+    taskBlueprint, checkDate, existingInstances)
+```
+
+---
+
+### Policies
+
+#### **ITaskStartPolicy**
+```csharp
+(bool CanStart, string FailureReason) Check(TaskInstance)
+```
+
+**Implementations**:
+- `DefaultTaskStartPolicy`: Validates not already started, not blocked
+
+---
+
+#### **ITaskCompletionPolicy**
+```csharp
+(bool CanComplete, string FailureReason) Check(TaskInstance)
+```
+
+**Implementations**:
+- `DefaultCompletionPolicy`: Validates required steps completed
+- `ApprovalCompletionPolicy`: Additionally validates approval status
+
+---
+
+### Value Objects
+
+#### **TaskProgress**
+```csharp
+- WorkflowStatusId: Guid
+- TaskStatus: WorkflowStatusCategory
+- ProgressPercent: double (0-100)
+- IsNextAction: bool
+```
+
+**Factory Methods**:
+```csharp
+static TaskProgress NotStarted(workflowStatusId)
+static TaskProgress InProgress(workflowStatusId, progressPercent)
+static TaskProgress Completed(workflowStatusId)
+```
+
+---
+
+#### **TaskSchedule**
+```csharp
+- PlannedStartDate: DateTime?
+- PlannedDueDate: DateTime?
+- ActualStartDate: DateTime?
+- ActualDueDate: DateTime?
+- CompletedAt: DateTime?
+```
+
+**Immutable Updates**:
+```csharp
+TaskSchedule WithPlannedDates(start, due)
+TaskSchedule WithActualDates(start, due)
+TaskSchedule MarkCompleted(completedAt)
+```
+
+**Derived Properties**:
+```csharp
+bool IsCompleted
+bool IsOverdue
+TimeSpan? TimeRemaining
+bool HasStarted
+```
+
+---
+
+#### **ImportanceUrgencyMatrix**
+```csharp
+- Importance: double (0-1)
+- Urgency: double (0-1)
+- Quadrant: EisenhowerQuadrant
+```
+
+**Eisenhower Quadrants**:
+- Q1DoFirst (urgent + important)
+- Q2Schedule (not urgent + important)
+- Q3Delegate (urgent + not important)
+- Q4Eliminate (not urgent + not important)
+
+---
+
+#### **DelegationInfo**
+```csharp
+- DelegatedBy: Guid
+- DelegatedTo: Guid
+- Status: DelegationStatus (Delegated, Accepted, Declined)
+- DelegatedAt: DateTime
+- RespondedAt: DateTime?
+- Note: string
+- ResponseNote: string
+```
+
+**Immutable State Transitions**:
+```csharp
+DelegationInfo Accept(responseNote)
+DelegationInfo Decline(responseNote)
+```
+
+---
+
+#### **TaskHierarchy**
+```csharp
+- OrderInParent: int
+- ParentInstanceId: Guid?
+- SubtasksCount: int
+- SubtasksDoneCount: int
+```
+
+**Derived Properties**:
+```csharp
+bool IsParent
+bool HasSubtasks
+bool AllSubtasksDone
+double SubtaskCompletionRate
+```
+
+---
+
+#### **TaskDiscussion**
+```csharp
+- CommentsCount: int
+- AttachmentsCount: int
+- Watchers: IReadOnlyCollection<Guid>
+- IsDiscussionLocked: bool
+```
+
+**Immutable Operations**:
+```csharp
+TaskDiscussion AddComment()
+TaskDiscussion AddAttachment()
+TaskDiscussion AddWatcher(userId)
+TaskDiscussion RemoveWatcher(userId)
+TaskDiscussion LockDiscussion()
+```
+
+---
+
+#### **BlockingInfo**
+```csharp
+- IsBlocked: bool
+- Reason: string
+- BlockedAt: DateTime?
+```
+
+**Factory Methods**:
+```csharp
+static BlockingInfo NotBlocked
+static BlockingInfo Create(reason)
+```
+
+---
+
+#### **TaskApproval**
+```csharp
+- ApprovalRequestId: Guid?
+- RequiresApproval: bool
+- Status: ApprovalStatusEnum (NotRequired, Pending, Approved, Rejected)
+- CompletedAt: DateTime?
+```
+
+**Immutable Updates**:
+```csharp
+static TaskApproval NoApprovalRequired()
+static TaskApproval PendingApproval(approvalRequestId)
+TaskApproval MarkAsApproved(approvedAt, requestId)
+TaskApproval MarkAsRejected(rejectedAt, requestId)
+```
+
+---
+
+#### **RecurrenceRule**
+```csharp
+- Frequency: RecurrenceFrequency (Daily, Weekly, Monthly, Yearly)
+- Interval: int
+- EndDate: DateTime?
+- Count: int?
+- DaysOfWeek: List<DayOfWeek>
+```
+
+**Behavior**:
+```csharp
+DateTime CalculateNextOccurrence(currentDate)
+```
+
+---
+
+#### **TimeTrackingInfo**
+```csharp
+- ActualMinutes: int
+- LastTrackedAt: DateTime?
+```
+
+**Immutable Update**:
+```csharp
+TimeTrackingInfo LogTime(minutes)
+```
+
+---
+
+#### **ResolutionInfo**
+```csharp
+- Resolution: string
+- ResolutionNote: string
+```
+
+**Factory**:
+```csharp
+static ResolutionInfo Unresolved
+static ResolutionInfo Create(resolution, resolutionNote)
+```
+
+---
+
+#### **FlagInfo**
+```csharp
+- IsFlagged: bool
+- FlaggedReason: string
+```
+
+---
+
+## Workflow Context
+
+### Aggregates
+
+#### **Workflow**
+**Root Entity**: `Workflow`
+**Responsibility**: Defines status-based workflow with transitions.
+
+**Key Properties**:
+```csharp
+- Name: string
+- Description: string
+- InitialStatusId: Guid
+- IsDefault: bool
+- IsActive: bool
+- Statuses: IReadOnlyCollection<WorkflowStatus>
+- Transitions: IReadOnlyCollection<WorkflowTransition>
+- ExtraProperties: ExtraPropertyDictionary
+```
+
+**Invariants**:
+- Must have at least one status
+- Must have exactly one initial status
+- All transitions must reference valid statuses
+- Cannot deactivate default workflow
+
+**Key Behaviors**:
+```csharp
+void AddStatus(status)
+void AddTransition(transition)
+WorkflowStatus GetStatus(statusId)
+List<WorkflowTransition> GetAvailableTransitions(currentStatusId)
+void SetAsDefault()
+void Activate()
+void Deactivate()
+```
+
+---
+
+#### **WorkflowScheme**
+**Root Entity**: `WorkflowScheme`
+**Responsibility**: Maps task types to workflows per project.
+
+**Key Properties**:
+```csharp
+- Name: string
+- ProjectId: Guid
+- DefaultWorkflowId: Guid?
+- IsActive: bool
+- IsDraft: bool
+- AllowQuickDelegation: bool
+- RequireApprovalForIntegrated: bool
+- Mappings: IReadOnlyCollection<WorkflowSchemeMapping>
+```
+
+**State Machine**:
+```
+Draft → Published → [Active | Inactive]
+```
+
+**Key Behaviors**:
+```csharp
+void AddMapping(mapping)
+void RemoveMapping(taskTypeId)
+Guid GetWorkflowForTaskType(taskTypeId)
+void SetDefaultWorkflow(workflowId)
+void Publish()
+void Activate()
+void Deactivate()
+void SetDelegationMode(allowQuick, requireApprovalForIntegrated)
+```
+
+**Invariants**:
+- Cannot activate draft scheme
+- Must have default workflow OR at least one mapping
+- Cannot publish empty scheme
+
+---
+
+#### **TransitionPermissionPolicy**
+**Root Entity**: `TransitionPermissionPolicy`
+**Responsibility**: Controls who can execute workflow transitions.
+
+**Key Properties**:
+```csharp
+- Scope: PermissionPolicyScope (Global, Project, Custom)
+- ProjectId: Guid?
+- WorkflowId: Guid
+- TransitionId: Guid
+- Name: string
+- IsActive: bool
+- Priority: int
+- AllowedRoles: IReadOnlyCollection<string>
+- AllowedUserIds: IReadOnlyCollection<Guid>
+```
+
+**Key Behaviors**:
+```csharp
+bool CanUserPerform(userId, userRoles)
+void AddAllowedRole(role)
+void AddAllowedUser(userId)
+void RemoveAllowedRole(role)
+void RemoveAllowedUser(userId)
+void Activate()
+void Deactivate()
+void SetPriority(priority)
+```
+
+**Permission Evaluation**:
+- No restrictions = allow all
+- OR logic: user ID match OR any role match
+- Scope: Project-specific > Global
+- Priority: Higher priority evaluated first
+
+---
+
+### Entities
+
+#### **WorkflowStatus**
+**Parent**: Workflow
+**Responsibility**: Represents a state in the workflow.
+
+**Key Properties**:
+```csharp
+- WorkflowId: Guid
+- Name: string
+- Description: string
+- Category: WorkflowStatusCategory (Todo, InProgress, Done, Cancelled, Blocked)
+- Color: string (hex)
+- OrderIndex: int
+- IsInitial: bool
+- IsResolution: bool
+- ExtraProperties: ExtraPropertyDictionary
+```
+
+**Derived Properties**:
+```csharp
+bool IsTodo
+bool IsInProgress
+bool IsDone
+bool IsCancelled
+bool IsBlocked
+bool IsTerminal  // Done or Cancelled
+```
+
+**Default Colors by Category**:
+- Todo: #94a3b8 (slate)
+- InProgress: #3b82f6 (blue)
+- Done: #22c55e (green)
+- Cancelled: #ef4444 (red)
+- Blocked: #FFBF00 (amber)
+
+---
+
+#### **WorkflowTransition**
+**Parent**: Workflow
+**Responsibility**: Defines allowed status changes with conditions and actions.
+
+**Key Properties**:
+```csharp
+- WorkflowId: Guid
+- Name: string
+- FromStatusId: Guid
+- ToStatusId: Guid
+- Purpose: TransitionPurpose (Standard, Approval, Rejection, Cancellation)
+- RequiresComment: bool
+- RequiresResolution: bool
+- IsGlobal: bool  // Can transition from any status
+- OrderIndex: int
+- ButtonLabel: string
+- ButtonColor: string
+- Actions: IReadOnlyCollection<WorkflowAction>
+- Conditions: IReadOnlyCollection<WorkflowCondition>
+- Validators: IReadOnlyDictionary<string, object>
+```
+
+**Invariants**:
+- FromStatusId cannot equal ToStatusId
+- Both statuses must exist in workflow
+
+**Key Behaviors**:
+```csharp
+void AddAction(action)
+void SetCondition(condition)
+void SetValidator(key, value)
+void SetPurpose(purpose)
+```
+
+**Derived Properties**:
+```csharp
+bool HasConditions
+bool HasValidators
+```
+
+---
+
+#### **WorkflowAction**
+**Parent**: WorkflowTransition
+**Responsibility**: Automated action execution on transition.
+
+**Key Properties**:
+```csharp
+- TransitionId: Guid
+- Name: string
+- ActionType: WorkflowActionType
+- Configuration: Dictionary<string, object>
+- OrderIndex: int
+- IsEnabled: bool
+- IsAsync: bool
+- ContinueOnError: bool
+- Conditions: IReadOnlyDictionary<string, object>
+```
+
+**Action Types** (enum):
+```csharp
+// Assignment Actions
+AssignToUser, AssignToReporter, AssignToCurrentUser, ClearAssignee
+
+// Field Actions
+UpdateField, SetCustomField, ValidateFields, UpdatePriority, SetDueDate
+
+// Communication Actions
+SendEmail, SendNotification, AddComment
+
+// Task Actions
+CreateSubtask, LinkTask, DelegateTask
+
+// Approval Actions
+InitiateApproval, CompleteApproval
+
+// Integration Actions
+TriggerWebhook, ExecuteScript, FireDomainEvent
+```
+
+**Key Behaviors**:
+```csharp
+void UpdateConfiguration(newConfiguration)
+void SetCondition(key, value)
+```
+
+---
+
+#### **WorkflowSchemeMapping**
+**Parent**: WorkflowScheme
+**Responsibility**: Links task type to specific workflow.
+
+**Key Properties**:
+```csharp
+- WorkflowSchemeId: Guid
+- TaskTypeId: Guid
+- WorkflowId: Guid
+- IsActive: bool
+```
+
+---
+
+#### **WorkflowCustomField**
+**Parent**: WorkflowScheme
+**Responsibility**: Configures custom fields per workflow context.
+
+**Key Properties**:
+```csharp
+- WorkflowSchemeId: Guid
+- CustomFieldDefinitionId: Guid
+- IsRequired: bool
+- DefaultValue: string
+- DisplayOrder: int
+- VisibleInStatusIds: IReadOnlyCollection<Guid>
+- RequiredInStatusIds: IReadOnlyCollection<Guid>
+- ReadOnlyInStatusIds: IReadOnlyCollection<Guid>
+- RequiredForTransitionIds: IReadOnlyCollection<Guid>
+```
+
+**Key Behaviors**:
+```csharp
+bool IsVisibleInStatus(statusId)
+bool IsRequiredInStatus(statusId)
+bool IsReadOnlyInStatus(statusId)
+bool IsRequiredForTransition(transitionId)
+
+void AddVisibleInStatus(statusId)
+void MakeRequiredInStatus(statusId)
+void MakeReadOnlyInStatus(statusId)
+void RequireForTransition(transitionId)
+```
+
+---
+
+### Domain Services
+
+#### **WorkflowTransitionService**
+**Responsibility**: Orchestrates workflow transition execution.
+
+**Key Operations**:
+```csharp
+TransitionExecutionResult ExecuteTransitionAsync(
+    taskInstanceId, workflow, transition, currentUserId, userRoles, projectId, customFields, comment)
+
+TransitionValidationResult ValidateTransitionAsync(
+    workflow, transition, currentUserId, userRoles, projectId, customFields, comment)
+
+List<WorkflowAction> GetOrderedActions(transition)
+
+WorkflowTransitionExecutedEto CreateTransitionEvent(...)
+```
+
+**Validation Steps**:
+1. Check user permissions (via TransitionPermissionPolicy)
+2. Validate comment requirement
+3. Validate target status exists
+4. Evaluate all transition conditions
+5. Execute ordered actions
+6. Publish transition event
+
+---
+
+#### **WorkflowActionExecutorService**
+**Responsibility**: Executes workflow actions using Strategy pattern.
+
+**Key Operations**:
+```csharp
+ActionExecutionResult ExecuteActionsAsync(
+    actions, context)
+```
+
+**Execution Flow**:
+1. Filter enabled actions
+2. For each action:
+   - If async: queue for background execution
+   - If sync: find executor and execute
+3. Handle ContinueOnError flag
+4. Return execution results
+
+**Action Context**:
+```csharp
+class WorkflowActionContext {
+    TaskInstanceId, WorkflowId, TransitionId, 
+    ExecutedBy, Comment, CustomData
 }
 ```
 
------
+---
 
-## 8. Dependency Matrix - Updated
+#### **IWorkflowActionExecutor** (Strategy Interface)
+**Implementations**:
+- `AssignUserActionExecutor`
+- `UpdateFieldActionExecutor`
+- `UpdatePriorityActionExecutor`
+- `SetDueDateActionExecutor`
+- `ValidateFieldsActionExecutor`
+- `SendEmailActionExecutor`
+- `SendNotificationActionExecutor`
+- `AddCommentActionExecutor`
+- `CreateSubtaskActionExecutor`
+- `LinkTaskActionExecutor`
+- `DelegateTaskActionExecutor`
+- `InitiateApprovalActionExecutor`
+- `CompleteApprovalActionExecutor`
+- `TriggerWebhookActionExecutor`
+- `ExecuteScriptActionExecutor`
+- `FireDomainEventActionExecutor`
 
-### 8.1 Bounded Context Dependencies
-
-| From Context | To Context | Dependency Type | Purpose | Coupling Level |
-|--------------|------------|-----------------|---------|----------------|
-| Task Management | Project Management | Event Subscription | Project progress updates | Loose |
-| Task Management | Work Items | Event Subscription | Work item completion sync | Loose |
-| Task Management | WBS | Event Subscription | WBS progress calculation | Loose |
-| Task Management | GTD | Event Publishing | Task lifecycle events | Loose |
-| Task Management | Time Management | Event Publishing | Completion for estimation | Loose |
-| Task Management | IAM | Service Call | Authorization | Medium |
-| Project Management | Requirements | Event Subscription | Requirement changes | Loose |
-| Project Management | WBS | Command Service | WBS structure management | Medium |
-| Project Management | Agile | Event Subscription | Sprint and story updates | Loose |
-| Requirements | Work Items | Command Service | Work item creation | Medium |
-| Requirements | Task Management | Event Publishing | Requirement traces | Loose |
-| Work Items | Task Management | Command Service | Task creation from stories | Medium |
-| Work Items | Requirements | Event Publishing | Implementation progress | Loose |
-| Work Items | WBS | Event Publishing | Progress updates | Loose |
-| Agile | Work Items | Command Service | Backlog creation | Medium |
-| Agile | Project Management | Event Publishing | Sprint metrics | Loose |
-| WBS | Task Management | Event Subscription | Task completion updates | Loose |
-| WBS | Project Management | Event Publishing | Progress rollup | Loose |
-| GTD | Task Management | Command Service | Task creation/linking | Medium |
-| GTD | Task Management | Event Subscription | Task status sync | Loose |
-| Time Management | Task Management | Event Subscription | Estimation learning | Loose |
-| Time Management | Work Items | Event Subscription | Effort tracking | Loose |
-| Notifications & Reminders | All Core BCs | Event Subscription | Notification triggers | Loose |
-| Analytics | All BCs | Event Subscription | Data aggregation | Loose |
-| Learning System | Task, Time, GTD, Agile | Event Subscription | Pattern learning | Loose |
-
-### 8.2 Enhanced Integration Flow
-
-```mermaid
-graph TD
-    A[Requirements Created] --> B[Work Items Generated]
-    B --> C[Story Mapping Session]
-    C --> D[Sprint Backlog Created]
-    D --> E[Tasks Created from Work Items]
-    E --> F[WBS Nodes Updated]
-    F --> G[Time Tracking Started]
-    G --> H[GTD Actions Synchronized]
-    H --> I[Progress Reported]
-    I --> J[Analytics Updated]
-    J --> K[Notifications Sent]
-    
-    L[Retrospective Insights] --> M[Process Improvements]
-    M --> N[Template Updates]
-    N --> O[Future Sprint Planning]
+**Interface**:
+```csharp
+bool CanExecute(WorkflowAction action)
+Task<ActionExecutionResult> ExecuteAsync(action, context)
 ```
 
-### 8.3 Data Consistency Guarantees
+---
 
-| Integration | Consistency Level | Recovery Strategy |
-|-------------|------------------|-------------------|
-| Requirement → Work Item | Eventual | Compensating transaction |
-| Work Item → Task | Strong | Saga coordination |
-| Task → WBS Progress | Eventual | Periodic reconciliation |
-| Story Mapping → Backlog | Strong | Atomic operation |
-| Sprint → Task Assignment | Eventual | Event replay |
-| Task Completion → Multiple BCs | Eventual | Event sourcing |
+#### **WorkflowConditionEvaluationService**
+**Responsibility**: Evaluates workflow transition conditions.
+
+**Key Operations**:
+```csharp
+ConditionEvaluationAggregateResult EvaluateAllAsync(
+    conditions, context)  // AND logic
+
+ConditionEvaluationAggregateResult EvaluateAnyAsync(
+    conditions, context)  // OR logic
+
+ConditionEvaluationResult EvaluateSingleAsync(
+    condition, context)
+```
+
+**Condition Context**:
+```csharp
+class WorkflowConditionContext {
+    TaskInstanceId, CurrentUserId, UserRoles,
+    CustomFieldValues, AdditionalData
+}
+```
+
+---
+
+#### **IWorkflowConditionEvaluator** (Strategy Interface)
+**Implementations**:
+- `FieldValueConditionEvaluator`
+- `RoleBasedConditionEvaluator`
+
+**Field Value Operators**:
+- equals, notEquals
+- greaterThan, lessThan, greaterThanOrEquals, lessThanOrEquals
+- contains, notContains
+- isEmpty, isNotEmpty
+
+**Role Operators**:
+- hasRole, hasAnyRole, hasAllRoles, doesNotHaveRole
+
+---
+
+#### **WorkflowValidationService**
+**Responsibility**: Validates workflow configuration integrity.
+
+**Key Operations**:
+```csharp
+WorkflowValidationResult ValidateWorkflow(workflow)
+SchemeValidationResult ValidateWorkflowScheme(scheme, workflows)
+```
+
+**Validation Rules**:
+- Must have at least one status
+- Exactly one initial status
+- At least one terminal status
+- All statuses reachable from initial
+- Valid transition endpoints
+- Required action configurations
+
+---
+
+### Value Objects
+
+#### **WorkflowCondition**
+```csharp
+- Key: string  // Field name
+- Value: object  // Expected value
+- Operator: string  // Comparison operator
+```
+
+**Examples**:
+```csharp
+new WorkflowCondition("Priority", "High", "equals")
+new WorkflowCondition("EstimatedHours", 40, "greaterThan")
+new WorkflowCondition("Assignee", null, "isEmpty")
+```
+
+---
+
+## Domain Events
+
+### Approval Events
+
+#### **ApprovalRequestCreatedEto**
+```csharp
+RequestId, WorkflowId, EntityType, EntityId, 
+RequestedBy, TenantId, CreatedAt
+```
+
+#### **ApprovalRequestProcessedEto**
+```csharp
+RequestId, TenantId, Status, ProcessedAt, 
+ProcessedBy, EntityType, EntityId
+```
+
+#### **ApprovalWorkflowCompletedEto**
+```csharp
+RequestId, WorkflowId, TenantId, IsApproved, 
+CompletedAt, TotalSteps, CompletedSteps, 
+EntityType, EntityId
+```
+
+---
+
+### Project Events
+
+#### **ProjectCreatedEto**
+```csharp
+ProjectId, OwnerId, Title, TenantId, OccurredAt
+```
+
+#### **ProjectStatusChangedEto**
+```csharp
+ProjectId, TenantId, OldStatus, NewStatus, 
+ChangedAt, ChangedBy
+```
+
+#### **ProjectCompletedEto**
+```csharp
+ProjectId, TenantId, CompletedAt, FinalProgress, 
+CompletedBy
+```
+
+#### **SprintCompletedEto**
+```csharp
+SprintId, ProjectId, TenantId, CompletedAt, 
+PlannedStoryPoints, CompletedStoryPoints, 
+CompletionRate
+```
+
+---
+
+### Task Events
+
+#### **TaskCreatedEto**
+```csharp
+TaskId, TenantId, Title, OwnerId, CreatedAt
+```
+
+#### **TaskInstanceCreatedEto**
+```csharp
+TaskInstanceId, TaskId, TenantId, OwnerId, CreatedAt
+```
+
+#### **TaskStartedEto**
+```csharp
+TaskInstanceId, TenantId, StartedBy, StartedAt
+```
+
+#### **TaskCompletedEto**
+```csharp
+TaskInstanceId, TenantId, CompletedBy, CompletedAt, 
+ActualMinutes, Resolution
+```
+
+#### **TaskAssignedEto**
+```csharp
+TaskInstanceId, TenantId, AssignedTo, AssignedBy, 
+AssignedAt
+```
+
+#### **TaskUnassignedEto**
+```csharp
+TaskInstanceId, TenantId
+```
+
+#### **TaskDelegatedEto**
+```csharp
+TaskInstanceId, TenantId, DelegatedBy, DelegatedTo, 
+DelegatedAt, Note
+```
+
+#### **TaskDelegationAcceptedEto**
+```csharp
+TaskInstanceId, TenantId, AcceptedBy, AcceptedAt, 
+ResponseNote
+```
+
+#### **TaskDelegationDeclinedEto**
+```csharp
+TaskInstanceId, TenantId, DeclinedBy, DeclinedAt, 
+Reason
+```
+
+#### **TaskBlockedEto**
+```csharp
+TaskInstanceId, TenantId, Reason, BlockedAt
+```
+
+---
+
+### Workflow Events
+
+#### **WorkflowTransitionExecutedEto**
+```csharp
+TaskId, WorkflowId, TransitionId, FromStatusId, 
+ToStatusId, ExecutedBy, TenantId, ExecutedAt, Comment
+```
+
+#### **WorkflowTriggeredDomainEvent** (Generic)
+```csharp
+EventType, TaskInstanceId, WorkflowId, ExecutedBy, 
+TenantId, EventData, TriggeredAt
+```
+
+---
+
+## Cross-Context Integration
+
+### Task ↔ Approval Integration
+
+**Flow**: Task requires approval
+1. Workflow action: `InitiateApproval`
+2. Creates `ApprovalRequest` linked to `TaskInstance`
+3. Updates `TaskInstance.Approval` value object
+4. On approval completion:
+   - Event: `ApprovalWorkflowCompletedEto`
+   - Handler: `ApprovalCompletedEventHandler`
+   - Updates `TaskInstance.Approval.Status`
+
+**Key Integration Points**:
+```csharp
+// TaskInstance Value Object
+TaskApproval {
+    ApprovalRequestId: Guid?
+    RequiresApproval: bool
+    Status: ApprovalStatusEnum
+}
+
+// Workflow Action
+InitiateApprovalActionExecutor:
+    - Creates ApprovalRequest
+    - Links to TaskInstance via EntityId
+    - Sets ApprovalRequestId on TaskInstance
+
+// Event Handler
+ApprovalCompletedEventHandler:
+    - Listens for ApprovalWorkflowCompletedEto
+    - Filters by EntityType == "TaskInstance"
+    - Updates TaskInstance.Approval status
+```
+
+---
+
+### Task ↔ Workflow Integration
+
+**Flow**: Task status transitions
+1. User initiates transition via `TaskTransitionOrchestrator`
+2. Service validates permissions via `TransitionPermissionPolicy`
+3. Evaluates transition conditions
+4. Executes workflow actions (via `WorkflowActionExecutorService`)
+5. Updates task status
+6. Publishes `WorkflowTransitionExecutedEto`
+
+**Key Integration Service**:
+```csharp
+TaskTransitionOrchestrator {
+    - GetAvailableTransitionsAsync()
+      → Checks permissions
+      → Validates conditions
+      → Returns available transitions
+    
+    - TransitionTaskAsync()
+      → Executes full transition flow
+      → Coordinates workflow + task updates
+}
+```
+
+---
+
+### Project ↔ Task Integration
+
+**Relationships**:
+```csharp
+Task.ProjectId → Project
+TaskInstance.ProjectId → Project (inherited from Task)
+
+Project {
+    - HasTasks: via Task.ProjectId query
+    - WorkflowSchemeId: determines task workflows
+}
+```
+
+**Workflow Scheme Resolution**:
+```
+Project.WorkflowSchemeId
+  → WorkflowScheme.GetWorkflowForTaskType(TaskInstance.TaskTypeId)
+  → Workflow with statuses and transitions
+```
+
+---
+
+### Project ↔ Approval Integration
+
+**Dependency Approval Flow**:
+```csharp
+ProjectDependency {
+    ApprovalRequestId: Guid?
+}
+
+// When dependency requires approval:
+1. Create ApprovalRequest for ProjectDependency
+2. Link via ApprovalRequestId
+3. Block project progression until approved
+```
+
+---
+
+## Repository Interfaces
+
+### Approval Repositories
+
+#### **IApprovalWorkflowRepository**
+```csharp
+Task<ApprovalWorkflow> GetWithStepsAsync(id)
+Task<List<ApprovalWorkflow>> GetActiveWorkflowsAsync()
+Task<List<ApprovalWorkflow>> GetByTypeAsync(workflowType)
+```
+
+#### **IApprovalRequestRepository**
+```csharp
+Task<ApprovalRequest> GetWithDecisionsAsync(id)
+Task<List<ApprovalRequest>> GetPendingRequestsAsync()
+Task<List<ApprovalRequest>> GetRequestsByEntityAsync(entityType, entityId)
+Task<List<ApprovalRequest>> GetListAsync(spec)
+```
+
+---
+
+### Project Repositories
+
+#### **IProjectRepository**
+```csharp
+Task<Project> GetWithDetailsAsync(id)
+Task<List<Project>> GetListAsync(specification, includeDetails)
+Task<List<Project>> GetByOwnerAsync(ownerId)
+Task<List<Project>> GetOverdueProjectsAsync()
+```
+
+#### **IProjectDependencyRepository**
+```csharp
+Task<List<ProjectDependency>> GetByProjectIdAsync(projectId)
+Task<List<ProjectDependency>> GetBlockingDependenciesAsync(projectId)
+Task<List<ProjectDependency>> GetOverdueDependenciesAsync()
+```
+
+#### **IProjectSprintRepository**
+```csharp
+Task<List<ProjectSprint>> GetByProjectIdAsync(projectId)
+Task<ProjectSprint> GetActiveSprintAsync(projectId)
+```
+
+#### **IProjectSuccessCriterionRepository**
+```csharp
+Task<List<ProjectSuccessCriterion>> GetByProjectIdAsync(projectId)
+Task<List<ProjectSuccessCriterion>> GetUnmetCriteriaAsync(projectId)
+```
+
+---
+
+### Task Repositories
+
+#### **ITaskRepository**
+```csharp
+Task<Task> GetWithDetailsAsync(id)
+Task<List<Task>> GetListAsync(specification)
+Task<List<Task>> GetRecurringTasksDueForProcessingAsync(currentDate)
+```
+
+#### **ITaskInstanceRepository**
+```csharp
+Task<TaskInstance> GetWithDetailsAsync(id)
+Task<List<TaskInstance>> GetListAsync(spec, includeDetails)
+Task<List<TaskInstance>> GetOverdueTasksAsync(asOfDate)
+Task<List<TaskInstance>> GetTaskInstancesByProjectAsync(projectId)
+Task<Dictionary<Guid, int>> GetTaskInstanceCountByStatusAsync(projectId)
+```
+
+#### **ITaskTypeRepository**
+```csharp
+Task<TaskType> GetWithCustomFieldsAsync(id)
+Task<List<TaskType>> GetActiveTaskTypesAsync()
+Task<TaskType> FindByNameAsync(name)
+```
+
+---
+
+### Workflow Repositories
+
+#### **IWorkflowRepository**
+```csharp
+Task<Workflow> GetWithDetailsAsync(id)
+Task<Workflow> GetDefaultWorkflowAsync()
+```
+
+#### **IWorkflowSchemeRepository**
+```csharp
+Task<WorkflowScheme> GetWithMappingsAsync(id)
+Task<WorkflowScheme> GetActiveSchemeForProjectAsync(projectId)
+```
+
+#### **ITransitionPermissionPolicyRepository**
+```csharp
+Task<TransitionPermissionPolicy> GetApplicablePolicyAsync(
+    transitionId, projectId)
+
+Task<List<TransitionPermissionPolicy>> GetPoliciesForTransitionAsync(
+    transitionId, projectId)
+
+Task<List<TransitionPermissionPolicy>> GetPoliciesByWorkflowAsync(
+    workflowId, includeInactive)
+
+Task<bool> PolicyExistsAsync(
+    transitionId, projectId, scope)
+
+Task<List<TransitionPermissionPolicy>> GetPoliciesByUserAsync(userId)
+Task<List<TransitionPermissionPolicy>> GetPoliciesByRoleAsync(role)
+```
+
+---
+
+## Specifications
+
+### Approval Specifications
+- `PendingApprovalRequestsSpecification`
+- `OverdueApprovalRequestsSpecification`
+- `ApprovalRequestsByWorkflowSpecification`
+- `ApprovalRequestsByEntitySpecification`
+- `UserPendingApprovalsSpecification`
+- `ActiveWorkflowsSpecification`
+- `WorkflowsWithTimeoutSpecification`
+- `WorkflowsByStrategySpecification`
+
+### Project Specifications
+- `ActiveProjectsSpecification`
+- `OverdueProjectsSpecification`
+- `ProjectsByOwnerSpecification`
+- `HealthyProjectsSpecification`
+- `ProjectsInQuadrantSpecification`
+- `ProjectsDueInNextDaysSpecification`
+- `ActiveSprintsSpecification`
+- `CompletedSprintsSpecification`
+- `ActiveDependenciesSpecification`
+- `BlockingDependenciesSpecification`
+- `OverdueDependenciesSpecification`
+- `PendingRequirementsSpecification`
+
+### Task Specifications
+- `ActiveTasksSpecification`
+- `RecurringTasksSpecification`
+- `TasksByOwnerSpecification`
+- `TasksByProjectSpecification`
+- `ActiveTaskInstancesSpecification`
+- `OverdueTaskInstancesSpecification`
+- `TaskInstancesByAssigneeSpecification`
+- `HighPriorityTaskInstancesSpecification`
+- `BlockedTaskInstancesSpecification`
+- `NextActionTasksSpecification`
+- `DelegatedTasksSpecification`
+- `CompletedInDateRangeSpecification`
+- `ActiveTaskTypesSpecification`
+
+### Workflow Specifications
+- `ActiveWorkflowsSpecification`
+- `DefaultWorkflowSpecification`
+
+---
+
+## Key Business Rules Summary
+
+### Approval Rules
+1. **Step Progression**: Must complete current step before moving to next
+2. **Rejection Handling**: Any rejection terminates entire workflow
+3. **Approval Requirements**:
+   - Any: 1+ approval
+   - All: All approvers must approve
+   - Majority: >50% approval
+   - Custom: Specific count required
+4. **Self-Approval**: Configurable per step
+5. **Timeout Actions**: Auto-approve, escalate, or custom
+6. **Delegation**: Approval can be delegated if allowed
+
+### Project Rules
+1. **Status Transitions**: 
+   - Can only start Planned or OnHold projects
+   - Cannot cancel Completed projects
+   - Cannot archive Active projects
+2. **Priority**: Eisenhower quadrant auto-calculated from importance/urgency
+3. **Success Criteria**: Max 20 per project
+4. **Dependencies**:
+   - No self-dependencies
+   - Circular dependencies detected and prevented
+   - Lag time supported
+5. **Sprint Duration**: 7-30 days only
+6. **Health Calculation**: Based on progress vs. time, success criteria, and due date
+
+### Task Rules
+1. **Blueprint Limits**:
+   - Max 50 action steps
+   - Max 20 acceptance criteria
+   - Max 50 dependencies
+2. **Instance Lifecycle**:
+   - Cannot complete blocked tasks
+   - Cannot complete without required steps
+   - Cannot delegate to self
+   - Cannot start already-started task
+3. **Delegation Flow**:
+   - Delegated → [Accepted | Declined]
+   - Can be revoked before acceptance
+4. **Dependency Types**:
+   - FinishToStart: Most common
+   - StartToStart: Parallel tasks
+   - FinishToFinish: Synchronized completion
+   - StartToFinish: Rare inverse dependency
+5. **Recurrence**: Supports daily, weekly, monthly, yearly with intervals
+6. **History Tracking**: All changes logged with old/new values
+
+### Workflow Rules
+1. **Status Configuration**:
+   - Exactly one initial status
+   - At least one terminal status
+   - All statuses must be reachable
+2. **Transition Validation**:
+   - FromStatus ≠ ToStatus
+   - Both statuses must exist
+   - Conditions evaluated with AND logic
+3. **Permission Evaluation**:
+   - Project-specific policies override global
+   - Higher priority evaluated first
+   - Empty restrictions = allow all
+   - OR logic: user ID OR role match
+4. **Action Execution**:
+   - Ordered by OrderIndex
+   - Async actions queued separately
+   - ContinueOnError flag respected
+5. **Scheme Rules**:
+   - Cannot activate draft
+   - Must have default workflow OR mappings
+   - Cannot publish empty scheme
+
+---
+
+## Constants
+
+### Approval Constants
+```csharp
+MaxSuccessCriteria = 20
+DefaultImportance = 0.5
+DefaultUrgency = 0.5
+```
+
+### Project Constants
+```csharp
+MinSprintDurationDays = 7
+MaxSprintDurationDays = 30
+DefaultSprintVelocity = 20
+MaxSuccessCriteria = 20
+```
+
+### Task Constants
+```csharp
+MaxTitleLength = 500
+MaxDescriptionLength = 4000
+MaxActionSteps = 50
+MaxAcceptanceCriteria = 20
+MaxSubtasks = 100
+MaxWatchers = 50
+MaxLabels = 20
+MaxDependencies = 50
+MinImportance = 0.0
+MaxImportance = 1.0
+MinUrgency = 0.0
+MaxUrgency = 1.0
+```
+
+### Workflow Constants
+```csharp
+MaxTitleLength = 200
+MaxDescriptionLength = 5000
+MaxWorkflowStatusesPerWorkflow = 50
+MaxTransitionsPerWorkflow = 100
+MaxActionsPerTransition = 20
+MaxAllowedRolesPerTransition = 10
+MaxAllowedUsersPerTransition = 50
+```
+
+---
+
+## Design Patterns Applied
+
+1. **Aggregate Pattern**: Clear boundaries with root entities
+2. **Domain Events**: Decoupled cross-context communication
+3. **Value Objects**: Immutable, self-validating data structures
+4. **Specification Pattern**: Reusable query logic
+5. **Strategy Pattern**: Pluggable action executors and condition evaluators
+6. **Facade Pattern**: TaskTransitionOrchestrator simplifies complex operations
+7. **Policy Pattern**: Pluggable start/completion policies
+8. **State Pattern**: Clear state machines with validation
+9. **Factory Pattern**: Value object creation methods
+10. **Repository Pattern**: Clean data access abstraction
+
+---
+
+## Conclusion
+
+This domain model provides a comprehensive, well-structured foundation for a work management system with:
+
+- **Clear separation of concerns** across 4 bounded contexts
+- **Rich domain models** with behavior and invariants
+- **Flexible workflow engine** with conditions and actions
+- **Comprehensive approval system** with configurable steps
+- **Project tracking** with health metrics and dependencies
+- **Full task lifecycle** from blueprint to completion
+- **Event-driven architecture** for cross-context integration
+- **Extensibility** through policies, strategies, and specifications
+
+The design follows DDD principles, SOLID principles, and ABP Framework best practices throughout.

@@ -43,8 +43,11 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
         public void UpdateStrength(int strength)
         {
             if (strength < 1 || strength > 5)
+            {
                 throw new BusinessException("GTD:InvalidAlignmentStrength", 
                     "Alignment strength must be between 1 and 5.");
+            }
+
             AlignmentStrength = strength;
         }
 

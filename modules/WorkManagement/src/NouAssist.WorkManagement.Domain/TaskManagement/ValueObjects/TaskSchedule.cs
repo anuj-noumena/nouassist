@@ -11,7 +11,6 @@ public class TaskSchedule : ValueObject
     public DateTime? ActualStartDate { get; private set; }
     public DateTime? ActualDueDate { get; private set; }
     public DateTime? CompletedAt { get; private set; }
-
     // Constructor
     private TaskSchedule()
     {
@@ -30,6 +29,11 @@ public class TaskSchedule : ValueObject
         ActualDueDate = actualDueDate;
         CompletedAt = completedAt;
     }
+    
+    public static TaskSchedule? Empty()
+    {
+        return new TaskSchedule();
+    }
 
     // Factory methods for immutability and clarity
     public TaskSchedule WithPlannedDates(DateTime? start = null, DateTime? due = null)
@@ -42,6 +46,11 @@ public class TaskSchedule : ValueObject
         return new TaskSchedule(PlannedStartDate, PlannedDueDate, start ?? ActualStartDate, due ?? ActualDueDate, CompletedAt);
     }
 
+    public TaskSchedule MarkStarted(DateTime startedAt)
+    {
+        return new TaskSchedule(PlannedStartDate, PlannedDueDate, startedAt, ActualDueDate, CompletedAt);
+    }
+    
     public TaskSchedule MarkCompleted(DateTime completedAt)
     {
         return new TaskSchedule(PlannedStartDate, PlannedDueDate, ActualStartDate, ActualDueDate, completedAt);

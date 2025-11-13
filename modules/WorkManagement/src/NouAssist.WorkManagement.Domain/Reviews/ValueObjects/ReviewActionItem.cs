@@ -39,7 +39,11 @@ namespace NouAssist.WorkManagement.Reviews.ValueObjects
 
         public ReviewActionItem Complete()
         {
-            if (IsCompleted) return this;
+            if (IsCompleted)
+            {
+                return this;
+            }
+
             return new ReviewActionItem(Id, Description, AssignedTo, DueBy, true, DateTime.UtcNow);
         }
 

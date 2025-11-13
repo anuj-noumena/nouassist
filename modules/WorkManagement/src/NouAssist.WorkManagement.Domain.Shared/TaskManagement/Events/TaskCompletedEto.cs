@@ -9,9 +9,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Events
     {
         public Guid TaskInstanceId { get; set; }
         public Guid? TenantId { get; set; }
-        public Guid CompletedBy { get; set; }
-        public DateTime CompletedAt { get; set; }
-        public int ActualMinutes { get; set; }
         public string Resolution { get; set; }
+        public string ResolutionNote { get; set; }
+        public Guid? CompletedBy { get; set; }
+        public DateTime CompletedAt { get; set; }
     }
 }

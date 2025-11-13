@@ -1,79 +1,94 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.SharedKernel.Enums;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 using NouAssist.WorkManagement.ProjectManagement.Events;
+using NouAssist.WorkManagement.ProjectManagement.ValueObjects;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
 {
+    /// <summary>
+    /// Project Aggregate - A specific outcome with measurable success criteria
+    /// OPTIMIZED: Cleaner boundaries, consistent patterns, GTD-aligned
+    /// </summary>
     public class Project : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
-        // Identity & Relationships
+        // === IDENTITY & RELATIONSHIPS ===
         public Guid OwnerId { get; private set; }
-        public Guid? ParentProjectId { get; private set; }
-        public Guid? GoalId { get; private set; }
-        public Guid? WorkflowSchemeId { get; set; }
-        public Guid? ContextId { get; set; }
-        public Guid? AreaId { get; set; }
         public Guid? TenantId { get; private set; }
-
-        // Basic Info
+        
+        // === CONTENT ===
         public string Title { get; private set; }
         public string Description { get; set; }
-        public string Summary { get; set; }
+        public string Vision { get; set; } // What success looks like
+        public string Purpose { get; set; } // Why this project exists
         public string ExpectedOutcome { get; set; }
-
-        // Status & Health
+        
+        // === ORGANIZATION ===
+        // Project can belong to an Area (GTD: Projects support Areas)
+        public Guid? AreaId { get; set; } // Which area of responsibility
+        public Guid? GoalId { get; private set; } // Aligned to which strategic goal
+        
+        // === WORKFLOW ===
+        public Guid? WorkflowSchemeId { get; set; }
         public ProjectStatus Status { get; private set; }
         public bool IsArchived { get; private set; }
         public DateTime? ArchivedAt { get; private set; }
-
-        // Priority & Classification
-        public double Importance { get; private set; }
-        public double Urgency { get; private set; }
-        public EisenhowerQuadrant EisenhowerQuadrant { get; private set; }
-
-        // Dates & Progress
-        public DateTime? StartDate { get; private set; }
-        public DateTime? DueDate { get; private set; }
-        public DateTime? CompletedAt { get; private set; }
+        
+        // === HIERARCHY (Simplified) ===
+        public Guid? ParentProjectId { get; private set; }
+        private int _level; // Denormalized for query performance
+        private string _hierarchyPath; // e.g., "/parent/child"
+        
+        // === PRIORITY (Use same matrix as tasks) ===
+        public ImportanceUrgencyMatrix Priority { get; private set; }
+        
+        // === TIMELINE ===
+        public ProjectTimeline Timeline { get; private set; }
+        
+        // === PROGRESS ===
         public double Progress { get; private set; }
         public DateTime? LastReviewedAt { get; set; }
-
-        // Success Criteria
-        private readonly List<Guid> _successCriterionIds = new();
-        public IReadOnlyCollection<Guid> SuccessCriterionIds => 
-            _successCriterionIds.AsReadOnly();
-
-
-        // Team Management
+        
+        // === TEAM (Keep simple - just IDs) ===
         public Guid? PrimaryTeamId { get; set; }
         private readonly List<Guid> _collaboratingTeamIds = new();
-        public IReadOnlyCollection<Guid> CollaboratingTeamIds => 
-            _collaboratingTeamIds.AsReadOnly();
-
-        // Approval
-        public bool RequiresApproval { get; set; }
-        public Guid? ApprovalWorkflowId { get; set; }
-        public Guid? CurrentApprovalRequestId { get; set; }
+        public IReadOnlyCollection<Guid> CollaboratingTeamIds => _collaboratingTeamIds.AsReadOnly();
         
+        // === APPROVAL (Simplified) ===
+        public Guid? ApprovalRequestId { get; set; } // Link to approval if needed
+        
+        // === SUCCESS CRITERIA (Entity collection - own lifecycle) ===
         private readonly List<ProjectSuccessCriterion> _successCriteria = new();
-
-        public IReadOnlyCollection<ProjectSuccessCriterion> CriterionCompletions =>
-            _successCriteria.AsReadOnly();
-
-        protected Project() { /* ORM */ }
-
+        public IReadOnlyCollection<ProjectSuccessCriterion> SuccessCriteria => _successCriteria.AsReadOnly();
+        
+        // === COMPUTED PROPERTIES ===
+        public bool IsCompleted => Status == ProjectStatus.Completed;
+        public bool IsActive => Status == ProjectStatus.Active;
+        public bool IsOnHold => Status == ProjectStatus.OnHold;
+        public bool IsOverdue => Timeline.IsOverdue;
+        public bool HasSuccessCriteria => _successCriteria.Any();
+        public int SuccessCriteriaMet => _successCriteria.Count(c => c.IsMet);
+        public double SuccessCriteriaCompletionRate => 
+            _successCriteria.Count == 0 ? 0 : (double)SuccessCriteriaMet / _successCriteria.Count * 100;
+        public bool AllSuccessCriteriaMet => 
+            _successCriteria.Any() && _successCriteria.All(c => c.IsMet);
+        public ProjectHealth Health => CalculateHealth();
+        
+        protected Project() { }
+        
         public Project(
             Guid id,
             Guid ownerId,
             string title,
             Guid? tenantId,
+            Guid? areaId = null,
             string description = null,
             string expectedOutcome = null,
             DateTime? startDate = null,
@@ -84,178 +99,218 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
             OwnerId = ownerId;
             Title = Check.NotNullOrWhiteSpace(title, nameof(title));
             TenantId = tenantId;
+            AreaId = areaId;
             Description = description;
             ExpectedOutcome = expectedOutcome;
-            StartDate = startDate;
-            DueDate = dueDate;
             Status = ProjectStatus.Planned;
             Progress = 0;
-
-            SetPriority(importance, urgency);
-            ValidateDateRange();
-
+            
+            Priority = new ImportanceUrgencyMatrix(importance, urgency);
+            Timeline = ProjectTimeline.Create(startDate, dueDate);
+            
+            _level = 0;
+            _hierarchyPath = $"/{id}";
+            
             AddDistributedEvent(new ProjectCreatedEto
             {
-                ProjectId = Id,
-                OwnerId = OwnerId,
-                Title = Title,
-                TenantId = TenantId,
-                OccurredAt = DateTime.UtcNow
+                OwnerId = ownerId,
+                ProjectId = id,
+                Title =  title,
+                OccurredAt= DateTime.UtcNow,
+                AreaId = areaId
             });
         }
-
-        #region Business Logic
-
-        public void SetPriority(double importance, double urgency)
+        
+        // === BUSINESS METHODS ===
+        
+        public void UpdatePriority(double importance, double urgency)
         {
-            if (importance < 0 || importance > 1)
-            {
-                throw new BusinessException("Projects:InvalidImportance");
-            }
-
-            if (urgency < 0 || urgency > 1)
-            {
-                throw new BusinessException("Projects:InvalidUrgency");
-            }
-
-            Importance = importance;
-            Urgency = urgency;
-            EisenhowerQuadrant = CalculateQuadrant(importance, urgency);
+            Priority = new ImportanceUrgencyMatrix(importance, urgency);
         }
-
-        public void UpdateDates(DateTime? startDate, DateTime? dueDate)
+        
+        public void UpdateTimeline(DateTime? startDate, DateTime? dueDate)
         {
-            StartDate = startDate;
-            DueDate = dueDate;
-            ValidateDateRange();
+            Timeline = Timeline.Update(startDate, dueDate);
         }
-
+        
         public void Start()
         {
             if (Status != ProjectStatus.Planned && Status != ProjectStatus.OnHold)
             {
-                throw new BusinessException("Projects:CannotStart", 
-                    "Can only start planned or on-hold projects.");
+                throw new BusinessException("Projects:CannotStart");
             }
-
+            
             var oldStatus = Status;
             Status = ProjectStatus.Active;
-            StartDate ??= DateTime.UtcNow;
-
-            AddStatusChangeEvent(oldStatus, Status);
+            Timeline = Timeline.MarkStarted(DateTime.UtcNow);
+            
+            AddDistributedEvent(new ProjectStatusChangedEto
+            {
+                OldStatus = oldStatus,
+                NewStatus = Status,
+                ProjectId = Id,
+                ChangedAt = DateTime.UtcNow
+            });
         }
-
+        
         public void Complete(string completedBy)
         {
             if (Status == ProjectStatus.Completed)
             {
                 throw new BusinessException("Projects:AlreadyCompleted");
             }
-
+            
+            // Business rule: All required success criteria must be met
+            var unmetRequired = _successCriteria
+                .Where(sc => !sc.IsMet && sc.Weight >= 8) // Weight 8+ = required
+                .ToList();
+            
+            if (unmetRequired.Any())
+            {
+                throw new BusinessException("Projects:RequiredCriteriaNotMet",
+                    $"Cannot complete project. {unmetRequired.Count} required criteria not met.");
+            }
+            
             var oldStatus = Status;
             Status = ProjectStatus.Completed;
-            CompletedAt = DateTime.UtcNow;
+            Timeline = Timeline.MarkCompleted(DateTime.UtcNow);
             Progress = 100;
-
-            AddStatusChangeEvent(oldStatus, Status);
-            AddDistributedEvent(new ProjectCompletedEto
-            {
-                ProjectId = Id,
-                TenantId = TenantId,
-                CompletedAt = CompletedAt.Value,
-                FinalProgress = Progress,
-                CompletedBy = completedBy
-            });
+            
+            AddDistributedEvent(new ProjectCompletedEto(
+                Id, DateTime.UtcNow, Progress, SuccessCriteriaCompletionRate));
         }
-
-        public void Cancel()
-        {
-            if (Status == ProjectStatus.Completed || Status == ProjectStatus.Cancelled)
-            {
-                throw new BusinessException("Projects:CannotCancel");
-            }
-
-            var oldStatus = Status;
-            Status = ProjectStatus.Cancelled;
-            AddStatusChangeEvent(oldStatus, Status);
-        }
-
+        
         public void Pause()
         {
             if (Status != ProjectStatus.Active)
             {
                 throw new BusinessException("Projects:CanOnlyPauseActive");
             }
-
-            var oldStatus = Status;
+            
             Status = ProjectStatus.OnHold;
-            AddStatusChangeEvent(oldStatus, Status);
         }
-
+        
+        public void Cancel()
+        {
+            if (Status == ProjectStatus.Completed || Status == ProjectStatus.Cancelled)
+            {
+                throw new BusinessException("Projects:CannotCancel");
+            }
+            
+            Status = ProjectStatus.Cancelled;
+        }
+        
         public void Archive()
         {
             if (Status == ProjectStatus.Active)
             {
                 throw new BusinessException("Projects:CannotArchiveActive");
             }
-
+            
             IsArchived = true;
             ArchivedAt = DateTime.UtcNow;
         }
-
+        
         public void UpdateProgress(double newProgress)
         {
             if (newProgress < 0 || newProgress > 100)
             {
-                throw new BusinessException("Projects:InvalidProgress", 
-                    "Progress must be between 0 and 100.");
+                throw new BusinessException("Projects:InvalidProgress");
             }
-
+            
             Progress = newProgress;
         }
-
-        #endregion
-
-        #region Success Criteria Management
-
-        public void AddSuccessCriterion(Guid criterionId)
+        
+        // === SUCCESS CRITERIA MANAGEMENT ===
+        
+        public void AddSuccessCriterion(
+            Guid projectSuccessCriterionId,
+            string title,
+            SuccessCriterionType type,
+            string description = null,
+            string measurementMethod = null,
+            string targetValue = null,
+            double weight = 1.0)
         {
-            if (_successCriterionIds.Count >= 20) // DomainConstants.MaxSuccessCriteria
+            if (_successCriteria.Count >= 20)
             {
-                throw new BusinessException("Projects:MaxSuccessCriteria", 
-                    "Maximum success criteria limit reached.");
+                throw new BusinessException("Projects:MaxSuccessCriteria");
             }
-
-            if (!_successCriterionIds.Contains(criterionId))
-            {
-                _successCriterionIds.Add(criterionId);
-            }
+            
+            var criterion = new ProjectSuccessCriterion(
+                projectSuccessCriterionId,
+                Id,
+                title,
+                type,
+                description,
+                measurementMethod,
+                targetValue,
+                weight);
+            
+            _successCriteria.Add(criterion);
         }
-
-        public void MarkSuccessCriterionMet(int index, string metBy)
-        {
-            if (index < 0 || index >= _successCriteria.Count)
-            {
-                throw new BusinessException("Projects:InvalidCriterionIndex");
-            }
-
-            _successCriteria[index].MarkAsMet(metBy);
-        }
-
+        
         public void RemoveSuccessCriterion(Guid criterionId)
         {
-            _successCriterionIds.Remove(criterionId);
+            var criterion = _successCriteria.FirstOrDefault(c => c.Id == criterionId);
+            if (criterion == null)
+            {
+                throw new BusinessException("Projects:CriterionNotFound");
+            }
+            
+            _successCriteria.Remove(criterion);
         }
-
-        public bool HasSuccessCriterion(Guid criterionId)
+        
+        public void MarkCriterionAsMet(Guid criterionId, string metBy, string notes = null)
         {
-            return _successCriterionIds.Contains(criterionId);
+            var criterion = _successCriteria.FirstOrDefault(c => c.Id == criterionId);
+            if (criterion == null)
+            {
+                throw new BusinessException("Projects:CriterionNotFound");
+            }
+            
+            criterion.MarkAsMet(metBy, notes);
+            
+            // Recalculate progress based on weighted criteria
+            RecalculateProgressFromCriteria();
         }
+        
+        private void RecalculateProgressFromCriteria()
+        {
+            if (_successCriteria.Count == 0)
+            {
+                return;
+            }
 
-        #endregion
-
-        #region Team Management
-
+            var totalWeight = _successCriteria.Sum(c => c.Weight);
+            var metWeight = _successCriteria.Where(c => c.IsMet).Sum(c => c.Weight);
+            
+            Progress = totalWeight > 0 ? (metWeight / totalWeight * 100) : 0;
+        }
+        
+        // === HIERARCHY ===
+        
+        public void SetParent(Guid parentProjectId, int parentLevel, string parentPath)
+        {
+            if (parentProjectId == Id)
+            {
+                throw new BusinessException("Projects:CannotBeOwnParent");
+            }
+            
+            ParentProjectId = parentProjectId;
+            _level = parentLevel + 1;
+            _hierarchyPath = $"{parentPath}/{Id}";
+        }
+        
+        public void ClearParent()
+        {
+            ParentProjectId = null;
+            _level = 0;
+            _hierarchyPath = $"/{Id}";
+        }
+        
+        // === TEAM MANAGEMENT ===
+        
         public void AddCollaboratingTeam(Guid teamId)
         {
             if (!_collaboratingTeamIds.Contains(teamId))
@@ -263,109 +318,14 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
                 _collaboratingTeamIds.Add(teamId);
             }
         }
-
+        
         public void RemoveCollaboratingTeam(Guid teamId)
         {
             _collaboratingTeamIds.Remove(teamId);
         }
-
-        #endregion
-
-        #region Computed Properties
-
-        public bool IsCompleted => Status == ProjectStatus.Completed;
-        public bool IsCancelled => Status == ProjectStatus.Cancelled;
-        public bool IsActive => Status == ProjectStatus.Active;
-        public bool IsOnHold => Status == ProjectStatus.OnHold;
-        public bool IsPlanned => Status == ProjectStatus.Planned;
-
-        public bool HasStarted => StartDate.HasValue && DateTime.UtcNow >= StartDate.Value;
-
-        public bool IsOverdue => DueDate.HasValue && 
-                                 DateTime.UtcNow > DueDate.Value && 
-                                 !IsCompleted;
-
-        public TimeSpan? TimeRemaining
-        {
-            get
-            {
-                if (!DueDate.HasValue || IsCompleted)
-                {
-                    return null;
-                }
-
-                var remaining = DueDate.Value - DateTime.UtcNow;
-                return remaining.TotalSeconds > 0 ? remaining : TimeSpan.Zero;
-            }
-        }
-
-        public int? DaysRemaining => TimeRemaining?.Days;
-
-        public bool HasSuccessCriteria => _successCriteria.Any();
-
-        public int SuccessCriteriaMet => _successCriteria.Count(c => c.IsMet);
-
-        public double SuccessCriteriaCompletionRate
-        {
-            get
-            {
-                if (_successCriteria.Count == 0)
-                {
-                    return 0;
-                }
-
-                return (double)SuccessCriteriaMet / _successCriteria.Count * 100;
-            }
-        }
-
-        public bool AllSuccessCriteriaMet => 
-            _successCriteria.Any() && _successCriteria.All(c => c.IsMet);
-
-        public ProjectHealth Health => CalculateHealth();
-
-        #endregion
-
-        #region Private Methods
-
-        private void ValidateDateRange()
-        {
-            if (StartDate.HasValue && DueDate.HasValue && DueDate < StartDate)
-            {
-                throw new BusinessException("Projects:InvalidDateRange", 
-                    "Due date must be after start date.");
-            }
-
-            if (StartDate.HasValue && DueDate.HasValue)
-            {
-                var duration = (DueDate.Value - StartDate.Value).Days;
-                if (duration > 3650) // ~10 years max
-                {
-                    throw new BusinessException("Projects:ExcessiveDuration", 
-                        "Project duration exceeds maximum allowed.");
-                }
-            }
-        }
-
-        private static EisenhowerQuadrant CalculateQuadrant(double importance, double urgency)
-        {
-            if (importance >= 0.5 && urgency >= 0.5)
-            {
-                return EisenhowerQuadrant.Q1DoFirst;
-            }
-
-            if (importance >= 0.5 && urgency < 0.5)
-            {
-                return EisenhowerQuadrant.Q2Schedule;
-            }
-
-            if (importance < 0.5 && urgency >= 0.5)
-            {
-                return EisenhowerQuadrant.Q3Delegate;
-            }
-
-            return EisenhowerQuadrant.Q4Eliminate;
-        }
-
+        
+        // === HEALTH CALCULATION ===
+        
         private ProjectHealth CalculateHealth()
         {
             if (IsCompleted)
@@ -373,55 +333,53 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
                 return ProjectHealth.Completed;
             }
 
-            if (IsCancelled)
+            if (Status == ProjectStatus.Cancelled)
             {
                 return ProjectHealth.Cancelled;
             }
 
-            if (IsOnHold)
+            if (Status == ProjectStatus.OnHold)
             {
                 return ProjectHealth.OnHold;
             }
 
-            double healthScore = 0;
-            int factors = 0;
-
-            // Factor 1: Progress vs Time
-            if (StartDate.HasValue && DueDate.HasValue && HasStarted)
+            var healthScore = 0.0;
+            var factors = 0;
+            
+            // Factor 1: Progress vs Timeline
+            if (Timeline.HasStarted && Timeline.PlannedDueDate.HasValue)
             {
-                var totalDuration = (DueDate.Value - StartDate.Value).TotalDays;
-                var elapsed = (DateTime.UtcNow - StartDate.Value).TotalDays;
-                var expectedProgress = elapsed / totalDuration * 100;
-                var progressDelta = Progress - expectedProgress;
-
-                if (progressDelta >= 0)
+                var timeProgress = Timeline.TimeProgress;
+                var workProgress = Progress / 100.0;
+                
+                if (workProgress >= timeProgress * 0.9)
                 {
                     healthScore += 1.0;
                 }
-                else if (progressDelta >= -10)
+                else if (workProgress >= timeProgress * 0.7)
                 {
                     healthScore += 0.5;
                 }
-
+                
                 factors++;
             }
-
+            
             // Factor 2: Success Criteria
             if (HasSuccessCriteria)
             {
-                healthScore += SuccessCriteriaCompletionRate / 100;
+                healthScore += SuccessCriteriaCompletionRate / 100.0;
                 factors++;
             }
-
+            
             // Factor 3: Not overdue
             if (!IsOverdue)
             {
                 healthScore += 1.0;
                 factors++;
             }
-
+            
             var avgScore = factors > 0 ? healthScore / factors : 0.5;
-
+            
             if (avgScore >= 0.7)
             {
                 return ProjectHealth.Healthy;
@@ -434,22 +392,5 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
 
             return ProjectHealth.Critical;
         }
-
-        private void AddStatusChangeEvent(ProjectStatus oldStatus, ProjectStatus newStatus)
-        {
-            AddDistributedEvent(new ProjectStatusChangedEto
-            {
-                ProjectId = Id,
-                TenantId = TenantId,
-                OldStatus = oldStatus.ToString(),
-                NewStatus = newStatus.ToString(),
-                ChangedAt = DateTime.UtcNow,
-                ChangedBy = LastModifierId?.ToString()
-            });
-        }
-
-        #endregion
     }
 }
-// UPDATE the Project class to manage entities instead of value objects
-

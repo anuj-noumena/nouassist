@@ -7,32 +7,33 @@ using Volo.Abp.Validation;
 using Volo.Abp.Validation.Localization;
 using Volo.Abp.VirtualFileSystem;
 
-namespace NouAssist.WorkManagement;
-
-[DependsOn(
-    typeof(AbpValidationModule),
-    typeof(AbpDddDomainSharedModule)
-)]
-public class WorkManagementDomainSharedModule : AbpModule
+namespace NouAssist.WorkManagement
 {
-    public override void ConfigureServices(ServiceConfigurationContext context)
+    [DependsOn(
+        typeof(AbpValidationModule),
+        typeof(AbpDddDomainSharedModule)
+    )]
+    public class WorkManagementDomainSharedModule : AbpModule
     {
-        Configure<AbpVirtualFileSystemOptions>(options =>
+        public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            options.FileSets.AddEmbedded<WorkManagementDomainSharedModule>();
-        });
+            Configure<AbpVirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.AddEmbedded<WorkManagementDomainSharedModule>();
+            });
 
-        Configure<AbpLocalizationOptions>(options =>
-        {
-            options.Resources
-                .Add<WorkManagementResource>("en")
-                .AddBaseTypes(typeof(AbpValidationResource))
-                .AddVirtualJson("/Localization/WorkManagement");
-        });
+            Configure<AbpLocalizationOptions>(options =>
+            {
+                options.Resources
+                    .Add<WorkManagementResource>("en")
+                    .AddBaseTypes(typeof(AbpValidationResource))
+                    .AddVirtualJson("/Localization/WorkManagement");
+            });
 
-        Configure<AbpExceptionLocalizationOptions>(options =>
-        {
-            options.MapCodeNamespace("WorkManagement", typeof(WorkManagementResource));
-        });
+            Configure<AbpExceptionLocalizationOptions>(options =>
+            {
+                options.MapCodeNamespace("WorkManagement", typeof(WorkManagementResource));
+            });
+        }
     }
 }

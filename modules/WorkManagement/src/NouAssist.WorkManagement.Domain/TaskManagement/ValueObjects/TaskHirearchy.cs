@@ -6,79 +6,40 @@ namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
 {
     public class TaskHierarchy : ValueObject
     {
-        public int OrderInParent { get; private set; }
-        public Guid? ParentInstanceId { get; private set; }
-        public int SubtasksCount { get; private set; }
-        public int SubtasksDoneCount { get; private set; }
+        public Guid? ParentId { get; private set; }
+        public int Level { get; private set; }
+        public string Path { get; private set; } // e.g., "root/parent/child"
 
         private TaskHierarchy() { }
 
-        public TaskHierarchy(
-            int orderInParent,
-            Guid? parentInstanceId,
-            int subtasksCount = 0,
-            int subtasksDoneCount = 0)
+        public static TaskHierarchy Root()
         {
-            if (orderInParent < 0)
+            return new TaskHierarchy
             {
-                throw new ArgumentException("Order in parent cannot be negative.", nameof(orderInParent));
-            }
+                ParentId = null,
+                Level = 0,
+                Path = "/"
+            };
+        }
 
-            if (subtasksCount < 0)
+        public static TaskHierarchy Child(Guid parentId, int parentLevel, string parentPath)
+        {
+            return new TaskHierarchy
             {
-                throw new ArgumentException("Subtask count cannot be negative.", nameof(subtasksCount));
-            }
-
-            if (subtasksDoneCount < 0 || subtasksDoneCount > subtasksCount)
-            {
-                throw new ArgumentException("Invalid subtask completion count.", nameof(subtasksDoneCount));
-            }
-
-            OrderInParent = orderInParent;
-            ParentInstanceId = parentInstanceId;
-            SubtasksCount = subtasksCount;
-            SubtasksDoneCount = subtasksDoneCount;
+                ParentId = parentId,
+                Level = parentLevel + 1,
+                Path = $"{parentPath}/{parentId}"
+            };
         }
 
-        // Immutable update methods
-        public TaskHierarchy WithOrder(int newOrder)
-        {
-            return new TaskHierarchy(newOrder, ParentInstanceId, SubtasksCount, SubtasksDoneCount);
-        }
-
-        public TaskHierarchy WithParent(Guid? newParentId)
-        {
-            return new TaskHierarchy(OrderInParent, newParentId, SubtasksCount, SubtasksDoneCount);
-        }
-
-        public TaskHierarchy WithSubtaskCounts(int subtasksCount, int subtasksDoneCount)
-        {
-            return new TaskHierarchy(OrderInParent, ParentInstanceId, subtasksCount, subtasksDoneCount);
-        }
-
-        public TaskHierarchy IncrementSubtasksDone()
-        {
-            if (SubtasksDoneCount >= SubtasksCount)
-            {
-                return this;
-            }
-
-            return new TaskHierarchy(OrderInParent, ParentInstanceId, SubtasksCount, SubtasksDoneCount + 1);
-        }
-
-        public bool IsParent => ParentInstanceId == null;
-        public bool HasSubtasks => SubtasksCount > 0;
-        public bool AllSubtasksDone => SubtasksCount > 0 && SubtasksDoneCount == SubtasksCount;
-        public double SubtaskCompletionRate => SubtasksCount == 0
-            ? 0.0
-            : (double)SubtasksDoneCount / SubtasksCount;
+        public bool IsRoot => !ParentId.HasValue;
+        public bool IsChild => ParentId.HasValue;
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return OrderInParent;
-            yield return ParentInstanceId;
-            yield return SubtasksCount;
-            yield return SubtasksDoneCount;
+            yield return ParentId;
+            yield return Level;
+            yield return Path;
         }
     }
 }

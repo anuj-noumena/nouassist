@@ -5,36 +5,34 @@ using NouAssist.WorkManagement.ProjectManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
 {
+    /// <summary>
+    /// ProjectSprint - A time-boxed iteration within a project
+    /// OPTIMIZED: Cleaner metrics, better state management
+    /// </summary>
     public class ProjectSprint : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         public Guid ProjectId { get; private set; }
         public Guid? TenantId { get; private set; }
         public string Name { get; private set; }
         public string Goal { get; private set; }
-        public string ReleaseTheme { get; set; }
-
-        // Dates
-        public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
-
-        // Metrics
-        private SprintMetrics _metrics;
-        public int PlannedStoryPoints { get; private set; }
-        public int CompletedStoryPoints { get; private set; }
-        public int VelocityEstimate { get; private set; }
-        public int ActualVelocity { get; private set; }
-
-        // Status
+        
+        // === TIMELINE ===
+        public SprintTimeline Timeline { get; private set; }
+        
+        // === METRICS (Value Object) ===
+        public SprintMetrics Metrics { get; private set; }
+        
+        // === STATUS ===
         public SprintStatus Status { get; private set; }
-        public DateTime? CompletedAt { get; private set; }
-        public string CompletedBy { get; private set; }
         public string RetrospectiveNotes { get; set; }
-
-        protected ProjectSprint() { /* ORM */ }
-
+        public string ReviewNotes { get; set; }
+        
+        protected ProjectSprint() { }
+        
         public ProjectSprint(
             Guid id,
             Guid projectId,
@@ -49,154 +47,85 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
             Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             Goal = Check.NotNullOrWhiteSpace(goal, nameof(goal));
             TenantId = tenantId;
-            VelocityEstimate = velocityEstimate ?? 0;
             Status = SprintStatus.Planned;
-
-            SetDates(startDate, endDate);
+            
+            Timeline = SprintTimeline.Create(startDate, endDate);
+            Metrics = SprintMetrics.Initialize(velocityEstimate ?? 0);
         }
-
-        public void SetDates(DateTime startDate, DateTime endDate)
+        
+        public void UpdateDates(DateTime startDate, DateTime endDate)
         {
-            if (endDate <= startDate)
-            {
-                throw new BusinessException("Projects:InvalidSprintDates");
-            }
-
-            var duration = (endDate - startDate).Days;
-            if (duration < 7 || duration > 30)
-            {
-                throw new BusinessException("Projects:InvalidSprintDuration", 
-                    "Sprint duration must be between 7 and 30 days.");
-            }
-
-            StartDate = startDate;
-            EndDate = endDate;
+            Timeline = Timeline.Update(startDate, endDate);
         }
-
+        
         public void Start()
         {
             if (Status != SprintStatus.Planned)
             {
-                throw new BusinessException("Projects:SprintAlreadyStarted");
+                throw new BusinessException("Sprints:AlreadyStarted");
             }
-
+            
             Status = SprintStatus.InProgress;
+            Timeline = Timeline.MarkStarted(DateTime.UtcNow);
         }
-
+        
         public void Complete(string completedBy, string retrospectiveNotes = null)
         {
             if (Status == SprintStatus.Completed)
             {
-                throw new BusinessException("Projects:SprintAlreadyCompleted");
+                throw new BusinessException("Sprints:AlreadyCompleted");
             }
-
+            
             Status = SprintStatus.Completed;
-            CompletedAt = DateTime.UtcNow;
-            CompletedBy = Check.NotNullOrWhiteSpace(completedBy, nameof(completedBy));
+            Timeline = Timeline.MarkCompleted(DateTime.UtcNow);
             RetrospectiveNotes = retrospectiveNotes;
-            ActualVelocity = CompletedStoryPoints;
-
-            _metrics = new SprintMetrics(
-                PlannedStoryPoints,
-                CompletedStoryPoints,
-                VelocityEstimate,
-                ActualVelocity);
-
-            AddDistributedEvent(new SprintCompletedEto
-            {
-                SprintId = Id,
-                ProjectId = ProjectId,
-                TenantId = TenantId,
-                CompletedAt = CompletedAt.Value,
-                PlannedStoryPoints = PlannedStoryPoints,
-                CompletedStoryPoints = CompletedStoryPoints,
-                CompletionRate = CompletionRate
-            });
+            Metrics = Metrics.Complete();
+            
+            AddDistributedEvent(new SprintCompletedEto(
+                Id, ProjectId, TenantId, DateTime.UtcNow, 
+                Metrics.PlannedStoryPoints, 
+                Metrics.CompletedStoryPoints,
+                Metrics.CompletionRate));
         }
-
-        public void UpdateStoryPoints(int? planned = null, int? completed = null)
+        
+        public void UpdateMetrics(int? planned = null, int? completed = null)
         {
-            if (planned.HasValue)
-            {
-                if (planned < 0)
-                {
-                    throw new BusinessException("Projects:InvalidStoryPoints");
-                }
-
-                PlannedStoryPoints = planned.Value;
-            }
-
-            if (completed.HasValue)
-            {
-                if (completed < 0 || completed > PlannedStoryPoints)
-                {
-                    throw new BusinessException("Projects:InvalidCompletedStoryPoints");
-                }
-
-                CompletedStoryPoints = completed.Value;
-            }
+            Metrics = Metrics.Update(planned, completed);
         }
-
-        // Computed Properties
-        public int DurationInDays => (EndDate - StartDate).Days;
-
-        public bool IsActive => Status == SprintStatus.InProgress &&
-                                DateTime.UtcNow >= StartDate &&
-                                DateTime.UtcNow <= EndDate;
-
-        public bool IsPast => DateTime.UtcNow > EndDate;
-        public bool IsFuture => DateTime.UtcNow < StartDate;
-
-        public TimeSpan? TimeRemaining
+        
+        // Computed
+        public bool IsActive => Timeline.IsActive && Status == SprintStatus.InProgress;
+        public bool IsPast => Timeline.IsPast;
+        public bool IsFuture => Timeline.IsFuture;
+        public int? DaysRemaining => Timeline.DaysRemaining;
+        public SprintHealth Health => CalculateHealth();
+        
+        private SprintHealth CalculateHealth()
         {
-            get
+            if (Status == SprintStatus.Completed)
             {
-                if (Status == SprintStatus.Completed || IsPast)
-                {
-                    return null;
-                }
-
-                return EndDate - DateTime.UtcNow;
+                return SprintHealth.Completed;
             }
-        }
 
-        public int? DaysRemaining => TimeRemaining?.Days;
-
-        public double CompletionRate => PlannedStoryPoints == 0 ? 0 : 
-            (double)CompletedStoryPoints / PlannedStoryPoints * 100;
-
-        public double VelocityAccuracy => VelocityEstimate == 0 ? 0 : 
-            (double)ActualVelocity / VelocityEstimate * 100;
-
-        public SprintHealth Health
-        {
-            get
+            if (!IsActive)
             {
-                if (Status == SprintStatus.Completed)
-                {
-                    return SprintHealth.Completed;
-                }
-
-                if (!IsActive)
-                {
-                    return SprintHealth.NotStarted;
-                }
-
-                var timeElapsedPercent = (DateTime.UtcNow - StartDate).TotalDays / DurationInDays;
-                var progressPercent = CompletionRate / 100;
-
-                if (progressPercent >= timeElapsedPercent * 0.9)
-                {
-                    return SprintHealth.OnTrack;
-                }
-
-                if (progressPercent >= timeElapsedPercent * 0.7)
-                {
-                    return SprintHealth.AtRisk;
-                }
-
-                return SprintHealth.BehindSchedule;
+                return SprintHealth.NotStarted;
             }
+
+            var timeProgress = Timeline.TimeProgress;
+            var workProgress = Metrics.CompletionRate / 100.0;
+            
+            if (workProgress >= timeProgress * 0.9)
+            {
+                return SprintHealth.OnTrack;
+            }
+
+            if (workProgress >= timeProgress * 0.7)
+            {
+                return SprintHealth.AtRisk;
+            }
+
+            return SprintHealth.BehindSchedule;
         }
     }
 }

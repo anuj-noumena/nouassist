@@ -13,7 +13,8 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
         public string Title { get; private set; }
         public string Description { get; set; }
         public SuccessCriterionType CriterionType { get; private set; }
-        
+        public CriterionCriticality Criticality { get; private set; }
+
         // Measurement
         public string MeasurementMethod { get; set; }
         public string TargetValue { get; set; }
@@ -161,6 +162,21 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
 
                 return Math.Clamp(ActualNumeric.Value / TargetNumeric.Value * 100, 0, 100);
             }
+        }
+        
+        public CriterionCriticality GetCriticality()
+        {
+            if (Weight >= 8)
+            {
+                return CriterionCriticality.MustHave;
+            }
+
+            if (Weight >= 5)
+            {
+                return CriterionCriticality.ShouldHave;
+            }
+
+            return CriterionCriticality.NiceToHave;
         }
     }
 }

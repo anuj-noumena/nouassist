@@ -1,33 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.FinancialManagement.EntityFrameworkCore;
-
-public static class FinancialManagementDbContextModelCreatingExtensions
+namespace NouAssist.FinancialManagement.EntityFrameworkCore
 {
-    public static void ConfigureFinancialManagement(
-        this ModelBuilder builder)
+    public static class FinancialManagementDbContextModelCreatingExtensions
     {
-        Check.NotNull(builder, nameof(builder));
-
-        /* Configure all entities here. Example:
-
-        builder.Entity<Question>(b =>
+        public static void ConfigureFinancialManagement(
+            this ModelBuilder builder,
+            FinancialManagementDbContext dbContext)
         {
-            //Configure table & schema name
-            b.ToTable(FinancialManagementDbProperties.DbTablePrefix + "Questions", FinancialManagementDbProperties.DbSchema);
+            Check.NotNull(builder, nameof(builder));
 
-            b.ConfigureByConvention();
+            // Apply all IEntityTypeConfiguration classes from this assembly
+            builder.ApplyConfigurationsFromAssembly(typeof(FinancialManagementDbContext).Assembly);
 
-            //Properties
-            b.Property(q => q.Title).IsRequired().HasMaxLength(QuestionConsts.MaxTitleLength);
-
-            //Relations
-            b.HasMany(question => question.Tags).WithOne().HasForeignKey(qt => qt.QuestionId);
-
-            //Indexes
-            b.HasIndex(q => q.CreationTime);
-        });
-        */
+            // Configure schema for all tables
+            builder.HasDefaultSchema(FinancialManagementDbProperties.DbSchema);
+        }
     }
 }

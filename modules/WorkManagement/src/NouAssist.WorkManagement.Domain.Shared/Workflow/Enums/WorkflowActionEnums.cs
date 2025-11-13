@@ -91,7 +91,9 @@ namespace NouAssist.WorkManagement.Workflow.Enums
         ValidateFields = 17,
         InitiateApproval = 18,  // Triggers ApprovalRequest
         CompleteApproval = 19,   // Processes pending approvals
-        DelegateTask = 20
+        DelegateTask = 20,
+        CompositeAction = 21,
+        ConditionalAction =22
     }
 
     /// <summary>

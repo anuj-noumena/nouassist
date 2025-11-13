@@ -135,6 +135,11 @@ namespace NouAssist.WorkManagement.Approval.Aggregates
         /// </summary>
         public IReadOnlyCollection<ApprovalDecision> Decisions => _decisions.AsReadOnly();
 
+        public DateTime? SlaDeadline { get; private set; }
+        public bool IsSlaBreached => SlaDeadline.HasValue && 
+                                     DateTime.UtcNow > SlaDeadline.Value && 
+                                     !IsComplete;
+
         /// <summary>
         /// Protected constructor required by ORM frameworks.
         /// </summary>
@@ -424,6 +429,15 @@ namespace NouAssist.WorkManagement.Approval.Aggregates
         public void SetCustomFieldValue(string kvpKey, object kvpValue)
         {
             CustomFields = CustomFields.SetValue(kvpKey, kvpValue);
+        }
+        
+        public void SetSlaDeadline(DateTime deadline)
+        {
+            if (deadline < DateTime.UtcNow)
+            {
+                throw new BusinessException("Approval:SlaInPast");
+            }
+            SlaDeadline = deadline;
         }
     }
 }

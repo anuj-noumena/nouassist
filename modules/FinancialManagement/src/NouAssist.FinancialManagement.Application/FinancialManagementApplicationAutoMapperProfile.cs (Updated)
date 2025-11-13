@@ -1,0 +1,71 @@
+using AutoMapper;
+using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
+using NouAssist.FinancialManagement.AccountsPayable.Dtos;
+using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
+using NouAssist.FinancialManagement.AccountsReceivable.Dtos;
+using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
+using NouAssist.FinancialManagement.FinancialPlanning.Dtos;
+using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
+using NouAssist.FinancialManagement.GeneralLedger.Dtos;
+using NouAssist.FinancialManagement.GeneralLedger.Entities;
+
+namespace NouAssist.FinancialManagement
+{
+    public class FinancialManagementApplicationAutoMapperProfile : Profile
+    {
+        public FinancialManagementApplicationAutoMapperProfile()
+        {
+            // General Ledger Mappings
+            CreateMap<LedgerAccount, LedgerAccountDto>();
+            CreateMap<JournalEntryBatch, JournalEntryBatchDto>()
+                .ForMember(dest => dest.IsBalanced, opt => opt.MapFrom(src => src.IsBalanced()));
+            CreateMap<JournalEntryLine, JournalEntryLineDto>()
+                .ForMember(dest => dest.AccountNumber, opt => opt.Ignore())
+                .ForMember(dest => dest.AccountName, opt => opt.Ignore());
+            CreateMap<AccountingPeriod, AccountingPeriodDto>()
+                .ForMember(dest => dest.CanClose, opt => opt.Ignore());
+            CreateMap<BankStatement, BankStatementDto>()
+                .ForMember(dest => dest.UnmatchedCount, opt => opt.MapFrom(src => 
+                    src.Lines.Count(l => l.MatchStatus == GeneralLedger.Enums.MatchStatus.Unmatched)));
+            CreateMap<GeneralLedger.Entities.BankStatementLine, BankStatementLineDto>();
+
+            // Accounts Payable Mappings
+            CreateMap<Vendor, VendorDto>();
+            CreateMap<Bill, BillDto>()
+                .ForMember(dest => dest.VendorName, opt => opt.Ignore());
+            CreateMap<AccountsPayable.Entities.BillLineItem, BillLineItemDto>();
+            CreateMap<AccountsPayable.Entities.BillApproval, BillApprovalDto>();
+
+            // Accounts Receivable Mappings
+            CreateMap<Customer, CustomerDto>()
+                .ForMember(dest => dest.CreditLimit, opt => opt.Ignore())
+                .ForMember(dest => dest.AvailableCredit, opt => opt.Ignore());
+            CreateMap<Invoice, InvoiceDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.Ignore())
+                .ForMember(dest => dest.DaysOverdue, opt => opt.Ignore());
+            CreateMap<AccountsReceivable.Entities.InvoiceLineItem, InvoiceLineItemDto>();
+            CreateMap<CustomerPayment, CustomerPaymentDto>();
+            CreateMap<CreditMemo, CreditMemoDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.Ignore());
+            CreateMap<CollectionCase, CollectionCaseDto>()
+                .ForMember(dest => dest.CustomerName, opt => opt.Ignore())
+                .ForMember(dest => dest.AssignedToName, opt => opt.Ignore())
+                .ForMember(dest => dest.DaysSinceLastContact, opt => opt.Ignore());
+            CreateMap<AccountsReceivable.Entities.CollectionActivity, CollectionActivityDto>();
+
+            // Financial Planning Mappings
+            CreateMap<Expense, ExpenseDto>()
+                .ForMember(dest => dest.CategoryName, opt => opt.Ignore());
+            CreateMap<Budget, BudgetDto>()
+                .ForMember(dest => dest.VariancePercentage, opt => opt.Ignore())
+                .ForMember(dest => dest.Allocations, opt => opt.Ignore());
+            CreateMap<FinancialPlanning.Entities.CategoryAllocation, CategoryAllocationDto>()
+                .ForMember(dest => dest.CategoryName, opt => opt.Ignore())
+                .ForMember(dest => dest.Variance, opt => opt.Ignore())
+                .ForMember(dest => dest.PercentageUsed, opt => opt.Ignore());
+            CreateMap<FinancialGoal, FinancialGoalDto>()
+                .ForMember(dest => dest.ProgressPercentage, opt => opt.Ignore())
+                .ForMember(dest => dest.DaysRemaining, opt => opt.Ignore());
+        }
+    }
+}

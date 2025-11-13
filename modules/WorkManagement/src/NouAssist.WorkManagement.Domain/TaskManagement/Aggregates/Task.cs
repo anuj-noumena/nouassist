@@ -7,47 +7,57 @@ using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
 
 namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 {
     /// <summary>
-    /// Task Blueprint - Defines the template for task instances
+    /// Task Blueprint - Template with GTD Area support
     /// </summary>
     public class Task : FullAuditedAggregateRoot<Guid>, IMultiTenant, ISoftDelete
     {
+        // === IDENTITY ===
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public string Title { get; private set; }
         public Guid? ProjectId { get; set; }
+        public Guid? TaskTypeId { get; set; }
+
+        // === CONTENT ===
+        public string Title { get; private set; }
         public string Description { get; set; }
-        public string Notes { get; set; }
         public string ExpectedResult { get; set; }
+
+        // === GTD ORGANIZATION ===
+        public Guid? AreaId { get; set; } // GTD Area of Responsibility
+        public Guid? ContextId { get; set; } // GTD Context (where/with what)
         
+        // === DEFAULTS FOR INSTANCES ===
         public double DefaultImportance { get; private set; }
         public double DefaultUrgency { get; private set; }
-        
-        public Guid? DefaultContextId { get; set; }
-        public Guid? DefaultAreaId { get; set; }
-        public Guid? DefaultSprintId { get; set; }
-        public Guid? TaskTypeId { get; set; }
-        
-        public int? EstimateMinutes { get; set; }
-        public DateTime? DefaultDueDate { get; set; }
-        
-        public bool IsRecurring { get; private set; }
+        public DateTime? DefaultDueDate {get; private set;}
+        public int? DefaultEstimateMinutes { get; set; }
+        public Guid? DefaultWorkflowId { get; set; }
+        public Guid? DefaultAssigneeId { get; set; }
+        public Guid? DefaultAreaId { get; set; } // Default area for instances
+        public Guid? DefaultContextId { get; set; } // Default context for instances
+
+        // === RECURRENCE ===
         public RecurrenceRule RecurrenceRule { get; private set; }
-        
+
+        // === STATE ===
         public bool IsActive { get; private set; }
         public int Version { get; private set; }
 
-        private readonly List<TaskActionStep> _actionSteps = new();
-        public IReadOnlyCollection<TaskActionStep> ActionSteps => _actionSteps.AsReadOnly();
+        // === CHECKLIST ===
+        private readonly List<ChecklistItem> _checklistItems = new();
+        public IReadOnlyCollection<ChecklistItem> ChecklistItems => _checklistItems.AsReadOnly();
 
+        // === ACCEPTANCE CRITERIA ===
         private readonly List<AcceptanceCriterion> _acceptanceCriteria = new();
         public IReadOnlyCollection<AcceptanceCriterion> AcceptanceCriteria => 
             _acceptanceCriteria.AsReadOnly();
 
-        protected Task() { /* ORM */ }
+        protected Task() { }
 
         public Task(
             Guid id,
@@ -55,15 +65,19 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             string title,
             Guid? tenantId = null,
             Guid? projectId = null,
+            Guid? areaId = null,
+            Guid? contextId = null,
             double defaultImportance = 0.5,
             double defaultUrgency = 0.5) : base(id)
         {
-            OwnerId = Check.NotNull(ownerId, nameof(ownerId));
-            Title = Check.NotNullOrWhiteSpace(title, nameof(title), maxLength: 500);
+            OwnerId = ownerId;
+            Title = Check.NotNullOrWhiteSpace(title, nameof(title));
             TenantId = tenantId;
             ProjectId = projectId;
+            AreaId = areaId;
+            ContextId = contextId;
             
-            SetImportanceUrgency(defaultImportance, defaultUrgency);
+            SetDefaults(defaultImportance, defaultUrgency);
             
             IsActive = true;
             Version = 1;
@@ -71,77 +85,238 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             AddDistributedEvent(new TaskCreatedEto
             {
                 TaskId = Id,
-                TenantId = TenantId,
                 Title = Title,
                 OwnerId = OwnerId,
+                AreaId = AreaId,
+                ProjectId = ProjectId,
+                ContextId = ContextId,
+                TenantId = TenantId,
                 CreatedAt = DateTime.UtcNow
             });
         }
 
+        public void SetDefaults(double importance, double urgency)
+        {
+            DefaultImportance = ImportanceUrgencyMatrix.ValidateImportance(importance);
+            DefaultUrgency = ImportanceUrgencyMatrix.ValidateUrgency(urgency);
+        }
+
+        // === GTD ORGANIZATION METHODS ===
         
+        /// <summary>
+        /// Assigns this task to a GTD Area of Responsibility
+        /// </summary>
+        public void AssignToArea(Guid areaId)
+        {
+            var oldAreaId = AreaId;
+            AreaId = areaId;
+            Version++;
+            
+            AddDistributedEvent(new TaskAreaChangedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldAreaId = oldAreaId,
+                NewAreaId = areaId,
+                Version = Version,
+                ChangedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Removes area assignment (makes task area-less)
+        /// </summary>
+        public void RemoveFromArea()
+        {
+            if (!AreaId.HasValue)
+            {
+                return;
+            }
+
+            var oldAreaId = AreaId;
+            AreaId = null;
+            Version++;
+            
+            AddDistributedEvent(new TaskAreaChangedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldAreaId = oldAreaId,
+                NewAreaId = null,
+                Version = Version,
+                ChangedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Assigns this task to a GTD Context
+        /// </summary>
+        public void AssignToContext(Guid contextId)
+        {
+            var oldContextId = ContextId;
+            ContextId = contextId;
+            Version++;
+            
+            AddDistributedEvent(new TaskContextChangedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldContextId = oldContextId,
+                NewContextId = contextId,
+                Version = Version,
+                ChangedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Removes context assignment
+        /// </summary>
+        public void RemoveFromContext()
+        {
+            if (!ContextId.HasValue)
+            {
+                return;
+            }
+
+            var oldContextId = ContextId;
+            ContextId = null;
+            Version++;
+            
+            AddDistributedEvent(new TaskContextChangedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldContextId = oldContextId,
+                NewContextId = null,
+                Version = Version,
+                ChangedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Sets default GTD organization for instances created from this blueprint
+        /// </summary>
+        public void SetDefaultOrganization(Guid? defaultAreaId, Guid? defaultContextId)
+        {
+            DefaultAreaId = defaultAreaId;
+            DefaultContextId = defaultContextId;
+            Version++;
+        }
+
+        /// <summary>
+        /// Moves task from project to area (or vice versa)
+        /// In GTD: Projects are specific outcomes, Areas are ongoing responsibilities
+        /// </summary>
+        public void MoveToArea(Guid areaId)
+        {
+            if (ProjectId.HasValue)
+            {
+                throw new BusinessException("Tasks:CannotBeInBothProjectAndArea",
+                    "Task cannot belong to both a Project and an Area. Remove from project first.");
+            }
+            
+            AssignToArea(areaId);
+        }
+
+        /// <summary>
+        /// Moves task from area to project
+        /// </summary>
         public void MoveToProject(Guid projectId, Guid workflowStatusId)
         {
+            if (AreaId.HasValue)
+            {
+                throw new BusinessException("Tasks:CannotBeInBothProjectAndArea",
+                    "Task cannot belong to both a Project and an Area. Remove from area first.");
+            }
+            
+            var previousAreaId = AreaId;
             ProjectId = projectId;
-        }
-
-        // Action Steps Management
-        public void AddActionStep(string title, string notes = null, bool isRequired = false, int seq = 0)
-        {
-            if (_actionSteps.Count >= 50) // Business rule: max 50 steps
-            {
-                throw new BusinessException("Tasks:MaxActionStepsExceeded");
-            }
-
-            var step = new TaskActionStep(Id, title, notes, isRequired, seq);
-            _actionSteps.Add(step);
             Version++;
+            
+            AddDistributedEvent(new TaskMovedToProjectEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                ProjectId = projectId,
+                PreviousAreaId = previousAreaId,
+                Version = Version,
+                MovedAt = DateTime.UtcNow
+            });
         }
 
-        public void RemoveActionStep(Guid stepId)
+        // === CHECKLIST MANAGEMENT ===
+        public void AddChecklistItem(string title, bool isRequired = false)
         {
-            var step = _actionSteps.FirstOrDefault(s => s.Id == stepId);
-            if (step == null)
-            {
-                throw new BusinessException("Tasks:ActionStepNotFound");
-            }
+            var maxOrder = _checklistItems.Any() 
+                ? _checklistItems.Max(i => i.OrderIndex) 
+                : -1;
 
-            _actionSteps.Remove(step);
+            var item = new ChecklistItem(
+                Guid.NewGuid(),
+                Id,
+                title,
+                maxOrder + 1,
+                isRequired);
+
+            _checklistItems.Add(item);
             Version++;
+            
+            AddDistributedEvent(new TaskChecklistItemAddedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                ChecklistItemId = item.Id,
+                ItemTitle = title,
+                IsRequired = isRequired,
+                OrderIndex = maxOrder + 1,
+                Version = Version,
+                AddedAt = DateTime.UtcNow
+            });
         }
 
-        public void ReorderActionSteps(List<Guid> orderedStepIds)
+        public void RemoveChecklistItem(Guid itemId)
         {
-            if (orderedStepIds.Count != _actionSteps.Count)
+            var item = _checklistItems.FirstOrDefault(i => i.Id == itemId);
+            if (item != null)
             {
-                throw new BusinessException("Tasks:InvalidStepReorder");
-            }
-
-            for (int i = 0; i < orderedStepIds.Count; i++)
-            {
-                var step = _actionSteps.FirstOrDefault(s => s.Id == orderedStepIds[i]);
-                if (step != null)
+                _checklistItems.Remove(item);
+                ReorderChecklistItems();
+                Version++;
+                
+                AddDistributedEvent(new TaskChecklistItemRemovedEto
                 {
-                    step.UpdateSequence(i);
-                }
+                    TaskId = Id,
+                    TenantId = TenantId,
+                    ChecklistItemId = itemId,
+                    Version = Version,
+                    RemovedAt = DateTime.UtcNow
+                });
+            }
+        }
+
+        public void ReorderChecklistItems(List<Guid> orderedIds)
+        {
+            for (int i = 0; i < orderedIds.Count; i++)
+            {
+                var item = _checklistItems.FirstOrDefault(ci => ci.Id == orderedIds[i]);
+                item?.UpdateOrder(i);
             }
             Version++;
         }
 
-        // Acceptance Criteria Management
-        public void AddAcceptanceCriterion(
-            string description,
-            int? priority = null,
-            string givenContext = null,
-            string whenAction = null,
-            string thenOutcome = null)
+        private void ReorderChecklistItems()
         {
-            if (_acceptanceCriteria.Count >= 20) // Business rule
+            var items = _checklistItems.OrderBy(i => i.OrderIndex).ToList();
+            for (int i = 0; i < items.Count; i++)
             {
-                throw new BusinessException("Tasks:MaxAcceptanceCriteriaExceeded");
+                items[i].UpdateOrder(i);
             }
+        }
 
-            var criterion = new AcceptanceCriterion(
-                Id, description, priority, givenContext, whenAction, thenOutcome);
+        // === ACCEPTANCE CRITERIA ===
+        public void AddAcceptanceCriterion(string description, int? priority = null)
+        {
+            var criterion = new AcceptanceCriterion(Id, description, priority);
             _acceptanceCriteria.Add(criterion);
             Version++;
         }
@@ -149,62 +324,115 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public void RemoveAcceptanceCriterion(Guid criterionId)
         {
             var criterion = _acceptanceCriteria.FirstOrDefault(c => c.Id == criterionId);
-            if (criterion == null)
+            if (criterion != null)
             {
-                throw new BusinessException("Tasks:AcceptanceCriterionNotFound");
+                _acceptanceCriteria.Remove(criterion);
+                Version++;
             }
-
-            _acceptanceCriteria.Remove(criterion);
-            Version++;
         }
-        
-        // Recurrence
-        public void MakeRecurring(RecurrenceRule recurrenceRule)
+
+        // === RECURRENCE ===
+        public void SetRecurrence(RecurrenceRule rule)
         {
-            RecurrenceRule = Check.NotNull(recurrenceRule, nameof(recurrenceRule));
-            IsRecurring = true;
+            RecurrenceRule = rule;
             Version++;
+            
+            AddDistributedEvent(new TaskRecurrenceSetEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                RecurrencePattern = rule?.ToString(),
+                Version = Version,
+                SetAt = DateTime.UtcNow
+            });
         }
 
-        public void RemoveRecurrence()
+        public void ClearRecurrence()
         {
             RecurrenceRule = null;
-            IsRecurring = false;
             Version++;
+            
+            AddDistributedEvent(new TaskRecurrenceClearedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                Version = Version,
+                ClearedAt = DateTime.UtcNow
+            });
         }
 
-        // State Management
-        public void SetImportanceUrgency(double importance, double urgency)
+        // === STATE MANAGEMENT ===
+        public void Activate()
         {
-            var matrix = new ImportanceUrgencyMatrix(importance, urgency);
-            DefaultImportance = matrix.Importance;
-            DefaultUrgency = matrix.Urgency;
-            Version++;
-        }
-
-        public void UpdateTitle(string newTitle)
-        {
-            Title = Check.NotNullOrWhiteSpace(newTitle, nameof(newTitle), maxLength: 500);
-            Version++;
+            IsActive = true;
+            
+            AddDistributedEvent(new TaskActivatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                ActivatedAt = DateTime.UtcNow
+            });
         }
 
         public void Deactivate()
         {
             IsActive = false;
-            Version++;
+            
+            AddDistributedEvent(new TaskDeactivatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                DeactivatedAt = DateTime.UtcNow
+            });
         }
 
-        public void Activate()
+        public void UpdateTitle(string newTitle)
         {
-            IsActive = true;
+            var oldTitle = Title;
+            Title = Check.NotNullOrWhiteSpace(newTitle, nameof(newTitle));
             Version++;
+            
+            AddDistributedEvent(new TaskTitleUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldTitle = oldTitle,
+                NewTitle = newTitle,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
         }
 
-        public void SoftDelete()
+        // === COMPUTED ===
+        public bool IsRecurring => RecurrenceRule != null;
+        public bool HasChecklist => _checklistItems.Any();
+        public bool HasAcceptanceCriteria => _acceptanceCriteria.Any();
+        public int RequiredChecklistItemCount => _checklistItems.Count(i => i.IsRequired);
+        public bool IsInArea => AreaId.HasValue;
+        public bool IsInProject => ProjectId.HasValue;
+        public bool IsInContext => ContextId.HasValue;
+        public bool IsOrganized => IsInArea || IsInProject || IsInContext;
+        
+        /// <summary>
+        /// Gets the effective area for instances (blueprint area or default area)
+        /// </summary>
+        public Guid? GetEffectiveAreaForInstance()
         {
-            IsDeleted = true;
-            IsActive = false;
-            Version++;
+            return AreaId ?? DefaultAreaId;
+        }
+
+        /// <summary>
+        /// Gets the effective context for instances
+        /// </summary>
+        public Guid? GetEffectiveContextForInstance()
+        {
+            return ContextId ?? DefaultContextId;
+        }
+
+        public void SetImportanceUrgency(double newImportance, double newUrgency)
+        {
+            DefaultImportance = newImportance;
+            DefaultUrgency = newUrgency;
         }
     }
 }

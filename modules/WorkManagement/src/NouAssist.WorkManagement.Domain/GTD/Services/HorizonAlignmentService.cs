@@ -30,7 +30,9 @@ namespace NouAssist.WorkManagement.GTD.Services
                 .FindByHorizonAndEntityAsync(higherHorizonId, lowerEntityType, lowerEntityId);
 
             if (existing != null)
+            {
                 return existing;
+            }
 
             var alignment = new GtdHorizonAlignment(
                 GuidGenerator.Create(),
@@ -82,11 +84,17 @@ namespace NouAssist.WorkManagement.GTD.Services
                 }
 
                 if (alignment.HasStrongAlignment)
+                {
                     result.StrongAlignments++;
+                }
                 else if (alignment.HasWeakAlignment)
+                {
                     result.WeakAlignments++;
+                }
                 else
+                {
                     result.ModerateAlignments++;
+                }
             }
 
             result.OverallHealthScore = CalculateHealthScore(result);
@@ -96,11 +104,15 @@ namespace NouAssist.WorkManagement.GTD.Services
         private double CalculateHealthScore(AlignmentAnalysisResult result)
         {
             if (result.TotalAlignments == 0)
+            {
                 return 0;
+            }
 
             var validatedCount = result.TotalAlignments - result.UnvalidatedAlignments;
             if (validatedCount == 0)
+            {
                 return 0;
+            }
 
             var weightedScore = 
                 (result.StrongAlignments * 1.0) +

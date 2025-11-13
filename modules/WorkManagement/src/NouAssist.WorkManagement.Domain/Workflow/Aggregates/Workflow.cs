@@ -204,5 +204,64 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
             IsActive = false;
         }
         
+        public void ValidateBeforeActivation()
+        {
+            if (!_statuses.Any())
+            {
+                throw new BusinessException("Workflow:NoStatuses");
+            }
+    
+            if (!_statuses.Any(s => s.IsInitial))
+            {
+                throw new BusinessException("Workflow:NoInitialStatus");
+            }
+    
+            if (_statuses.Count(s => s.IsInitial) > 1)
+            {
+                throw new BusinessException("Workflow:MultipleInitialStatuses");
+            }
+    
+            if (!_transitions.Any())
+            {
+                throw new BusinessException("Workflow:NoTransitions");
+            }
+    
+            // Check for unreachable statuses
+            var reachable = GetReachableStatuses();
+            var unreachable = _statuses.Where(s => !reachable.Contains(s.Id)).ToList();
+    
+            if (unreachable.Any())
+            {
+                throw new BusinessException("Workflow:UnreachableStatuses",
+                    $"{unreachable.Count} statuses are unreachable from initial status.");
+            }
+        }
+
+        private HashSet<Guid> GetReachableStatuses()
+        {
+            var reachable = new HashSet<Guid>();
+            var queue = new Queue<Guid>();
+    
+            queue.Enqueue(InitialStatusId);
+            reachable.Add(InitialStatusId);
+    
+            while (queue.Any())
+            {
+                var current = queue.Dequeue();
+                var outgoing = _transitions.Where(t => t.FromStatusId == current);
+        
+                foreach (var transition in outgoing)
+                {
+                    if (!reachable.Contains(transition.ToStatusId))
+                    {
+                        reachable.Add(transition.ToStatusId);
+                        queue.Enqueue(transition.ToStatusId);
+                    }
+                }
+            }
+    
+            return reachable;
+        }
+        
     }
 }

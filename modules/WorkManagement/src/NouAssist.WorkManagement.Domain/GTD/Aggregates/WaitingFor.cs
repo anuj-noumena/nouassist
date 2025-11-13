@@ -35,7 +35,10 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
 
         public void Resolve()
         {
-            if (Status == WaitingForStatus.Resolved) return;
+            if (Status == WaitingForStatus.Resolved)
+            {
+                return;
+            }
 
             Status = WaitingForStatus.Resolved;
             ClearedAt = DateTime.UtcNow;

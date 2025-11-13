@@ -1,0 +1,18 @@
+{
+  "culture": "en",
+  "texts": {
+    "AccountsReceivable:InvalidDueDate": "Due date cannot be before issue date",
+    "AccountsReceivable:CannotModifySentInvoice": "Cannot modify sent invoices",
+    "AccountsReceivable:InvoiceAlreadySent": "Invoice has already been sent",
+    "AccountsReceivable:NoLineItems": "Invoice must have at least one line item",
+    "AccountsReceivable:CannotPayCancelledInvoice": "Cannot apply payment to cancelled invoice",
+    "AccountsReceivable:InvalidPaymentAmount": "Payment amount must be positive",
+    "AccountsReceivable:PaymentExceedsBalance": "Payment amount exceeds invoice balance",
+    "AccountsReceivable:CannotCancelPaidInvoice": "Cannot cancel paid invoice",
+    "AccountsReceivable:CustomerHasBalance": "Cannot deactivate customer with outstanding balance",
+    "AccountsReceivable:JustificationRequired": "Justification required for credit terms change",
+    "AccountsReceivable:ReasonRequired": "Reason required for credit suspension",
+    "AccountsReceivable:InvalidCreditAmount": "Credit memo amount must be positive",
+    "AccountsReceivable:CreditMemoAlreadyApplied": "Credit memo has already been applied"
+  }
+}

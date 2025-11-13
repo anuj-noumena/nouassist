@@ -13,70 +13,53 @@ using Volo.Abp.Users;
 namespace NouAssist.WorkManagement.Workflow.Services.Actions
 {
     /// <summary>
-    /// Updates custom field values on task instances.
-    /// Follows Single Responsibility Principle - only handles field updates
+    /// IMPROVED: UpdateFieldActionExecutor with type safety
     /// </summary>
-    public class UpdateFieldActionExecutor(ICurrentUser currentUser)
-        : DomainService, IWorkflowActionExecutor, ITransientDependency
+    public class UpdateFieldActionExecutor : WorkflowActionExecutorBase, ITransientDependency
     {
-
-        public bool CanExecute(WorkflowAction action)
+        public override bool CanExecute(WorkflowAction action)
         {
             return action?.ActionType == WorkflowActionType.UpdateField ||
                    action?.ActionType == WorkflowActionType.SetCustomField;
         }
 
-        public async Task<ActionExecutionResult> ExecuteAsync(
+        protected override ConfigurationValidationResult ValidateConfiguration(WorkflowAction action)
+        {
+            if (!action.Configuration.ContainsKey("fieldName"))
+            {
+                return ConfigurationValidationResult.Invalid("fieldName is required");
+            }
+
+            if (!action.Configuration.ContainsKey("fieldValue"))
+            {
+                return ConfigurationValidationResult.Invalid("fieldValue is required");
+            }
+
+            return ConfigurationValidationResult.Valid();
+        }
+
+        protected override async Task<ActionExecutionResult> ExecuteInternalAsync(
             WorkflowAction action,
             WorkflowActionContext context)
         {
-            try
+            var fieldName = GetRequiredConfig<string>(action, "fieldName");
+            var fieldValue = action.Configuration["fieldValue"];
+
+            var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
+            var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
+
+            var oldValue = taskInstance.CustomFields.GetValue(fieldName);
+            taskInstance.SetCustomFieldValue(fieldName, fieldValue);
+
+            await taskInstanceRepo.UpdateAsync(taskInstance);
+
+            return ActionExecutionResult.Success(new Dictionary<string, object>
             {
-                var fieldName = action.Configuration.GetValueOrDefault("fieldName")?.ToString();
-                var fieldValue = action.Configuration.GetValueOrDefault("fieldValue");
-
-                if (string.IsNullOrWhiteSpace(fieldName))
-                {
-                    return ActionExecutionResult.Failure("Field name is required");
-                }
-
-                var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
-                var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
-
-                // Update custom field value
-
-                var oldValue = taskInstance.CustomField.ContainsKey(fieldName)
-                    ? taskInstance.CustomField.GetValue(fieldName)
-                    : null;
-
-                taskInstance.UpdateCustomFieldValue(fieldName, fieldValue, currentUser.GetId());
-
-                await taskInstanceRepo.UpdateAsync(taskInstance);
-
-                Logger.LogInformation(
-                    "Updated field {FieldName} on task instance {TaskInstanceId} from {OldValue} to {NewValue}",
-                    fieldName, context.TaskInstanceId, oldValue, fieldValue);
-
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
-                {
-                    ["fieldName"] = fieldName,
-                    ["oldValue"] = oldValue,
-                    ["newValue"] = fieldValue,
-                    ["updatedAt"] = Clock.Now
-                };
-
-                return ActionExecutionResult.Success(resultData);
-            }
-            catch (BusinessException ex)
-            {
-                Logger.LogError(ex, "Business error during field update");
-                return ActionExecutionResult.Failure(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex, "Error executing field update action");
-                return ActionExecutionResult.Failure($"Field update failed: {ex.Message}");
-            }
+                ["fieldName"] = fieldName,
+                ["oldValue"] = oldValue,
+                ["newValue"] = fieldValue,
+                ["updatedAt"] = Clock.Now
+            });
         }
     }
 }

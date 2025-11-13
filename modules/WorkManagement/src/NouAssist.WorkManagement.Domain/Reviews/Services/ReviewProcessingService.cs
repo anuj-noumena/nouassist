@@ -78,23 +78,34 @@ namespace NouAssist.WorkManagement.Reviews.Services
             int depth = 0;
 
             if (!string.IsNullOrWhiteSpace(review.WhatWentWell) && review.WhatWentWell.Length > 50)
+            {
                 depth += 25;
+            }
 
             if (!string.IsNullOrWhiteSpace(review.WhatNeedsAttention) && review.WhatNeedsAttention.Length > 50)
+            {
                 depth += 25;
+            }
 
             if (!string.IsNullOrWhiteSpace(review.Insights) && review.Insights.Length > 50)
+            {
                 depth += 25;
+            }
 
             if (!string.IsNullOrWhiteSpace(review.LessonsLearned) && review.LessonsLearned.Length > 50)
+            {
                 depth += 25;
+            }
 
             return depth;
         }
 
         private int CalculateActionItemQuality(Review review)
         {
-            if (!review.HasActionItems) return 0;
+            if (!review.HasActionItems)
+            {
+                return 0;
+            }
 
             int quality = 0;
             var items = review.ActionItems.ToList();
@@ -122,9 +133,20 @@ namespace NouAssist.WorkManagement.Reviews.Services
             score += (int)(review.CalculatedCompleteness * 40);
 
             // Scores provided (20 points)
-            if (review.CompletenessScore.HasValue) score += 7;
-            if (review.SatisfactionScore.HasValue) score += 7;
-            if (review.AlignmentScore.HasValue) score += 6;
+            if (review.CompletenessScore.HasValue)
+            {
+                score += 7;
+            }
+
+            if (review.SatisfactionScore.HasValue)
+            {
+                score += 7;
+            }
+
+            if (review.AlignmentScore.HasValue)
+            {
+                score += 6;
+            }
 
             // Reflection depth (20 points)
             score += (int)(CalculateReflectionDepth(review) * 0.2);

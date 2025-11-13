@@ -1,167 +1,88 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Data;
-using NouAssist.WorkManagement.TaskManagement.Entities;
-using NouAssist.WorkManagement.TaskManagement.Exceptions;
-using NouAssist.WorkManagement.TaskManagement.Policies;
 using NouAssist.WorkManagement.TaskManagement.Services;
+using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.WorkManagement.TaskManagement.Managers
 {
-    /// <summary>
-    /// Manager for TaskInstance aggregate - handles complex business logic
-    /// </summary>
     public class TaskInstanceManager : DomainService
     {
         private readonly ITaskRepository _taskRepository;
         private readonly ITaskInstanceRepository _taskInstanceRepository;
-        private readonly TaskInstanceProcessingService _processingService;
-        private readonly TaskDependencyService _dependencyService;
-        private readonly ITaskStartPolicy _taskStartPolicy;
-        private readonly ILogger<TaskInstanceManager> _logger;
+        private readonly GtdOrganizationService _gtdOrganizationService;
 
         public TaskInstanceManager(
             ITaskRepository taskRepository,
             ITaskInstanceRepository taskInstanceRepository,
-            TaskInstanceProcessingService processingService,
-            TaskDependencyService dependencyService,
-            ITaskStartPolicy taskStartPolicy,
-            ILogger<TaskInstanceManager> logger)
+            GtdOrganizationService gtdOrganizationService)
         {
             _taskRepository = taskRepository;
             _taskInstanceRepository = taskInstanceRepository;
-            _processingService = processingService;
-            _dependencyService = dependencyService;
-            _taskStartPolicy = taskStartPolicy;
-            _logger = logger;
+            _gtdOrganizationService = gtdOrganizationService;
         }
 
-        public async Task<TaskInstance> CreateFromBlueprintAsync(
+        public async Task<TaskInstance> CreateAsync(
             Guid taskId,
-            Guid projectId,
+            Guid workflowId,
             Guid workflowStatusId,
             Guid ownerId,
+            Guid? projectId = null,
+            Guid? areaId = null,
+            Guid? contextId = null,
+            Guid? reporterId = null,
             Guid? assigneeId = null,
-            DateTime? plannedDueDate = null)
+            double? importance = null,
+            double? urgency = null,
+            Guid? tenantId = null)
         {
+            // Load blueprint
             var taskBlueprint = await _taskRepository.GetWithDetailsAsync(taskId);
 
             if (!taskBlueprint.IsActive)
             {
-                throw new TaskInvalidStateException(
-                    "Cannot create instance from inactive task blueprint.");
+                throw new BusinessException("Tasks:InactiveTaskBlueprint");
             }
 
-            var instance = _processingService.CreateTaskInstanceFromBlueprint(
-                taskBlueprint,
-                projectId,
+            // Validate organization
+            _gtdOrganizationService.ValidateOrganization(projectId, areaId);
+
+            // Use blueprint defaults if not provided
+            var effectiveProjectId = projectId ?? taskBlueprint.ProjectId;
+            var effectiveAreaId = areaId ?? taskBlueprint.GetEffectiveAreaForInstance();
+            var effectiveContextId = contextId ?? taskBlueprint.GetEffectiveContextForInstance();
+            var effectiveImportance = importance ?? taskBlueprint.DefaultImportance;
+            var effectiveUrgency = urgency ?? taskBlueprint.DefaultUrgency;
+
+            // Final validation
+            _gtdOrganizationService.ValidateOrganization(effectiveProjectId, effectiveAreaId);
+
+            var instance = new TaskInstance(
+                GuidGenerator.Create(),
+                taskId,
+                workflowId,
                 workflowStatusId,
                 ownerId,
-                assigneeId,
-                plannedDueDate);
+                effectiveProjectId,
+                effectiveAreaId,
+                effectiveContextId,
+                effectiveImportance,
+                effectiveUrgency,
+                tenantId,
+                reporterId,
+                assigneeId);
 
-            instance = await _taskInstanceRepository.InsertAsync(instance);
-
-            _logger.LogInformation(
-                "Created task instance {InstanceId} from blueprint {TaskId}",
-                instance.Id, taskId);
-
-            return instance;
-        }
-
-        public async Task<TaskInstance> StartAsync(Guid taskInstanceId, Guid startedBy)
-        {
-            var instance = await _taskInstanceRepository.GetAsync(taskInstanceId);
-
-            // Check if blocked by dependencies
-            var canStart = await CanStartTaskAsync(instance);
-            if (!canStart)
+            // Initialize checklist from blueprint
+            var checklistItemIds = taskBlueprint.ChecklistItems.Select(i => i.Id).ToList();
+            if (checklistItemIds.Any())
             {
-                throw new TaskInvalidStateException(
-                    "Cannot start task due to unmet dependencies.");
+                instance.InitializeChecklist(checklistItemIds);
             }
 
-            instance.Start(_taskStartPolicy, startedBy);
-            await _taskInstanceRepository.UpdateAsync(instance);
-
             return instance;
-        }
-
-        public async Task<TaskInstance> CompleteAsync(
-            Guid taskInstanceId,
-            Guid completedBy,
-            string resolution = null,
-            string resolutionNote = null)
-        {
-            var instance = await _taskInstanceRepository.GetWithDetailsAsync(taskInstanceId);
-            var taskBlueprint = await _taskRepository.GetWithDetailsAsync(instance.TaskId);
-
-            var result = _processingService.ProcessTaskCompletion(
-                instance,
-                taskBlueprint,
-                completedBy,
-                resolution,
-                resolutionNote);
-
-            if (!result.IsSuccessful)
-            {
-                throw new TaskInvalidStateException(
-                    $"Cannot complete task: {string.Join(", ", result.Errors)}");
-            }
-
-            await _taskInstanceRepository.UpdateAsync(result.ProcessedTaskInstance);
-
-            return result.ProcessedTaskInstance;
-        }
-
-        public async Task<TaskInstance> DelegateAsync(
-            Guid taskInstanceId,
-            Guid fromUserId,
-            Guid toUserId,
-            DateTime? dueBy = null,
-            bool followupRequired = true,
-            DateTime? followupAt = null,
-            string note = null)
-        {
-            var instance = await _taskInstanceRepository.GetAsync(taskInstanceId);
-            instance.Delegate(fromUserId,
-                toUserId
-                );
-            // Create delegation entity
-            // var delegation = new TaskDelegation(
-            //     GuidGenerator.Create(),
-            //     taskInstanceId,
-            //     fromUserId,
-            //     toUserId,
-            //     dueBy,
-            //     followupRequired,
-            //     followupAt,
-            //     note);
-            //
-            // // Update task instance
-            // instance.AddDelegationReference(delegation.Id);
-
-            await _taskInstanceRepository.UpdateAsync(instance);
-
-            _logger.LogInformation(
-                "Delegated task instance {TaskInstanceId} from {FromUser} to {ToUser}",
-                taskInstanceId, fromUserId, toUserId);
-
-            return instance;
-        }
-
-        private async Task<bool> CanStartTaskAsync(TaskInstance instance)
-        {
-            // Get all task instance dependencies
-            // This would need a dependency repository
-            var dependencies = new List<TaskDependency>();
-            var dependentInstances = new List<TaskInstance>();
-
-            return _dependencyService.CanStartTask(instance, dependentInstances, dependencies);
         }
     }
 }

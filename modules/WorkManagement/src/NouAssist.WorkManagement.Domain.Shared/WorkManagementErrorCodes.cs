@@ -1,6 +1,7 @@
-﻿namespace NouAssist.WorkManagement;
-
-public static class WorkManagementErrorCodes
+﻿namespace NouAssist.WorkManagement
 {
-    //Add your business exception error codes here...
+    public static class WorkManagementErrorCodes
+    {
+        //Add your business exception error codes here...
+    }
 }

@@ -1,23 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.Workflow.Entities;
 using NouAssist.WorkManagement.Workflow.Enums;
 using Volo.Abp;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Domain.Services;
 
 namespace NouAssist.WorkManagement.Workflow.Services.Actions
 {
     /// <summary>
-    /// Executes user assignment actions.
-    /// Follows Single Responsibility Principle - only handles user assignment
+    /// IMPROVED: AssignUserActionExecutor with better validation
     /// </summary>
-    public class AssignUserActionExecutor : DomainService, IWorkflowActionExecutor, ITransientDependency
+    public class AssignUserActionExecutor : WorkflowActionExecutorBase, ITransientDependency
     {
-        public bool CanExecute(WorkflowAction action)
+        public override bool CanExecute(WorkflowAction action)
         {
             return action?.ActionType == WorkflowActionType.AssignToUser ||
                    action?.ActionType == WorkflowActionType.AssignToReporter ||
@@ -25,74 +22,62 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                    action?.ActionType == WorkflowActionType.ClearAssignee;
         }
 
-        public async Task<ActionExecutionResult> ExecuteAsync(
+        protected override ConfigurationValidationResult ValidateConfiguration(WorkflowAction action)
+        {
+            if (action.ActionType == WorkflowActionType.AssignToUser)
+            {
+                if (!action.Configuration.ContainsKey("userId"))
+                {
+                    return ConfigurationValidationResult.Invalid(
+                        "AssignToUser requires 'userId' configuration");
+                }
+            }
+
+            return ConfigurationValidationResult.Valid();
+        }
+
+        protected override async Task<ActionExecutionResult> ExecuteInternalAsync(
             WorkflowAction action,
             WorkflowActionContext context)
         {
-            try
+            var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
+            var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
+
+            Guid? targetUserId = action.ActionType switch
             {
-                var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
-                var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
+                WorkflowActionType.AssignToUser => GetRequiredConfig<Guid>(action, "userId"),
+                WorkflowActionType.AssignToReporter => taskInstance.ReporterId,
+                WorkflowActionType.AssignToCurrentUser => context.ExecutedBy,
+                WorkflowActionType.ClearAssignee => null,
+                _ => throw new BusinessException("Invalid assignment action type")
+            };
 
-                Guid? targetUserId = action.ActionType switch
-                {
-                    WorkflowActionType.AssignToUser => GetTargetUserId(action),
-                    WorkflowActionType.AssignToReporter => taskInstance.ReporterId,
-                    WorkflowActionType.AssignToCurrentUser => context.ExecutedBy,
-                    WorkflowActionType.ClearAssignee => null,
-                    _ => throw new BusinessException("Invalid assignment action type")
-                };
-
-                if (action.ActionType == WorkflowActionType.ClearAssignee)
-                {
-                    taskInstance.Unassign();
-                    Logger.LogInformation("Cleared assignee for task instance {TaskInstanceId}", context.TaskInstanceId);
-                }
-                else if (targetUserId.HasValue)
-                {
-                    taskInstance.Assign(targetUserId.Value, context.ExecutedBy);
-                    Logger.LogInformation(
-                        "Assigned task instance {TaskInstanceId} to user {UserId}",
-                        context.TaskInstanceId, targetUserId);
-                }
-                else
-                {
-                    return ActionExecutionResult.Failure("No target user ID found for assignment");
-                }
-
-                await taskInstanceRepo.UpdateAsync(taskInstance);
-
-                var resultData = new System.Collections.Generic.Dictionary<string, object>
-                {
-                    ["assignedTo"] = targetUserId,
-                    ["assignedAt"] = Clock.Now
-                };
-
-                return ActionExecutionResult.Success(resultData);
+            if (action.ActionType == WorkflowActionType.ClearAssignee)
+            {
+                taskInstance.Unassign();
             }
-            catch (BusinessException ex)
+            else if (targetUserId.HasValue)
             {
-                Logger.LogError(ex, "Business error during assignment action");
-                return ActionExecutionResult.Failure(ex.Message);
+                taskInstance.Assign(targetUserId.Value);
             }
-            catch (Exception ex)
+            else
             {
-                Logger.LogError(ex, "Error executing assignment action");
-                return ActionExecutionResult.Failure($"Assignment failed: {ex.Message}");
-            }
-        }
-
-        private Guid GetTargetUserId(WorkflowAction action)
-        {
-            var userIdObj = action.Configuration.GetValueOrDefault("userId") ??
-                           action.Configuration.GetValueOrDefault("targetUserId");
-
-            if (userIdObj == null)
-            {
-                throw new BusinessException("Target user ID not found in action configuration");
+                return ActionExecutionResult.Failure("No target user ID found for assignment");
             }
 
-            return Guid.Parse(userIdObj.ToString());
+            await taskInstanceRepo.UpdateAsync(taskInstance);
+
+            return ActionExecutionResult.Success(new Dictionary<string, object>
+            {
+                ["assignedTo"] = targetUserId,
+                ["assignedAt"] = Clock.Now
+            });
         }
     }
+
+   
+
+    
+
+    
 }

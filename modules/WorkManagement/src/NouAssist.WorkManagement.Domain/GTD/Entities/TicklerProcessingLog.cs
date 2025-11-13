@@ -39,7 +39,10 @@ namespace NouAssist.WorkManagement.GTD.Entities
         public void AddProcessingTime(int minutes)
         {
             if (minutes < 0)
+            {
                 throw new ArgumentException("Processing time cannot be negative.");
+            }
+
             ProcessingTimeMinutes = minutes;
         }
 

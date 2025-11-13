@@ -1,26 +1,50 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
+using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
+using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
+using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.FinancialManagement.EntityFrameworkCore;
-
-[ConnectionStringName(FinancialManagementDbProperties.ConnectionStringName)]
-public class FinancialManagementDbContext : AbpDbContext<FinancialManagementDbContext>, IFinancialManagementDbContext
+namespace NouAssist.FinancialManagement.EntityFrameworkCore
 {
-    /* Add DbSet for each Aggregate Root here. Example:
-     * public DbSet<Question> Questions { get; set; }
-     */
-
-    public FinancialManagementDbContext(DbContextOptions<FinancialManagementDbContext> options)
-        : base(options)
+    [ConnectionStringName(FinancialManagementDbProperties.ConnectionStringName)]
+    public class FinancialManagementDbContext 
+        : AbpDbContext<FinancialManagementDbContext>, IFinancialManagementDbContext
     {
+        // General Ledger
+        public DbSet<LedgerAccount> LedgerAccounts { get; set; }
+        public DbSet<JournalEntryBatch> JournalEntryBatches { get; set; }
+        public DbSet<AccountingPeriod> AccountingPeriods { get; set; }
+        public DbSet<BankStatement> BankStatements { get; set; }
 
-    }
+        // Accounts Payable
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<Bill> Bills { get; set; }
 
-    protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
+        // Accounts Receivable
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<CustomerPayment> CustomerPayments { get; set; }
+        public DbSet<CreditMemo> CreditMemos { get; set; }
+        public DbSet<CollectionCase> CollectionCases { get; set; }
 
-        builder.ConfigureFinancialManagement();
+        // Financial Planning & Analysis
+        public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Budget> Budgets { get; set; }
+        public DbSet<FinancialGoal> FinancialGoals { get; set; }
+
+        public FinancialManagementDbContext(
+            DbContextOptions<FinancialManagementDbContext> options)
+            : base(options)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ConfigureFinancialManagement(this);
+        }
     }
 }

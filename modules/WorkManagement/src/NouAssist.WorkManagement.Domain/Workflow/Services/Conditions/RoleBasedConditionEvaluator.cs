@@ -53,14 +53,21 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 
         private bool HasRole(System.Collections.Generic.List<string> userRoles, object requiredRole)
         {
-            if (requiredRole == null) return false;
+            if (requiredRole == null)
+            {
+                return false;
+            }
+
             var role = requiredRole.ToString();
             return userRoles.Any(r => r.Equals(role, StringComparison.OrdinalIgnoreCase));
         }
 
         private bool HasAnyRole(System.Collections.Generic.List<string> userRoles, object requiredRoles)
         {
-            if (requiredRoles == null) return false;
+            if (requiredRoles == null)
+            {
+                return false;
+            }
 
             var roles = requiredRoles.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .Select(r => r.Trim())
@@ -71,7 +78,10 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 
         private bool HasAllRoles(System.Collections.Generic.List<string> userRoles, object requiredRoles)
         {
-            if (requiredRoles == null) return false;
+            if (requiredRoles == null)
+            {
+                return false;
+            }
 
             var roles = requiredRoles.ToString().Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .Select(r => r.Trim())

@@ -9,7 +9,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Events
     {
         public Guid TaskInstanceId { get; set; }
         public Guid? TenantId { get; set; }
-        public Guid StartedBy { get; set; }
+        public Guid? AssigneeId { get; set; }
         public DateTime StartedAt { get; set; }
     }
 }

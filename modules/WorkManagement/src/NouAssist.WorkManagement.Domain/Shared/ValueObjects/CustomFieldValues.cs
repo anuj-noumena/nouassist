@@ -71,7 +71,9 @@ namespace NouAssist.WorkManagement.Shared.ValueObjects
         public CustomFieldValues RemoveValue(string key)
         {
             if (!_values.ContainsKey(key))
+            {
                 return this;
+            }
 
             var newValues = new Dictionary<string, object>(_values);
             newValues.Remove(key);

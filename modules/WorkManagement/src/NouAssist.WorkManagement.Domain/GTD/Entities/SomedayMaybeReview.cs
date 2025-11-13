@@ -30,8 +30,11 @@ namespace NouAssist.WorkManagement.GTD.Entities
         public void SetInterestLevel(int level)
         {
             if (level < 1 || level > 5)
+            {
                 throw new BusinessException("GTD:InvalidInterestLevel", 
                     "Interest level must be between 1 and 5.");
+            }
+
             InterestLevel = level;
         }
 

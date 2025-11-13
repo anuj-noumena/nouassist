@@ -148,10 +148,10 @@ namespace NouAssist.WorkManagement.Approval.Aggregates
         /// </summary>
         public void Activate()
         {
-            if (!_steps.Any())
+            if (!CanBeActivated)
             {
-                throw new BusinessException("Approval:CannotActivateWithoutSteps")
-                    .WithData("WorkflowId", Id);
+                throw new BusinessException("Approval:CannotActivateIncompleteWorkflow",
+                    "Workflow must have steps with approvers before activation.");
             }
             IsActive = true;
         }
@@ -308,5 +308,10 @@ namespace NouAssist.WorkManagement.Approval.Aggregates
         {
             return CustomFields.GetValue(key);
         }
+        
+        public bool CanBeActivated => _steps.Any() && 
+                                      _steps.All(s => s.HasApprovers());
+        
+
     }
 }

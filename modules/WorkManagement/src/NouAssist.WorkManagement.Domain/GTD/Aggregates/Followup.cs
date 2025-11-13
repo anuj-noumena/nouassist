@@ -33,7 +33,10 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
 
         public void MarkAsDone()
         {
-            if (Status == FollowupStatus.Done) return;
+            if (Status == FollowupStatus.Done)
+            {
+                return;
+            }
 
             Status = FollowupStatus.Done;
             CompletedAt = DateTime.UtcNow;

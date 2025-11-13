@@ -64,5 +64,27 @@ namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
             yield return Urgency;
             yield return Quadrant;
         }
+
+        public static double ValidateImportance(double importance)
+        {
+            if (importance < 0.0 || importance > 1.0)
+            {
+                throw new BusinessException("Tasks:ImportanceOutOfRange", 
+                    "Importance must be between 0.0 and 1.0");
+            }
+    
+            return importance;
+        }
+
+        public static double ValidateUrgency(double urgency)
+        {
+            if (urgency < 0.0 || urgency > 1.0)
+            {
+                throw new BusinessException("Tasks:UrgencyOutOfRange", 
+                    "Urgency must be between 0.0 and 1.0");
+            }
+    
+            return urgency;
+        }
     }
 }

@@ -37,7 +37,10 @@ namespace NouAssist.WorkManagement.Reviews.ValueObjects
 
         public CompletedChecklistItem Complete(string completedBy)
         {
-            if (IsCompleted) return this;
+            if (IsCompleted)
+            {
+                return this;
+            }
 
             if (string.IsNullOrWhiteSpace(completedBy))
             {

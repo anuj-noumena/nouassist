@@ -5,7 +5,6 @@ using NouAssist.WorkManagement.Shared.ValueObjects;
 using NouAssist.WorkManagement.TaskManagement.Entities;
 using NouAssist.WorkManagement.TaskManagement.Enums;
 using NouAssist.WorkManagement.TaskManagement.Events;
-using NouAssist.WorkManagement.TaskManagement.Policies;
 using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Auditing;
@@ -15,109 +14,69 @@ using Volo.Abp.MultiTenancy;
 namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 {
     /// <summary>
-    /// TaskInstance - Runtime execution of a Task blueprint
+    /// TaskInstance - Runtime execution with GTD Area support
     /// </summary>
     public class TaskInstance : FullAuditedAggregateRoot<Guid>, IMultiTenant, IHasEntityVersion
     {
+        // === CORE IDENTITY ===
         public Guid TaskId { get; private set; }
         public Guid WorkflowId { get; private set; }
-        
-        // Ownership
+        public Guid? ProjectId { get; private set; }
+        public Guid? TenantId { get; private set; }
+        public int EntityVersion { get; private set; }
+
+        // === OWNERSHIP ===
         public Guid OwnerId { get; private set; }
         public Guid? AssigneeId { get; private set; }
         public Guid? ReporterId { get; private set; }
         public Guid? TeamId { get; set; }
-        public Guid? TenantId { get; private set; }
 
-        // Approval
-        public TaskApproval Approval { get; internal set; }
+        // === GTD ORGANIZATION ===
+        public Guid? AreaId { get; private set; } // GTD Area of Responsibility
+        public Guid? ContextId { get; private set; } // GTD Context (where/with what)
 
-        // Status
+        // === WORKFLOW STATE ===
+        public Guid WorkflowStatusId { get; private set; }
+        
+        // === WORK TRACKING ===
+        public TaskWorkTracking WorkTracking { get; private set; }
+        public TaskSchedule Schedule { get; private set; }
+        public ImportanceUrgencyMatrix Priority { get; private set; }
+        
+        // === APPROVAL ===
+        public Guid? ApprovalRequestId { get; private set; }
+        
+        // === HIERARCHY ===
+        public TaskHierarchy Hierarchy { get; private set; }
+        
+        // === COLLABORATION ===
+        public TaskCollaboration Collaboration { get; private set; }
+        
+        // === CUSTOM DATA ===
+        public CustomFieldValues CustomFields { get; private set; }
+        
+        // === BLOCKING/FLAGS ===
+        private string _blockingReason;
+        private DateTime? _blockedAt;
+        public bool IsBlocked => !string.IsNullOrEmpty(_blockingReason);
+        
+        private string _flagReason;
+        public bool IsFlagged => !string.IsNullOrEmpty(_flagReason);
+        
+        // === COMPLETION ===
+        private string _resolution;
+        private string _resolutionNote;
+        public bool IsResolved => !string.IsNullOrEmpty(_resolution);
 
-        public TaskProgress Progress { get; internal set; }
-
-        // Importance/Urgency
-        public ImportanceUrgencyMatrix PriorityMatrix { get; private set; }
-
-        // Delegation
-        public DelegationInfo? DelegationInfo { get; private set; }
-
-        // Dates
-        public TaskSchedule Schedule { get; internal set; }
-
-        // Time Tracking
-        public TimeTrackingInfo TimeTracking { get; private set; } = TimeTrackingInfo.None;
-
-        // Hierarchy
-        public TaskHierarchy Hierarchy { get; internal set; }
-
-        // Collaboration
-        public TaskDiscussion Discussion { get; internal set; }
-
-        public BlockingInfo BlockingInfo { get; private set; } = BlockingInfo.NotBlocked;
-
-        public FlagInfo FlagInfo { get; private set; } = FlagInfo.NotFlagged;
-
-        // Resolution
-        public ResolutionInfo Resolution { get; private set; } = ResolutionInfo.Unresolved;
-
-        // Custom Fields & Labels
-        public CustomFieldValues CustomField { get; private set; }
-
-
-        public int EntityVersion { get; }
-
-        // Convenience properties that delegate to value objects
-        public WorkflowStatusCategory TaskStatus
-        {
-            get => Progress.TaskStatus;
-            internal set => Progress = Progress.ChangeStatus(Progress.WorkflowStatusId, value);
-        }
-
-        public double ProgressPercent
-        {
-            get => Progress.ProgressPercent;
-            internal set => Progress = Progress.UpdateProgress(value);
-        }
-
-        public bool IsNextAction
-        {
-            get => Progress.IsNextAction;
-            internal set => Progress = Progress.MarkAsNextAction(value);
-        }
-
-        public Guid WorkflowStatusId
-        {
-            get => Progress.WorkflowStatusId;
-            internal set => Progress = Progress.ChangeStatus(value, Progress.TaskStatus);
-        }
-
-        public int CommentsCount => Discussion.CommentsCount;
-        public int AttachmentsCount => Discussion.AttachmentsCount;
-        public bool IsDiscussionLocked => Discussion.IsDiscussionLocked;
-        public IReadOnlyCollection<Guid> Watchers => Discussion.Watchers;
-
-        // Child entities
-        private readonly List<TaskActionStepCompletion> _stepCompletions = new();
-
-        public IReadOnlyCollection<TaskActionStepCompletion> StepCompletions =>
-            _stepCompletions.AsReadOnly();
-
-        private readonly List<AcceptanceCriterionCompletion> _criterionCompletions = new();
-
-        public IReadOnlyCollection<AcceptanceCriterionCompletion> CriterionCompletions =>
-            _criterionCompletions.AsReadOnly();
+        // === CHILD COLLECTIONS ===
+        private readonly List<TaskChecklistItem> _checklistItems = new();
+        public IReadOnlyCollection<TaskChecklistItem> ChecklistItems => _checklistItems.AsReadOnly();
 
         private readonly List<TaskDependency> _dependencies = new();
         public IReadOnlyCollection<TaskDependency> Dependencies => _dependencies.AsReadOnly();
 
-        private readonly List<TaskHistoryEntry> _history = new();
-        public IReadOnlyCollection<TaskHistoryEntry> History => _history.AsReadOnly();
-
-        protected TaskInstance(int entityVersion)
-        {
-            EntityVersion = entityVersion;
-        }
+        // === CONSTRUCTION ===
+        protected TaskInstance() { }
 
         public TaskInstance(
             Guid id,
@@ -125,664 +84,556 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             Guid workflowId,
             Guid workflowStatusId,
             Guid ownerId,
+            Guid? projectId,
+            Guid? areaId,
+            Guid? contextId,
             double importance,
-            double urgency, int entityVersion, Guid? reporterId = null,
+            double urgency,
             Guid? tenantId = null,
+            Guid? reporterId = null,
             Guid? assigneeId = null) : base(id)
         {
-            TaskId = Check.NotNull(taskId, nameof(taskId));
-            WorkflowId = Check.NotNull(workflowId, nameof(workflowId));
-            OwnerId = Check.NotNull(ownerId, nameof(ownerId));
+            TaskId = taskId;
+            WorkflowId = workflowId;
+            WorkflowStatusId = workflowStatusId;
+            OwnerId = ownerId;
+            ProjectId = projectId;
+            AreaId = areaId;
+            ContextId = contextId;
             ReporterId = reporterId ?? ownerId;
-            EntityVersion = entityVersion;
             AssigneeId = assigneeId;
             TenantId = tenantId;
+            EntityVersion = 1;
 
-            PriorityMatrix = new ImportanceUrgencyMatrix(importance, urgency);
-            Progress = TaskProgress.NotStarted(workflowStatusId);
-            Approval = TaskApproval.NoApprovalRequired();
-            Schedule = new TaskSchedule(null, null);
-            Hierarchy = new TaskHierarchy(0, null);
-            Discussion = TaskDiscussion.Empty();
-            CustomField = CustomFieldValues.Create();
+            // Validate: cannot be in both project and area
+            ValidateProjectAreaExclusivity();
 
-            // Add creation history entry
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.Created,
-                "Task instance created",
-                ownerId);
+            // Initialize value objects
+            Priority = new ImportanceUrgencyMatrix(importance, urgency);
+            WorkTracking = TaskWorkTracking.NotStarted();
+            Schedule = TaskSchedule.Empty();
+            Hierarchy = TaskHierarchy.Root();
+            Collaboration = TaskCollaboration.Empty();
+            CustomFields = CustomFieldValues.Create();
 
             AddDistributedEvent(new TaskInstanceCreatedEto
             {
                 TaskInstanceId = Id,
                 TaskId = TaskId,
-                TenantId = TenantId,
                 OwnerId = OwnerId,
+                ProjectId = ProjectId,
+                AreaId = AreaId,
+                TenantId = TenantId,
                 CreatedAt = DateTime.UtcNow
             });
         }
 
-        // Properties
+        // === GTD ORGANIZATION METHODS ===
 
-        public bool IsDelegated => DelegationInfo != null;
-
-        public bool IsWaitingOnDelegation => IsDelegated &&
-                                             DelegationInfo?.Status == DelegationStatus.Delegated;
-
-        public bool IsCancelled => TaskStatus == WorkflowStatusCategory.Cancelled;
-        public bool IsInProgress => TaskStatus == WorkflowStatusCategory.InProgress;
-
-        // State Transitions
-        public void Start(ITaskStartPolicy startPolicy, Guid startedBy)
+        /// <summary>
+        /// Assigns this task instance to a GTD Area
+        /// </summary>
+        public void AssignToArea(Guid areaId)
         {
-            var policyCheck = startPolicy.Check(this);
-            if (!policyCheck.CanStart)
+            if (ProjectId.HasValue)
             {
-                throw new BusinessException(policyCheck.FailureReason);
+                throw new BusinessException("Tasks:CannotBeInBothProjectAndArea",
+                    "Task instance cannot belong to both a Project and an Area.");
             }
 
-            var startDate = DateTime.UtcNow;
-            Schedule = Schedule.WithActualDates(startDate, Schedule.PlannedDueDate);
-            TaskStatus = WorkflowStatusCategory.InProgress;
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.Started,
-                "Task started",
-                startedBy);
-
-            AddDistributedEvent(new TaskStartedEto
+            var oldAreaId = AreaId;
+            AreaId = areaId;
+            
+            AddDistributedEvent(new TaskInstanceAreaChangedEto
             {
                 TaskInstanceId = Id,
                 TenantId = TenantId,
-                StartedBy = startedBy,
-                StartedAt = startDate
+                OldAreaId = oldAreaId,
+                NewAreaId = areaId,
+                ChangedAt = DateTime.UtcNow
             });
         }
 
-        public void Assign(Guid assigneeId, Guid assignedBy)
+        /// <summary>
+        /// Removes this task instance from its area
+        /// </summary>
+        public void RemoveFromArea()
         {
-            var oldAssigneeId = AssigneeId;
-            AssigneeId = Check.NotNull(assigneeId, nameof(assigneeId));
+            if (!AreaId.HasValue)
+            {
+                return;
+            }
 
-            var changeType = oldAssigneeId.HasValue ? TaskHistoryChangeType.Reassigned : TaskHistoryChangeType.Assigned;
-            var description = oldAssigneeId.HasValue
-                ? $"Reassigned from {oldAssigneeId} to {assigneeId}"
-                : $"Assigned to {assigneeId}";
-
-            AddFieldChangeHistoryEntry(
-                changeType,
-                "AssigneeId",
-                oldAssigneeId?.ToString(),
-                assigneeId.ToString(),
-                assignedBy);
-
-            AddDistributedEvent(new TaskAssignedEto
+            var oldAreaId = AreaId;
+            AreaId = null;
+            
+            AddDistributedEvent(new TaskInstanceAreaChangedEto
             {
                 TaskInstanceId = Id,
                 TenantId = TenantId,
-                AssignedTo = assigneeId,
-                AssignedBy = assignedBy,
-                AssignedAt = DateTime.UtcNow
+                OldAreaId = oldAreaId,
+                NewAreaId = null,
+                ChangedAt = DateTime.UtcNow
             });
+        }
+
+        /// <summary>
+        /// Assigns this task instance to a GTD Context
+        /// </summary>
+        public void AssignToContext(Guid contextId)
+        {
+            var oldContextId = ContextId;
+            ContextId = contextId;
+            
+            AddDistributedEvent(new TaskInstanceContextChangedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldContextId = oldContextId,
+                NewContextId = contextId,
+                ChangedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Removes this task instance from its context
+        /// </summary>
+        public void RemoveFromContext()
+        {
+            if (!ContextId.HasValue)
+            {
+                return;
+            }
+
+            var oldContextId = ContextId;
+            ContextId = null;
+            
+            AddDistributedEvent(new TaskInstanceContextChangedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldContextId = oldContextId,
+                NewContextId = null,
+                ChangedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates GTD organization (area and context together)
+        /// </summary>
+        public void UpdateOrganization(Guid? newAreaId, Guid? newContextId)
+        {
+            // Validate: if moving to project, cannot have area
+            if (ProjectId.HasValue && newAreaId.HasValue)
+            {
+                throw new BusinessException("Tasks:CannotBeInBothProjectAndArea");
+            }
+
+            if (AreaId != newAreaId)
+            {
+                var oldAreaId = AreaId;
+                AreaId = newAreaId;
+                AddDistributedEvent(new TaskInstanceAreaChangedEto
+                {
+                    TaskInstanceId = Id,
+                    TenantId = TenantId,
+                    OldAreaId = oldAreaId,
+                    NewAreaId = newAreaId,
+                    ChangedAt = DateTime.UtcNow
+                });
+            }
+
+            if (ContextId != newContextId)
+            {
+                var oldContextId = ContextId;
+                ContextId = newContextId;
+                AddDistributedEvent(new TaskInstanceContextChangedEto
+                {
+                    TaskInstanceId = Id,
+                    TenantId = TenantId,
+                    OldContextId = oldContextId,
+                    NewContextId = newContextId,
+                    ChangedAt = DateTime.UtcNow
+                });
+            }
+        }
+
+        /// <summary>
+        /// Moves task from area to project
+        /// </summary>
+        public void MoveToProject(Guid projectId)
+        {
+            var previousAreaId = AreaId;
+            
+            if (AreaId.HasValue)
+            {
+                RemoveFromArea();
+            }
+            
+            ProjectId = projectId;
+            
+            AddDistributedEvent(new TaskInstanceMovedToProjectEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                ProjectId = projectId,
+                PreviousAreaId = previousAreaId,
+                MovedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Moves task from project to area
+        /// </summary>
+        public void MoveToArea(Guid areaId)
+        {
+            if (ProjectId.HasValue)
+            {
+                var oldProjectId = ProjectId;
+                ProjectId = null;
+                
+                AddDistributedEvent(new TaskInstanceRemovedFromProjectEto
+                {
+                    TaskInstanceId = Id,
+                    TenantId = TenantId,
+                    ProjectId = oldProjectId.Value,
+                    RemovedAt = DateTime.UtcNow
+                });
+            }
+            
+            AssignToArea(areaId);
+        }
+
+        private void ValidateProjectAreaExclusivity()
+        {
+            if (ProjectId.HasValue && AreaId.HasValue)
+            {
+                throw new BusinessException("Tasks:CannotBeInBothProjectAndArea",
+                    "Task instance cannot belong to both a Project and an Area.");
+            }
+        }
+
+        // === WORKFLOW TRANSITIONS ===
+        public void TransitionTo(Guid newWorkflowStatusId, string comment = null)
+        {
+            var oldStatusId = WorkflowStatusId;
+            WorkflowStatusId = newWorkflowStatusId;
+            
+            AddDistributedEvent(new TaskStatusTransitionedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldStatusId = oldStatusId,
+                NewStatusId = newWorkflowStatusId,
+                Comment = comment,
+                TransitionedAt = DateTime.UtcNow
+            });
+        }
+
+        // === ASSIGNMENT ===
+        public void Assign(Guid assigneeId)
+        {
+            var oldAssignee = AssigneeId;
+            AssigneeId = assigneeId;
+            
+            if (oldAssignee != assigneeId)
+            {
+                AddDistributedEvent(new TaskAssignedEto
+                {
+                    TaskInstanceId = Id,
+                    TenantId = TenantId,
+                    AssignedTo = assigneeId,
+                    PreviousAssignee = oldAssignee,
+                    AssignedAt = DateTime.UtcNow
+                });
+            }
         }
 
         public void Unassign()
         {
-            var oldAssigneeId = AssigneeId;
+            var oldAssignee = AssigneeId;
             AssigneeId = null;
-
-            if (oldAssigneeId.HasValue)
+            
+            if (oldAssignee.HasValue)
             {
-                AddFieldChangeHistoryEntry(
-                    TaskHistoryChangeType.Unassigned,
-                    "AssigneeId",
-                    oldAssigneeId.ToString(),
-                    null);
+                AddDistributedEvent(new TaskUnassignedEto
+                {
+                    TaskInstanceId = Id,
+                    TenantId = TenantId,
+                    PreviousAssignee = oldAssignee.Value,
+                    UnassignedAt = DateTime.UtcNow
+                });
+            }
+        }
+
+        // === WORK TRACKING ===
+        public void Start()
+        {
+            if (WorkTracking.HasStarted)
+            {
+                throw new BusinessException("Tasks:AlreadyStarted");
             }
 
-            AddDistributedEvent(new TaskUnassignedEto
+            WorkTracking = WorkTracking.Start();
+            Schedule = Schedule.MarkStarted(DateTime.UtcNow);
+            
+            AddDistributedEvent(new TaskStartedEto
             {
                 TaskInstanceId = Id,
                 TenantId = TenantId,
+                AssigneeId = AssigneeId,
+                StartedAt = DateTime.UtcNow
             });
         }
 
-        public void ResetStatus()
+        public void Complete(string resolution, string resolutionNote = null)
         {
-            TaskStatus = WorkflowStatusCategory.InProgress;
-            Schedule = Schedule.MarkIncompleted();
-            Resolution = ResolutionInfo.Unresolved;
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.Reopened,
-                "Task reopened");
-        }
-
-        public void Complete(Guid completedBy, ITaskCompletionPolicy completionPolicy, string resolution = null,
-            string resolutionNote = null)
-        {
-            // Delegate the rule check to the policy
-            var policyCheck = completionPolicy.Check(this);
-            if (!policyCheck.CanComplete)
+            if (WorkTracking.IsCompleted)
             {
-                throw new BusinessException(policyCheck.FailureReason);
+                throw new BusinessException("Tasks:AlreadyCompleted");
             }
 
-            var completedAt = DateTime.UtcNow;
-            Schedule = Schedule.MarkCompleted(completedAt);
-
-            TaskStatus = WorkflowStatusCategory.Done;
-            ProgressPercent = 100.0;
-            Resolution = ResolutionInfo.Create(resolution, resolutionNote);
-
-            AddHistoryEntry(
-                TaskHistoryChangeType.Completed,
-                $"Task completed: {resolution}",
-                completedBy,
-                "TaskStatus",
-                "InProgress",
-                "Done");
-
+            _resolution = Check.NotNullOrWhiteSpace(resolution, nameof(resolution));
+            _resolutionNote = resolutionNote;
+            
+            WorkTracking = WorkTracking.Complete();
+            Schedule = Schedule.MarkCompleted(DateTime.UtcNow);
+            
             AddDistributedEvent(new TaskCompletedEto
             {
                 TaskInstanceId = Id,
                 TenantId = TenantId,
-                CompletedBy = completedBy,
-                CompletedAt = completedAt,
-                ActualMinutes = TimeTracking.ActualMinutes,
-                Resolution = Resolution.Resolution
+                Resolution = resolution,
+                ResolutionNote = resolutionNote,
+                CompletedBy = AssigneeId,
+                CompletedAt = DateTime.UtcNow
             });
         }
 
-        public void Cancel(string reason)
+        public void UpdateProgress(double progressPercent)
         {
-            if (Schedule.IsCompleted)
-            {
-                throw new BusinessException("Tasks:CannotCancelCompleted");
-            }
-
-            TaskStatus = WorkflowStatusCategory.Cancelled;
-            Resolution = ResolutionInfo.Create("Cancelled", reason);
-
-            AddHistoryEntry(
-                TaskHistoryChangeType.Cancelled,
-                $"Task cancelled: {reason}",
-                null,
-                "TaskStatus",
-                TaskStatus.ToString(),
-                "Cancelled");
+            WorkTracking = WorkTracking.UpdateProgress(progressPercent);
         }
 
-        // Delegation
-        public void Delegate(Guid delegatedBy, Guid delegatedTo, string note = null)
+        // === APPROVAL ===
+        public void LinkApprovalRequest(Guid approvalRequestId)
         {
-            if (delegatedBy == delegatedTo)
-            {
-                throw new BusinessException("Tasks:CannotDelegateToSelf");
-            }
-
-            if (IsDelegated)
-            {
-                throw new BusinessException("Tasks:AlreadyDelegated");
-            }
-
-            var oldAssigneeId = AssigneeId;
-            DelegationInfo = new DelegationInfo(delegatedBy, delegatedTo, note);
-            AssigneeId = delegatedTo;
-
-            AddHistoryEntry(
-                TaskHistoryChangeType.Delegated,
-                $"Delegated from {delegatedBy} to {delegatedTo}: {note}",
-                delegatedBy,
-                "AssigneeId",
-                oldAssigneeId?.ToString(),
-                delegatedTo.ToString(),
-                note);
-
-            AddDistributedEvent(new TaskDelegatedEto
+            ApprovalRequestId = approvalRequestId;
+            
+            AddDistributedEvent(new TaskApprovalLinkedEto
             {
                 TaskInstanceId = Id,
                 TenantId = TenantId,
-                DelegatedBy = delegatedBy,
-                DelegatedTo = delegatedTo,
-                DelegatedAt = DateTime.UtcNow,
-                Note = note
+                ApprovalRequestId = approvalRequestId,
+                LinkedAt = DateTime.UtcNow
             });
         }
 
-        public void AcceptDelegation(Guid acceptedBy, string responseNote = null)
+        public void ClearApprovalLink()
         {
-            if (!IsDelegated)
-            {
-                throw new BusinessException("Tasks:NotDelegated");
-            }
-
-            if (DelegationInfo.DelegatedTo != acceptedBy)
-            {
-                throw new BusinessException("Tasks:OnlyDelegateCanAccept");
-            }
-
-            DelegationInfo = DelegationInfo.Accept(responseNote);
-            TaskStatus = WorkflowStatusCategory.InProgress;
-
-            AddHistoryEntry(
-                TaskHistoryChangeType.DelegationAccepted,
-                $"Delegation accepted by {acceptedBy}: {responseNote}",
-                acceptedBy,
-                "DelegationStatus",
-                "Delegated",
-                "Accepted");
-
-            AddDistributedEvent(new TaskDelegationAcceptedEto
-            {
-                TaskInstanceId = Id,
-                TenantId = TenantId,
-                AcceptedBy = acceptedBy,
-                AcceptedAt = DateTime.UtcNow,
-                ResponseNote = responseNote
-            });
+            ApprovalRequestId = null;
         }
 
-        public void DeclineDelegation(Guid declinedBy, string responseNote)
-        {
-            if (!IsDelegated)
-            {
-                throw new BusinessException("Tasks:NotDelegated");
-            }
-
-            if (DelegationInfo.DelegatedTo != declinedBy)
-            {
-                throw new BusinessException("Tasks:OnlyDelegateCanDecline");
-            }
-
-            DelegationInfo = DelegationInfo.Decline(responseNote);
-            AssigneeId = null;
-
-            AddHistoryEntry(
-                TaskHistoryChangeType.DelegationDeclined,
-                $"Delegation declined by {declinedBy}: {responseNote}",
-                declinedBy,
-                "DelegationStatus",
-                "Delegated",
-                "Declined");
-
-            AddDistributedEvent(new TaskDelegationDeclinedEto
-            {
-                TaskInstanceId = Id,
-                TenantId = TenantId,
-                DeclinedBy = declinedBy,
-                DeclinedAt = DateTime.UtcNow,
-                Reason = responseNote
-            });
-        }
-
-
-        // Blocking
+        // === BLOCKING ===
         public void Block(string reason)
         {
-            BlockingInfo = BlockingInfo.Create(reason);
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.Blocked,
-                $"Task blocked: {reason}");
-
+            _blockingReason = Check.NotNullOrWhiteSpace(reason, nameof(reason));
+            _blockedAt = DateTime.UtcNow;
+            
             AddDistributedEvent(new TaskBlockedEto
             {
                 TaskInstanceId = Id,
                 TenantId = TenantId,
                 Reason = reason,
-                BlockedAt = BlockingInfo.BlockedAt.Value
+                BlockedAt = DateTime.UtcNow
             });
-        }
-
-        public void BlockWaitingForUser(string userName, string additionalContext = null)
-        {
-            var reason = additionalContext != null
-                ? $"Waiting for: {userName} - {additionalContext}"
-                : $"Waiting for: {userName}";
-            Block(reason);
         }
 
         public void Unblock()
         {
-            if (!BlockingInfo.IsBlocked)
+            if (!IsBlocked)
             {
-                throw new BusinessException("Tasks:NotBlocked");
+                return;
             }
 
-            var previousReason = BlockingInfo.Reason;
-            BlockingInfo = BlockingInfo.NotBlocked;
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.Unblocked,
-                $"Task unblocked (was: {previousReason})");
+            _blockingReason = null;
+            _blockedAt = null;
+            
+            AddDistributedEvent(new TaskUnblockedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                UnblockedAt = DateTime.UtcNow
+            });
         }
 
-        // Step Completions
-        public void InitializeStepCompletions(List<Guid> actionStepIds)
+        // === FLAGGING ===
+        public void Flag(string reason)
         {
-            foreach (var stepId in actionStepIds)
+            _flagReason = reason;
+            
+            AddDistributedEvent(new TaskFlaggedEto
             {
-                _stepCompletions.Add(new TaskActionStepCompletion(Id, stepId));
-            }
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                Reason = reason,
+                FlaggedAt = DateTime.UtcNow
+            });
         }
 
-        public void CompleteStep(Guid stepId, Guid completedBy)
+        public void Unflag()
         {
-            var completion = _stepCompletions.FirstOrDefault(sc => sc.TaskActionStepId == stepId);
-            if (completion == null)
-            {
-                throw new BusinessException("Tasks:StepCompletionNotFound");
-            }
-
-            completion.Complete(completedBy);
-            UpdateProgress();
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.StepCompleted,
-                $"Step {stepId} completed",
-                completedBy);
+            _flagReason = null;
         }
 
-        public void UncompleteStep(Guid stepId)
+        // === CHECKLIST ===
+        public void InitializeChecklist(List<Guid> checklistItemIds)
         {
-            var completion = _stepCompletions.FirstOrDefault(sc => sc.TaskActionStepId == stepId);
-            if (completion == null)
+            foreach (var itemId in checklistItemIds)
             {
-                throw new BusinessException("Tasks:StepCompletionNotFound");
+                _checklistItems.Add(new TaskChecklistItem(Id, itemId));
             }
-
-            completion.Uncomplete();
-            UpdateProgress();
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.StepUncompleted,
-                $"Step {stepId} uncompleted");
         }
 
-        // Criterion Completions
-        public void InitializeCriterionCompletions(List<Guid> criterionIds)
+        public void CheckItem(Guid itemId, Guid? userId = null)
         {
-            foreach (var criterionId in criterionIds)
+            var item = _checklistItems.FirstOrDefault(i => i.ChecklistItemId == itemId);
+            if (item == null)
             {
-                _criterionCompletions.Add(new AcceptanceCriterionCompletion(Id, criterionId));
+                throw new BusinessException("Tasks:ChecklistItemNotFound");
             }
+
+            item.Check(userId);
+            UpdateProgressFromChecklist();
         }
 
-        public void MarkCriterionAsMet(Guid criterionId, Guid metBy)
+        public void UncheckItem(Guid itemId)
         {
-            var completion = _criterionCompletions.FirstOrDefault(cc => cc.CriterionId == criterionId);
-            if (completion == null)
+            var item = _checklistItems.FirstOrDefault(i => i.ChecklistItemId == itemId);
+            if (item == null)
             {
-                throw new BusinessException("Tasks:CriterionCompletionNotFound");
+                throw new BusinessException("Tasks:ChecklistItemNotFound");
             }
 
-            completion.MarkAsMet(metBy);
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.CriterionMet,
-                $"Criterion {criterionId} marked as met",
-                metBy);
+            item.Uncheck();
+            UpdateProgressFromChecklist();
         }
 
-        // Time Tracking
-        public void LogTimeSpent(int minutes)
+        private void UpdateProgressFromChecklist()
+        {
+            if (_checklistItems.Count == 0)
+            {
+                return;
+            }
+
+            var checkedCount = _checklistItems.Count(i => i.IsChecked);
+            var progress = (double)checkedCount / _checklistItems.Count * 100.0;
+            
+            WorkTracking = WorkTracking.UpdateProgress(progress);
+        }
+
+        // === DEPENDENCIES ===
+        public void AddDependency(
+            Guid dependsOnTaskInstanceId, 
+            DependencyType type,
+            int lagMinutes = 0,
+            bool isBlocking = true)
+        {
+            if (dependsOnTaskInstanceId == Id)
+            {
+                throw new BusinessException("Tasks:CannotDependOnSelf");
+            }
+
+            if (_dependencies.Any(d => d.DependsOnTaskInstanceId == dependsOnTaskInstanceId))
+            {
+                throw new BusinessException("Tasks:DependencyAlreadyExists");
+            }
+
+            var dependency = TaskDependency.CreateInstanceDependency(
+                Id, dependsOnTaskInstanceId, type, lagMinutes, isBlocking);
+            
+            _dependencies.Add(dependency);
+        }
+
+        public void RemoveDependency(Guid dependsOnTaskInstanceId)
+        {
+            var dependency = _dependencies.FirstOrDefault(d => 
+                d.DependsOnTaskInstanceId == dependsOnTaskInstanceId);
+            
+            if (dependency != null)
+            {
+                _dependencies.Remove(dependency);
+            }
+        }
+
+        // === COLLABORATION ===
+        public void AddWatcher(Guid userId)
+        {
+            Collaboration = Collaboration.AddWatcher(userId);
+        }
+
+        public void RemoveWatcher(Guid userId)
+        {
+            Collaboration = Collaboration.RemoveWatcher(userId);
+        }
+
+        public void IncrementComments()
+        {
+            Collaboration = Collaboration.IncrementComments();
+        }
+
+        public void IncrementAttachments()
+        {
+            Collaboration = Collaboration.IncrementAttachments();
+        }
+
+        // === CUSTOM FIELDS ===
+        public void SetCustomFieldValue(string key, object value)
+        {
+            CustomFields = CustomFields.SetValue(key, value);
+        }
+
+        // === TIME TRACKING ===
+        public void LogTime(int minutes)
         {
             if (minutes <= 0)
             {
                 throw new BusinessException("Tasks:InvalidTimeLog");
             }
 
-            var oldMinutes = TimeTracking.ActualMinutes;
-            TimeTracking = TimeTracking.LogTime(minutes);
-
-            AddFieldChangeHistoryEntry(
-                TaskHistoryChangeType.TimeLogged,
-                "ActualMinutes",
-                oldMinutes.ToString(),
-                TimeTracking.ActualMinutes.ToString());
+            WorkTracking = WorkTracking.LogTime(minutes);
         }
 
-        // Watchers
-        public void AddWatcher(Guid userId)
+        // === SCHEDULE ===
+        public void SetPlannedDates(DateTime? start, DateTime? due)
         {
-            Discussion = Discussion.AddWatcher(userId);
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.WatcherAdded,
-                $"Watcher {userId} added");
+            Schedule = Schedule.WithPlannedDates(start, due);
         }
 
-        public void RemoveWatcher(Guid userId)
+        public void SetEstimate(int minutes)
         {
-            Discussion = Discussion.RemoveWatcher(userId);
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.WatcherRemoved,
-                $"Watcher {userId} removed");
+            WorkTracking = WorkTracking.WithEstimate(minutes);
         }
 
-        // Progress Calculation
-        private void UpdateProgress()
-        {
-            if (_stepCompletions.Count == 0)
-            {
-                ProgressPercent = 0.0;
-                return;
-            }
-
-            var completedCount = _stepCompletions.Count(sc => sc.IsDone);
-            ProgressPercent = (double)completedCount / _stepCompletions.Count * 100.0;
-        }
-
-        // Dependencies Management
-        public void AddDependency(Guid dependsOnTaskId, DependencyType dependencyType,
-            int lagMinutes = 0, bool isBlocking = true)
-        {
-            if (dependsOnTaskId == Id)
-            {
-                throw new BusinessException("Tasks:CannotDependOnSelf");
-            }
-
-            if (_dependencies.Any(d => d.DependsOnTaskId == dependsOnTaskId))
-            {
-                throw new BusinessException("Tasks:DependencyAlreadyExists");
-            }
-
-            var dependency = TaskDependency.CreateTaskDependency(
-                Id, dependsOnTaskId, dependencyType, lagMinutes, isBlocking);
-            _dependencies.Add(dependency);
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.DependencyAdded,
-                $"Dependency added: {dependencyType} on task {dependsOnTaskId}");
-        }
-
-
-        public void RemoveDependency(Guid dependsOnTaskId)
-        {
-            var dependency = _dependencies.FirstOrDefault(d => d.DependsOnTaskId == dependsOnTaskId);
-            if (dependency == null)
-            {
-                throw new BusinessException("Tasks:DependencyNotFound");
-            }
-
-            _dependencies.Remove(dependency);
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.DependencyRemoved,
-                $"Dependency removed: task {dependsOnTaskId}");
-        }
-
-        // Other Methods
-        public void MarkAsNextAction()
-        {
-            IsNextAction = true;
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.MarkedAsNextAction,
-                "Marked as next action");
-        }
-
-        public void UnmarkAsNextAction()
-        {
-            IsNextAction = false;
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.UnmarkedAsNextAction,
-                "Unmarked as next action");
-        }
-
-        public void LockDiscussion()
-        {
-            Discussion = Discussion.LockDiscussion();
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.DiscussionLocked,
-                "Discussion locked");
-        }
-
-        public void UnlockDiscussion()
-        {
-            Discussion = Discussion.UnlockDiscussion();
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.DiscussionUnlocked,
-                "Discussion unlocked");
-        }
-
-        public void IncrementCommentsCount()
-        {
-            Discussion = Discussion.AddComment();
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.CommentAdded,
-                $"Comment added (total: {CommentsCount})");
-        }
-
-        public void IncrementAttachmentsCount()
-        {
-            Discussion = Discussion.AddAttachment();
-
-            AddSimpleHistoryEntry(
-                TaskHistoryChangeType.AttachmentAdded,
-                $"Attachment added (total: {AttachmentsCount})");
-        }
-
+        // === PRIORITY ===
         public void UpdatePriority(double importance, double urgency)
         {
-            var oldQuadrant = PriorityMatrix.Quadrant;
-            PriorityMatrix = new ImportanceUrgencyMatrix(importance, urgency);
-
-            AddFieldChangeHistoryEntry(
-                TaskHistoryChangeType.PriorityChanged,
-                "Priority",
-                oldQuadrant.ToString(),
-                PriorityMatrix.Quadrant.ToString());
+            Priority = new ImportanceUrgencyMatrix(importance, urgency);
         }
 
-        public void UpdateFlag(bool isFlagged, string flaggedReason)
-        {
-            var wasFlagged = FlagInfo.IsFlagged;
-            FlagInfo = isFlagged
-                ? FlagInfo.Create(flaggedReason)
-                : FlagInfo.NotFlagged;
-
-            if (isFlagged && !wasFlagged)
-            {
-                AddSimpleHistoryEntry(
-                    TaskHistoryChangeType.Flagged,
-                    $"Task flagged: {flaggedReason}");
-            }
-            else if (!isFlagged && wasFlagged)
-            {
-                AddSimpleHistoryEntry(
-                    TaskHistoryChangeType.Unflagged,
-                    "Task unflagged");
-            }
-        }
-
-        public void UpdateWorkflowStatus(Guid workflowStatusId)
-        {
-            var oldStatusId = WorkflowStatusId;
-            WorkflowStatusId = workflowStatusId;
-
-            AddFieldChangeHistoryEntry(
-                TaskHistoryChangeType.StatusChanged,
-                "WorkflowStatusId",
-                oldStatusId.ToString(),
-                workflowStatusId.ToString());
-        }
-
-        public void UpdateCustomFieldValue(string fieldName, object value, Guid updatedBy)
-        {
-            Check.NotNullOrWhiteSpace(fieldName, nameof(fieldName));
-            var oldValue = CustomField.GetValue(fieldName);
-            CustomField.SetValue(fieldName, value);
-
-            AddFieldChangeHistoryEntry(
-                TaskHistoryChangeType.FieldUpdated,
-                $"CustomField:{fieldName}",
-                oldValue?.ToString(),
-                value?.ToString(),
-                changedBy: updatedBy);
-        }
-
-        public void RevokeDelegation()
-        {
-            var delegatedTo = DelegationInfo?.DelegatedTo;
-            DelegationInfo = null;
-            AssigneeId = OwnerId;
-
-            AddHistoryEntry(
-                TaskHistoryChangeType.DelegationRevoked,
-                $"Delegation revoked (was delegated to {delegatedTo})",
-                null,
-                "AssigneeId",
-                delegatedTo?.ToString(),
-                OwnerId.ToString());
-        }
+        // === COMPUTED PROPERTIES ===
+        public bool RequiresApproval => ApprovalRequestId.HasValue;
+        public bool HasBlockingDependencies => _dependencies.Any(d => d.IsBlocking);
+        public double CompletionRate => WorkTracking.ProgressPercent;
+        public bool IsOverdue => Schedule.IsOverdue;
+        public bool HasWatchers => Collaboration.WatcherCount > 0;
         
-        // History tracking methods
-        private void AddHistoryEntry(
-            TaskHistoryChangeType changeType,
-            string description,
-            Guid? changedBy = null,
-            string fieldName = null,
-            string oldValue = null,
-            string newValue = null,
-            string metadata = null)
-        {
-            var entry = new TaskHistoryEntry(
-                Guid.NewGuid(),
-                Id,
-                changeType,
-                description,
-                changedBy,
-                fieldName,
-                oldValue,
-                newValue,
-                metadata);
-            _history.Add(entry);
-        }
-
-        private void AddSimpleHistoryEntry(
-            TaskHistoryChangeType changeType,
-            string description,
-            Guid? changedBy = null)
-        {
-            _history.Add(TaskHistoryEntry.Create(Id, changeType, description, changedBy));
-        }
-
-        private void AddFieldChangeHistoryEntry(
-            TaskHistoryChangeType changeType,
-            string fieldName,
-            string oldValue,
-            string newValue,
-            Guid? changedBy = null)
-        {
-            _history.Add(TaskHistoryEntry.CreateFieldChange(
-                Id, changeType, fieldName, oldValue, newValue, changedBy));
-        }
+        // GTD-specific computed properties
+        public bool IsInArea => AreaId.HasValue;
+        public bool IsInProject => ProjectId.HasValue;
+        public bool IsInContext => ContextId.HasValue;
+        public bool IsOrganized => IsInArea || IsInProject || IsInContext;
+        public bool IsAreaTask => IsInArea && !IsInProject;
+        public bool IsProjectTask => IsInProject && !IsInArea;
     }
 }

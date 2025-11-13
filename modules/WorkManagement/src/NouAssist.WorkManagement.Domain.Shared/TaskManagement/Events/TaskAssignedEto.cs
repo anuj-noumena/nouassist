@@ -10,14 +10,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Events
         public Guid TaskInstanceId { get; set; }
         public Guid? TenantId { get; set; }
         public Guid AssignedTo { get; set; }
-        public Guid AssignedBy { get; set; }
+        public Guid? PreviousAssignee { get; set; }
         public DateTime AssignedAt { get; set; }
-    }
-    
-    [EventName("NouAssist.Tasks.TaskUnassigned")]
-    public class TaskUnassignedEto : IMultiTenant
-    {
-        public Guid TaskInstanceId { get; set; }
-        public Guid? TenantId { get; set; }
     }
 }

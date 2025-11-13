@@ -5,79 +5,68 @@ using Volo.Abp.Domain.Services;
 
 namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 {
-    /// <summary>
-    /// Evaluates conditions based on field values.
-    /// Follows Single Responsibility Principle - only handles field value comparisons
-    /// Follows Open/Closed Principle - can be extended without modification
+        /// <summary>
+    /// IMPROVED: Field value condition evaluator with better type handling
     /// </summary>
-    public class FieldValueConditionEvaluator : DomainService, IWorkflowConditionEvaluator
+    public class FieldValueConditionEvaluator : ConditionEvaluatorBase
     {
-        public bool CanEvaluate(WorkflowCondition condition)
+        protected override string[] SupportedOperators => new[]
         {
-            return condition?.Operator != null &&
-                   (condition.Operator.Equals("equals", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("notEquals", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("greaterThan", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("lessThan", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("greaterThanOrEquals", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("lessThanOrEquals", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("contains", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("notContains", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("isEmpty", StringComparison.OrdinalIgnoreCase) ||
-                    condition.Operator.Equals("isNotEmpty", StringComparison.OrdinalIgnoreCase));
-        }
+            "equals", "notEquals",
+            "greaterThan", "lessThan", "greaterThanOrEquals", "lessThanOrEquals",
+            "contains", "notContains", "startsWith", "endsWith",
+            "isEmpty", "isNotEmpty",
+            "in", "notIn"
+        };
 
-        public Task<ConditionEvaluationResult> EvaluateAsync(
+        public override async Task<ConditionEvaluationResult> EvaluateAsync(
             WorkflowCondition condition,
             WorkflowConditionContext context)
         {
-            if (condition == null)
+            var actualValue = context.CustomFieldValues.GetValue(condition.Key);
+
+            if (actualValue == null && !context.AdditionalData.TryGetValue(condition.Key, out actualValue))
             {
-                return Task.FromResult(ConditionEvaluationResult.Failure("Condition is null"));
+                return Failure($"Field '{condition.Key}' not found");
             }
 
-            // Get the field value from context
-             var actualValue = context.CustomFieldValues.GetValue(condition.Key);
-            if (actualValue == null)
+            var result = condition.Operator.ToLower() switch
             {
-                // Field not found in custom fields, check additional data
-                if (!context.AdditionalData.TryGetValue(condition.Key, out actualValue))
-                {
-                    return Task.FromResult(
-                        ConditionEvaluationResult.Failure($"Field '{condition.Key}' not found"));
-                }
-            }
-
-            var result = EvaluateCondition(condition.Operator, actualValue, condition.Value);
-
-            return Task.FromResult(result
-                ? ConditionEvaluationResult.Success()
-                : ConditionEvaluationResult.Failure(
-                    $"Condition not satisfied: {condition.Key} {condition.Operator} {condition.Value}"));
-        }
-
-        private bool EvaluateCondition(string operatorType, object actualValue, object expectedValue)
-        {
-            return operatorType.ToLower() switch
-            {
-                "equals" => CompareEquals(actualValue, expectedValue),
-                "notequals" => !CompareEquals(actualValue, expectedValue),
-                "greaterthan" => CompareGreaterThan(actualValue, expectedValue),
-                "lessthan" => CompareLessThan(actualValue, expectedValue),
-                "greaterthanorequals" => CompareGreaterThanOrEquals(actualValue, expectedValue),
-                "lessthanorequals" => CompareLessThanOrEquals(actualValue, expectedValue),
-                "contains" => CompareContains(actualValue, expectedValue),
-                "notcontains" => !CompareContains(actualValue, expectedValue),
+                "equals" => Equals(actualValue, condition.Value),
+                "notequals" => !Equals(actualValue, condition.Value),
+                "greaterthan" => CompareGreaterThan(actualValue, condition.Value),
+                "lessthan" => CompareLessThan(actualValue, condition.Value),
+                "greaterthanorequals" => CompareGreaterThanOrEquals(actualValue, condition.Value),
+                "lessthanorequals" => CompareLessThanOrEquals(actualValue, condition.Value),
+                "contains" => Contains(actualValue, condition.Value),
+                "notcontains" => !Contains(actualValue, condition.Value),
+                "startswith" => StartsWith(actualValue, condition.Value),
+                "endswith" => EndsWith(actualValue, condition.Value),
                 "isempty" => IsEmpty(actualValue),
                 "isnotempty" => !IsEmpty(actualValue),
+                "in" => In(actualValue, condition.Value),
+                "notin" => !In(actualValue, condition.Value),
                 _ => false
             };
+
+            return result
+                ? Success()
+                : Failure($"Condition not satisfied: {condition.Key} {condition.Operator} {condition.Value}");
         }
 
-        private bool CompareEquals(object actual, object expected)
+        private bool Equals(object actual, object expected)
         {
             if (actual == null && expected == null) return true;
             if (actual == null || expected == null) return false;
+
+            // Try numeric comparison first
+            if (TryConvertToDouble(actual, out var actualNum) &&
+                TryConvertToDouble(expected, out var expectedNum))
+            {
+                return Math.Abs(actualNum - expectedNum) < 0.0001;
+            }
+
+            // String comparison
             return actual.ToString().Equals(expected.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
@@ -88,6 +77,14 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
             {
                 return actualNum > expectedNum;
             }
+
+            // Try date comparison
+            if (TryConvertToDateTime(actual, out var actualDate) &&
+                TryConvertToDateTime(expected, out var expectedDate))
+            {
+                return actualDate > expectedDate;
+            }
+
             return false;
         }
 
@@ -98,39 +95,69 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
             {
                 return actualNum < expectedNum;
             }
+
+            if (TryConvertToDateTime(actual, out var actualDate) &&
+                TryConvertToDateTime(expected, out var expectedDate))
+            {
+                return actualDate < expectedDate;
+            }
+
             return false;
         }
 
         private bool CompareGreaterThanOrEquals(object actual, object expected)
         {
-            if (TryConvertToDouble(actual, out var actualNum) &&
-                TryConvertToDouble(expected, out var expectedNum))
-            {
-                return actualNum >= expectedNum;
-            }
-            return false;
+            return Equals(actual, expected) || CompareGreaterThan(actual, expected);
         }
 
         private bool CompareLessThanOrEquals(object actual, object expected)
         {
-            if (TryConvertToDouble(actual, out var actualNum) &&
-                TryConvertToDouble(expected, out var expectedNum))
-            {
-                return actualNum <= expectedNum;
-            }
-            return false;
+            return Equals(actual, expected) || CompareLessThan(actual, expected);
         }
 
-        private bool CompareContains(object actual, object expected)
+        private bool Contains(object actual, object expected)
         {
             if (actual == null || expected == null) return false;
             return actual.ToString().Contains(expected.ToString(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool StartsWith(object actual, object expected)
+        {
+            if (actual == null || expected == null) return false;
+            return actual.ToString().StartsWith(expected.ToString(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        private bool EndsWith(object actual, object expected)
+        {
+            if (actual == null || expected == null) return false;
+            return actual.ToString().EndsWith(expected.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsEmpty(object value)
         {
             if (value == null) return true;
             if (value is string str) return string.IsNullOrWhiteSpace(str);
+            if (value is IEnumerable<object> enumerable) return !enumerable.Any();
+            return false;
+        }
+
+        private bool In(object actual, object expected)
+        {
+            if (actual == null || expected == null) return false;
+
+            // Expected should be a collection
+            if (expected is IEnumerable<object> collection)
+            {
+                return collection.Any(item => Equals(actual, item));
+            }
+
+            // Try parsing as comma-separated string
+            if (expected is string str)
+            {
+                var values = str.Split(',').Select(v => v.Trim());
+                return values.Any(v => Equals(actual, v));
+            }
+
             return false;
         }
 
@@ -138,8 +165,20 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
         {
             result = 0;
             if (value == null) return false;
-
             return double.TryParse(value.ToString(), out result);
         }
+
+        private bool TryConvertToDateTime(object value, out DateTime result)
+        {
+            result = DateTime.MinValue;
+            if (value == null) return false;
+            if (value is DateTime dt)
+            {
+                result = dt;
+                return true;
+            }
+            return DateTime.TryParse(value.ToString(), out result);
+        }
     }
+
 }

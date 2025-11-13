@@ -9,7 +9,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
     /// </summary>
     public class TaskValidationService : DomainService
     {
-        public ValidationResult ValidateTaskForCreation(Aggregates.Task task)
+        public ValidationResult ValidateTaskForCreation(Task task)
         {
             var result = new ValidationResult();
 
@@ -18,7 +18,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                 result.AddError("Title is required");
             }
 
-            if (task.Title?.Length > TasksConsts.MaxTitleLength)
+            if (task.Title.Length > TasksConsts.MaxTitleLength)
             {
                 result.AddError($"Title cannot exceed {TasksConsts.MaxTitleLength} characters");
             }
@@ -38,7 +38,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
 
         public ValidationResult ValidateTaskInstanceForCompletion(
             TaskInstance instance,
-            Aggregates.Task blueprint)
+            Task blueprint)
         {
             var result = new ValidationResult();
 
@@ -72,7 +72,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             return result;
         }
 
-        public bool CanDeleteTask(Aggregates.Task task, int instanceCount)
+        public bool CanDeleteTask(Task task, int instanceCount)
         {
             // Cannot delete if there are active instances
             return instanceCount == 0 || !task.IsActive;

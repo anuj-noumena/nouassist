@@ -8,9 +8,12 @@ namespace NouAssist.WorkManagement.TaskManagement.Events
     public class TaskCreatedEto : IMultiTenant
     {
         public Guid TaskId { get; set; }
-        public Guid? TenantId { get; set; }
         public string Title { get; set; }
         public Guid OwnerId { get; set; }
+        public Guid? AreaId { get; set; }
+        public Guid? ProjectId { get; set; }
+        public Guid? ContextId { get; set; }
+        public Guid? TenantId { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

@@ -61,7 +61,9 @@ namespace NouAssist.WorkManagement.Shared.ValueObjects
         public Metadata Remove(string key)
         {
             if (!_entries.ContainsKey(key))
+            {
                 return this;
+            }
 
             var updated = new Dictionary<string, object>(_entries);
             updated.Remove(key);
@@ -85,7 +87,9 @@ namespace NouAssist.WorkManagement.Shared.ValueObjects
             if (_entries.TryGetValue(key, out var value))
             {
                 if (value is T typedValue)
+                {
                     return typedValue;
+                }
 
                 try
                 {

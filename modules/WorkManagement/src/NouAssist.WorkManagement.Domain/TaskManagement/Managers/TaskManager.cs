@@ -31,6 +31,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
             Guid ownerId,
             string title,
             Guid? projectId = null,
+            Guid? areaId = null,
+            Guid? contextId = null,
             string description = null,
             double? defaultImportance = null,
             double? defaultUrgency = null)
@@ -40,7 +42,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
             {
                 var existingTasks = await _taskRepository.GetListAsync(
                     new TasksByProjectSpecification(projectId.Value).ToExpression());
-                
+
                 if (existingTasks.Any(t => t.Title.Equals(title, StringComparison.OrdinalIgnoreCase)))
                 {
                     throw new TaskDomainException(
@@ -55,6 +57,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
                 title,
                 CurrentTenant.Id,
                 projectId,
+                areaId: areaId,
+                contextId: contextId,
                 defaultImportance ?? TasksConsts.DefaultImportance,
                 defaultUrgency ?? TasksConsts.DefaultUrgency);
 
@@ -107,7 +111,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
             }
             else
             {
-                task.SoftDelete();
+                task.IsDeleted = true;
                 await _taskRepository.UpdateAsync(task);
                 _logger.LogInformation("Soft deleted task {TaskId}", taskId);
             }

@@ -21,6 +21,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
     public class TaskTransitionOrchestrator : DomainService
     {
         private readonly ITaskInstanceRepository _taskInstanceRepository;
+        private readonly ITaskRepository _taskRepository;
         private readonly IWorkflowRepository _workflowRepository;
         private readonly WorkflowTransitionService _workflowTransitionService;
         private readonly IDistributedEventBus _distributedEventBus;
@@ -33,13 +34,14 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             IWorkflowRepository workflowRepository,
             WorkflowTransitionService workflowTransitionService,
             IDistributedEventBus distributedEventBus,
-            ITransitionPermissionPolicyRepository permissionPolicyRepository)
+            ITransitionPermissionPolicyRepository permissionPolicyRepository, ITaskRepository taskRepository)
         {
             _taskInstanceRepository = taskInstanceRepository;
             _workflowRepository = workflowRepository;
             _workflowTransitionService = workflowTransitionService;
             _distributedEventBus = distributedEventBus;
             _permissionPolicyRepository = permissionPolicyRepository;
+            _taskRepository = taskRepository;
         }
 
         /// <summary>
@@ -64,6 +66,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                 var taskInstance = await _taskInstanceRepository.GetAsync(taskInstanceId);
                 result.TaskInstanceId = taskInstance.Id;
                 result.OldStatusId = taskInstance.WorkflowStatusId;
+
+                var task = await _taskRepository.GetAsync(taskInstance.TaskId);
 
                 // 2. Load workflow and find transition
                 var workflow = await _workflowRepository.GetAsync(taskInstance.WorkflowId);
@@ -90,8 +94,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                     transition,
                     currentUserId,
                     userRoles,
-                    taskInstance.ProjectId, // Pass project context for permission checking
-                    taskInstance.CustomField,
+                    task.ProjectId, // Pass project context for permission checking
+                    taskInstance.CustomFields,
                     comment);
 
                 if (!transitionResult.IsSuccessful)
@@ -102,7 +106,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                 }
 
                 // 5. Update task instance status
-                taskInstance.UpdateWorkflowStatus(transition.ToStatusId);
+                taskInstance.TransitionTo(transition.ToStatusId, comment);
                 await _taskInstanceRepository.UpdateAsync(taskInstance);
 
                 result.NewStatusId = taskInstance.WorkflowStatusId;
@@ -145,7 +149,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             List<string> userRoles)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(taskInstanceId);
+            //Todo: determine the workflowId
             var workflow = await _workflowRepository.GetAsync(taskInstance.WorkflowId);
+            var task = await _taskRepository.GetAsync(taskInstance.TaskId);
 
             var availableTransitions = new List<AvailableTransition>();
 
@@ -162,7 +168,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                     transition.Id,
                     currentUserId,
                     userRoles,
-                    taskInstance.ProjectId);
+                    task.ProjectId);
 
 
                 if (!hasPermission)
@@ -178,8 +184,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                     transition,
                     currentUserId,
                     userRoles,
-                    taskInstance.ProjectId, // Pass project context
-                    taskInstance.CustomFieldValues);
+                    task.ProjectId, // Pass project context
+                    taskInstance.CustomFields);
 
                 availableTransitions.Add(new AvailableTransition
                 {
@@ -208,7 +214,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             Guid transitionId,
             Guid userId,
             List<string> userRoles,
-            Guid projectId)
+            Guid? projectId)
         {
             var policy = await _permissionPolicyRepository.GetApplicablePolicyAsync(
                 transitionId,

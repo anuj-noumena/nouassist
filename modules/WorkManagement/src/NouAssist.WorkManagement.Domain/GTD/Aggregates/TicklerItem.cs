@@ -6,7 +6,6 @@ using NouAssist.WorkManagement.GTD.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
-using RecurrenceRule = NouAssist.WorkManagement.TaskManagement.ValueObjects.RecurrenceRule;
 
 namespace NouAssist.WorkManagement.GTD.Aggregates
 {
@@ -58,7 +57,10 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
 
         public void Surface()
         {
-            if (Status == TicklerStatus.Surfaced) return;
+            if (Status == TicklerStatus.Surfaced)
+            {
+                return;
+            }
 
             Status = TicklerStatus.Surfaced;
             SurfacedAt = DateTime.UtcNow;
@@ -109,7 +111,9 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
         public DateTime? GetNextOccurrence()
         {
             if (!IsRecurring || RecurrencePattern == null)
+            {
                 return null;
+            }
 
             return RecurrencePattern.GetNextOccurrence(TickleDate);
         }

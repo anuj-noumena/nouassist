@@ -33,7 +33,10 @@ namespace NouAssist.WorkManagement.Reviews.Entities
 
         public void MarkAsReviewed(ReviewItemDecision decision, string notes = null, string actionTaken = null)
         {
-            if (IsReviewed) return;
+            if (IsReviewed)
+            {
+                return;
+            }
 
             IsReviewed = true;
             ReviewedAt = DateTime.UtcNow;

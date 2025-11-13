@@ -87,22 +87,46 @@ namespace NouAssist.WorkManagement.Reviews.Aggregates
                 int completed = 0;
                 int total = 0;
 
-                if (!string.IsNullOrWhiteSpace(WhatWentWell)) completed++;
+                if (!string.IsNullOrWhiteSpace(WhatWentWell))
+                {
+                    completed++;
+                }
+
                 total++;
 
-                if (!string.IsNullOrWhiteSpace(WhatNeedsAttention)) completed++;
+                if (!string.IsNullOrWhiteSpace(WhatNeedsAttention))
+                {
+                    completed++;
+                }
+
                 total++;
 
-                if (!string.IsNullOrWhiteSpace(Insights)) completed++;
+                if (!string.IsNullOrWhiteSpace(Insights))
+                {
+                    completed++;
+                }
+
                 total++;
 
-                if (CompletenessScore.HasValue) completed++;
+                if (CompletenessScore.HasValue)
+                {
+                    completed++;
+                }
+
                 total++;
 
-                if (SatisfactionScore.HasValue) completed++;
+                if (SatisfactionScore.HasValue)
+                {
+                    completed++;
+                }
+
                 total++;
 
-                if (HasActionItems) completed++;
+                if (HasActionItems)
+                {
+                    completed++;
+                }
+
                 total++;
 
                 return total > 0 ? (double)completed / total : 0.0;
@@ -116,10 +140,26 @@ namespace NouAssist.WorkManagement.Reviews.Aggregates
             get
             {
                 var score = CompletenessScore ?? CalculatedCompletenessScore;
-                if (score >= 90) return ReviewQuality.Excellent;
-                if (score >= 75) return ReviewQuality.Good;
-                if (score >= 60) return ReviewQuality.Adequate;
-                if (score >= 40) return ReviewQuality.Minimal;
+                if (score >= 90)
+                {
+                    return ReviewQuality.Excellent;
+                }
+
+                if (score >= 75)
+                {
+                    return ReviewQuality.Good;
+                }
+
+                if (score >= 60)
+                {
+                    return ReviewQuality.Adequate;
+                }
+
+                if (score >= 40)
+                {
+                    return ReviewQuality.Minimal;
+                }
+
                 return ReviewQuality.Incomplete;
             }
         }

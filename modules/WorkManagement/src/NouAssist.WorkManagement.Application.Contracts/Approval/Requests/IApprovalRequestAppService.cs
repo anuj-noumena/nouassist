@@ -12,8 +12,12 @@ namespace NouAssist.WorkManagement.Approval.Requests
         Task<PagedResultDto<ApprovalRequestDto>> GetListAsync(GetApprovalRequestListDto input);
         Task<PagedResultDto<ApprovalRequestDto>> GetMyRequestsAsync(GetApprovalRequestListDto input);
         Task<PagedResultDto<ApprovalRequestDto>> GetPendingApprovalsAsync(GetApprovalRequestListDto input);
+        Task<PagedResultDto<ApprovalRequestDto>> GetOverdueRequestsAsync(GetApprovalRequestListDto input);
+        Task<PagedResultDto<ApprovalRequestDto>> GetSlaBreachedRequestsAsync(GetApprovalRequestListDto input);
         Task<ApprovalRequestDto> CreateAsync(CreateApprovalRequestDto input);
+        Task<ApprovalRequestDto> UpdateAsync(Guid id, UpdateApprovalRequestDto input);
         Task<ApprovalRequestDto> MakeDecisionAsync(Guid id, MakeApprovalDecisionDto input);
         Task<ApprovalRequestDto> CancelAsync(Guid id, string reason);
+        Task<ApprovalRequestDto> SetCustomFieldAsync(Guid id, SetCustomFieldDto input);
     }
 }

@@ -18,47 +18,37 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         
         // Status Management
         Task<TaskInstanceDto> StartAsync(Guid id);
-        Task<TaskInstanceDto> CompleteAsync(Guid id, UpdateTaskStatusDto input);
-        Task<TaskInstanceDto> CancelAsync(Guid id, string reason);
-        Task<TaskInstanceDto> ChangeWorkflowStatusAsync(Guid id, ChangeWorkflowStatusDto input);
+        Task<TaskInstanceDto> CompleteAsync(Guid id, CompleteTaskDto input);
         Task<TaskInstanceDto> ReopenAsync(Guid id);
+        Task<TaskInstanceDto> TransitionToAsync(Guid id, Guid workflowStatusId, string comment = null);
         
         // Assignment
         Task<TaskInstanceDto> AssignAsync(Guid id, AssignTaskDto input);
         Task<TaskInstanceDto> UnassignAsync(Guid id);
-        Task<TaskInstanceDto> ReassignAsync(Guid id, AssignTaskDto input);
         
         // Delegation
         Task<TaskInstanceDto> DelegateAsync(Guid id, DelegateTaskDto input);
-        Task<TaskInstanceDto> DelegateViaWorkflowAsync(Guid id, DelegateTaskViaWorkflowDto input);
         Task<TaskInstanceDto> AcceptDelegationAsync(Guid id, AcceptDelegationDto input);
         Task<TaskInstanceDto> DeclineDelegationAsync(Guid id, DeclineDelegationDto input);
-        Task<TaskInstanceDto> RevokeDelegationAsync(Guid id);
         
         // Blocking
         Task<TaskInstanceDto> BlockAsync(Guid id, BlockTaskDto input);
         Task<TaskInstanceDto> UnblockAsync(Guid id);
-        Task<TaskInstanceDto> BlockWaitingForUserAsync(Guid id, string userName, string additionalContext = null);
         
-        // Progress Management
-        Task<TaskInstanceDto> CompleteStepAsync(Guid id, CompleteStepDto input);
-        Task<TaskInstanceDto> UncompleteStepAsync(Guid id, Guid stepId);
+        // Progress Management - Updated from Step to ChecklistItem
+        Task<TaskInstanceDto> CheckItemAsync(Guid id, Guid checklistItemId);
+        Task<TaskInstanceDto> UncheckItemAsync(Guid id, Guid checklistItemId);
         Task<TaskInstanceDto> MarkCriterionAsMetAsync(Guid id, MarkCriterionMetDto input);
         Task<TaskInstanceDto> UnmarkCriterionAsMetAsync(Guid id, Guid criterionId);
 
         // Time Tracking
         Task<TaskInstanceDto> LogTimeAsync(Guid id, LogTimeDto input);
         
-        // Watchers
+        // Collaboration
         Task<TaskInstanceDto> AddWatcherAsync(Guid id, Guid userId);
         Task<TaskInstanceDto> RemoveWatcherAsync(Guid id, Guid userId);
-        
-        // Subtask Management
-        Task<TaskInstanceDto> CreateSubtaskAsync(Guid parentId, CreateTaskInstanceDto input);
-        Task<List<TaskInstanceDto>> GetSubtasksAsync(Guid parentId);
-        Task<TaskInstanceDto> SetParentAsync(Guid id, SetParentTaskDto input);
-        Task<TaskInstanceDto> RemoveParentAsync(Guid id);
-        Task<TaskInstanceDto> ReorderSubtasksAsync(Guid parentId, ReorderSubtasksDto input);
+        Task<TaskInstanceDto> IncrementCommentsAsync(Guid id);
+        Task<TaskInstanceDto> IncrementAttachmentsAsync(Guid id);
         
         // Dependencies
         Task<TaskInstanceDto> AddDependencyAsync(Guid id, AddDependencyDto input);
@@ -67,8 +57,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         Task<List<TaskInstanceDto>> GetBlockingTasksAsync(Guid id);
         Task<bool> CanStartAsync(Guid id);
         
-        // Task Movement
+        // GTD Organization
+        Task<TaskInstanceDto> AssignToAreaAsync(Guid id, Guid areaId);
+        Task<TaskInstanceDto> RemoveFromAreaAsync(Guid id);
+        Task<TaskInstanceDto> AssignToContextAsync(Guid id, Guid contextId);
+        Task<TaskInstanceDto> RemoveFromContextAsync(Guid id);
         Task<TaskInstanceDto> MoveToProjectAsync(Guid id, MoveTaskDto input);
+        Task<TaskInstanceDto> MoveToAreaAsync(Guid id, Guid areaId);
         
         // Flags and Markers
         Task<TaskInstanceDto> MarkAsNextActionAsync(Guid id);
@@ -76,19 +71,19 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         Task<TaskInstanceDto> FlagTaskAsync(Guid id, string reason);
         Task<TaskInstanceDto> UnflagTaskAsync(Guid id);
         
-        // Discussion
-        Task<TaskInstanceDto> LockDiscussionAsync(Guid id);
-        Task<TaskInstanceDto> UnlockDiscussionAsync(Guid id);
-        
         // Bulk Operations
         Task<BulkUpdateResultDto> BulkUpdateAsync(BulkUpdateTaskInstancesDto input);
         Task<BulkUpdateResultDto> BulkDeleteAsync(Guid[] taskInstanceIds);
         
         // Statistics & Reports
         Task<TaskInstanceStatisticsDto> GetStatisticsAsync(Guid id);
-        Task<List<TaskInstanceDto>> GetOverdueTasksAsync(Guid? projectId = null);
+        Task<List<TaskInstanceDto>> GetOverdueTasksAsync(Guid? projectId = null, Guid? areaId = null);
         Task<List<TaskInstanceDto>> GetMyTasksAsync();
         Task<List<TaskInstanceDto>> GetDelegatedToMeAsync();
-        Task<List<TaskInstanceDto>> GetNextActionsAsync(Guid? projectId = null);
+        Task<List<TaskInstanceDto>> GetNextActionsAsync(Guid? projectId = null, Guid? areaId = null, Guid? contextId = null);
+        
+        // GTD-specific queries
+        Task<List<TaskInstanceDto>> GetTasksByAreaAsync(Guid areaId);
+        Task<List<TaskInstanceDto>> GetTasksByContextAsync(Guid contextId);
     }
 }

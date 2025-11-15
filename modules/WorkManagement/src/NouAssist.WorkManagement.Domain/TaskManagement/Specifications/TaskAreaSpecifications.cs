@@ -6,38 +6,6 @@ using NouAssist.WorkManagement.TaskManagement.Aggregates;
 namespace NouAssist.WorkManagement.TaskManagement.Specifications
 {
     /// <summary>
-    /// Specification for tasks in a specific area
-    /// </summary>
-    public class TasksByAreaSpecification : BaseSpecification<Task>
-    {
-        private readonly Guid _areaId;
-
-        public TasksByAreaSpecification(Guid areaId)
-        {
-            _areaId = areaId;
-        }
-
-        public override Expression<Func<Task, bool>> ToExpression() =>
-            t => t.AreaId == _areaId && t.IsActive;
-    }
-
-    /// <summary>
-    /// Specification for task instances in a specific area
-    /// </summary>
-    public class TaskInstancesByAreaSpecification : BaseSpecification<TaskInstance>
-    {
-        private readonly Guid _areaId;
-
-        public TaskInstancesByAreaSpecification(Guid areaId)
-        {
-            _areaId = areaId;
-        }
-
-        public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.AreaId == _areaId && !ti.IsDeleted;
-    }
-
-    /// <summary>
     /// Specification for active task instances in area and context
     /// </summary>
     public class TaskInstancesByAreaAndContextSpecification : BaseSpecification<TaskInstance>
@@ -116,18 +84,5 @@ namespace NouAssist.WorkManagement.TaskManagement.Specifications
                          !ti.IsDeleted;
         }
         
-    }
-    
-    public class TaskInstancesByContextSpecification : BaseSpecification<TaskInstance>
-    {
-        private readonly Guid _contextId;
-
-        public TaskInstancesByContextSpecification(Guid contextId)
-        {
-            _contextId = contextId;
-        }
-
-        public override Expression<Func<TaskInstance, bool>> ToExpression() =>
-            ti => ti.ContextId == _contextId && !ti.Schedule.IsCompleted && !ti.IsDeleted;
     }
 }

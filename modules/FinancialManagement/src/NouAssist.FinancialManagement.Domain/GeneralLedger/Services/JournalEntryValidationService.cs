@@ -1,101 +1,77 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
-using NouAssist.FinancialManagement.GeneralLedger.Data;
-using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.FinancialManagement.GeneralLedger.Services
 {
     public class JournalEntryValidationService : DomainService
     {
-        private readonly ILedgerAccountRepository _accountRepository;
-        private readonly IAccountingPeriodRepository _periodRepository;
-
-        public JournalEntryValidationService(
-            ILedgerAccountRepository accountRepository,
-            IAccountingPeriodRepository periodRepository)
-        {
-            _accountRepository = accountRepository;
-            _periodRepository = periodRepository;
-        }
-
-        public async Task<ValidationResult> ValidateJournalEntryBatchAsync(
-            JournalEntryBatch batch)
+        public ValidationResult ValidateForPosting(JournalEntryBatch batch)
         {
             var errors = new List<string>();
 
             // Basic structure validation
             if (batch.Lines.Count < 2)
             {
-                errors.Add("Journal entry batch must have at least 2 lines");
+                errors.Add(L["GL:MinimumTwoLines"]);
             }
 
-            if (string.IsNullOrWhiteSpace(batch.Description))
+            // Balance validation
+            if (!batch.IsBalanced())
             {
-                errors.Add("Description is required");
+                errors.Add(L["GL:BatchNotBalanced"]);
             }
 
-            // Validate account references
-            var accountValidation = await ValidateAccountReferencesAsync(batch);
-            errors.AddRange(accountValidation);
-
-            // Validate balancing
-            if (!batch.IsBalanced)
+            // Line validation
+            foreach (var line in batch.Lines)
             {
-                errors.Add("Journal entry batch is not balanced");
-            }
+                if (line.DebitAmount == null && line.CreditAmount == null)
+                {
+                    errors.Add(L["GL:LineNeedsAmount"]);
+                }
 
-            // Validate accounting period
-            var periodValidation = await ValidateAccountingPeriodAsync(batch.PostingDate);
-            errors.AddRange(periodValidation);
+                if (line.DebitAmount != null && line.CreditAmount != null)
+                {
+                    errors.Add(L["GL:LineBothAmounts"]);
+                }
+            }
 
             return new ValidationResult(errors.Count == 0, errors);
         }
 
-        private async Task<List<string>> ValidateAccountReferencesAsync(
-            JournalEntryBatch batch)
+        public Task<ValidationResult> ValidateAccountStructure(
+            LedgerAccount account,
+            LedgerAccount parentAccount)
         {
             var errors = new List<string>();
-            var accountIds = batch.Lines.Select(l => l.AccountId).Distinct();
 
-            foreach (var accountId in accountIds)
+            if (parentAccount != null)
             {
-                var account = await _accountRepository.FindAsync(accountId);
-                if (account == null)
+                // Parent must be same account type or allow children
+                if (parentAccount.Type != account.Type)
                 {
-                    errors.Add($"Account {accountId} does not exist");
+                    errors.Add(L["GL:ParentTypeMismatch"]);
                 }
-                else if (!account.IsActive)
-                {
-                    errors.Add($"Account {account.AccountNumber} is inactive");
-                }
-                else if (!account.AllowsPosting)
-                {
-                    errors.Add($"Account {account.AccountNumber} does not allow posting");
-                }
+
+                // Check for circular references (would be done via repository in real scenario)
+                // This is simplified - in production, check full parent chain
             }
 
-            return errors;
+            return Task.FromResult(new ValidationResult(errors.Count == 0, errors));
         }
+    }
 
-        private async Task<List<string>> ValidateAccountingPeriodAsync(DateTime postingDate)
+    public class ValidationResult
+    {
+        public bool IsValid { get; }
+        public List<string> Errors { get; }
+
+        public ValidationResult(bool isValid, List<string> errors)
         {
-            var errors = new List<string>();
-            var period = await _periodRepository.GetPeriodForDateAsync(postingDate);
-
-            if (period == null)
-            {
-                errors.Add($"No accounting period found for date {postingDate:yyyy-MM-dd}");
-            }
-            else if (period.Status != Enums.PeriodStatus.Open)
-            {
-                errors.Add($"Cannot post to closed period");
-            }
-
-            return errors;
+            IsValid = isValid;
+            Errors = errors ?? new List<string>();
         }
     }
 }

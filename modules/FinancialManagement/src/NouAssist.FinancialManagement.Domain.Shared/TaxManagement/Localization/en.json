@@ -1,0 +1,11 @@
+{
+  "culture": "en",
+  "texts": {
+    "TaxManagement:CannotModifyFiledReturn": "Cannot modify a tax return that has been filed.",
+    "TaxManagement:CannotRecalculateFiledReturn": "Cannot recalculate a filed tax return.",
+    "TaxManagement:ReturnNotInDraftStatus": "Tax return must be in draft status.",
+    "TaxManagement:ReturnNotReadyToFile": "Tax return is not ready to file. Please complete all required fields and attach necessary documents.",
+    "TaxManagement:DocumentNotInUploadedState": "Document must be in uploaded state to be verified.",
+    "TaxManagement:PaymentAlreadyRecorded": "Payment has already been recorded for this quarter."
+  }
+}

@@ -99,6 +99,61 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
             ExtraProperties = new ExtraPropertyDictionary();
         }
 
+
+        public void UpdateBasicInfo(string name, string description)
+        {
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
+            Description = description;
+        }
+
+        public void UpdateInitialStatus(Guid initialStatusId)
+        {
+            if (!_statuses.Any(s => s.Id == initialStatusId))
+            {
+                throw new BusinessException("Workflow:StatusNotFound");
+            }
+
+            InitialStatusId = initialStatusId;
+        }
+
+        public void RemoveStatus(Guid statusId)
+        {
+            var status = _statuses.FirstOrDefault(s => s.Id == statusId);
+            if (status == null)
+            {
+                throw new BusinessException("Workflow:StatusNotFound");
+            }
+    
+            // Cannot remove initial status
+            if (status.IsInitial)
+            {
+                throw new BusinessException("Workflow:CannotRemoveInitialStatus");
+            }
+    
+            // Check if any transitions reference this status
+            if (_transitions.Any(t => t.FromStatusId == statusId || t.ToStatusId == statusId))
+            {
+                throw new BusinessException("Workflow:StatusHasTransitions");
+            }
+    
+            _statuses.Remove(status);
+        }
+
+        public void RemoveTransition(Guid transitionId)
+        {
+            var transition = _transitions.FirstOrDefault(t => t.Id == transitionId);
+            if (transition != null)
+            {
+                _transitions.Remove(transition);
+            }
+        }
+
+        public void UpdateStatusOrder(Guid statusId, int newOrderIndex)
+        {
+            var status = GetStatus(statusId);
+            status.OrderIndex = newOrderIndex;
+        }
+
         /// <summary>
         /// Adds a new status (state) to the workflow.
         /// Ensures that status names are unique within the workflow.
@@ -203,33 +258,33 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
 
             IsActive = false;
         }
-        
+
         public void ValidateBeforeActivation()
         {
             if (!_statuses.Any())
             {
                 throw new BusinessException("Workflow:NoStatuses");
             }
-    
+
             if (!_statuses.Any(s => s.IsInitial))
             {
                 throw new BusinessException("Workflow:NoInitialStatus");
             }
-    
+
             if (_statuses.Count(s => s.IsInitial) > 1)
             {
                 throw new BusinessException("Workflow:MultipleInitialStatuses");
             }
-    
+
             if (!_transitions.Any())
             {
                 throw new BusinessException("Workflow:NoTransitions");
             }
-    
+
             // Check for unreachable statuses
             var reachable = GetReachableStatuses();
             var unreachable = _statuses.Where(s => !reachable.Contains(s.Id)).ToList();
-    
+
             if (unreachable.Any())
             {
                 throw new BusinessException("Workflow:UnreachableStatuses",
@@ -241,15 +296,15 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
         {
             var reachable = new HashSet<Guid>();
             var queue = new Queue<Guid>();
-    
+
             queue.Enqueue(InitialStatusId);
             reachable.Add(InitialStatusId);
-    
+
             while (queue.Any())
             {
                 var current = queue.Dequeue();
                 var outgoing = _transitions.Where(t => t.FromStatusId == current);
-        
+
                 foreach (var transition in outgoing)
                 {
                     if (!reachable.Contains(transition.ToStatusId))
@@ -259,9 +314,8 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
                     }
                 }
             }
-    
+
             return reachable;
         }
-        
     }
 }

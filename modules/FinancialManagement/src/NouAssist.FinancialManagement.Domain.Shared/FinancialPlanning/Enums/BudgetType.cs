@@ -6,6 +6,9 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Enums
         Department = 2,
         Project = 3,
         Capital = 4,
-        Operating = 5
+        Operating = 5,
+        Monthly = 6,
+        Quarterly = 7,
+        Annual = 8
     }
 }

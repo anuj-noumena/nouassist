@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.GeneralLedger.Entities;
-using Volo.Abp.EntityFrameworkCore.Modeling;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.GeneralLedger
 {
@@ -9,67 +10,65 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
     {
         public void Configure(EntityTypeBuilder<JournalEntryLine> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "JournalEntryLines",
                 FinancialManagementDbProperties.DbSchema);
 
-            // Composite Key
+            // Composite key
             builder.HasKey(x => new { x.BatchId, x.AccountId, x.Memo });
 
-            // Properties
             builder.Property(x => x.BatchId).IsRequired();
             builder.Property(x => x.AccountId).IsRequired();
 
-            // MonetaryValue - DebitAmount
-            builder.OwnsOne(x => x.DebitAmount, debit =>
+            // AccountNumber value object (nullable as it's not required)
+            builder.OwnsOne(x => x.AccountNumber, an =>
             {
-                debit.Property(d => d.Amount)
-                    .HasColumnName("DebitAmount")
-                    .HasPrecision(18, 4);
-
-                debit.Property(d => d.Currency)
-                    .HasColumnName("DebitCurrency")
-                    .HasMaxLength(3);
-
-                debit.Ignore(d => d.DecimalPlaces);
+                an.Property(a => a.Number)
+                    .HasColumnName("AccountNumber")
+                    .HasMaxLength(AccountConsts.MaxAccountNumberLength);
             });
 
-            // MonetaryValue - CreditAmount
-            builder.OwnsOne(x => x.CreditAmount, credit =>
+            // DebitAmount value object
+            builder.OwnsOne(x => x.DebitAmount, da =>
             {
-                credit.Property(c => c.Amount)
+                da.Property(a => a.Amount)
+                    .HasColumnName("DebitAmount")
+                    .HasPrecision(18, 4);
+                
+                da.Property(a => a.Currency)
+                    .HasColumnName("DebitCurrency")
+                    .HasMaxLength(3);
+            });
+
+            // CreditAmount value object
+            builder.OwnsOne(x => x.CreditAmount, ca =>
+            {
+                ca.Property(a => a.Amount)
                     .HasColumnName("CreditAmount")
                     .HasPrecision(18, 4);
-
-                credit.Property(c => c.Currency)
+                
+                ca.Property(a => a.Currency)
                     .HasColumnName("CreditCurrency")
                     .HasMaxLength(3);
-
-                credit.Ignore(c => c.DecimalPlaces);
             });
 
             builder.Property(x => x.Memo)
                 .IsRequired()
-                .HasMaxLength(500);
+                .HasMaxLength(FinancialConsts.MaxMemoLength);
 
             builder.Property(x => x.Reference)
-                .HasMaxLength(100);
+                .HasMaxLength(FinancialConsts.MaxReferenceLength);
 
             builder.Property(x => x.SourceEntityId);
+            
             builder.Property(x => x.SourceEntityType)
-                .HasMaxLength(100);
+                .HasConversion<string>()
+                .HasMaxLength(50);
 
             // Indexes
-            builder.HasIndex(x => x.BatchId)
-                .HasDatabaseName("IX_JournalEntryLines_BatchId");
-
-            builder.HasIndex(x => x.AccountId)
-                .HasDatabaseName("IX_JournalEntryLines_AccountId");
-
-            builder.HasIndex(x => x.SourceEntityId)
-                .HasDatabaseName("IX_JournalEntryLines_SourceEntityId");
+            builder.HasIndex(x => x.AccountId);
+            builder.HasIndex(x => new { x.BatchId, x.AccountId })
+                .HasDatabaseName("IX_JournalLines_Batch_Account");
         }
     }
 }

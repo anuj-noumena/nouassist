@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Data;
-using NouAssist.WorkManagement.TaskManagement.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
@@ -29,7 +28,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
             var query = await GetQueryableAsync();
             
             return await query
-                .Include(ti => ti.StepCompletions)
+                .Include(ti => ti.ChecklistItems)
                 .Include(ti => ti.CriterionCompletions)
                 .Include(ti => ti.Dependencies)
                 .FirstOrDefaultAsync(ti => ti.Id == id, cancellationToken);
@@ -45,7 +44,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
             if (includeDetails)
             {
                 query = query
-                    .Include(ti => ti.StepCompletions)
+                    .Include(ti => ti.ChecklistItems)
                     .Include(ti => ti.CriterionCompletions)
                     .Include(ti => ti.Dependencies);
             }
@@ -62,12 +61,11 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
             var query = await GetQueryableAsync();
             
             return await query
-                .Where(ti => ti.ActualDueDate.HasValue &&
-                           ti.ActualDueDate.Value < asOfDate &&
-                           !ti.IsCompleted &&
-                           ti.TaskStatus != WorkflowStatusCategory.Cancelled &&
+                .Where(ti => ti.Schedule.ActualDueDate.HasValue &&
+                           ti.Schedule.ActualDueDate.Value < asOfDate &&
+                           !ti.Schedule.IsCompleted &&
                            !ti.IsDeleted)
-                .OrderBy(ti => ti.ActualDueDate)
+                .OrderBy(ti => ti.Schedule.ActualDueDate)
                 .ToListAsync(cancellationToken);
         }
 
@@ -101,7 +99,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
         public override async Task<IQueryable<TaskInstance>> WithDetailsAsync()
         {
             return (await GetQueryableAsync())
-                .Include(ti => ti.StepCompletions)
+                .Include(ti => ti.ChecklistItems)
                 .Include(ti => ti.CriterionCompletions)
                 .Include(ti => ti.Dependencies);
         }

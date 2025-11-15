@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NouAssist.WorkManagement.Workflow.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -20,5 +21,16 @@ namespace NouAssist.WorkManagement.Workflow
 
         Task<WorkflowSchemeDto> GetActiveSchemeForProjectAsync(Guid projectId);
         Task<Guid> GetWorkflowForTaskTypeAsync(Guid schemeId, Guid taskTypeId);
+        
+        // NEW: Basic updates
+        Task<WorkflowSchemeDto> UpdateAsync(Guid id, UpdateWorkflowSchemeDto input);
+        
+        // NEW: Mapping management
+        Task<WorkflowSchemeMappingDto> AddMappingAsync(CreateWorkflowSchemeMappingDto input);
+        Task RemoveMappingAsync(Guid schemeId, Guid taskTypeId);
+        Task<List<WorkflowSchemeMappingDto>> GetMappingsAsync(Guid schemeId);
+        
+        // NEW: Delegation settings
+        Task<WorkflowSchemeDto> UpdateDelegationSettingsAsync(Guid id, bool allowQuickDelegation, bool requireApprovalForIntegrated);
     }
 }

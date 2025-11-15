@@ -1,6 +1,6 @@
 using System;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Threading.Task;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
@@ -8,7 +8,7 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Data
 {
     public interface IAccountingPeriodRepository : IRepository<AccountingPeriod, Guid>
     {
-        Task<AccountingPeriod> GetPeriodForDateAsync(
+        Task<AccountingPeriod> GetByDateAsync(
             DateTime date,
             CancellationToken cancellationToken = default);
 

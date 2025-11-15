@@ -68,6 +68,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
         private readonly List<ProjectSuccessCriterion> _successCriteria = new();
         public IReadOnlyCollection<ProjectSuccessCriterion> SuccessCriteria => _successCriteria.AsReadOnly();
         
+        
         // === COMPUTED PROPERTIES ===
         public bool IsCompleted => Status == ProjectStatus.Completed;
         public bool IsActive => Status == ProjectStatus.Active;
@@ -119,6 +120,19 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
                 OccurredAt= DateTime.UtcNow,
                 AreaId = areaId
             });
+        }
+        
+        public void UpdateTitle(string title)
+        {
+            Title = Check.NotNullOrWhiteSpace(title, nameof(title));
+        }
+        
+        public void UpdateContent(string description, string vision, string purpose, string expectedOutcome)
+        {
+            Description = description;
+            Vision = vision;
+            Purpose = purpose;
+            ExpectedOutcome = expectedOutcome;
         }
         
         // === BUSINESS METHODS ===

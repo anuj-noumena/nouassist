@@ -11,7 +11,7 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.GeneralLedger
 {
     public class EfCoreAccountingPeriodRepository 
-        : EfCoreRepository<IFinancialManagementDbContext, AccountingPeriod, Guid>,
+        : EfCoreRepository<IFinancialManagementDbContext, AccountingPeriod, Guid>, 
           IAccountingPeriodRepository
     {
         public EfCoreAccountingPeriodRepository(
@@ -20,14 +20,14 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.General
         {
         }
 
-        public async Task<AccountingPeriod> GetPeriodForDateAsync(
+        public async Task<AccountingPeriod> GetByDateAsync(
             DateTime date,
             CancellationToken cancellationToken = default)
         {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
+            var dbContext = await GetDbContextAsync();
+            return await dbContext.AccountingPeriods
                 .FirstOrDefaultAsync(
-                    p => p.StartDate <= date && p.EndDate >= date,
+                    p => p.StartDate <= date.Date && p.EndDate >= date.Date,
                     GetCancellationToken(cancellationToken));
         }
 
@@ -36,8 +36,8 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.General
             int periodNumber,
             CancellationToken cancellationToken = default)
         {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
+            var dbContext = await GetDbContextAsync();
+            return await dbContext.AccountingPeriods
                 .FirstOrDefaultAsync(
                     p => p.FiscalYear == fiscalYear && p.PeriodNumber == periodNumber,
                     GetCancellationToken(cancellationToken));

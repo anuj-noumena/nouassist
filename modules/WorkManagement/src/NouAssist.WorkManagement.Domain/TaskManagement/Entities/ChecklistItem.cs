@@ -39,4 +39,11 @@ public class ChecklistItem : Entity<Guid>
     {
         IsRequired = true;
     }
+    
+    public void Update(string title, string description, bool isRequired)
+    {
+        Title = Check.NotNullOrWhiteSpace(title, nameof(title));
+        Description = description;
+        IsRequired = isRequired;
+    }
 }

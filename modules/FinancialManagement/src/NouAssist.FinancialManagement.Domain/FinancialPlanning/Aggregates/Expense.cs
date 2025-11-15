@@ -1,7 +1,5 @@
 using System;
 using NouAssist.FinancialManagement.FinancialPlanning.Enums;
-using NouAssist.FinancialManagement.FinancialPlanning.Events;
-using NouAssist.FinancialManagement.FinancialPlanning.ValueObjects;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -23,9 +21,8 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public Guid? ProjectId { get; private set; }
         public bool IsReimbursable { get; private set; }
         public bool IsBillable { get; private set; }
-        public MileageData MileageInfo { get; private set; }
 
-        protected Expense() { } // For ORM
+        protected Expense() { }
 
         public Expense(
             Guid id,
@@ -38,58 +35,42 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             string description,
             bool isReimbursable = false,
             bool isBillable = false,
-            Guid? projectId = null,
             Guid? receiptDocumentId = null,
-            MileageData mileageInfo = null)
-            : base(id)
+            Guid? projectId = null) : base(id)
         {
-            if (expenseDate > DateTime.UtcNow)
-                throw new BusinessException("FinancialPlanning:FutureExpenseDate",
-                    "Expense date cannot be in the future");
-
             TenantId = tenantId;
             UserId = userId;
             Amount = Check.NotNull(amount, nameof(amount));
+            
+            if (expenseDate > DateTime.UtcNow.AddDays(1))
+                throw new BusinessException("FPA:InvalidExpenseDate", 
+                    "Expense date cannot be in the future");
+            
             ExpenseDate = expenseDate;
             CategoryId = categoryId;
             PayeeId = payeeId;
-            Description = Check.NotNullOrWhiteSpace(description, nameof(description), 500);
+            Description = Check.NotNullOrWhiteSpace(description, nameof(description));
             Status = ExpenseStatus.Draft;
             IsReimbursable = isReimbursable;
             IsBillable = isBillable;
-            ProjectId = projectId;
             ReceiptDocumentId = receiptDocumentId;
-            MileageInfo = mileageInfo;
+            ProjectId = projectId;
         }
 
         public void Submit()
         {
             if (Status != ExpenseStatus.Draft)
-                throw new BusinessException("FinancialPlanning:ExpenseAlreadySubmitted",
+                throw new BusinessException("FPA:ExpenseAlreadySubmitted", 
                     "Expense has already been submitted");
 
             ValidateForSubmission();
             Status = ExpenseStatus.Submitted;
-
-            AddDistributedEvent(new ExpenseCreatedEto
-            {
-                IdempotencyKey = Guid.NewGuid().ToString(),
-                ExpenseId = Id,
-                UserId = UserId,
-                Amount = Amount,
-                ExpenseDate = ExpenseDate,
-                CategoryId = CategoryId,
-                PayeeId = PayeeId,
-                ProjectId = ProjectId,
-                IsReimbursable = IsReimbursable,
-                TenantId = TenantId
-            });
         }
 
-        public void Approve(Guid approvedBy, string comments = null)
+        public void Approve(Guid approvedBy)
         {
             if (Status != ExpenseStatus.Submitted)
-                throw new BusinessException("FinancialPlanning:ExpenseNotSubmitted",
+                throw new BusinessException("FPA:InvalidStatus", 
                     "Only submitted expenses can be approved");
 
             Status = ExpenseStatus.Approved;
@@ -98,7 +79,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Reject(Guid rejectedBy, string reason)
         {
             if (Status != ExpenseStatus.Submitted)
-                throw new BusinessException("FinancialPlanning:ExpenseNotSubmitted",
+                throw new BusinessException("FPA:InvalidStatus", 
                     "Only submitted expenses can be rejected");
 
             Status = ExpenseStatus.Rejected;
@@ -107,34 +88,23 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void MarkAsReimbursed()
         {
             if (Status != ExpenseStatus.Approved)
-                throw new BusinessException("FinancialPlanning:ExpenseNotApproved",
-                    "Only approved expenses can be marked as reimbursed");
+                throw new BusinessException("FPA:NotApproved", 
+                    "Only approved expenses can be reimbursed");
 
             if (!IsReimbursable)
-                throw new BusinessException("FinancialPlanning:ExpenseNotReimbursable",
+                throw new BusinessException("FPA:NotReimbursable", 
                     "Expense is not marked as reimbursable");
 
             Status = ExpenseStatus.Reimbursed;
         }
 
-        public void AttachReceipt(Guid documentId)
-        {
-            ReceiptDocumentId = documentId;
-        }
-
         private void ValidateForSubmission()
         {
-            // Policy threshold for receipts (e.g., $25)
+            // Receipt required for expenses over $25
             if (Amount.Amount > 25 && ReceiptDocumentId == null)
             {
-                throw new BusinessException("FinancialPlanning:ReceiptRequired",
+                throw new BusinessException("FPA:ReceiptRequired", 
                     "Receipt is required for expenses over $25");
-            }
-
-            if (MileageInfo != null && MileageInfo.Miles <= 0)
-            {
-                throw new BusinessException("FinancialPlanning:InvalidMileage",
-                    "Mileage information is invalid");
             }
         }
     }

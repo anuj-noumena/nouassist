@@ -18,89 +18,91 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
 
             builder.HasKey(x => x.Id);
 
-            // Properties
+            // Core Identity
             builder.Property(x => x.TaskId)
                 .IsRequired();
 
-            builder.Property(x => x.ProjectId)
+            builder.Property(x => x.WorkflowId)
                 .IsRequired();
 
-            builder.Property(x => x.WorkflowStatusId)
-                .IsRequired();
+            builder.Property(x => x.ProjectId);
 
+            builder.Property(x => x.EntityVersion)
+                .IsRequired()
+                .HasDefaultValue(1);
+
+            // Ownership
             builder.Property(x => x.OwnerId)
                 .IsRequired();
 
-            builder.Property(x => x.TaskStatus)
-                .IsRequired()
-                .HasConversion<string>()
-                .HasMaxLength(50);
+            builder.Property(x => x.AssigneeId);
 
-            builder.Property(x => x.ProgressPercent)
-                .IsRequired()
-                .HasColumnType("double precision");
+            builder.Property(x => x.ReporterId);
 
-            builder.Property(x => x.ActualMinutes)
-                .IsRequired()
-                .HasDefaultValue(0);
+            builder.Property(x => x.TeamId);
 
-            builder.Property(x => x.SubtasksCount)
-                .IsRequired()
-                .HasDefaultValue(0);
+            // GTD Organization
+            builder.Property(x => x.AreaId);
 
-            builder.Property(x => x.SubtasksDoneCount)
-                .IsRequired()
-                .HasDefaultValue(0);
+            builder.Property(x => x.ContextId);
 
-            builder.Property(x => x.CommentsCount)
-                .IsRequired()
-                .HasDefaultValue(0);
+            // Workflow State
+            builder.Property(x => x.WorkflowStatusId)
+                .IsRequired();
 
-            builder.Property(x => x.AttachmentsCount)
-                .IsRequired()
-                .HasDefaultValue(0);
+            // Approval
+            builder.Property(x => x.ApprovalRequestId);
 
-            builder.Property(x => x.IsBlocked)
-                .IsRequired()
-                .HasDefaultValue(false);
+            // Value Object: TaskWorkTracking (owned entity)
+            builder.OwnsOne(x => x.WorkTracking, workBuilder =>
+            {
+                workBuilder.Property(w => w.ProgressPercent)
+                    .HasColumnName("ProgressPercent")
+                    .IsRequired()
+                    .HasColumnType("double precision")
+                    .HasDefaultValue(0.0);
 
-            builder.Property(x => x.BlockedReason)
-                .HasMaxLength(TasksDbConsts.MaxBlockedReasonLength);
+                workBuilder.Property(w => w.StartedAt)
+                    .HasColumnName("StartedAt");
 
-            builder.Property(x => x.IsFlagged)
-                .IsRequired()
-                .HasDefaultValue(false);
+                workBuilder.Property(w => w.CompletedAt)
+                    .HasColumnName("CompletedAt");
 
-            builder.Property(x => x.FlaggedReason)
-                .HasMaxLength(TasksDbConsts.MaxFlaggedReasonLength);
+                workBuilder.Property(w => w.ActualMinutes)
+                    .HasColumnName("ActualMinutes")
+                    .IsRequired()
+                    .HasDefaultValue(0);
 
-            builder.Property(x => x.IsNextAction)
-                .IsRequired()
-                .HasDefaultValue(false);
+                workBuilder.Property(w => w.EstimatedMinutes)
+                    .HasColumnName("EstimatedMinutes");
 
-            builder.Property(x => x.IsDiscussionLocked)
-                .IsRequired()
-                .HasDefaultValue(false);
+                workBuilder.Property(w => w.IsNextAction)
+                    .HasColumnName("IsNextAction")
+                    .IsRequired()
+                    .HasDefaultValue(false);
+            });
 
-            builder.Property(x => x.RequiresApproval)
-                .IsRequired()
-                .HasDefaultValue(false);
+            // Value Object: TaskSchedule (owned entity)
+            builder.OwnsOne(x => x.Schedule, scheduleBuilder =>
+            {
+                scheduleBuilder.Property(s => s.PlannedStartDate)
+                    .HasColumnName("PlannedStartDate");
 
-            builder.Property(x => x.Resolution)
-                .HasMaxLength(TasksDbConsts.MaxResolutionLength);
+                scheduleBuilder.Property(s => s.PlannedDueDate)
+                    .HasColumnName("PlannedDueDate");
 
-            builder.Property(x => x.ResolutionNote)
-                .HasMaxLength(TasksDbConsts.MaxResolutionNoteLength);
+                scheduleBuilder.Property(s => s.ActualStartDate)
+                    .HasColumnName("ActualStartDate");
 
-            builder.Property(x => x.Version)
-                .IsRequired()
-                .IsConcurrencyToken();
+                scheduleBuilder.Property(s => s.ActualDueDate)
+                    .HasColumnName("ActualDueDate");
 
-            builder.Property(x => x.OrderInParent)
-                .HasDefaultValue(0);
+                scheduleBuilder.Property(s => s.CompletedAt)
+                    .HasColumnName("CompletedAt");
+            });
 
             // Value Object: ImportanceUrgencyMatrix (owned entity)
-            builder.OwnsOne(x => x.PriorityMatrix, priorityBuilder =>
+            builder.OwnsOne(x => x.Priority, priorityBuilder =>
             {
                 priorityBuilder.Property(p => p.Importance)
                     .HasColumnName("Importance")
@@ -119,55 +121,76 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
                     .HasMaxLength(50);
             });
 
-            // Value Object: DelegationInfo (owned entity)
-            builder.OwnsOne(x => x.DelegationInfo, delegationBuilder =>
+            // Value Object: TaskHierarchy (owned entity)
+            builder.OwnsOne(x => x.Hierarchy, hierarchyBuilder =>
             {
-                delegationBuilder.Property(d => d.DelegatedBy)
-                    .HasColumnName("DelegatedBy")
-                    .IsRequired();
+                hierarchyBuilder.Property(h => h.ParentId)
+                    .HasColumnName("ParentInstanceId");
 
-                delegationBuilder.Property(d => d.DelegatedTo)
-                    .HasColumnName("DelegatedTo")
-                    .IsRequired();
-
-                delegationBuilder.Property(d => d.Status)
-                    .HasColumnName("DelegationStatus")
+                hierarchyBuilder.Property(h => h.Level)
+                    .HasColumnName("HierarchyLevel")
                     .IsRequired()
-                    .HasConversion<string>()
-                    .HasMaxLength(50);
+                    .HasDefaultValue(0);
 
-                delegationBuilder.Property(d => d.DelegatedAt)
-                    .HasColumnName("DelegatedAt")
-                    .IsRequired();
-
-                delegationBuilder.Property(d => d.RespondedAt)
-                    .HasColumnName("DelegationRespondedAt");
-
-                delegationBuilder.Property(d => d.Note)
-                    .HasColumnName("DelegationNote")
-                    .HasMaxLength(TasksDbConsts.MaxDelegationNoteLength);
-
-                delegationBuilder.Property(d => d.ResponseNote)
-                    .HasColumnName("DelegationResponseNote")
-                    .HasMaxLength(TasksDbConsts.MaxDelegationResponseNoteLength);
+                hierarchyBuilder.Property(h => h.Path)
+                    .HasColumnName("HierarchyPath")
+                    .HasMaxLength(4000);
             });
 
-            // Collection: Watchers (stored as JSON)
-            builder.Property(x => x.Watchers)
-                .HasColumnName("Watchers")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                )
-                .HasColumnType("jsonb");
+            // Value Object: TaskCollaboration (owned entity)
+            builder.OwnsOne(x => x.Collaboration, collabBuilder =>
+            {
+                collabBuilder.Property(c => c.CommentCount)
+                    .HasColumnName("CommentsCount")
+                    .IsRequired()
+                    .HasDefaultValue(0);
+
+                collabBuilder.Property(c => c.AttachmentCount)
+                    .HasColumnName("AttachmentsCount")
+                    .IsRequired()
+                    .HasDefaultValue(0);
+
+                // Watchers stored as JSON
+                collabBuilder.Property(c => c.Watchers)
+                    .HasColumnName("Watchers")
+                    .HasConversion(
+                        v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
+                        v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
+                    )
+                    .HasColumnType("jsonb");
+            });
 
             // Custom Field Values (JSON)
-            builder.Property(x => x.CustomFieldValues)
-                .HasColumnName("CustomFieldValues")
-                .HasColumnType("jsonb");
+            builder.OwnsOne(x => x.CustomFields, customBuilder =>
+            {
+                customBuilder.Property<string>("_values")
+                    .HasColumnName("CustomFieldValues")
+                    .HasColumnType("jsonb");
+            });
+
+            // Blocking/Flagging - stored as private fields, exposed via properties
+            builder.Property<string>("_blockingReason")
+                .HasColumnName("BlockedReason")
+                .HasMaxLength(TasksDbConsts.MaxBlockedReasonLength);
+
+            builder.Property<DateTime?>("_blockedAt")
+                .HasColumnName("BlockedAt");
+
+            builder.Property<string>("_flagReason")
+                .HasColumnName("FlaggedReason")
+                .HasMaxLength(TasksDbConsts.MaxFlaggedReasonLength);
+
+            // Resolution - stored as private fields
+            builder.Property<string>("_resolution")
+                .HasColumnName("Resolution")
+                .HasMaxLength(TasksDbConsts.MaxResolutionLength);
+
+            builder.Property<string>("_resolutionNote")
+                .HasColumnName("ResolutionNote")
+                .HasMaxLength(TasksDbConsts.MaxResolutionNoteLength);
 
             // Relationships
-            builder.HasMany(x => x.StepCompletions)
+            builder.HasMany(x => x.ChecklistItems)
                 .WithOne()
                 .HasForeignKey("TaskInstanceId")
                 .IsRequired()
@@ -187,17 +210,31 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
             // Indexes
             builder.HasIndex(x => x.TaskId);
             builder.HasIndex(x => x.ProjectId);
+            builder.HasIndex(x => x.AreaId);
+            builder.HasIndex(x => x.ContextId);
+            builder.HasIndex(x => x.WorkflowId);
             builder.HasIndex(x => x.WorkflowStatusId);
             builder.HasIndex(x => x.OwnerId);
             builder.HasIndex(x => x.AssigneeId);
-            builder.HasIndex(x => x.TaskStatus);
-            builder.HasIndex(x => x.IsBlocked);
-            builder.HasIndex(x => x.IsNextAction);
-            builder.HasIndex(x => x.CompletedAt);
-            builder.HasIndex(x => x.ActualDueDate);
-            builder.HasIndex(x => x.PlannedDueDate);
             builder.HasIndex(x => new { x.TenantId, x.IsDeleted });
-            builder.HasIndex(x => x.ParentInstanceId);
+            builder.HasIndex(x => new { x.AreaId, x.IsDeleted });
+            builder.HasIndex(x => new { x.ProjectId, x.IsDeleted });
+
+            // Indexes on owned entity properties (using backing field access)
+            builder.HasIndex("WorkTracking_StartedAt")
+                .HasDatabaseName("IX_TaskInstances_StartedAt");
+            
+            builder.HasIndex("WorkTracking_CompletedAt")
+                .HasDatabaseName("IX_TaskInstances_CompletedAt");
+            
+            builder.HasIndex("Schedule_ActualDueDate")
+                .HasDatabaseName("IX_TaskInstances_ActualDueDate");
+            
+            builder.HasIndex("Schedule_PlannedDueDate")
+                .HasDatabaseName("IX_TaskInstances_PlannedDueDate");
+
+            builder.HasIndex("Hierarchy_ParentInstanceId")
+                .HasDatabaseName("IX_TaskInstances_ParentInstanceId");
 
             // Multi-tenancy
             builder.HasIndex(x => x.TenantId);

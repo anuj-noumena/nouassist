@@ -56,6 +56,67 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<ApprovalRequest>> GetRequestsByStatusAsync(ApprovalStatus status)
+        {
+            var dbSet = await GetDbSetAsync();
+            
+            return await dbSet
+                .Where(r => r.Status == status)
+                .OrderByDescending(r => r.SubmittedAt)
+                .ToListAsync();
+        }
+
+        public async Task<List<ApprovalRequest>> GetRequestsByWorkflowAsync(Guid workflowId)
+        {
+            var dbSet = await GetDbSetAsync();
+            
+            return await dbSet
+                .Where(r => r.WorkflowId == workflowId)
+                .OrderByDescending(r => r.SubmittedAt)
+                .ToListAsync();
+        }
+
+        public async Task<List<ApprovalRequest>> GetOverdueRequestsAsync()
+        {
+            var dbSet = await GetDbSetAsync();
+            var now = DateTime.UtcNow;
+            
+            return await dbSet
+                .Where(r => r.DueDate.HasValue && 
+                           r.DueDate.Value < now &&
+                           r.Status != ApprovalStatus.Approved &&
+                           r.Status != ApprovalStatus.Rejected &&
+                           r.Status != ApprovalStatus.Cancelled)
+                .OrderBy(r => r.DueDate)
+                .ToListAsync();
+        }
+
+        public async Task<List<ApprovalRequest>> GetSlaBreachedRequestsAsync()
+        {
+            var dbSet = await GetDbSetAsync();
+            var now = DateTime.UtcNow;
+            
+            return await dbSet
+                .Where(r => r.SlaDeadline.HasValue && 
+                           r.SlaDeadline.Value < now &&
+                           r.Status != ApprovalStatus.Approved &&
+                           r.Status != ApprovalStatus.Rejected &&
+                           r.Status != ApprovalStatus.Cancelled)
+                .OrderBy(r => r.SlaDeadline)
+                .ToListAsync();
+        }
+
+        public async Task<List<ApprovalRequest>> GetRequestsByApproverAsync(Guid approverId)
+        {
+            var dbSet = await GetDbSetAsync();
+            
+            return await dbSet
+                .Include(r => r.Decisions)
+                .Where(r => r.Decisions.Any(d => d.ApproverId == approverId))
+                .OrderByDescending(r => r.SubmittedAt)
+                .ToListAsync();
+        }
+
         public async Task<List<ApprovalRequest>> GetListAsync(
             ISpecification<ApprovalRequest> spec)
         {

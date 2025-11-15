@@ -13,9 +13,6 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos
         [StringLength(1000)]
         public string Goal { get; set; }
 
-        [StringLength(500)]
-        public string ReleaseTheme { get; set; }
-
         [Required]
         public DateTime StartDate { get; set; }
 

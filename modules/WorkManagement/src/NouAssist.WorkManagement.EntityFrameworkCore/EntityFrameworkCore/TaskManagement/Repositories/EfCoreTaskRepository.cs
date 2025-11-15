@@ -29,7 +29,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
             var query = await GetQueryableAsync();
             
             return await query
-                .Include(t => t.ActionSteps)
+                .Include(t => t.ChecklistItems)
                 .Include(t => t.AcceptanceCriteria)
                 .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
         }
@@ -52,19 +52,18 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
             var query = await GetQueryableAsync();
             
             return await query
-                .Include(t => t.ActionSteps)
+                .Include(t => t.ChecklistItems)
                 .Include(t => t.AcceptanceCriteria)
-                .Where(t => t.IsRecurring && 
+                .Where(t => t.RecurrenceRule != null && 
                            t.IsActive && 
-                           !t.IsDeleted &&
-                           t.RecurrenceRule != null)
+                           !t.IsDeleted)
                 .ToListAsync(cancellationToken);
         }
 
         public override async Task<IQueryable<Task>> WithDetailsAsync()
         {
             return (await GetQueryableAsync())
-                .Include(t => t.ActionSteps)
+                .Include(t => t.ChecklistItems)
                 .Include(t => t.AcceptanceCriteria);
         }
     }

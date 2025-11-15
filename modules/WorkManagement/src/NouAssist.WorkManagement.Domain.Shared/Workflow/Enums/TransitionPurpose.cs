@@ -1,12 +1,43 @@
 namespace NouAssist.WorkManagement.Workflow.Enums
 {
-    public enum TransitionPurpose : byte
+    /// <summary>
+    /// Defines the purpose/category of a workflow transition
+    /// </summary>
+    public enum TransitionPurpose
     {
-        Standard = 0,      // Default/generic transitions (e.g., "Start Work")
-        Delegation = 1,    // Specifically for task delegation (with accept/decline)
-        Escalation = 2,    // For priority bumps/escalations
-        Resolution = 3,    // Terminal resolutions (e.g., "Resolve", "Close")
-        Review = 4,        // Feedback/inspection gates
-        Custom = 99        // Extensible for user-defined
+        /// <summary>
+        /// Standard workflow transition
+        /// </summary>
+        Standard = 0,
+        
+        /// <summary>
+        /// Transition for approval workflows
+        /// </summary>
+        Approval = 1,
+        
+        /// <summary>
+        /// Transition for rejection/decline
+        /// </summary>
+        Rejection = 2,
+        
+        /// <summary>
+        /// Transition for delegation to another user
+        /// </summary>
+        Delegation = 3,
+        
+        /// <summary>
+        /// Transition for escalation
+        /// </summary>
+        Escalation = 4,
+        
+        /// <summary>
+        /// Transition for cancellation
+        /// </summary>
+        Cancellation = 5,
+        
+        /// <summary>
+        /// Transition for completion/resolution
+        /// </summary>
+        Completion = 6
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.ProjectManagement.Aggregates;
@@ -10,20 +11,23 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
     {
         public void Configure(EntityTypeBuilder<Project> builder)
         {
-            // Apply ABP conventions (auditing, soft delete, multi-tenancy, concurrency)
             builder.ConfigureByConvention();
 
-            // Table mapping
             builder.ToTable("Projects", "Projects");
 
-            // Primary Key
             builder.HasKey(x => x.Id);
 
-            // Identity & Relationships
+            // === IDENTITY & RELATIONSHIPS ===
             builder.Property(x => x.OwnerId)
                 .IsRequired();
 
+            builder.Property(x => x.TenantId)
+                .IsRequired(false);
+
             builder.Property(x => x.ParentProjectId)
+                .IsRequired(false);
+
+            builder.Property(x => x.AreaId)
                 .IsRequired(false);
 
             builder.Property(x => x.GoalId)
@@ -32,16 +36,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
             builder.Property(x => x.WorkflowSchemeId)
                 .IsRequired(false);
 
-            builder.Property(x => x.ContextId)
-                .IsRequired(false);
-
-            builder.Property(x => x.AreaId)
-                .IsRequired(false);
-
-            builder.Property(x => x.TenantId)
-                .IsRequired(false);
-
-            // Basic Info
+            // === CONTENT ===
             builder.Property(x => x.Title)
                 .IsRequired()
                 .HasMaxLength(ProjectDomainConstants.MaxTitleLength);
@@ -49,13 +44,16 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
             builder.Property(x => x.Description)
                 .HasMaxLength(ProjectDomainConstants.MaxDescriptionLength);
 
-            builder.Property(x => x.Summary)
-                .HasMaxLength(ProjectDomainConstants.MaxSummaryLength);
+            builder.Property(x => x.Vision)
+                .HasMaxLength(ProjectDomainConstants.MaxDescriptionLength);
+
+            builder.Property(x => x.Purpose)
+                .HasMaxLength(ProjectDomainConstants.MaxDescriptionLength);
 
             builder.Property(x => x.ExpectedOutcome)
                 .HasMaxLength(ProjectDomainConstants.MaxDescriptionLength);
 
-            // Status & Health
+            // === WORKFLOW ===
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasConversion<string>()
@@ -68,53 +66,159 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
             builder.Property(x => x.ArchivedAt)
                 .IsRequired(false);
 
-            // Priority & Classification
-            builder.Property(x => x.Importance)
-                .IsRequired()
-                .HasDefaultValue(0.5);
+            // === PRIORITY (Value Object - Owned Entity) ===
+            builder.OwnsOne(x => x.Priority, priority =>
+            {
+                priority.Property(p => p.Importance)
+                    .HasColumnName("Importance")
+                    .IsRequired()
+                    .HasDefaultValue(0.5);
 
-            builder.Property(x => x.Urgency)
-                .IsRequired()
-                .HasDefaultValue(0.5);
+                priority.Property(p => p.Urgency)
+                    .HasColumnName("Urgency")
+                    .IsRequired()
+                    .HasDefaultValue(0.5);
+            });
 
-            builder.Property(x => x.EisenhowerQuadrant)
-                .IsRequired()
-                .HasConversion<string>()
-                .HasMaxLength(50);
+            // === TIMELINE (Value Object - Owned Entity) ===
+            builder.OwnsOne(x => x.Timeline, timeline =>
+            {
+                timeline.Property(t => t.PlannedStartDate)
+                    .HasColumnName("PlannedStartDate")
+                    .IsRequired(false);
 
-            // Dates & Progress
-            builder.Property(x => x.StartDate)
-                .IsRequired(false);
+                timeline.Property(t => t.PlannedDueDate)
+                    .HasColumnName("PlannedDueDate")
+                    .IsRequired(false);
 
-            builder.Property(x => x.DueDate)
-                .IsRequired(false);
+                timeline.Property(t => t.ActualStartDate)
+                    .HasColumnName("ActualStartDate")
+                    .IsRequired(false);
 
-            builder.Property(x => x.CompletedAt)
-                .IsRequired(false);
+                timeline.Property(t => t.ActualCompletedDate)
+                    .HasColumnName("ActualCompletedDate")
+                    .IsRequired(false);
+            });
 
+            // === PROGRESS ===
             builder.Property(x => x.Progress)
                 .IsRequired()
-                .HasDefaultValue(0);
+                .HasDefaultValue(0)
+                .HasPrecision(5, 2);
 
             builder.Property(x => x.LastReviewedAt)
                 .IsRequired(false);
 
-            // Team Management
+            // === TEAM ===
             builder.Property(x => x.PrimaryTeamId)
                 .IsRequired(false);
 
-            // Approval
-            builder.Property(x => x.RequiresApproval)
+            // CollaboratingTeamIds - stored as JSON
+            builder.Property("_collaboratingTeamIds")
+                .HasColumnName("CollaboratingTeamIds")
+                .HasColumnType("jsonb");
+
+            // === APPROVAL ===
+            builder.Property(x => x.ApprovalRequestId)
+                .IsRequired(false);
+
+            // === HIERARCHY ===
+            builder.Property("_level")
+                .HasColumnName("HierarchyLevel")
                 .IsRequired()
-                .HasDefaultValue(false);
+                .HasDefaultValue(0);
 
-            builder.Property(x => x.ApprovalWorkflowId)
-                .IsRequired(false);
+            builder.Property("_hierarchyPath")
+                .HasColumnName("HierarchyPath")
+                .HasMaxLength(4000);
 
-            builder.Property(x => x.CurrentApprovalRequestId)
-                .IsRequired(false);
+            // === SUCCESS CRITERIA (Owned Collection) ===
+            builder.OwnsMany(x => x.SuccessCriteria, successCriteria =>
+            {
+                successCriteria.ToTable("ProjectSuccessCriteria", "Projects");
+                
+                successCriteria.WithOwner().HasForeignKey("ProjectId");
+                
+                successCriteria.Property<Guid>("Id").ValueGeneratedNever();
+                successCriteria.HasKey("Id");
 
-            // Extra Properties (handled by ABP)
+                successCriteria.Property(sc => sc.Title)
+                    .IsRequired()
+                    .HasMaxLength(500);
+
+                successCriteria.Property(sc => sc.Description)
+                    .HasMaxLength(2000);
+
+                successCriteria.Property(sc => sc.CriterionType)
+                    .IsRequired()
+                    .HasConversion<string>()
+                    .HasMaxLength(50);
+
+                successCriteria.Property(sc => sc.Criticality)
+                    .IsRequired()
+                    .HasConversion<string>()
+                    .HasMaxLength(50);
+
+                successCriteria.Property(sc => sc.MeasurementMethod)
+                    .HasMaxLength(500);
+
+                successCriteria.Property(sc => sc.TargetValue)
+                    .HasMaxLength(500);
+
+                successCriteria.Property(sc => sc.ActualValue)
+                    .HasMaxLength(500);
+
+                successCriteria.Property(sc => sc.Unit)
+                    .HasMaxLength(50);
+
+                successCriteria.Property(sc => sc.TargetNumeric)
+                    .HasPrecision(18, 2);
+
+                successCriteria.Property(sc => sc.ActualNumeric)
+                    .HasPrecision(18, 2);
+
+                successCriteria.Property(sc => sc.Weight)
+                    .IsRequired()
+                    .HasDefaultValue(1.0)
+                    .HasPrecision(5, 2);
+
+                successCriteria.Property(sc => sc.OrderIndex)
+                    .IsRequired()
+                    .HasDefaultValue(0);
+
+                successCriteria.Property(sc => sc.IsMet)
+                    .IsRequired()
+                    .HasDefaultValue(false);
+
+                successCriteria.Property(sc => sc.TargetDate)
+                    .IsRequired(false);
+
+                successCriteria.Property(sc => sc.MetAt)
+                    .IsRequired(false);
+
+                successCriteria.Property(sc => sc.MetBy)
+                    .HasMaxLength(256);
+
+                successCriteria.Property(sc => sc.Notes)
+                    .HasMaxLength(5000);
+
+                successCriteria.Property(sc => sc.EvidenceUrl)
+                    .HasMaxLength(2000);
+
+                // AttachmentIds - stored as JSON
+                successCriteria.Property("_attachmentIds")
+                    .HasColumnName("AttachmentIds")
+                    .HasColumnType("jsonb");
+
+                // Metadata - stored as JSON
+                successCriteria.Property("_metadata")
+                    .HasColumnName("Metadata")
+                    .HasColumnType("jsonb");
+
+                successCriteria.ConfigureByConvention();
+            });
+
+            // Extra Properties
             builder.Property(x => x.ExtraProperties)
                 .HasColumnName(nameof(Project.ExtraProperties));
 
@@ -123,11 +227,12 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
                 .IsConcurrencyToken()
                 .HasMaxLength(40);
 
-            // Indexes
+            // === INDEXES ===
             builder.HasIndex(x => x.OwnerId);
             builder.HasIndex(x => x.Status);
-            builder.HasIndex(x => x.DueDate);
             builder.HasIndex(x => x.TenantId);
+            builder.HasIndex(x => x.AreaId);
+            builder.HasIndex(x => x.GoalId);
             builder.HasIndex(x => new { x.Status, x.IsArchived });
             builder.HasIndex(x => new { x.OwnerId, x.Status });
         }

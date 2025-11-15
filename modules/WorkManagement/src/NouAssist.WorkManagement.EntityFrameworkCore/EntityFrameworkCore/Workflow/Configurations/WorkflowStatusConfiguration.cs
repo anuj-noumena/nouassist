@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.Workflow.Entities;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
 {
@@ -39,11 +40,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
             builder.Property(x => x.IsResolution)
                 .IsRequired();
 
-            // Collection: Properties (stored as JSON)
-            builder.OwnsOne(x => x.Properties, propsBuilder =>
-            {
-                propsBuilder.ToJson();
-            });
+            // ExtraProperties are automatically configured by ABP
+            builder.ConfigureExtraProperties();
 
             // Indexes
             builder.HasIndex(x => x.WorkflowId);

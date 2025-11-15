@@ -6,6 +6,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Enums
         OnTrack = 2,
         Behind = 3,
         Achieved = 4,
-        Abandoned = 5
+        Abandoned = 5,
+        Paused = 6
     }
 }

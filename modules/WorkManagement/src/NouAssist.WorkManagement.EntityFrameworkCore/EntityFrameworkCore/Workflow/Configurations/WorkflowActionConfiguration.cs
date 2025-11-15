@@ -45,6 +45,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
                 configBuilder.ToJson();
             });
 
+            // Conditions is a Dictionary<string, object>
             builder.OwnsOne(x => x.Conditions, conditionsBuilder =>
             {
                 conditionsBuilder.ToJson();

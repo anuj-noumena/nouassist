@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.AccountsReceivable
@@ -9,86 +11,85 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Accou
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "Customers",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(FinancialConsts.MaxNameLength);
 
-            builder.Property(x => x.TaxId)
-                .HasMaxLength(50);
+            // TaxId value object
+            builder.OwnsOne(x => x.TaxId, ti =>
+            {
+                ti.Property(t => t.Value)
+                    .HasColumnName("TaxId")
+                    .HasMaxLength(50);
+                
+                ti.Property(t => t.Country)
+                    .HasColumnName("TaxIdCountry")
+                    .HasMaxLength(2);
+            });
 
             builder.Property(x => x.Email)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(FinancialConsts.MaxEmailLength);
 
             builder.Property(x => x.Phone)
-                .HasMaxLength(50);
+                .HasMaxLength(FinancialConsts.MaxPhoneLength);
+
+            builder.Property(x => x.BillingAddress)
+                .HasMaxLength(FinancialConsts.MaxAddressLength);
 
             builder.Property(x => x.Type)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            // CreditTerms - Value Object
-            builder.OwnsOne(x => x.CreditTerms, terms =>
-            {
-                terms.Property(t => t.DueDays)
-                    .HasColumnName("CreditTerms_DueDays")
-                    .IsRequired();
+            builder.Property(x => x.CreditTermsDays).IsRequired();
 
-                terms.Property(t => t.CreditLimit)
-                    .HasColumnName("CreditTerms_CreditLimit")
+            // CreditLimit value object
+            builder.OwnsOne(x => x.CreditLimit, cl =>
+            {
+                cl.Property(m => m.Amount)
+                    .HasColumnName("CreditLimit")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                terms.Property(t => t.Currency)
-                    .HasColumnName("CreditTerms_Currency")
+                
+                cl.Property(m => m.Currency)
+                    .HasColumnName("CreditLimitCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
             });
 
-            // MonetaryValue - CurrentBalance
-            builder.OwnsOne(x => x.CurrentBalance, balance =>
+            // CurrentBalance value object
+            builder.OwnsOne(x => x.CurrentBalance, cb =>
             {
-                balance.Property(b => b.Amount)
-                    .HasColumnName("CurrentBalance_Amount")
+                cb.Property(m => m.Amount)
+                    .HasColumnName("CurrentBalance")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                balance.Property(b => b.Currency)
-                    .HasColumnName("CurrentBalance_Currency")
+                
+                cb.Property(m => m.Currency)
+                    .HasColumnName("CurrentBalanceCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                balance.Ignore(b => b.DecimalPlaces);
             });
 
             builder.Property(x => x.IsActive).IsRequired();
-            builder.Property(x => x.IsCreditSuspended).IsRequired();
+            builder.Property(x => x.CreditOnHold).IsRequired();
 
             // Indexes
-            builder.HasIndex(x => x.Name)
-                .HasDatabaseName("IX_Customers_Name");
+            builder.HasIndex(x => x.Name);
+            builder.HasIndex(x => x.IsActive);
+            builder.HasIndex(x => new { x.TenantId, x.Name })
+                .HasDatabaseName("IX_Customers_Tenant_Name");
 
-            builder.HasIndex(x => x.Email)
-                .HasDatabaseName("IX_Customers_Email");
-
-            builder.HasIndex(x => x.Type)
-                .HasDatabaseName("IX_Customers_Type");
-
-            builder.HasIndex(x => x.IsActive)
-                .HasDatabaseName("IX_Customers_IsActive");
-
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_Customers_TenantId");
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

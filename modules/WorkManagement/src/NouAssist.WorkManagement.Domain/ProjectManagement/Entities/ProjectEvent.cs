@@ -39,6 +39,16 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
             Description = description;
             IsCompleted = false;
         }
+        
+        public void Update(string title, string description, DateTime eventDate, DateTime? endDate, bool isAllDay, string location)
+        {
+            Title = Check.NotNullOrWhiteSpace(title, nameof(title));
+            Description = description;
+            EventDate = eventDate;
+            EndDate = endDate;
+            IsAllDay = isAllDay;
+            Location = location;
+        }
 
         public void MarkAsCompleted()
         {

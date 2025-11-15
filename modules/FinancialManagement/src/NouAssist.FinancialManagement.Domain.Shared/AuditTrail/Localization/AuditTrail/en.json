@@ -1,0 +1,22 @@
+{
+  "culture": "en",
+  "texts": {
+    "AuditTrail:InvalidRetentionPeriod": "Retention period must be between 1 and 3650 days.",
+    "AuditTrail:CannotModifyEntry": "Audit entries are immutable and cannot be modified.",
+    "AuditTrail:InvalidEntityType": "Entity type '{0}' is not recognized.",
+    "AuditTrail:SearchPeriodTooLarge": "Search period cannot exceed 365 days.",
+    "AuditTrail:ExportLimitExceeded": "Cannot export more than 100,000 audit entries at once."
+  }
+}
+{
+  "culture": "en",
+  "texts": {
+    "Permission:AuditTrail": "Audit Trail",
+    "Permission:AuditEntries": "Audit Entries",
+    "Permission:AuditEntries.View": "View Audit Entries",
+    "Permission:AuditEntries.ViewSensitive": "View Sensitive Audit Data",
+    "Permission:AuditEntries.GenerateReports": "Generate Audit Reports",
+    "Permission:AuditEntries.Archive": "Archive Audit Entries",
+    "Permission:AuditEntries.Delete": "Delete Audit Entries"
+  }
+}

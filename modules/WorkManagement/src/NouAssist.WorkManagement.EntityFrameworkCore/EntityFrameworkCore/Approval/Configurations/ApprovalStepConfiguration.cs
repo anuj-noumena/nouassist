@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.Approval.Entities;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
@@ -71,12 +72,20 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
                     v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null)
                 );
 
-            builder.Property(x => x.CustomFieldValues)
+            // CustomFields as CustomFieldValues value object stored as JSONB
+            builder.Property(x => x.CustomFields)
+                .HasColumnName("CustomFields")
                 .HasColumnType("jsonb")
                 .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
+                    v => System.Text.Json.JsonSerializer.Serialize(
+                        v.GetValues(), 
+                        (System.Text.Json.JsonSerializerOptions)null),
+                    v => CustomFieldValues.Create(
+                        System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(
+                            v, 
+                            (System.Text.Json.JsonSerializerOptions)null))
+                )
+                .IsRequired();
 
             builder.Property(x => x.Metadata)
                 .HasColumnType("jsonb")

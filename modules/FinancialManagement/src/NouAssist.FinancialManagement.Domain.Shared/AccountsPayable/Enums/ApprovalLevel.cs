@@ -5,8 +5,6 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Enums
         Manager = 1,
         Director = 2,
         CFO = 3,
-        Finance = 4,
-        Department = 5,
-        ProjectManager = 6
+        CEO = 4
     }
 }

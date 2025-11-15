@@ -96,8 +96,18 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
         {
             var workflow = await _workflowRepository.GetAsync(id);
 
-            // Note: Update logic would need to be added to the domain entity
-            // For now, we can't update these private setters without domain methods
+            // Use domain methods for updates
+            workflow.UpdateBasicInfo(input.Name, input.Description);
+            workflow.UpdateInitialStatus(input.InitialStatusId);
+
+            if (input.IsActive)
+            {
+                workflow.Activate();
+            }
+            else
+            {
+                workflow.Deactivate();
+            }
 
             await _workflowRepository.UpdateAsync(workflow);
 
@@ -154,6 +164,136 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
             var transitions = workflow.GetAvailableTransitions(currentStatusId);
 
             return ObjectMapper.Map<List<Entities.WorkflowTransition>, List<WorkflowTransitionDto>>(transitions);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Create)]
+        public async Task<WorkflowStatusDto> AddStatusAsync(CreateWorkflowStatusDto input)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(input.WorkflowId);
+
+            var status = new Entities.WorkflowStatus(
+                GuidGenerator.Create(),
+                input.WorkflowId,
+                input.Name,
+                input.Category,
+                input.Color,
+                input.OrderIndex,
+                input.IsInitial
+            )
+            {
+                Description = input.Description,
+                IsResolution = input.IsResolution
+            };
+
+            workflow.AddStatus(status);
+            await _workflowRepository.UpdateAsync(workflow);
+
+            return ObjectMapper.Map<Entities.WorkflowStatus, WorkflowStatusDto>(status);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
+        public async Task<WorkflowStatusDto> UpdateStatusAsync(Guid id, UpdateWorkflowStatusDto input)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(id);
+            var status = workflow.Statuses.FirstOrDefault(s => s.Id == id);
+
+            if (status == null)
+            {
+                throw new BusinessException("Workflow:StatusNotFound");
+            }
+
+            status.UpdateInfo(input.Name, input.Description, input.Color);
+            status.OrderIndex = input.OrderIndex;
+            status.IsResolution = input.IsResolution;
+
+            await _workflowRepository.UpdateAsync(workflow);
+
+            return ObjectMapper.Map<Entities.WorkflowStatus, WorkflowStatusDto>(status);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Delete)]
+        public async Task RemoveStatusAsync(Guid workflowId, Guid statusId)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(workflowId);
+            workflow.RemoveStatus(statusId);
+            await _workflowRepository.UpdateAsync(workflow);
+        }
+
+        public async Task<WorkflowStatusDto> GetStatusAsync(Guid id)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(id);
+            var status = workflow.GetStatus(id);
+            return ObjectMapper.Map<Entities.WorkflowStatus, WorkflowStatusDto>(status);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Create)]
+        public async Task<WorkflowTransitionDto> AddTransitionAsync(CreateWorkflowTransitionDto input)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(input.WorkflowId);
+
+            var transition = new Entities.WorkflowTransition(
+                GuidGenerator.Create(),
+                input.WorkflowId,
+                input.Name,
+                input.FromStatusId,
+                input.ToStatusId,
+                input.Purpose,
+                input.Description
+            )
+            {
+                RequiresComment = input.RequiresComment,
+                RequiresResolution = input.RequiresResolution,
+                IsGlobal = input.IsGlobal,
+                OrderIndex = input.OrderIndex,
+                ButtonLabel = input.ButtonLabel,
+                ButtonColor = input.ButtonColor
+            };
+
+            workflow.AddTransition(transition);
+            await _workflowRepository.UpdateAsync(workflow);
+
+            return ObjectMapper.Map<Entities.WorkflowTransition, WorkflowTransitionDto>(transition);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
+        public async Task<WorkflowTransitionDto> UpdateTransitionAsync(Guid id, UpdateWorkflowTransitionDto input)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(id);
+            var transition = workflow.Transitions.FirstOrDefault(t => t.Id == id);
+
+            if (transition == null)
+            {
+                throw new BusinessException("Workflow:TransitionNotFound");
+            }
+
+            // Update transition properties
+            // Note: WorkflowTransition needs update methods in domain
+            transition.SetPurpose(input.Purpose);
+            transition.RequiresComment = input.RequiresComment;
+            transition.RequiresResolution = input.RequiresResolution;
+            transition.IsGlobal = input.IsGlobal;
+            transition.OrderIndex = input.OrderIndex;
+            transition.ButtonLabel = input.ButtonLabel;
+            transition.ButtonColor = input.ButtonColor;
+
+            await _workflowRepository.UpdateAsync(workflow);
+
+            return ObjectMapper.Map<Entities.WorkflowTransition, WorkflowTransitionDto>(transition);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Delete)]
+        public async Task RemoveTransitionAsync(Guid workflowId, Guid transitionId)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(workflowId);
+            workflow.RemoveTransition(transitionId);
+            await _workflowRepository.UpdateAsync(workflow);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
+        public async Task ValidateWorkflowAsync(Guid workflowId)
+        {
+            var workflow = await _workflowRepository.GetWithDetailsAsync(workflowId);
+            workflow.ValidateBeforeActivation();
         }
     }
 }

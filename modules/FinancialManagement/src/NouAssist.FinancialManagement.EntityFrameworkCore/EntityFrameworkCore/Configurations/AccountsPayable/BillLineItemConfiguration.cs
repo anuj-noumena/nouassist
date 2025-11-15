@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.AccountsPayable.Entities;
-using Volo.Abp.EntityFrameworkCore.Modeling;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.AccountsPayable
 {
@@ -9,59 +10,56 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Accou
     {
         public void Configure(EntityTypeBuilder<BillLineItem> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "BillLineItems",
                 FinancialManagementDbProperties.DbSchema);
 
             builder.HasKey(x => new { x.BillId, x.Description });
 
-            // Properties
             builder.Property(x => x.BillId).IsRequired();
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(500);
-            builder.Property(x => x.Quantity).IsRequired().HasPrecision(18, 4);
+            
+            builder.Property(x => x.Description)
+                .IsRequired()
+                .HasMaxLength(FinancialConsts.MaxDescriptionLength);
 
-            // MonetaryValue - UnitPrice
-            builder.OwnsOne(x => x.UnitPrice, price =>
+            builder.Property(x => x.Quantity)
+                .IsRequired()
+                .HasPrecision(18, 4);
+
+            // UnitPrice value object
+            builder.OwnsOne(x => x.UnitPrice, up =>
             {
-                price.Property(p => p.Amount)
-                    .HasColumnName("UnitPrice_Amount")
+                up.Property(m => m.Amount)
+                    .HasColumnName("UnitPrice")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                price.Property(p => p.Currency)
-                    .HasColumnName("UnitPrice_Currency")
+                
+                up.Property(m => m.Currency)
+                    .HasColumnName("UnitPriceCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                price.Ignore(p => p.DecimalPlaces);
             });
 
-            // MonetaryValue - Total
-            builder.OwnsOne(x => x.Total, total =>
+            // LineTotal value object
+            builder.OwnsOne(x => x.LineTotal, lt =>
             {
-                total.Property(t => t.Amount)
-                    .HasColumnName("Total_Amount")
+                lt.Property(m => m.Amount)
+                    .HasColumnName("LineTotal")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                total.Property(t => t.Currency)
-                    .HasColumnName("Total_Currency")
+                
+                lt.Property(m => m.Currency)
+                    .HasColumnName("LineTotalCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                total.Ignore(t => t.DecimalPlaces);
             });
 
             builder.Property(x => x.ProductId);
+            builder.Property(x => x.TaxCode).HasMaxLength(50);
 
             // Indexes
-            builder.HasIndex(x => x.BillId)
-                .HasDatabaseName("IX_BillLineItems_BillId");
-
-            builder.HasIndex(x => x.ProductId)
-                .HasDatabaseName("IX_BillLineItems_ProductId");
+            builder.HasIndex(x => x.BillId);
+            builder.HasIndex(x => x.ProductId);
         }
     }
 }

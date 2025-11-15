@@ -1,0 +1,52 @@
+{
+  "culture": "en",
+  "texts": {
+    "SkillDevelopment:InvalidProficiencyScore": "Proficiency score must be between 0 and 100.",
+    "SkillDevelopment:InvalidRating": "Rating must be between 1 and 10.",
+    "SkillDevelopment:InvalidImpact": "Proficiency impact must be between 0 and 100.",
+    "SkillDevelopment:InvalidProgress": "Progress must be between 0 and 100.",
+    "SkillDevelopment:DuplicatePrerequisite": "This prerequisite has already been added.",
+    "SkillDevelopment:OnlyCategoriesCanHaveSubSkills": "Only category skills can have sub-skills.",
+    "SkillDevelopment:DuplicateSubSkill": "This sub-skill has already been added.",
+    "SkillDevelopment:CannotStartDevelopment": "Cannot start development in current status.",
+    "SkillDevelopment:InsufficientProficiencyForMastery": "Proficiency score must be at least 90% for mastery.",
+    "SkillDevelopment:CannotArchiveMasteredSkill": "Cannot archive a mastered skill.",
+    "SkillDevelopment:SessionAlreadyCompleted": "This session is already completed.",
+    "SkillDevelopment:SessionIsPaused": "Cannot advance while session is paused.",
+    "SkillDevelopment:CurrentStepNotCompleted": "Current step must be completed before advancing.",
+    "SkillDevelopment:NoActiveMilestone": "No active milestone found for current step.",
+    "SkillDevelopment:CannotPauseCompletedSession": "Cannot pause a completed session.",
+    "SkillDevelopment:SessionAlreadyPaused": "Session is already paused.",
+    "SkillDevelopment:SessionNotPaused": "Session is not paused.",
+    "SkillDevelopment:CannotReviewIncompleteSession": "Cannot start review cycle for incomplete session."
+  }
+}
+{
+  "culture": "en",
+  "texts": {
+    // ... existing domain texts ...
+    
+    "Permission:SkillDevelopment": "Skill Development",
+    "Permission:Skills": "Skills",
+    "Permission:DevelopmentSessions": "Development Sessions",
+    "Permission:SkillLogs": "Skill Logs",
+    "Permission:SkillTrees": "Skill Trees",
+    "Permission:Resources": "Resources",
+    "Permission:Create": "Create",
+    "Permission:Edit": "Edit",
+    "Permission:Delete": "Delete",
+    "Permission:View": "View",
+    "Permission:Start": "Start",
+    "Permission:Manage": "Manage",
+    "Permission:Complete": "Complete",
+    "Permission:AddPracticeLog": "Add Practice Log",
+    "Permission:AddApplication": "Add Application",
+    "Permission:ManageSubSkills": "Manage Sub-Skills",
+    "Permission:Track": "Track",
+    
+    "SkillDevelopment:UnauthorizedAccess": "You don't have permission to access this resource.",
+    "SkillDevelopment:SessionNotFound": "Development session not found.",
+    "SkillDevelopment:PrerequisiteNotFound": "Prerequisite skill not found.",
+    "SkillDevelopment:CannotStartSession": "Cannot start development session. Prerequisites not met."
+  }
+}

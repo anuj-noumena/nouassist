@@ -95,6 +95,32 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
             IsDraft = true;
             IsActive = false;
         }
+        
+        public void UpdateBasicInfo(string name, string description)
+        {
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
+            Description = description;
+        }
+
+        public void UpdateMapping(Guid taskTypeId, Guid newWorkflowId)
+        {
+            var mapping = _mappings.FirstOrDefault(m => m.TaskTypeId == taskTypeId);
+            if (mapping == null)
+            {
+                throw new BusinessException("Workflow:MappingNotFound");
+            }
+    
+            // This would need a method in WorkflowSchemeMapping entity
+            // For now, we'll have to remove and add
+            _mappings.Remove(mapping);
+            AddMapping(new WorkflowSchemeMapping(
+                mapping.Id,
+                Id,
+                taskTypeId,
+                newWorkflowId
+            ));
+        }
+
 
         /// <summary>
         /// Adds a new mapping between a task type and a workflow.

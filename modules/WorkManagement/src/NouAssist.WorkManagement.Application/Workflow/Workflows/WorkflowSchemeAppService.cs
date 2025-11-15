@@ -122,5 +122,70 @@ namespace NouAssist.WorkManagement.Workflow.Workflows
             var scheme = await _workflowSchemeRepository.GetWithMappingsAsync(schemeId);
             return scheme.GetWorkflowForTaskType(taskTypeId);
         }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
+        public async Task<WorkflowSchemeDto> UpdateAsync(Guid id, UpdateWorkflowSchemeDto input)
+        {
+            var scheme = await _workflowSchemeRepository.GetAsync(id);
+
+            scheme.UpdateBasicInfo(input.Name, input.Description);
+
+            if (input.DefaultWorkflowId.HasValue)
+            {
+                scheme.SetDefaultWorkflow(input.DefaultWorkflowId.Value);
+            }
+
+            scheme.SetDelegationMode(input.AllowQuickDelegation, input.RequireApprovalForIntegrated);
+
+            await _workflowSchemeRepository.UpdateAsync(scheme);
+
+            return ObjectMapper.Map<WorkflowScheme, WorkflowSchemeDto>(scheme);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Create)]
+        public async Task<WorkflowSchemeMappingDto> AddMappingAsync(CreateWorkflowSchemeMappingDto input)
+        {
+            var scheme = await _workflowSchemeRepository.GetWithMappingsAsync(input.WorkflowSchemeId);
+
+            var mapping = new Entities.WorkflowSchemeMapping(
+                GuidGenerator.Create(),
+                input.WorkflowSchemeId,
+                input.TaskTypeId,
+                input.WorkflowId
+            );
+
+            scheme.AddMapping(mapping);
+            await _workflowSchemeRepository.UpdateAsync(scheme);
+
+            return ObjectMapper.Map<Entities.WorkflowSchemeMapping, WorkflowSchemeMappingDto>(mapping);
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Delete)]
+        public async Task RemoveMappingAsync(Guid schemeId, Guid taskTypeId)
+        {
+            var scheme = await _workflowSchemeRepository.GetWithMappingsAsync(schemeId);
+            scheme.RemoveMapping(taskTypeId);
+            await _workflowSchemeRepository.UpdateAsync(scheme);
+        }
+
+        public async Task<List<WorkflowSchemeMappingDto>> GetMappingsAsync(Guid schemeId)
+        {
+            var scheme = await _workflowSchemeRepository.GetWithMappingsAsync(schemeId);
+            return ObjectMapper.Map<List<Entities.WorkflowSchemeMapping>, List<WorkflowSchemeMappingDto>>(
+                scheme.Mappings.ToList());
+        }
+
+        [Authorize(WorkManagementPermissions.Workflow.Workflows.Update)]
+        public async Task<WorkflowSchemeDto> UpdateDelegationSettingsAsync(
+            Guid id,
+            bool allowQuickDelegation,
+            bool requireApprovalForIntegrated)
+        {
+            var scheme = await _workflowSchemeRepository.GetAsync(id);
+            scheme.SetDelegationMode(allowQuickDelegation, requireApprovalForIntegrated);
+            await _workflowSchemeRepository.UpdateAsync(scheme);
+
+            return ObjectMapper.Map<WorkflowScheme, WorkflowSchemeDto>(scheme);
+        }
     }
 }

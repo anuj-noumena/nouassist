@@ -28,6 +28,11 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
             builder.Property(x => x.ToStatusId)
                 .IsRequired();
 
+            builder.Property(x => x.Purpose)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
             builder.Property(x => x.RequiresComment)
                 .IsRequired();
 
@@ -47,9 +52,12 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
                 .HasMaxLength(20);
 
             // Collections stored as JSON
-            builder.OwnsOne(x => x.Conditions, conditionsBuilder =>
+            // Conditions is now a List<WorkflowCondition> value objects
+            builder.OwnsMany(x => x.Conditions, conditionsBuilder =>
             {
                 conditionsBuilder.ToJson();
+                conditionsBuilder.Property(c => c.Key).IsRequired();
+                conditionsBuilder.Property(c => c.Operator).HasMaxLength(50);
             });
 
             builder.OwnsOne(x => x.Validators, validatorsBuilder =>
@@ -69,6 +77,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
             builder.HasIndex(x => new { x.WorkflowId, x.FromStatusId });
             builder.HasIndex(x => new { x.WorkflowId, x.ToStatusId });
             builder.HasIndex(x => new { x.WorkflowId, x.FromStatusId, x.ToStatusId });
+            builder.HasIndex(x => x.Purpose);
         }
     }
 }

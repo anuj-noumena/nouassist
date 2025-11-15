@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.TimeManagement.Calendar.Calendars.Dtos;
 using NouAssist.TimeManagement.Calendar.Data;
-using NouAssist.TimeManagement.Calendar.Permissions;
 using NouAssist.TimeManagement.Calendar.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Specifications;
+using Volo.Abp.Users;
 
 namespace NouAssist.TimeManagement.Calendar.Calendars
 {
@@ -139,16 +140,16 @@ namespace NouAssist.TimeManagement.Calendar.Calendars
 
         private ISpecification<Aggregates.Calendar> CreateListSpecification(GetCalendarListDto input)
         {
-            var spec = new CalendarsByOwnerSpecification(CurrentUser.GetId());
+            ISpecification<Aggregates.Calendar> spec = new CalendarsByOwnerSpecification(CurrentUser.GetId());
 
             if (input.IsActive.HasValue)
             {
-                spec = spec.And(new Specification<Aggregates.Calendar>(c => c.IsActive == input.IsActive.Value));
+                spec = spec.And(new BaseSpecification<Aggregates.Calendar>(c => c.IsActive == input.IsActive.Value));
             }
 
             if (input.IsShared.HasValue)
             {
-                spec = spec.And(new Specification<Aggregates.Calendar>(c => c.IsShared == input.IsShared.Value));
+                spec = spec.And(new BaseSpecification<Aggregates.Calendar>(c => c.IsShared == input.IsShared.Value));
             }
 
             return spec;

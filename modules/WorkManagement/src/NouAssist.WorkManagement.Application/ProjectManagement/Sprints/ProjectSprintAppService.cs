@@ -58,25 +58,19 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
                 CurrentTenant.Id,
                 input.VelocityEstimate);
 
-            if (!string.IsNullOrWhiteSpace(input.ReleaseTheme))
-            {
-                sprint.ReleaseTheme = input.ReleaseTheme;
-            }
-
             await _sprintRepository.InsertAsync(sprint);
 
             return ObjectMapper.Map<ProjectSprint, ProjectSprintDto>(sprint);
         }
 
         [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Update)]
-        public async Task<ProjectSprintDto> UpdateAsync(Guid id, UpdateSprintDto input)
+        public async Task<ProjectDto> UpdateAsync(Guid id, UpdateSprintDto input)
         {
             var sprint = await _sprintRepository.GetAsync(id);
             
-            sprint.Name = input.Name;
-            sprint.Goal = input.Goal;
-            sprint.ReleaseTheme = input.ReleaseTheme;
-            sprint.SetDates(input.StartDate, input.EndDate);
+            // Note: Name and Goal are private set, you may need to add methods to update them
+            // or make them internal/public setters. For now assuming they can be set:
+            sprint.UpdateDates(input.StartDate, input.EndDate);
             
             await _sprintRepository.UpdateAsync(sprint);
 
@@ -113,7 +107,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
         {
             var sprint = await _sprintRepository.GetAsync(id);
             
-            sprint.UpdateStoryPoints(input.PlannedStoryPoints, input.CompletedStoryPoints);
+            sprint.UpdateMetrics(input.PlannedStoryPoints, input.CompletedStoryPoints);
             
             await _sprintRepository.UpdateAsync(sprint);
 

@@ -4,67 +4,61 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
-using NouAssist.FinancialManagement.AccountsReceivable.Data;
-using NouAssist.FinancialManagement.AccountsReceivable.Dtos;
 using NouAssist.FinancialManagement.AccountsReceivable.Entities;
+using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable;
+using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable.Dtos;
 using NouAssist.FinancialManagement.Permissions;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.AccountsReceivable
+namespace NouAssist.FinancialManagement.Application.AccountsReceivable
 {
-    [Authorize(FinancialManagementPermissions.AccountsReceivable.ViewInvoices)]
+    [Authorize(FinancialManagementPermissions.AccountsReceivable.Default)]
     public class InvoiceAppService : ApplicationService, IInvoiceAppService
     {
-        private readonly IInvoiceRepository _invoiceRepository;
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IRepository<Invoice, Guid> _invoiceRepository;
+        private readonly IRepository<Customer, Guid> _customerRepository;
 
         public InvoiceAppService(
-            IInvoiceRepository invoiceRepository,
-            ICustomerRepository customerRepository)
+            IRepository<Invoice, Guid> invoiceRepository,
+            IRepository<Customer, Guid> customerRepository)
         {
             _invoiceRepository = invoiceRepository;
             _customerRepository = customerRepository;
         }
 
+        [Authorize(FinancialManagementPermissions.AccountsReceivable.ViewInvoices)]
         public async Task<InvoiceDto> GetAsync(Guid id)
         {
-            var invoice = await _invoiceRepository.GetWithDetailsAsync(id);
-            return await MapToDto(invoice);
+            var queryable = await _invoiceRepository.WithDetailsAsync();
+            var invoice = await AsyncExecuter.FirstOrDefaultAsync(
+                queryable.Where(i => i.Id == id));
+
+            return ObjectMapper.Map<Invoice, InvoiceDto>(invoice);
         }
 
+        [Authorize(FinancialManagementPermissions.AccountsReceivable.ViewInvoices)]
         public async Task<PagedResultDto<InvoiceDto>> GetListAsync(GetInvoiceListDto input)
         {
             var queryable = await _invoiceRepository.GetQueryableAsync();
 
-            if (input.CustomerId.HasValue)
+            if (input.CustomerFilter.HasValue)
             {
-                queryable = queryable.Where(i => i.CustomerId == input.CustomerId.Value);
+                queryable = queryable.Where(i => i.CustomerId == input.CustomerFilter.Value);
             }
 
-            if (input.Status.HasValue)
+            if (input.StatusFilter.HasValue)
             {
-                queryable = queryable.Where(i => i.Status == input.Status.Value);
+                queryable = queryable.Where(i => i.Status == input.StatusFilter.Value);
             }
 
-            if (input.IssueDateFrom.HasValue)
+            if (input.OverdueOnly == true)
             {
-                queryable = queryable.Where(i => i.IssueDate >= input.IssueDateFrom.Value);
-            }
-
-            if (input.IssueDateTo.HasValue)
-            {
-                queryable = queryable.Where(i => i.IssueDate <= input.IssueDateTo.Value);
-            }
-
-            if (input.OverdueOnly.GetValueOrDefault(false))
-            {
-                var today = DateTime.Today;
-                queryable = queryable.Where(i => 
-                    i.DueDate < today && 
-                    i.Status != Enums.InvoiceStatus.Paid &&
-                    i.Status != Enums.InvoiceStatus.Cancelled);
+                var today = DateTime.UtcNow.Date;
+                queryable = queryable.Where(i => i.DueDate < today && 
+                    i.Status != AccountsReceivable.Enums.InvoiceStatus.Paid);
             }
 
             var totalCount = await AsyncExecuter.CountAsync(queryable);
@@ -75,116 +69,69 @@ namespace NouAssist.FinancialManagement.AccountsReceivable
                 .Take(input.MaxResultCount);
 
             var invoices = await AsyncExecuter.ToListAsync(queryable);
-            var dtos = new List<InvoiceDto>();
 
-            foreach (var invoice in invoices)
-            {
-                dtos.Add(await MapToDto(invoice));
-            }
-
-            return new PagedResultDto<InvoiceDto>(totalCount, dtos);
+            return new PagedResultDto<InvoiceDto>(
+                totalCount,
+                ObjectMapper.Map<List<Invoice>, List<InvoiceDto>>(invoices)
+            );
         }
 
         [Authorize(FinancialManagementPermissions.AccountsReceivable.CreateInvoices)]
         public async Task<InvoiceDto> CreateAsync(CreateInvoiceDto input)
         {
-            // Validate customer exists
             var customer = await _customerRepository.GetAsync(input.CustomerId);
-
-            var invoiceNumber = await GenerateInvoiceNumber();
 
             var invoice = new Invoice(
                 GuidGenerator.Create(),
                 CurrentTenant.Id,
-                invoiceNumber,
+                input.InvoiceNumber,
                 input.CustomerId,
+                customer.Name,
                 input.IssueDate,
                 input.DueDate,
-                input.ProjectId,
-                input.Notes);
+                input.Currency,
+                input.ProjectId
+            );
 
-            // Add line items
             foreach (var lineDto in input.LineItems)
             {
-                var unitPrice = new MonetaryValue(lineDto.UnitPrice, lineDto.Currency);
                 var lineItem = new InvoiceLineItem(
-                    invoice.Id,
+                    GuidGenerator.Create(),
                     lineDto.Description,
                     lineDto.Quantity,
-                    unitPrice);
-
+                    new MonetaryValue(lineDto.UnitPrice, input.Currency),
+                    productId: lineDto.ProductId
+                );
                 invoice.AddLineItem(lineItem);
             }
 
             await _invoiceRepository.InsertAsync(invoice);
-
-            return await MapToDto(invoice);
+            return ObjectMapper.Map<Invoice, InvoiceDto>(invoice);
         }
 
         [Authorize(FinancialManagementPermissions.AccountsReceivable.SendInvoices)]
-        public async Task<InvoiceDto> SendAsync(Guid id)
+        public async Task<InvoiceDto> SendAsync(SendInvoiceDto input)
         {
-            var invoice = await _invoiceRepository.GetWithDetailsAsync(id);
-            var customer = await _customerRepository.GetAsync(invoice.CustomerId);
-
-            invoice.Send(customer.Name);
-
-            // Update customer balance
-            customer.AddToBalance(invoice.TotalAmount);
-            await _customerRepository.UpdateAsync(customer);
-
-            await _invoiceRepository.UpdateAsync(invoice);
-
-            return await MapToDto(invoice);
-        }
-
-        [Authorize(FinancialManagementPermissions.AccountsReceivable.ProcessPayments)]
-        public async Task<InvoiceDto> ApplyPaymentAsync(Guid id, ApplyPaymentDto input)
-        {
-            var invoice = await _invoiceRepository.GetWithDetailsAsync(id);
-            var amount = new MonetaryValue(input.Amount, input.Currency);
-
-            invoice.ApplyPayment(input.PaymentId, amount, CurrentUser.Id.Value);
-
-            // Update customer balance
-            var customer = await _customerRepository.GetAsync(invoice.CustomerId);
-            customer.SubtractFromBalance(amount);
-            await _customerRepository.UpdateAsync(customer);
-
-            await _invoiceRepository.UpdateAsync(invoice);
-
-            return await MapToDto(invoice);
-        }
-
-        [Authorize(FinancialManagementPermissions.AccountsReceivable.CreateInvoices)]
-        public async Task DeleteAsync(Guid id)
-        {
-            var invoice = await _invoiceRepository.GetAsync(id);
-            invoice.Cancel("Deleted by user");
-            await _invoiceRepository.UpdateAsync(invoice);
-        }
-
-        private async Task<InvoiceDto> MapToDto(Invoice invoice)
-        {
-            var dto = ObjectMapper.Map<Invoice, InvoiceDto>(invoice);
-
-            // Load customer name
-            var customer = await _customerRepository.GetAsync(invoice.CustomerId);
-            dto.CustomerName = customer.Name;
-
-            return dto;
-        }
-
-        private async Task<string> GenerateInvoiceNumber()
-        {
-            var now = Clock.Now;
-            var prefix = $"INV-{now:yyyyMM}";
+            var invoice = await _invoiceRepository.GetAsync(input.InvoiceId);
             
-            var queryable = await _invoiceRepository.GetQueryableAsync();
-            var count = await AsyncExecuter.CountAsync(
-                queryable.Where(i => i.InvoiceNumber.StartsWith(prefix)));
+            invoice.Send();
 
-            return $"{prefix}-{(count + 1):D4}";
+            await _invoiceRepository.UpdateAsync(invoice);
+            return ObjectMapper.Map<Invoice, InvoiceDto>(invoice);
+        }
+
+        [Authorize(FinancialManagementPermissions.AccountsReceivable.RecordPayments)]
+        public async Task<InvoiceDto> ApplyPaymentAsync(ApplyPaymentToInvoiceDto input)
+        {
+            var invoice = await _invoiceRepository.GetAsync(input.InvoiceId);
+            
+            invoice.ApplyPayment(
+                new MonetaryValue(input.PaymentAmount, input.Currency),
+                input.PaymentDate
+            );
+
+            await _invoiceRepository.UpdateAsync(invoice);
+            return ObjectMapper.Map<Invoice, InvoiceDto>(invoice);
         }
     }
 }

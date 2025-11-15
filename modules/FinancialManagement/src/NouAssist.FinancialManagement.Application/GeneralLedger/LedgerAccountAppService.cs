@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger;
+using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger.Dtos;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using NouAssist.FinancialManagement.GeneralLedger.Data;
-using NouAssist.FinancialManagement.GeneralLedger.Dtos;
-using NouAssist.FinancialManagement.GeneralLedger.Enums;
 using NouAssist.FinancialManagement.Permissions;
+using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.GeneralLedger
+namespace NouAssist.FinancialManagement.Application.GeneralLedger
 {
-    [Authorize(FinancialManagementPermissions.GeneralLedger.ViewAccounts)]
+    [Authorize(FinancialManagementPermissions.GeneralLedger.Default)]
     public class LedgerAccountAppService : ApplicationService, ILedgerAccountAppService
     {
         private readonly ILedgerAccountRepository _ledgerAccountRepository;
@@ -24,30 +24,41 @@ namespace NouAssist.FinancialManagement.GeneralLedger
             _ledgerAccountRepository = ledgerAccountRepository;
         }
 
+        [Authorize(FinancialManagementPermissions.GeneralLedger.ViewAccounts)]
         public async Task<LedgerAccountDto> GetAsync(Guid id)
         {
             var account = await _ledgerAccountRepository.GetAsync(id);
             return ObjectMapper.Map<LedgerAccount, LedgerAccountDto>(account);
         }
 
+        [Authorize(FinancialManagementPermissions.GeneralLedger.ViewAccounts)]
         public async Task<PagedResultDto<LedgerAccountDto>> GetListAsync(GetLedgerAccountListDto input)
         {
             var queryable = await _ledgerAccountRepository.GetQueryableAsync();
 
-            if (input.Type.HasValue)
+            if (input.TypeFilter.HasValue)
             {
-                queryable = queryable.Where(a => a.Type == input.Type.Value);
+                queryable = queryable.Where(a => a.Type == input.TypeFilter.Value);
             }
 
-            if (input.ActiveOnly.GetValueOrDefault(true))
+            if (input.ActiveOnly == true)
             {
                 queryable = queryable.Where(a => a.IsActive);
             }
 
+            if (!string.IsNullOrWhiteSpace(input.SearchTerm))
+            {
+                queryable = queryable.Where(a =>
+                    a.Name.Contains(input.SearchTerm) ||
+                    a.AccountNumber.Number.Contains(input.SearchTerm));
+            }
+
             var totalCount = await AsyncExecuter.CountAsync(queryable);
 
-            queryable = ApplySorting(queryable, input);
-            queryable = ApplyPaging(queryable, input);
+            queryable = queryable
+                .OrderBy(a => a.AccountNumber.Number)
+                .Skip(input.SkipCount)
+                .Take(input.MaxResultCount);
 
             var accounts = await AsyncExecuter.ToListAsync(queryable);
 
@@ -60,25 +71,28 @@ namespace NouAssist.FinancialManagement.GeneralLedger
         [Authorize(FinancialManagementPermissions.GeneralLedger.ManageAccounts)]
         public async Task<LedgerAccountDto> CreateAsync(CreateLedgerAccountDto input)
         {
-            // Check if account number already exists
-            var exists = await _ledgerAccountRepository.AccountNumberExistsAsync(input.AccountNumber);
-            if (exists)
+            var accountNumber = new AccountNumber(input.AccountNumber);
+
+            // Check uniqueness
+            var isUnique = await _ledgerAccountRepository.IsAccountNumberUniqueAsync(accountNumber);
+            if (!isUnique)
             {
-                throw new Volo.Abp.UserFriendlyException($"Account number {input.AccountNumber} already exists");
+                throw new BusinessException("GL:AccountNumberExists",
+                    "Account number already exists");
             }
 
             var account = new LedgerAccount(
                 GuidGenerator.Create(),
                 CurrentTenant.Id,
-                input.AccountNumber,
+                accountNumber,
                 input.Name,
                 input.Type,
                 input.Currency,
                 input.ParentAccountId,
-                input.Description);
+                input.Description
+            );
 
             await _ledgerAccountRepository.InsertAsync(account);
-
             return ObjectMapper.Map<LedgerAccount, LedgerAccountDto>(account);
         }
 
@@ -90,34 +104,23 @@ namespace NouAssist.FinancialManagement.GeneralLedger
             account.UpdateName(input.Name);
             account.UpdateDescription(input.Description);
 
-            await _ledgerAccountRepository.UpdateAsync(account);
+            if (input.IsActive && !account.IsActive)
+            {
+                account.Activate();
+            }
+            else if (!input.IsActive && account.IsActive)
+            {
+                account.Deactivate();
+            }
 
+            await _ledgerAccountRepository.UpdateAsync(account);
             return ObjectMapper.Map<LedgerAccount, LedgerAccountDto>(account);
         }
 
         [Authorize(FinancialManagementPermissions.GeneralLedger.ManageAccounts)]
         public async Task DeleteAsync(Guid id)
         {
-            var account = await _ledgerAccountRepository.GetAsync(id);
-            account.Deactivate();
-            await _ledgerAccountRepository.UpdateAsync(account);
-        }
-
-        private IQueryable<LedgerAccount> ApplySorting(IQueryable<LedgerAccount> queryable, GetLedgerAccountListDto input)
-        {
-            if (string.IsNullOrWhiteSpace(input.Sorting))
-            {
-                return queryable.OrderBy(a => a.AccountNumber);
-            }
-
-            return queryable.OrderBy(input.Sorting);
-        }
-
-        private IQueryable<LedgerAccount> ApplyPaging(IQueryable<LedgerAccount> queryable, GetLedgerAccountListDto input)
-        {
-            return queryable
-                .Skip(input.SkipCount)
-                .Take(input.MaxResultCount);
+            await _ledgerAccountRepository.DeleteAsync(id);
         }
     }
 }

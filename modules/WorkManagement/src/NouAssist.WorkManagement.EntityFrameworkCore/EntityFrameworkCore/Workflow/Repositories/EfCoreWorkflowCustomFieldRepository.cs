@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -37,12 +38,15 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
             CancellationToken cancellationToken = default)
         {
             var dbSet = await GetDbSetAsync();
+            
+            // Load all active fields for the workflow scheme
             var allFields = await dbSet
                 .Where(wcf => wcf.WorkflowSchemeId == workflowSchemeId && wcf.IsActive)
                 .OrderBy(wcf => wcf.DisplayOrder)
                 .ToListAsync(cancellationToken);
 
-            // Filter in memory for status visibility
+            // Filter in memory for status visibility using the domain method
+            // This is necessary because VisibilityRules is stored as JSON string
             return allFields
                 .Where(wcf => wcf.IsVisibleInStatus(statusId))
                 .ToList();

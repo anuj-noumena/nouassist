@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
 using NouAssist.FinancialManagement.AccountsPayable.Entities;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.AccountsPayable
@@ -10,35 +12,36 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Accou
     {
         public void Configure(EntityTypeBuilder<Bill> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "Bills",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.BillNumber)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(BillConsts.MaxBillNumberLength);
 
             builder.Property(x => x.VendorId).IsRequired();
+            
+            builder.Property(x => x.VendorName)
+                .IsRequired()
+                .HasMaxLength(FinancialConsts.MaxNameLength);
 
-            // MonetaryValue - Amount
-            builder.OwnsOne(x => x.Amount, amount =>
+            // Amount value object
+            builder.OwnsOne(x => x.Amount, a =>
             {
-                amount.Property(a => a.Amount)
+                a.Property(m => m.Amount)
                     .HasColumnName("Amount")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                amount.Property(a => a.Currency)
+                
+                a.Property(m => m.Currency)
                     .HasColumnName("Currency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                amount.Ignore(a => a.DecimalPlaces);
             });
 
             builder.Property(x => x.IssueDate).IsRequired();
@@ -51,45 +54,38 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Accou
 
             builder.Property(x => x.CategoryId).IsRequired();
             builder.Property(x => x.ProjectId);
-            builder.Property(x => x.AttachedDocumentId);
+            builder.Property(x => x.DocumentId);
             builder.Property(x => x.RequiresApproval).IsRequired();
-            builder.Property(x => x.Notes).HasMaxLength(1000);
 
-            // Relationships
-            builder.HasMany<BillLineItem>()
-                .WithOne()
-                .HasForeignKey(l => l.BillId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany<BillApproval>()
+            // Navigation to approvals
+            builder.HasMany(x => x.Approvals)
                 .WithOne()
                 .HasForeignKey(a => a.BillId)
-                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Navigation to line items
+            builder.HasMany(x => x.LineItems)
+                .WithOne()
+                .HasForeignKey(li => li.BillId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes
-            builder.HasIndex(x => new { x.VendorId, x.BillNumber })
+            builder.HasIndex(x => x.VendorId);
+            builder.HasIndex(x => x.Status);
+            builder.HasIndex(x => x.DueDate);
+            builder.HasIndex(x => new { x.VendorId, x.Status, x.DueDate })
+                .HasDatabaseName("IX_Bills_Vendor_Status_DueDate");
+            
+            builder.HasIndex(x => new { x.TenantId, x.VendorId, x.BillNumber })
                 .IsUnique()
-                .HasDatabaseName("IX_Bills_VendorId_BillNumber");
+                .HasDatabaseName("IX_Bills_Tenant_Vendor_Number");
 
-            builder.HasIndex(x => x.Status)
-                .HasDatabaseName("IX_Bills_Status");
-
-            builder.HasIndex(x => x.DueDate)
-                .HasDatabaseName("IX_Bills_DueDate");
-
+            // Covering index for aging reports
             builder.HasIndex(x => new { x.Status, x.DueDate })
-                .HasDatabaseName("IX_Bills_Status_DueDate");
+                .HasDatabaseName("IX_Bills_Aging")
+                .HasFilter("[Status] IN ('Approved', 'Scheduled', 'Overdue')");
 
-            builder.HasIndex(x => x.CategoryId)
-                .HasDatabaseName("IX_Bills_CategoryId");
-
-            builder.HasIndex(x => x.ProjectId)
-                .HasDatabaseName("IX_Bills_ProjectId");
-
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_Bills_TenantId");
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

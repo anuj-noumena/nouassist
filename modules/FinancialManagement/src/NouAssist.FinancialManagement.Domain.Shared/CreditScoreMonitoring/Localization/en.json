@@ -1,0 +1,9 @@
+{
+  "culture": "en",
+  "texts": {
+    "CreditScoreMonitoring:DuplicateAccount": "An account with this number already exists in the report.",
+    "CreditScoreMonitoring:InvalidDisputeStatus": "Dispute cannot be processed in current status.",
+    "CreditScoreMonitoring:DisputeMustBeUnderInvestigation": "Dispute must be under investigation to be resolved or rejected.",
+    "CreditScoreMonitoring:CannotCancelClosedDispute": "Cannot cancel a dispute that is already closed."
+  }
+}

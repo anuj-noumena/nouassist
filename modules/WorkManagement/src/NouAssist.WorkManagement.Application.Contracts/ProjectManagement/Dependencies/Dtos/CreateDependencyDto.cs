@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos
@@ -19,6 +20,8 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos
         public int LagDays { get; set; } = 0;
 
         public bool IsBlocking { get; set; } = true;
+
+        public DependencyStrength Strength { get; set; } = DependencyStrength.Hard;
 
         [StringLength(2000)]
         public string Description { get; set; }

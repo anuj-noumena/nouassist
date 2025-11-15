@@ -35,6 +35,14 @@ public class WorkManagementPermissions
             public const string Reject = Default + ".Reject";
             public const string Cancel = Default + ".Cancel";
         }
+        
+        public static class Analytics
+        {
+            public const string Default = GroupName + ".Analytics";
+            public const string View = Default + ".View";
+            public const string ViewAll = Default + ".ViewAll";
+            public const string Export = Default + ".Export";
+        }
     }
 
     // GTD Permissions
@@ -186,6 +194,7 @@ public class WorkManagementPermissions
             public const string Update = Default + ".Update";
             public const string Delete = Default + ".Delete";
             public const string ManageActionSteps = Default + ".ManageActionSteps";
+            public const string ManageChecklistItems = Default + ".ManageChecklistItems";
             public const string ManageCriteria = Default + ".ManageCriteria";
         }
 

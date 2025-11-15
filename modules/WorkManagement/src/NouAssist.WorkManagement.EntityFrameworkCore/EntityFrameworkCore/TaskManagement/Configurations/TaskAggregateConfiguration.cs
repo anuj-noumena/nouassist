@@ -26,35 +26,52 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
             builder.Property(x => x.Description)
                 .HasMaxLength(TasksDbConsts.MaxDescriptionLength);
 
-            builder.Property(x => x.Notes)
-                .HasMaxLength(TasksDbConsts.MaxNotesLength);
-
             builder.Property(x => x.ExpectedResult)
                 .HasMaxLength(TasksDbConsts.MaxExpectedResultLength);
 
             builder.Property(x => x.OwnerId)
                 .IsRequired();
 
+            // GTD Organization
+            builder.Property(x => x.AreaId);
+            
+            builder.Property(x => x.ContextId);
+
+            builder.Property(x => x.ProjectId);
+
+            builder.Property(x => x.TaskTypeId);
+
+            // Default values for instances
             builder.Property(x => x.DefaultImportance)
                 .IsRequired()
-                .HasColumnType("double precision");
+                .HasColumnType("double precision")
+                .HasDefaultValue(0.5);
 
             builder.Property(x => x.DefaultUrgency)
                 .IsRequired()
-                .HasColumnType("double precision");
+                .HasColumnType("double precision")
+                .HasDefaultValue(0.5);
 
-            builder.Property(x => x.IsRecurring)
-                .IsRequired();
+            builder.Property(x => x.DefaultDueDate);
 
+            builder.Property(x => x.DefaultEstimateMinutes);
+
+            builder.Property(x => x.DefaultWorkflowId);
+
+            builder.Property(x => x.DefaultAssigneeId);
+
+            builder.Property(x => x.DefaultAreaId);
+
+            builder.Property(x => x.DefaultContextId);
+
+            // State
             builder.Property(x => x.IsActive)
-                .IsRequired();
+                .IsRequired()
+                .HasDefaultValue(true);
 
             builder.Property(x => x.Version)
                 .IsRequired()
                 .IsConcurrencyToken();
-
-            builder.Property(x => x.EstimateMinutes)
-                .HasColumnType("integer");
 
             // Value Object: RecurrenceRule (owned entity)
             builder.OwnsOne(x => x.RecurrenceRule, recurrenceBuilder =>
@@ -86,7 +103,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
             });
 
             // Relationships
-            builder.HasMany(x => x.ActionSteps)
+            builder.HasMany(x => x.ChecklistItems)
                 .WithOne()
                 .HasForeignKey("TaskId")
                 .IsRequired()
@@ -102,9 +119,12 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
             builder.HasIndex(x => x.Title);
             builder.HasIndex(x => x.OwnerId);
             builder.HasIndex(x => x.ProjectId);
+            builder.HasIndex(x => x.AreaId);
+            builder.HasIndex(x => x.ContextId);
             builder.HasIndex(x => x.IsActive);
-            builder.HasIndex(x => x.IsRecurring);
             builder.HasIndex(x => new { x.TenantId, x.IsDeleted });
+            builder.HasIndex(x => new { x.AreaId, x.IsActive });
+            builder.HasIndex(x => new { x.ProjectId, x.IsActive });
 
             // Multi-tenancy
             builder.HasIndex(x => x.TenantId);

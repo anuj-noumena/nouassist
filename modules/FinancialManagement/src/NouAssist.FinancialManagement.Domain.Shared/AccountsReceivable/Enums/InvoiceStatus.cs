@@ -4,10 +4,11 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Enums
     {
         Draft = 1,
         Sent = 2,
-        Paid = 3,
+        Viewed = 3,
         PartiallyPaid = 4,
-        Overdue = 5,
-        Cancelled = 6,
-        Hold = 7
+        Paid = 5,
+        Overdue = 6,
+        Cancelled = 7,
+        Hold = 8
     }
 }

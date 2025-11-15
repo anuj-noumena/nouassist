@@ -24,6 +24,20 @@ namespace NouAssist.WorkManagement.Approval.Requests.Dtos
 
             RuleFor(x => x.Priority)
                 .InclusiveBetween(0, 10);
+
+            When(x => x.DueDate.HasValue, () =>
+            {
+                RuleFor(x => x.DueDate.Value)
+                    .GreaterThan(System.DateTime.UtcNow)
+                    .WithMessage("Due date must be in the future");
+            });
+
+            When(x => x.SlaDeadline.HasValue, () =>
+            {
+                RuleFor(x => x.SlaDeadline.Value)
+                    .GreaterThan(System.DateTime.UtcNow)
+                    .WithMessage("SLA deadline must be in the future");
+            });
         }
     }
 }

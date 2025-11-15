@@ -11,11 +11,20 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Validators
             RuleFor(x => x.TaskId)
                 .NotEmpty();
 
-            RuleFor(x => x.ProjectId)
+            RuleFor(x => x.WorkflowId)
                 .NotEmpty();
 
             RuleFor(x => x.WorkflowStatusId)
                 .NotEmpty();
+
+            // GTD validation: must have either ProjectId or AreaId, but not both
+            RuleFor(x => x)
+                .Must(x => x.ProjectId.HasValue || x.AreaId.HasValue)
+                .WithMessage("Task instance must belong to either a Project or an Area.");
+
+            RuleFor(x => x)
+                .Must(x => !(x.ProjectId.HasValue && x.AreaId.HasValue))
+                .WithMessage("Task instance cannot belong to both a Project and an Area.");
 
             RuleFor(x => x.Importance)
                 .InclusiveBetween(0.0, 1.0)

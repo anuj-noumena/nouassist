@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
+using NouAssist.FinancialManagement.Shared;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.GeneralLedger
@@ -9,15 +10,14 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
     {
         public void Configure(EntityTypeBuilder<AccountingPeriod> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "AccountingPeriods",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.FiscalYear).IsRequired();
             builder.Property(x => x.PeriodNumber).IsRequired();
             builder.Property(x => x.StartDate).IsRequired();
@@ -32,18 +32,14 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
             builder.Property(x => x.ClosedBy);
 
             // Indexes
-            builder.HasIndex(x => new { x.FiscalYear, x.PeriodNumber })
+            builder.HasIndex(x => new { x.TenantId, x.FiscalYear, x.PeriodNumber })
                 .IsUnique()
-                .HasDatabaseName("IX_AccountingPeriods_FiscalYear_PeriodNumber");
+                .HasDatabaseName("IX_AccountingPeriods_Tenant_Fiscal_Period");
 
-            builder.HasIndex(x => x.Status)
-                .HasDatabaseName("IX_AccountingPeriods_Status");
+            builder.HasIndex(x => x.Status);
+            builder.HasIndex(x => new { x.StartDate, x.EndDate });
 
-            builder.HasIndex(x => new { x.StartDate, x.EndDate })
-                .HasDatabaseName("IX_AccountingPeriods_StartDate_EndDate");
-
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_AccountingPeriods_TenantId");
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

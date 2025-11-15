@@ -4,6 +4,7 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Enums
     {
         Individual = 1,
         Corporate = 2,
-        Government = 3
+        Government = 3,
+        NonProfit = 4
     }
 }

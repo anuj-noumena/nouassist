@@ -5,10 +5,14 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
 
 public class CloneTaskDto
 {
-    [Required] [StringLength(500)] public string NewTitle { get; set; }
+    [Required] 
+    [StringLength(500)] 
+    public string NewTitle { get; set; }
 
     public Guid? NewProjectId { get; set; }
+    public Guid? NewAreaId { get; set; }
 
-    public bool IncludeActionSteps { get; set; } = true;
+    // Updated from IncludeActionSteps
+    public bool IncludeChecklistItems { get; set; } = true;
     public bool IncludeAcceptanceCriteria { get; set; } = true;
 }

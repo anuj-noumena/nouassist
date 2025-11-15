@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
 using NouAssist.FinancialManagement.FinancialPlanning.Entities;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.FinancialPlanning
@@ -10,17 +12,19 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Finan
     {
         public void Configure(EntityTypeBuilder<Budget> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "Budgets",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.UserId).IsRequired();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
+            
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(FinancialConsts.MaxNameLength);
 
             builder.Property(x => x.Type)
                 .IsRequired()
@@ -35,63 +39,48 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Finan
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            // MonetaryValue - TotalBudget
-            builder.OwnsOne(x => x.TotalBudget, total =>
+            // TotalBudget value object
+            builder.OwnsOne(x => x.TotalBudget, tb =>
             {
-                total.Property(t => t.Amount)
-                    .HasColumnName("TotalBudget_Amount")
+                tb.Property(m => m.Amount)
+                    .HasColumnName("TotalBudget")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                total.Property(t => t.Currency)
-                    .HasColumnName("TotalBudget_Currency")
+                
+                tb.Property(m => m.Currency)
+                    .HasColumnName("Currency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                total.Ignore(t => t.DecimalPlaces);
             });
 
-            // MonetaryValue - ActualSpent
-            builder.OwnsOne(x => x.ActualSpent, actual =>
+            // ActualSpent value object
+            builder.OwnsOne(x => x.ActualSpent, asp =>
             {
-                actual.Property(a => a.Amount)
-                    .HasColumnName("ActualSpent_Amount")
+                asp.Property(m => m.Amount)
+                    .HasColumnName("ActualSpent")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                actual.Property(a => a.Currency)
-                    .HasColumnName("ActualSpent_Currency")
+                
+                asp.Property(m => m.Currency)
+                    .HasColumnName("ActualSpentCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                actual.Ignore(a => a.DecimalPlaces);
             });
 
-            // Relationships
-            builder.HasMany<CategoryAllocation>()
+            // Navigation to allocations
+            builder.HasMany(x => x.Allocations)
                 .WithOne()
-                .HasForeignKey(a => a.BudgetId)
-                .IsRequired()
+                .HasForeignKey("BudgetId")
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes
-            builder.HasIndex(x => x.UserId)
-                .HasDatabaseName("IX_Budgets_UserId");
-
-            builder.HasIndex(x => x.Type)
-                .HasDatabaseName("IX_Budgets_Type");
-
-            builder.HasIndex(x => x.Status)
-                .HasDatabaseName("IX_Budgets_Status");
-
+            builder.HasIndex(x => x.UserId);
+            builder.HasIndex(x => x.Status);
+            builder.HasIndex(x => new { x.PeriodStart, x.PeriodEnd });
             builder.HasIndex(x => new { x.UserId, x.Status })
-                .HasDatabaseName("IX_Budgets_UserId_Status");
+                .HasDatabaseName("IX_Budgets_User_Status");
 
-            builder.HasIndex(x => new { x.PeriodStart, x.PeriodEnd })
-                .HasDatabaseName("IX_Budgets_Period");
-
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_Budgets_TenantId");
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

@@ -17,6 +17,12 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects.Dtos
         public string Description { get; set; }
 
         [StringLength(ProjectDomainConstants.MaxDescriptionLength)]
+        public string Vision { get; set; }
+
+        [StringLength(ProjectDomainConstants.MaxDescriptionLength)]
+        public string Purpose { get; set; }
+
+        [StringLength(ProjectDomainConstants.MaxDescriptionLength)]
         public string ExpectedOutcome { get; set; }
 
         public DateTime? StartDate { get; set; }
@@ -30,9 +36,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects.Dtos
 
         public Guid? ParentProjectId { get; set; }
         public Guid? GoalId { get; set; }
-        public Guid? ContextId { get; set; }
         public Guid? AreaId { get; set; }
         public Guid? PrimaryTeamId { get; set; }
-        public bool RequiresApproval { get; set; }
     }
 }

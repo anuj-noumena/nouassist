@@ -3,38 +3,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning;
+using NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning.Dtos;
 using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
-using NouAssist.FinancialManagement.FinancialPlanning.Data;
-using NouAssist.FinancialManagement.FinancialPlanning.Dtos;
 using NouAssist.FinancialManagement.FinancialPlanning.Entities;
 using NouAssist.FinancialManagement.Permissions;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.FinancialPlanning
+namespace NouAssist.FinancialManagement.Application.FinancialPlanning
 {
     [Authorize(FinancialManagementPermissions.FinancialPlanning.Default)]
     public class BudgetAppService : ApplicationService, IBudgetAppService
     {
-        private readonly IBudgetRepository _budgetRepository;
+        private readonly IRepository<Budget, Guid> _budgetRepository;
 
-        public BudgetAppService(IBudgetRepository budgetRepository)
+        public BudgetAppService(IRepository<Budget, Guid> budgetRepository)
         {
             _budgetRepository = budgetRepository;
         }
 
+        [Authorize(FinancialManagementPermissions.FinancialPlanning.ManageBudgets)]
         public async Task<BudgetDto> GetAsync(Guid id)
         {
-            var budget = await _budgetRepository.GetWithAllocationsAsync(id);
-            return MapToDto(budget);
+            var queryable = await _budgetRepository.WithDetailsAsync();
+            var budget = await AsyncExecuter.FirstOrDefaultAsync(
+                queryable.Where(b => b.Id == id));
+
+            return ObjectMapper.Map<Budget, BudgetDto>(budget);
         }
 
-        public async Task<PagedResultDto<BudgetDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        [Authorize(FinancialManagementPermissions.FinancialPlanning.ManageBudgets)]
+        public async Task<PagedResultDto<BudgetDto>> GetListAsync(GetBudgetListDto input)
         {
-            var userId = CurrentUser.Id.Value;
             var queryable = await _budgetRepository.GetQueryableAsync();
-            queryable = queryable.Where(b => b.UserId == userId);
+
+            queryable = queryable.Where(b => b.UserId == CurrentUser.Id.Value);
+
+            if (input.TypeFilter.HasValue)
+            {
+                queryable = queryable.Where(b => b.Type == input.TypeFilter.Value);
+            }
+
+            if (input.StatusFilter.HasValue)
+            {
+                queryable = queryable.Where(b => b.Status == input.StatusFilter.Value);
+            }
 
             var totalCount = await AsyncExecuter.CountAsync(queryable);
 
@@ -44,15 +60,11 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
                 .Take(input.MaxResultCount);
 
             var budgets = await AsyncExecuter.ToListAsync(queryable);
-            var dtos = new List<BudgetDto>();
 
-            foreach (var budget in budgets)
-            {
-                var fullBudget = await _budgetRepository.GetWithAllocationsAsync(budget.Id);
-                dtos.Add(MapToDto(fullBudget));
-            }
-
-            return new PagedResultDto<BudgetDto>(totalCount, dtos);
+            return new PagedResultDto<BudgetDto>(
+                totalCount,
+                ObjectMapper.Map<List<Budget>, List<BudgetDto>>(budgets)
+            );
         }
 
         [Authorize(FinancialManagementPermissions.FinancialPlanning.ManageBudgets)]
@@ -65,87 +77,21 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
                 input.Name,
                 input.Type,
                 input.PeriodStart,
-                input.PeriodEnd);
+                input.PeriodEnd,
+                input.Currency
+            );
 
             foreach (var allocationDto in input.Allocations)
             {
-                var amount = new MonetaryValue(allocationDto.BudgetedAmount, allocationDto.Currency);
                 var allocation = new CategoryAllocation(
-                    budget.Id,
                     allocationDto.CategoryId,
-                    amount);
-
+                    new MonetaryValue(allocationDto.BudgetedAmount, input.Currency)
+                );
                 budget.AddAllocation(allocation);
             }
 
             await _budgetRepository.InsertAsync(budget);
-
-            return MapToDto(budget);
-        }
-
-        [Authorize(FinancialManagementPermissions.FinancialPlanning.ManageBudgets)]
-        public async Task<BudgetDto> ActivateAsync(Guid id)
-        {
-            var budget = await _budgetRepository.GetWithAllocationsAsync(id);
-            budget.Activate();
-            await _budgetRepository.UpdateAsync(budget);
-            return MapToDto(budget);
-        }
-
-        [Authorize(FinancialManagementPermissions.FinancialPlanning.ManageBudgets)]
-        public async Task<BudgetDto> CloseAsync(Guid id)
-        {
-            var budget = await _budgetRepository.GetWithAllocationsAsync(id);
-            budget.Close();
-            await _budgetRepository.UpdateAsync(budget);
-            return MapToDto(budget);
-        }
-
-        public async Task<BudgetDto> GetActiveBudgetAsync(Guid userId)
-        {
-            var budgets = await _budgetRepository.GetActiveBudgetsAsync(userId);
-            var currentBudget = budgets.FirstOrDefault(b => 
-                b.PeriodStart <= DateTime.Today && b.PeriodEnd >= DateTime.Today);
-
-            if (currentBudget == null)
-            {
-                throw new Volo.Abp.UserFriendlyException("No active budget found for the current period");
-            }
-
-            return MapToDto(currentBudget);
-        }
-
-        [Authorize(FinancialManagementPermissions.FinancialPlanning.ManageBudgets)]
-        public async Task DeleteAsync(Guid id)
-        {
-            await _budgetRepository.DeleteAsync(id);
-        }
-
-        private BudgetDto MapToDto(Budget budget)
-        {
-            var dto = ObjectMapper.Map<Budget, BudgetDto>(budget);
-            
-            if (budget.TotalBudget.Amount > 0)
-            {
-                dto.VariancePercentage = ((budget.ActualSpent.Amount - budget.TotalBudget.Amount) 
-                    / budget.TotalBudget.Amount) * 100;
-            }
-
-            // Map allocations with additional calculated fields
-            dto.Allocations = budget.Allocations.Select(a => new CategoryAllocationDto
-            {
-                CategoryId = a.CategoryId,
-                BudgetedAmount = a.BudgetedAmount,
-                ActualAmount = a.ActualAmount,
-                Variance = new MonetaryValue(
-                    a.ActualAmount.Amount - a.BudgetedAmount.Amount,
-                    a.BudgetedAmount.Currency),
-                PercentageUsed = a.BudgetedAmount.Amount > 0 
-                    ? (a.ActualAmount.Amount / a.BudgetedAmount.Amount) * 100 
-                    : 0
-            }).ToList();
-
-            return dto;
+            return ObjectMapper.Map<Budget, BudgetDto>(budget);
         }
     }
 }

@@ -4,34 +4,52 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
-using NouAssist.FinancialManagement.AccountsReceivable.Data;
-using NouAssist.FinancialManagement.AccountsReceivable.Dtos;
-using NouAssist.FinancialManagement.AccountsReceivable.ValueObjects;
+using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable;
+using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable.Dtos;
 using NouAssist.FinancialManagement.Permissions;
+using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.AccountsReceivable
+namespace NouAssist.FinancialManagement.Application.AccountsReceivable
 {
     [Authorize(FinancialManagementPermissions.AccountsReceivable.Default)]
     public class CustomerAppService : ApplicationService, ICustomerAppService
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly IRepository<Customer, Guid> _customerRepository;
 
-        public CustomerAppService(ICustomerRepository customerRepository)
+        public CustomerAppService(IRepository<Customer, Guid> customerRepository)
         {
             _customerRepository = customerRepository;
         }
 
+        [Authorize(FinancialManagementPermissions.AccountsReceivable.ManageCustomers)]
         public async Task<CustomerDto> GetAsync(Guid id)
         {
             var customer = await _customerRepository.GetAsync(id);
-            return MapToDto(customer);
+            return ObjectMapper.Map<Customer, CustomerDto>(customer);
         }
 
-        public async Task<PagedResultDto<CustomerDto>> GetListAsync(PagedAndSortedResultRequestDto input)
+        [Authorize(FinancialManagementPermissions.AccountsReceivable.ManageCustomers)]
+        public async Task<PagedResultDto<CustomerDto>> GetListAsync(GetCustomerListDto input)
         {
             var queryable = await _customerRepository.GetQueryableAsync();
+
+            if (input.ActiveOnly == true)
+            {
+                queryable = queryable.Where(c => c.IsActive);
+            }
+
+            if (input.TypeFilter.HasValue)
+            {
+                queryable = queryable.Where(c => c.Type == input.TypeFilter.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.SearchTerm))
+            {
+                queryable = queryable.Where(c => c.Name.Contains(input.SearchTerm));
+            }
 
             var totalCount = await AsyncExecuter.CountAsync(queryable);
 
@@ -44,38 +62,25 @@ namespace NouAssist.FinancialManagement.AccountsReceivable
 
             return new PagedResultDto<CustomerDto>(
                 totalCount,
-                customers.Select(MapToDto).ToList()
+                ObjectMapper.Map<List<Customer>, List<CustomerDto>>(customers)
             );
         }
 
         [Authorize(FinancialManagementPermissions.AccountsReceivable.ManageCustomers)]
         public async Task<CustomerDto> CreateAsync(CreateCustomerDto input)
         {
-            // Check if customer already exists
-            var exists = await _customerRepository.CustomerExistsAsync(input.Name);
-            if (exists)
-            {
-                throw new Volo.Abp.UserFriendlyException($"Customer '{input.Name}' already exists");
-            }
-
-            var creditTerms = new CreditTerms(
-                input.CreditTermsDueDays,
-                input.CreditLimit,
-                input.Currency);
-
             var customer = new Customer(
                 GuidGenerator.Create(),
                 CurrentTenant.Id,
                 input.Name,
+                new TaxId(input.TaxId),
                 input.Email,
                 input.Type,
-                creditTerms,
-                input.TaxId,
-                input.Phone);
+                input.CreditTermsDays
+            );
 
             await _customerRepository.InsertAsync(customer);
-
-            return MapToDto(customer);
+            return ObjectMapper.Map<Customer, CustomerDto>(customer);
         }
 
         [Authorize(FinancialManagementPermissions.AccountsReceivable.ManageCustomers)]
@@ -83,12 +88,10 @@ namespace NouAssist.FinancialManagement.AccountsReceivable
         {
             var customer = await _customerRepository.GetAsync(id);
 
-            // Update contact information (simplified for brevity)
-            // In real implementation, you'd update all necessary fields
+            // Update logic here
 
             await _customerRepository.UpdateAsync(customer);
-
-            return MapToDto(customer);
+            return ObjectMapper.Map<Customer, CustomerDto>(customer);
         }
 
         [Authorize(FinancialManagementPermissions.AccountsReceivable.ManageCustomers)]
@@ -97,14 +100,6 @@ namespace NouAssist.FinancialManagement.AccountsReceivable
             var customer = await _customerRepository.GetAsync(id);
             customer.Deactivate();
             await _customerRepository.UpdateAsync(customer);
-        }
-
-        private CustomerDto MapToDto(Customer customer)
-        {
-            var dto = ObjectMapper.Map<Customer, CustomerDto>(customer);
-            dto.CreditLimit = customer.CreditTerms.CreditLimit;
-            dto.AvailableCredit = customer.CreditTerms.CreditLimit - customer.CurrentBalance.Amount;
-            return dto;
         }
     }
 }

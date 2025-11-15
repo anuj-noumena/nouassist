@@ -1,0 +1,13 @@
+{
+  "culture": "en",
+  "texts": {
+    "DebtManagement:CannotRecordPaymentOnInactiveDebt": "Cannot record payment on inactive debt account.",
+    "DebtManagement:PaymentExceedsBalance": "Payment amount exceeds current balance.",
+    "DebtManagement:CannotReverseNonCompletedPayment": "Can only reverse completed payments.",
+    "DebtManagement:DebtAlreadyInPlan": "This debt is already included in the payoff plan.",
+    "DebtManagement:DebtNotInPlan": "This debt is not part of the payoff plan.",
+    "DebtManagement:PaymentMustExceedMinimum": "Payment must exceed minimum payment amount.",
+    "DebtManagement:PaymentTooSmallToCoverInterest": "Monthly payment is too small to cover interest charges.",
+    "DebtManagement:InsufficientBudgetForMinimums": "Monthly budget is insufficient to cover minimum payments on all debts."
+  }
+}

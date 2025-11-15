@@ -11,6 +11,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos
         public string Title { get; set; }
         public string Description { get; set; }
         public SuccessCriterionType CriterionType { get; set; }
+        public CriterionCriticality Criticality { get; set; }
 
         public string MeasurementMethod { get; set; }
         public string TargetValue { get; set; }

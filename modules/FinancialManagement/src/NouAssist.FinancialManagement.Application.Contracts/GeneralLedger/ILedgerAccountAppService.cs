@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.FinancialManagement.GeneralLedger.Dtos;
+using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.FinancialManagement.GeneralLedger
+namespace NouAssist.FinancialManagement.Application.Contracts.GeneralLedger
 {
     public interface ILedgerAccountAppService : IApplicationService
     {

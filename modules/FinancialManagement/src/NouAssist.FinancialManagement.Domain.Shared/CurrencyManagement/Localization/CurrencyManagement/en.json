@@ -1,0 +1,29 @@
+{
+  "culture": "en",
+  "texts": {
+    "CurrencyManagement:InvalidCurrencyCode": "Currency code must be a valid ISO 4217 code (e.g., USD, EUR).",
+    "CurrencyManagement:DuplicateCurrency": "A currency with code '{0}' already exists.",
+    "CurrencyManagement:InvalidExchangeRate": "Exchange rate must be greater than zero.",
+    "CurrencyManagement:SameCurrencyConversion": "Cannot convert currency to itself.",
+    "CurrencyManagement:ExchangeRateNotFound": "No exchange rate found for {0} to {1} on {2}.",
+    "CurrencyManagement:CannotDeactivateBaseCurrency": "Cannot deactivate the base currency '{0}'."
+  }
+}
+{
+  "culture": "en",
+  "texts": {
+    "Permission:CurrencyManagement": "Currency Management",
+    "Permission:Currencies": "Currencies",
+    "Permission:Currencies.View": "View Currencies",
+    "Permission:Currencies.Create": "Create Currency",
+    "Permission:Currencies.Update": "Update Currency",
+    "Permission:Currencies.Activate": "Activate Currency",
+    "Permission:Currencies.Deactivate": "Deactivate Currency",
+    "Permission:ExchangeRates": "Exchange Rates",
+    "Permission:ExchangeRates.View": "View Exchange Rates",
+    "Permission:ExchangeRates.Create": "Create Exchange Rate",
+    "Permission:ExchangeRates.Update": "Update Exchange Rate",
+    "Permission:ExchangeRates.Sync": "Sync Exchange Rates",
+    "Permission:ExchangeRates.Convert": "Convert Currency"
+  }
+}

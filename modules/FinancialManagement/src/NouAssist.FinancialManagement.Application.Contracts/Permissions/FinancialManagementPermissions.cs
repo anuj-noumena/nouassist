@@ -9,10 +9,13 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string Default = GroupName + ".GeneralLedger";
             public const string ViewAccounts = Default + ".ViewAccounts";
             public const string ManageAccounts = Default + ".ManageAccounts";
+            public const string CreateJournalEntries = Default + ".CreateJournalEntries";
             public const string PostJournalEntries = Default + ".PostJournalEntries";
             public const string ReverseJournalEntries = Default + ".ReverseJournalEntries";
+            public const string ManagePeriods = Default + ".ManagePeriods";
             public const string ClosePeriods = Default + ".ClosePeriods";
             public const string ViewFinancialReports = Default + ".ViewFinancialReports";
+            public const string ReconcileBankStatements = Default + ".ReconcileBankStatements";
         }
 
         public static class AccountsPayable
@@ -21,8 +24,9 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string ViewBills = Default + ".ViewBills";
             public const string CreateBills = Default + ".CreateBills";
             public const string ApproveBills = Default + ".ApproveBills";
-            public const string ProcessPayments = Default + ".ProcessPayments";
+            public const string PayBills = Default + ".PayBills";
             public const string ManageVendors = Default + ".ManageVendors";
+            public const string ViewReports = Default + ".ViewReports";
         }
 
         public static class AccountsReceivable
@@ -31,9 +35,10 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string ViewInvoices = Default + ".ViewInvoices";
             public const string CreateInvoices = Default + ".CreateInvoices";
             public const string SendInvoices = Default + ".SendInvoices";
-            public const string ProcessPayments = Default + ".ProcessPayments";
+            public const string RecordPayments = Default + ".RecordPayments";
             public const string ManageCustomers = Default + ".ManageCustomers";
             public const string ManageCollections = Default + ".ManageCollections";
+            public const string ViewReports = Default + ".ViewReports";
         }
 
         public static class FinancialPlanning
@@ -44,6 +49,8 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string ApproveExpenses = Default + ".ApproveExpenses";
             public const string ManageBudgets = Default + ".ManageBudgets";
             public const string ManageGoals = Default + ".ManageGoals";
+            public const string LinkBankAccounts = Default + ".LinkBankAccounts";
+            public const string ViewReports = Default + ".ViewReports";
         }
     }
 }

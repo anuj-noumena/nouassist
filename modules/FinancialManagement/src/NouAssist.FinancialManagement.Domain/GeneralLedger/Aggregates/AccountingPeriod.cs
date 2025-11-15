@@ -18,7 +18,7 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public DateTime? ClosedDate { get; private set; }
         public Guid? ClosedBy { get; private set; }
 
-        protected AccountingPeriod() { } // For ORM
+        protected AccountingPeriod() { }
 
         public AccountingPeriod(
             Guid id,
@@ -26,15 +26,15 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             int fiscalYear,
             int periodNumber,
             DateTime startDate,
-            DateTime endDate)
-            : base(id)
+            DateTime endDate) : base(id)
         {
             if (periodNumber < 1 || periodNumber > 12)
-                throw new ArgumentException("Period number must be between 1 and 12", 
-                    nameof(periodNumber));
+                throw new BusinessException("GL:InvalidPeriodNumber", 
+                    "Period number must be between 1 and 12");
 
             if (endDate <= startDate)
-                throw new ArgumentException("End date must be after start date");
+                throw new BusinessException("GL:InvalidPeriodDates", 
+                    "End date must be after start date");
 
             TenantId = tenantId;
             FiscalYear = fiscalYear;
@@ -47,39 +47,53 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void Close(Guid closedBy)
         {
             if (Status != PeriodStatus.Open)
-                throw new BusinessException("GeneralLedger:PeriodAlreadyClosed",
-                    "Period is already closed");
+                throw new BusinessException("GL:PeriodNotOpen", 
+                    "Only open periods can be closed");
 
             Status = PeriodStatus.Closed;
-            ClosedDate = DateTime.UtcNow;
+            ClosedDate = Clock.Now;
             ClosedBy = closedBy;
 
             AddDistributedEvent(new AccountingPeriodClosedEto
             {
                 IdempotencyKey = Guid.NewGuid().ToString(),
                 PeriodId = Id,
+                TenantId = TenantId,
                 FiscalYear = FiscalYear,
                 PeriodNumber = PeriodNumber,
                 ClosedDate = ClosedDate.Value,
                 ClosingEntries = new System.Collections.Generic.List<Guid>(),
-                ClosedBy = closedBy,
-                TenantId = TenantId
+                ClosedBy = closedBy
             });
         }
 
-        public void Reopen(string reason)
+        public void Reopen(string reopenReason)
         {
-            if (Status == PeriodStatus.PermanentlyClosed)
-                throw new BusinessException("GeneralLedger:PeriodPermanentlyClosed",
-                    "Cannot reopen permanently closed period");
-
             if (Status != PeriodStatus.Closed)
-                throw new BusinessException("GeneralLedger:PeriodNotClosed",
-                    "Period is not closed");
+                throw new BusinessException("GL:PeriodNotClosed", 
+                    "Only closed periods can be reopened");
+
+            if (Status == PeriodStatus.PermanentlyClosed)
+                throw new BusinessException("GL:PeriodPermanentlyClosed", 
+                    "Permanently closed periods cannot be reopened");
 
             Status = PeriodStatus.Open;
             ClosedDate = null;
             ClosedBy = null;
+        }
+
+        public void PermanentlyClose()
+        {
+            if (Status != PeriodStatus.Closed)
+                throw new BusinessException("GL:MustBeClosedFirst", 
+                    "Period must be closed before permanent closure");
+
+            Status = PeriodStatus.PermanentlyClosed;
+        }
+
+        public bool IsDateInPeriod(DateTime date)
+        {
+            return date.Date >= StartDate.Date && date.Date <= EndDate.Date;
         }
     }
 }

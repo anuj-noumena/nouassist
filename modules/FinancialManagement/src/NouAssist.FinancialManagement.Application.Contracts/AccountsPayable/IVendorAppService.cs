@@ -1,15 +1,15 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.FinancialManagement.AccountsPayable.Dtos;
+using NouAssist.FinancialManagement.Application.Contracts.AccountsPayable.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.FinancialManagement.AccountsPayable
+namespace NouAssist.FinancialManagement.Application.Contracts.AccountsPayable
 {
     public interface IVendorAppService : IApplicationService
     {
         Task<VendorDto> GetAsync(Guid id);
-        Task<PagedResultDto<VendorDto>> GetListAsync(PagedAndSortedResultRequestDto input);
+        Task<PagedResultDto<VendorDto>> GetListAsync(GetVendorListDto input);
         Task<VendorDto> CreateAsync(CreateVendorDto input);
         Task<VendorDto> UpdateAsync(Guid id, UpdateVendorDto input);
         Task DeleteAsync(Guid id);

@@ -34,8 +34,7 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             DateTime startDate,
             DateTime endDate,
             MonetaryValue openingBalance,
-            MonetaryValue closingBalance)
-            : base(id)
+            MonetaryValue closingBalance) : base(id)
         {
             TenantId = tenantId;
             BankAccountId = bankAccountId;
@@ -47,24 +46,46 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             Status = ReconciliationStatus.Unreconciled;
         }
 
-        public void ImportLine(BankStatementLine line)
+        public void AddLine(BankStatementLine line)
         {
+            Check.NotNull(line, nameof(line));
             _lines.Add(line);
         }
 
-        public void MatchLine(Guid lineId, Guid batchId)
+        public void MatchLine(Guid lineId, Guid journalBatchId, Guid matchedBy)
         {
             var line = _lines.FirstOrDefault(l => l.Id == lineId);
             if (line == null)
-                throw new BusinessException("GeneralLedger:LineNotFound", "Statement line not found");
+                throw new BusinessException("GL:LineNotFound", 
+                    "Statement line not found");
 
-            line.Match(batchId);
+            line.Match(journalBatchId, matchedBy);
             UpdateReconciliationStatus();
+        }
+
+        public void UnmatchLine(Guid lineId)
+        {
+            var line = _lines.FirstOrDefault(l => l.Id == lineId);
+            if (line == null)
+                throw new BusinessException("GL:LineNotFound", 
+                    "Statement line not found");
+
+            line.Unmatch();
+            UpdateReconciliationStatus();
+        }
+
+        public MonetaryValue GetUnreconciledAmount()
+        {
+            var unreconciledLines = _lines.Where(l => !l.IsMatched);
+            var total = unreconciledLines
+                .Aggregate(0m, (sum, line) => sum + line.Amount.Amount);
+            
+            return new MonetaryValue(total, ClosingBalance.Currency);
         }
 
         private void UpdateReconciliationStatus()
         {
-            var matchedCount = _lines.Count(l => l.MatchStatus == MatchStatus.Matched);
+            var matchedCount = _lines.Count(l => l.IsMatched);
             var totalCount = _lines.Count;
 
             if (matchedCount == 0)

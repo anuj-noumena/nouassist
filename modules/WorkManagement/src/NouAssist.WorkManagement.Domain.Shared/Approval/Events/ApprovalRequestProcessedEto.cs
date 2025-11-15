@@ -5,7 +5,7 @@ using Volo.Abp.MultiTenancy;
 
 namespace NouAssist.WorkManagement.Approval.Events
 {
-    [EventName("NouAssist.Approval.RequestProcessed")]
+    [EventName("WorkManagement.Approval.RequestProcessed")]
     public class ApprovalRequestProcessedEto : IMultiTenant
     {
         public Guid RequestId { get; set; }

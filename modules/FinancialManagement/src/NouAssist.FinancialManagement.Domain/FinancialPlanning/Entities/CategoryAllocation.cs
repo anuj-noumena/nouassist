@@ -1,5 +1,6 @@
 using System;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.FinancialManagement.FinancialPlanning.Entities
@@ -10,47 +11,35 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Entities
         public Guid CategoryId { get; private set; }
         public MonetaryValue BudgetedAmount { get; private set; }
         public MonetaryValue ActualAmount { get; private set; }
-        public MonetaryValue Variance => CalculateVariance();
-        public decimal PercentageOfTotal { get; private set; }
+        public MonetaryValue Variance => BudgetedAmount.Subtract(ActualAmount);
+        public decimal PercentageUsed => 
+            BudgetedAmount.Amount > 0 
+                ? (ActualAmount.Amount / BudgetedAmount.Amount) * 100 
+                : 0;
 
         protected CategoryAllocation() { }
 
         public CategoryAllocation(
-            Guid budgetId,
             Guid categoryId,
             MonetaryValue budgetedAmount)
         {
-            BudgetId = budgetId;
             CategoryId = categoryId;
-            BudgetedAmount = budgetedAmount;
-            ActualAmount = new MonetaryValue(0, budgetedAmount.Currency);
+            BudgetedAmount = Check.NotNull(budgetedAmount, nameof(budgetedAmount));
+            ActualAmount = MonetaryValue.Zero(budgetedAmount.Currency);
         }
 
-        public void UpdateBudgetedAmount(MonetaryValue newAmount)
+        public void AddActual(MonetaryValue amount)
         {
-            BudgetedAmount = newAmount;
-        }
-
-        public void AddActualAmount(MonetaryValue amount)
-        {
+            Check.NotNull(amount, nameof(amount));
+            
+            if (amount.Currency != ActualAmount.Currency)
+                throw new BusinessException("FPA:CurrencyMismatch", 
+                    "Amount currency must match allocation currency");
+            
             ActualAmount = ActualAmount.Add(amount);
         }
 
-        public void UpdatePercentageOfTotal(decimal percentage)
-        {
-            PercentageOfTotal = percentage;
-        }
-
-        public decimal CalculateVariancePercentage()
-        {
-            if (BudgetedAmount.IsZero) return 0;
-            return (ActualAmount.Amount / BudgetedAmount.Amount) * 100;
-        }
-
-        private MonetaryValue CalculateVariance()
-        {
-            return BudgetedAmount.Subtract(ActualAmount);
-        }
+        public bool IsOverBudget() => ActualAmount.Amount > BudgetedAmount.Amount;
 
         public override object[] GetKeys()
         {

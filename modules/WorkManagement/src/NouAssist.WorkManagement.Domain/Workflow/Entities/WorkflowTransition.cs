@@ -57,6 +57,27 @@ namespace NouAssist.WorkManagement.Workflow.Entities
             Purpose = purpose;
             Description = description;
         }
+        
+        public void UpdateBasicInfo(string name, string description)
+        {
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
+            Description = description;
+        }
+
+        public void UpdateButtonSettings(string buttonLabel, string buttonColor)
+        {
+            ButtonLabel = buttonLabel;
+            ButtonColor = buttonColor;
+        }
+
+        public void RemoveAction(Guid actionId)
+        {
+            var action = _actions.FirstOrDefault(a => a.Id == actionId);
+            if (action != null)
+            {
+                _actions.Remove(action);
+            }
+        }
 
         public void AddAction(WorkflowAction action)
         {

@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
-using NouAssist.FinancialManagement.GeneralLedger.Enums;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.FinancialManagement.GeneralLedger.Entities
@@ -13,10 +12,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Entities
         public string Description { get; private set; }
         public MonetaryValue Amount { get; private set; }
         public string ReferenceNumber { get; private set; }
-        public MatchStatus MatchStatus { get; private set; }
-
-        private readonly List<Guid> _matchedBatches = new();
-        public IReadOnlyCollection<Guid> MatchedBatches => _matchedBatches.AsReadOnly();
+        public bool IsMatched { get; private set; }
+        public Guid? MatchedJournalBatchId { get; private set; }
+        public Guid? MatchedBy { get; private set; }
+        public DateTime? MatchedDate { get; private set; }
 
         protected BankStatementLine() { }
 
@@ -26,27 +25,38 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Entities
             DateTime transactionDate,
             string description,
             MonetaryValue amount,
-            string referenceNumber)
-            : base(id)
+            string referenceNumber) : base(id)
         {
             StatementId = statementId;
             TransactionDate = transactionDate;
-            Description = description;
-            Amount = amount;
+            Description = Check.NotNullOrWhiteSpace(description, nameof(description));
+            Amount = Check.NotNull(amount, nameof(amount));
             ReferenceNumber = referenceNumber;
-            MatchStatus = MatchStatus.Unmatched;
+            IsMatched = false;
         }
 
-        public void Match(Guid batchId)
+        public void Match(Guid journalBatchId, Guid matchedBy)
         {
-            _matchedBatches.Add(batchId);
-            MatchStatus = MatchStatus.Matched;
+            if (IsMatched)
+                throw new BusinessException("GL:AlreadyMatched", 
+                    "Statement line is already matched");
+
+            IsMatched = true;
+            MatchedJournalBatchId = journalBatchId;
+            MatchedBy = matchedBy;
+            MatchedDate = Clock.Now;
         }
 
         public void Unmatch()
         {
-            _matchedBatches.Clear();
-            MatchStatus = MatchStatus.Unmatched;
+            if (!IsMatched)
+                throw new BusinessException("GL:NotMatched", 
+                    "Statement line is not matched");
+
+            IsMatched = false;
+            MatchedJournalBatchId = null;
+            MatchedBy = null;
+            MatchedDate = null;
         }
     }
 }

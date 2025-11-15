@@ -2,7 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using NouAssist.FinancialManagement.GeneralLedger.Entities;
-using NouAssist.FinancialManagement.GeneralLedger.Enums;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.GeneralLedger
@@ -11,72 +12,64 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
     {
         public void Configure(EntityTypeBuilder<JournalEntryBatch> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "JournalEntryBatches",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.BatchNumber)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            builder.Property(x => x.PostingDate)
-                .IsRequired();
+            // PostingDate value object
+            builder.OwnsOne(x => x.PostingDate, pd =>
+            {
+                pd.Property(d => d.Date)
+                    .HasColumnName("PostingDate")
+                    .IsRequired();
+            });
 
             builder.Property(x => x.Description)
                 .IsRequired()
-                .HasMaxLength(500);
-
-            builder.Property(x => x.Reference)
-                .HasMaxLength(100);
+                .HasMaxLength(FinancialConsts.MaxDescriptionLength);
 
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            builder.Property(x => x.SourceEntityId);
-            builder.Property(x => x.SourceEntityType)
-                .HasMaxLength(100);
+            builder.Property(x => x.Reference)
+                .HasMaxLength(FinancialConsts.MaxReferenceLength);
 
-            // Relationship: JournalEntryBatch -> JournalEntryLines (One-to-Many)
-            builder.HasMany<JournalEntryLine>()
+            builder.Property(x => x.SourceEntityId);
+            
+            builder.Property(x => x.SourceEntityType)
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
+            // Navigation to lines (owned collection)
+            builder.HasMany(x => x.Lines)
                 .WithOne()
                 .HasForeignKey(l => l.BatchId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes
-            builder.HasIndex(x => x.BatchNumber)
+            builder.HasIndex(x => x.BatchNumber);
+            builder.HasIndex(x => x.Status);
+            builder.HasIndex(x => new { x.TenantId, x.PostingDate });
+            builder.HasIndex(x => new { x.Status, x.PostingDate })
+                .HasDatabaseName("IX_JournalBatches_Status_PostingDate");
+
+            // Unique constraint on batch number within tenant
+            builder.HasIndex(x => new { x.TenantId, x.BatchNumber })
                 .IsUnique()
-                .HasDatabaseName("IX_JournalEntryBatches_BatchNumber");
+                .HasDatabaseName("IX_JournalBatches_TenantId_BatchNumber");
 
-            builder.HasIndex(x => x.PostingDate)
-                .HasDatabaseName("IX_JournalEntryBatches_PostingDate");
-
-            builder.HasIndex(x => x.Status)
-                .HasDatabaseName("IX_JournalEntryBatches_Status");
-
-            builder.HasIndex(x => new { x.PostingDate, x.Status })
-                .HasDatabaseName("IX_JournalEntryBatches_PostingDate_Status");
-
-            builder.HasIndex(x => x.SourceEntityId)
-                .HasDatabaseName("IX_JournalEntryBatches_SourceEntityId");
-
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_JournalEntryBatches_TenantId");
-
-            // Extra Properties
-            builder.Property(x => x.ExtraProperties)
-                .HasColumnName(nameof(JournalEntryBatch.ExtraProperties));
-
-            // Concurrency Stamp
-            builder.Property(x => x.ConcurrencyStamp)
-                .IsConcurrencyToken();
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

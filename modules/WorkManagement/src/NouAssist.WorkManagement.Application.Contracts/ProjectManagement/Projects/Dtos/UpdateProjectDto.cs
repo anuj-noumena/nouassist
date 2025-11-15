@@ -13,8 +13,11 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects.Dtos
         [StringLength(ProjectDomainConstants.MaxDescriptionLength)]
         public string Description { get; set; }
 
-        [StringLength(ProjectDomainConstants.MaxSummaryLength)]
-        public string Summary { get; set; }
+        [StringLength(ProjectDomainConstants.MaxDescriptionLength)]
+        public string Vision { get; set; }
+
+        [StringLength(ProjectDomainConstants.MaxDescriptionLength)]
+        public string Purpose { get; set; }
 
         [StringLength(ProjectDomainConstants.MaxDescriptionLength)]
         public string ExpectedOutcome { get; set; }
@@ -32,7 +35,6 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects.Dtos
         public double Progress { get; set; }
 
         public Guid? WorkflowSchemeId { get; set; }
-        public Guid? ContextId { get; set; }
         public Guid? AreaId { get; set; }
         public Guid? PrimaryTeamId { get; set; }
     }

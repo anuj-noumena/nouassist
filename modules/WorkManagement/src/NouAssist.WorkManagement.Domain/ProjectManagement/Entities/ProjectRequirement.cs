@@ -36,6 +36,12 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
             Status = ProjectRequirementStatus.Proposed;
             Priority = PriorityLevel.Medium;
         }
+        
+        public void Update(string title, string description)
+        {
+            Title = Check.NotNullOrWhiteSpace(title, nameof(title));
+            Description = description;
+        }
 
         public void Approve()
         {

@@ -29,7 +29,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Reposit
 
             return await query
                 .Where(s => s.ProjectId == projectId)
-                .OrderByDescending(s => s.StartDate)
+                .OrderByDescending(s => s.Timeline.StartDate)
                 .ToListAsync(cancellationToken);
         }
 
@@ -42,9 +42,9 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Reposit
 
             return await query
                 .Where(s => s.ProjectId == projectId &&
-                           s.Status == SprintStatus.InProgress &&
-                           s.StartDate <= now &&
-                           s.EndDate >= now)
+                            s.Status == SprintStatus.InProgress &&
+                            s.Timeline.StartDate <= now &&
+                            s.Timeline.EndDate >= now)
                 .FirstOrDefaultAsync(cancellationToken);
         }
     }

@@ -16,11 +16,16 @@ namespace NouAssist.WorkManagement.Approval.Workflows.Dtos
         public bool AllowDelegate { get; set; }
         public int? TimeoutDays { get; set; }
         public string TimeoutAction { get; set; }
+        public Dictionary<string, object> CustomFields { get; set; }
+        public Dictionary<string, object> Metadata { get; set; }
+        public int TotalSteps { get; set; }
+        public bool CanBeActivated { get; set; }
         public List<ApprovalStepDto> Steps { get; set; }
     }
 
-    public class ApprovalStepDto : EntityDto<Guid>
+    public class ApprovalStepDto : FullAuditedEntityDto<Guid>
     {
+        public Guid WorkflowId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int OrderIndex { get; set; }
@@ -28,9 +33,13 @@ namespace NouAssist.WorkManagement.Approval.Workflows.Dtos
         public int? RequiredApprovals { get; set; }
         public bool AllowSelfApproval { get; set; }
         public int? TimeoutHours { get; set; }
+        public string TimeoutAction { get; set; }
         public List<Guid> ApproverUserIds { get; set; }
         public List<Guid> ApproverRoleIds { get; set; }
         public List<Guid> ApproverTeamIds { get; set; }
+        public Dictionary<string, object> Conditions { get; set; }
+        public Dictionary<string, object> CustomFields { get; set; }
+        public Dictionary<string, object> Metadata { get; set; }
     }
 
     public class CreateApprovalWorkflowDto
@@ -39,6 +48,7 @@ namespace NouAssist.WorkManagement.Approval.Workflows.Dtos
         public string Description { get; set; }
         public ApprovalWorkflowType WorkflowType { get; set; }
         public ApprovalStrategy Strategy { get; set; }
+        public Dictionary<string, object> CustomFields { get; set; }
     }
 
     public class UpdateApprovalWorkflowDto
@@ -60,9 +70,22 @@ namespace NouAssist.WorkManagement.Approval.Workflows.Dtos
         public int? RequiredApprovals { get; set; }
         public bool AllowSelfApproval { get; set; }
         public int? TimeoutHours { get; set; }
+        public string TimeoutAction { get; set; }
         public List<Guid> ApproverUserIds { get; set; }
         public List<Guid> ApproverRoleIds { get; set; }
         public List<Guid> ApproverTeamIds { get; set; }
+        public Dictionary<string, object> Conditions { get; set; }
+        public Dictionary<string, object> CustomFields { get; set; }
+    }
+
+    public class UpdateApprovalStepDto
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int? RequiredApprovals { get; set; }
+        public bool AllowSelfApproval { get; set; }
+        public int? TimeoutHours { get; set; }
+        public string TimeoutAction { get; set; }
     }
 
     public class GetApprovalWorkflowListDto : PagedAndSortedResultRequestDto

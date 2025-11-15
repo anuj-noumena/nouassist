@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.SharedKernel.Specifications;
@@ -10,6 +11,7 @@ using NouAssist.WorkManagement.Approval.Requests.Dtos;
 using NouAssist.WorkManagement.Approval.Services;
 using NouAssist.WorkManagement.Approval.Specifications;
 using NouAssist.WorkManagement.Permissions;
+using NouAssist.WorkManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -66,7 +68,8 @@ namespace NouAssist.WorkManagement.Approval.Requests
             GetApprovalRequestListDto input)
         {
             var spec = CreateListSpecification(input)
-                .And(new UserPendingApprovalsSpecification(CurrentUser.Id.Value));
+                .And(new BaseSpecification<ApprovalRequest>(
+                    r => r.RequestedBy == CurrentUser.Id.Value));
 
             var requests = await _requestRepository.GetListAsync(spec);
             var totalCount = await _requestRepository.CountAsync(spec.ToExpression());
@@ -83,8 +86,6 @@ namespace NouAssist.WorkManagement.Approval.Requests
         public async Task<PagedResultDto<ApprovalRequestDto>> GetPendingApprovalsAsync(
             GetApprovalRequestListDto input)
         {
-            // This would require loading user roles/teams and checking permissions
-            // Simplified version:
             var spec = new PendingApprovalRequestsSpecification();
 
             var requests = await _requestRepository.GetListAsync(spec);
@@ -99,10 +100,55 @@ namespace NouAssist.WorkManagement.Approval.Requests
             return new PagedResultDto<ApprovalRequestDto>(totalCount, dtos);
         }
 
+        public async Task<PagedResultDto<ApprovalRequestDto>> GetOverdueRequestsAsync(
+            GetApprovalRequestListDto input)
+        {
+            var requests = await _requestRepository.GetOverdueRequestsAsync();
+            
+            // Apply additional filters if needed
+            if (input.WorkflowId.HasValue)
+            {
+                requests = requests.Where(r => r.WorkflowId == input.WorkflowId.Value).ToList();
+            }
+
+            var dtos = new List<ApprovalRequestDto>();
+            foreach (var request in requests)
+            {
+                dtos.Add(await MapToDto(request));
+            }
+
+            return new PagedResultDto<ApprovalRequestDto>(requests.Count, dtos);
+        }
+
+        public async Task<PagedResultDto<ApprovalRequestDto>> GetSlaBreachedRequestsAsync(
+            GetApprovalRequestListDto input)
+        {
+            var requests = await _requestRepository.GetSlaBreachedRequestsAsync();
+            
+            // Apply additional filters if needed
+            if (input.WorkflowId.HasValue)
+            {
+                requests = requests.Where(r => r.WorkflowId == input.WorkflowId.Value).ToList();
+            }
+
+            var dtos = new List<ApprovalRequestDto>();
+            foreach (var request in requests)
+            {
+                dtos.Add(await MapToDto(request));
+            }
+
+            return new PagedResultDto<ApprovalRequestDto>(requests.Count, dtos);
+        }
+
         [Authorize(WorkManagementPermissions.Approval.Requests.Create)]
         public async Task<ApprovalRequestDto> CreateAsync(CreateApprovalRequestDto input)
         {
             var workflow = await _workflowRepository.GetWithStepsAsync(input.WorkflowId);
+
+            // Convert Dictionary to CustomFieldValues
+            var customFields = input.CustomFields != null 
+                ? CustomFieldValues.Create(input.CustomFields)
+                : CustomFieldValues.Create();
 
             var request = _workflowEngine.InitiateApprovalRequest(
                 workflow,
@@ -110,12 +156,42 @@ namespace NouAssist.WorkManagement.Approval.Requests
                 input.EntityId,
                 CurrentUser.Id.Value,
                 CurrentTenant.Id,
-                input.CustomFieldValues
+                customFields
             );
 
-            if (!string.IsNullOrEmpty(input.Title))
+            if (input.Priority > 0)
             {
-                // Would need to add SetTitle method to domain
+                request.SetPriority(input.Priority);
+            }
+
+            if (input.DueDate.HasValue)
+            {
+                request.SetDueDate(input.DueDate.Value);
+            }
+
+            if (input.SlaDeadline.HasValue)
+            {
+                request.SetSlaDeadline(input.SlaDeadline.Value);
+            }
+
+            if (input.Metadata != null)
+            {
+                request.Metadata = Metadata.Create(input.Metadata);
+            }
+
+            await _requestRepository.InsertAsync(request);
+
+            return await MapToDto(request);
+        }
+
+        [Authorize(WorkManagementPermissions.Approval.Requests.Update)]
+        public async Task<ApprovalRequestDto> UpdateAsync(Guid id, UpdateApprovalRequestDto input)
+        {
+            var request = await _requestRepository.GetAsync(id);
+
+            if (request.IsComplete)
+            {
+                throw new UserFriendlyException("Cannot update completed request");
             }
 
             if (input.Priority > 0)
@@ -128,7 +204,12 @@ namespace NouAssist.WorkManagement.Approval.Requests
                 request.SetDueDate(input.DueDate.Value);
             }
 
-            await _requestRepository.InsertAsync(request);
+            if (input.SlaDeadline.HasValue)
+            {
+                request.SetSlaDeadline(input.SlaDeadline.Value);
+            }
+
+            await _requestRepository.UpdateAsync(request);
 
             return await MapToDto(request);
         }
@@ -141,7 +222,6 @@ namespace NouAssist.WorkManagement.Approval.Requests
             var request = await _requestRepository.GetWithDecisionsAsync(id);
             var workflow = await _workflowRepository.GetWithStepsAsync(request.WorkflowId);
 
-            // Validate user can approve
             if (!request.CurrentStepId.HasValue)
             {
                 throw new UserFriendlyException("No current step to approve");
@@ -149,7 +229,7 @@ namespace NouAssist.WorkManagement.Approval.Requests
 
             var currentStep = workflow.GetStep(request.CurrentStepId.Value);
 
-            // Simplified permission check - in real scenario, load user roles/teams
+            // Simplified permission check
             var userRoles = new List<Guid>();
             var userTeams = new List<Guid>();
 
@@ -210,6 +290,23 @@ namespace NouAssist.WorkManagement.Approval.Requests
             return await MapToDto(request);
         }
 
+        [Authorize(WorkManagementPermissions.Approval.Requests.Update)]
+        public async Task<ApprovalRequestDto> SetCustomFieldAsync(Guid id, SetCustomFieldDto input)
+        {
+            var request = await _requestRepository.GetAsync(id);
+
+            if (request.IsComplete)
+            {
+                throw new UserFriendlyException("Cannot modify completed request");
+            }
+
+            request.SetCustomFieldValue(input.Key, input.Value);
+
+            await _requestRepository.UpdateAsync(request);
+
+            return await MapToDto(request);
+        }
+
         private ISpecification<ApprovalRequest> CreateListSpecification(
             GetApprovalRequestListDto input)
         {
@@ -243,6 +340,13 @@ namespace NouAssist.WorkManagement.Approval.Requests
             if (input.IsOverdue.HasValue && input.IsOverdue.Value)
             {
                 spec = spec.And(new OverdueApprovalRequestsSpecification());
+            }
+
+            if (input.IsSlaBreached.HasValue && input.IsSlaBreached.Value)
+            {
+                var now = DateTime.UtcNow;
+                spec = spec.And(new BaseSpecification<ApprovalRequest>(
+                    r => r.SlaDeadline.HasValue && r.SlaDeadline.Value < now && !r.IsComplete));
             }
 
             return spec;

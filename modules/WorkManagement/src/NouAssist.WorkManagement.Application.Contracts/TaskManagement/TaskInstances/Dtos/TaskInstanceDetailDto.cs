@@ -5,17 +5,19 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
     public class TaskInstanceDetailDto : TaskInstanceDto
     {
-        public List<TaskActionStepCompletionDto> StepCompletions { get; set; }
+        // Updated from StepCompletions to ChecklistItemCompletions
+        public List<ChecklistItemCompletionDto> ChecklistItemCompletions { get; set; }
         public List<AcceptanceCriterionCompletionDto> CriterionCompletions { get; set; }
         public List<TaskDependencyDto> Dependencies { get; set; }
     }
 
-    public class TaskActionStepCompletionDto
+    // Renamed from TaskActionStepCompletionDto
+    public class ChecklistItemCompletionDto
     {
-        public Guid TaskActionStepId { get; set; }
-        public bool IsDone { get; set; }
-        public DateTime? CompletedAt { get; set; }
-        public Guid? CompletedBy { get; set; }
+        public Guid ChecklistItemId { get; set; }
+        public bool IsChecked { get; set; }
+        public DateTime? CheckedAt { get; set; }
+        public Guid? CheckedBy { get; set; }
     }
 
     public class AcceptanceCriterionCompletionDto

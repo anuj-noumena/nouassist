@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
-using NouAssist.FinancialManagement.GeneralLedger.Enums;
+using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.FinancialManagement.GeneralLedger.Data
@@ -11,19 +10,12 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Data
     public interface ILedgerAccountRepository : IRepository<LedgerAccount, Guid>
     {
         Task<LedgerAccount> GetByAccountNumberAsync(
-            string accountNumber, 
+            AccountNumber accountNumber,
             CancellationToken cancellationToken = default);
 
-        Task<List<LedgerAccount>> GetByTypeAsync(
-            AccountType type, 
-            bool activeOnly = true,
-            CancellationToken cancellationToken = default);
-
-        Task<List<LedgerAccount>> GetAllActiveAccountsAsync(
-            CancellationToken cancellationToken = default);
-
-        Task<bool> AccountNumberExistsAsync(
-            string accountNumber,
+        Task<bool> IsAccountNumberUniqueAsync(
+            AccountNumber accountNumber,
+            Guid? excludeId = null,
             CancellationToken cancellationToken = default);
     }
 }

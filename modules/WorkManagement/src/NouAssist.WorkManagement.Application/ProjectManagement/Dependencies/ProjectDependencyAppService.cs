@@ -69,6 +69,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
                 CurrentTenant.Id,
                 input.LagDays,
                 input.IsBlocking,
+                input.Strength,  // Added
                 input.Description);
 
             if (input.ExpectedResolutionDate.HasValue)
@@ -79,6 +80,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
             await _dependencyRepository.InsertAsync(dependency);
 
             return ObjectMapper.Map<ProjectDependency, ProjectDependencyDto>(dependency);
+
         }
 
         [Authorize(WorkManagementPermissions.ProjectManagement.Dependencies.Update)]
@@ -97,14 +99,15 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies
             return ObjectMapper.Map<ProjectDependency, ProjectDependencyDto>(dependency);
         }
 
+
         [Authorize(WorkManagementPermissions.ProjectManagement.Dependencies.Resolve)]
         public async Task<ProjectDependencyDto> ResolveAsync(Guid id)
         {
             var dependency = await _dependencyRepository.GetAsync(id);
-            
-            var resolvedBy = CurrentUser.UserName ?? CurrentUser.Id?.ToString() ?? "System";
+    
+            var resolvedBy = CurrentUser.Id ?? Guid.Empty;  // Changed from string to Guid
             dependency.Resolve(resolvedBy);
-            
+    
             await _dependencyRepository.UpdateAsync(dependency);
 
             return ObjectMapper.Map<ProjectDependency, ProjectDependencyDto>(dependency);

@@ -11,12 +11,13 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         public string Title { get; set; }
 
         public Guid? ProjectId { get; set; }
+        
+        // GTD Organization
+        public Guid? AreaId { get; set; }
+        public Guid? ContextId { get; set; }
 
         [StringLength(4000)]
         public string Description { get; set; }
-
-        [StringLength(4000)]
-        public string Notes { get; set; }
 
         [StringLength(2000)]
         public string ExpectedResult { get; set; }
@@ -27,31 +28,35 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         [Range(0.0, 1.0)]
         public double DefaultUrgency { get; set; } = 0.5;
 
+        // Default values for instances
         public Guid? DefaultContextId { get; set; }
         public Guid? DefaultAreaId { get; set; }
-        public Guid? DefaultSprintId { get; set; }
         public Guid? TaskTypeId { get; set; }
 
-        public int? EstimateMinutes { get; set; }
+        public int? DefaultEstimateMinutes { get; set; }
         public DateTime? DefaultDueDate { get; set; }
+        public Guid? DefaultWorkflowId { get; set; }
+        public Guid? DefaultAssigneeId { get; set; }
 
         public RecurrenceRuleDto RecurrenceRule { get; set; }
 
-        public List<CreateTaskActionStepDto> ActionSteps { get; set; }
+        // Updated from ActionSteps to ChecklistItems
+        public List<CreateChecklistItemDto> ChecklistItems { get; set; }
         public List<CreateAcceptanceCriterionDto> AcceptanceCriteria { get; set; }
     }
 
-    public class CreateTaskActionStepDto
+    // Renamed from CreateTaskActionStepDto
+    public class CreateChecklistItemDto
     {
         [Required]
         [StringLength(500)]
         public string Title { get; set; }
 
         [StringLength(2000)]
-        public string Notes { get; set; }
+        public string Description { get; set; }
 
         public bool IsRequired { get; set; }
-        public int Sequence { get; set; }
+        public int OrderIndex { get; set; }
     }
 
     public class CreateAcceptanceCriterionDto

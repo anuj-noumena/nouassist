@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
 using NouAssist.FinancialManagement.AccountsReceivable.Entities;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.AccountsReceivable
@@ -10,70 +12,26 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Accou
     {
         public void Configure(EntityTypeBuilder<Invoice> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "Invoices",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.InvoiceNumber)
                 .IsRequired()
-                .HasMaxLength(50);
+                .HasMaxLength(InvoiceConsts.MaxInvoiceNumberLength);
 
             builder.Property(x => x.CustomerId).IsRequired();
+            
+            builder.Property(x => x.CustomerName)
+                .IsRequired()
+                .HasMaxLength(FinancialConsts.MaxNameLength);
+
             builder.Property(x => x.IssueDate).IsRequired();
             builder.Property(x => x.DueDate).IsRequired();
-
-            // MonetaryValue - TotalAmount
-            builder.OwnsOne(x => x.TotalAmount, total =>
-            {
-                total.Property(t => t.Amount)
-                    .HasColumnName("TotalAmount")
-                    .HasPrecision(18, 4)
-                    .IsRequired();
-
-                total.Property(t => t.Currency)
-                    .HasColumnName("Currency")
-                    .HasMaxLength(3)
-                    .IsRequired();
-
-                total.Ignore(t => t.DecimalPlaces);
-            });
-
-            // MonetaryValue - PaidAmount
-            builder.OwnsOne(x => x.PaidAmount, paid =>
-            {
-                paid.Property(p => p.Amount)
-                    .HasColumnName("PaidAmount")
-                    .HasPrecision(18, 4)
-                    .IsRequired();
-
-                paid.Property(p => p.Currency)
-                    .HasColumnName("PaidCurrency")
-                    .HasMaxLength(3)
-                    .IsRequired();
-
-                paid.Ignore(p => p.DecimalPlaces);
-            });
-
-            // MonetaryValue - Balance
-            builder.OwnsOne(x => x.Balance, balance =>
-            {
-                balance.Property(b => b.Amount)
-                    .HasColumnName("Balance")
-                    .HasPrecision(18, 4)
-                    .IsRequired();
-
-                balance.Property(b => b.Currency)
-                    .HasColumnName("BalanceCurrency")
-                    .HasMaxLength(3)
-                    .IsRequired();
-
-                balance.Ignore(b => b.DecimalPlaces);
-            });
 
             builder.Property(x => x.Status)
                 .IsRequired()
@@ -81,47 +39,72 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Accou
                 .HasMaxLength(50);
 
             builder.Property(x => x.ProjectId);
-            builder.Property(x => x.Notes).HasMaxLength(1000);
 
-            // Relationships
-            builder.HasMany<InvoiceLineItem>()
-                .WithOne()
-                .HasForeignKey(l => l.InvoiceId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            // TotalAmount value object
+            builder.OwnsOne(x => x.TotalAmount, ta =>
+            {
+                ta.Property(m => m.Amount)
+                    .HasColumnName("TotalAmount")
+                    .HasPrecision(18, 4)
+                    .IsRequired();
+                
+                ta.Property(m => m.Currency)
+                    .HasColumnName("Currency")
+                    .HasMaxLength(3)
+                    .IsRequired();
+            });
 
-            builder.HasMany<InvoicePaymentApplication>()
+            // PaidAmount value object
+            builder.OwnsOne(x => x.PaidAmount, pa =>
+            {
+                pa.Property(m => m.Amount)
+                    .HasColumnName("PaidAmount")
+                    .HasPrecision(18, 4)
+                    .IsRequired();
+                
+                pa.Property(m => m.Currency)
+                    .HasColumnName("PaidAmountCurrency")
+                    .HasMaxLength(3)
+                    .IsRequired();
+            });
+
+            // TaxAmount value object
+            builder.OwnsOne(x => x.TaxAmount, ta =>
+            {
+                ta.Property(m => m.Amount)
+                    .HasColumnName("TaxAmount")
+                    .HasPrecision(18, 4)
+                    .IsRequired();
+                
+                ta.Property(m => m.Currency)
+                    .HasColumnName("TaxAmountCurrency")
+                    .HasMaxLength(3)
+                    .IsRequired();
+            });
+
+            // Navigation to line items
+            builder.HasMany(x => x.LineItems)
                 .WithOne()
-                .HasForeignKey(a => a.InvoiceId)
-                .IsRequired()
+                .HasForeignKey(li => li.InvoiceId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes
-            builder.HasIndex(x => x.InvoiceNumber)
+            builder.HasIndex(x => x.CustomerId);
+            builder.HasIndex(x => x.Status);
+            builder.HasIndex(x => x.DueDate);
+            builder.HasIndex(x => new { x.CustomerId, x.Status, x.DueDate })
+                .HasDatabaseName("IX_Invoices_Customer_Status_DueDate");
+            
+            builder.HasIndex(x => new { x.TenantId, x.InvoiceNumber })
                 .IsUnique()
-                .HasDatabaseName("IX_Invoices_InvoiceNumber");
+                .HasDatabaseName("IX_Invoices_Tenant_Number");
 
-            builder.HasIndex(x => x.CustomerId)
-                .HasDatabaseName("IX_Invoices_CustomerId");
-
-            builder.HasIndex(x => x.Status)
-                .HasDatabaseName("IX_Invoices_Status");
-
-            builder.HasIndex(x => x.DueDate)
-                .HasDatabaseName("IX_Invoices_DueDate");
-
-            builder.HasIndex(x => new { x.CustomerId, x.Status })
-                .HasDatabaseName("IX_Invoices_CustomerId_Status");
-
+            // Covering index for AR aging
             builder.HasIndex(x => new { x.Status, x.DueDate })
-                .HasDatabaseName("IX_Invoices_Status_DueDate")
+                .HasDatabaseName("IX_Invoices_Aging")
                 .HasFilter("[Status] IN ('Sent', 'PartiallyPaid', 'Overdue')");
 
-            builder.HasIndex(x => x.ProjectId)
-                .HasDatabaseName("IX_Invoices_ProjectId");
-
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_Invoices_TenantId");
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

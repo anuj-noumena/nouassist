@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using NouAssist.FinancialManagement.GeneralLedger.Entities;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.GeneralLedger
@@ -10,50 +12,45 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
     {
         public void Configure(EntityTypeBuilder<BankStatement> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "BankStatements",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.BankAccountId).IsRequired();
             builder.Property(x => x.StatementDate).IsRequired();
             builder.Property(x => x.StartDate).IsRequired();
             builder.Property(x => x.EndDate).IsRequired();
 
-            // MonetaryValue - OpeningBalance
-            builder.OwnsOne(x => x.OpeningBalance, opening =>
+            // OpeningBalance value object
+            builder.OwnsOne(x => x.OpeningBalance, ob =>
             {
-                opening.Property(o => o.Amount)
-                    .HasColumnName("OpeningBalance_Amount")
+                ob.Property(b => b.Amount)
+                    .HasColumnName("OpeningBalance")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                opening.Property(o => o.Currency)
-                    .HasColumnName("OpeningBalance_Currency")
+                
+                ob.Property(b => b.Currency)
+                    .HasColumnName("OpeningBalanceCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                opening.Ignore(o => o.DecimalPlaces);
             });
 
-            // MonetaryValue - ClosingBalance
-            builder.OwnsOne(x => x.ClosingBalance, closing =>
+            // ClosingBalance value object
+            builder.OwnsOne(x => x.ClosingBalance, cb =>
             {
-                closing.Property(c => c.Amount)
-                    .HasColumnName("ClosingBalance_Amount")
+                cb.Property(b => b.Amount)
+                    .HasColumnName("ClosingBalance")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                closing.Property(c => c.Currency)
-                    .HasColumnName("ClosingBalance_Currency")
+                
+                cb.Property(b => b.Currency)
+                    .HasColumnName("ClosingBalanceCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                closing.Ignore(c => c.DecimalPlaces);
             });
 
             builder.Property(x => x.Status)
@@ -61,22 +58,20 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            // Relationship: BankStatement -> BankStatementLines
-            builder.HasMany<BankStatementLine>()
+            // Navigation to lines
+            builder.HasMany(x => x.Lines)
                 .WithOne()
                 .HasForeignKey(l => l.StatementId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Indexes
-            builder.HasIndex(x => x.BankAccountId)
-                .HasDatabaseName("IX_BankStatements_BankAccountId");
+            builder.HasIndex(x => x.BankAccountId);
+            builder.HasIndex(x => x.StatementDate);
+            builder.HasIndex(x => new { x.BankAccountId, x.StatementDate })
+                .HasDatabaseName("IX_BankStatements_Account_Date");
 
-            builder.HasIndex(x => x.StatementDate)
-                .HasDatabaseName("IX_BankStatements_StatementDate");
-
-            builder.HasIndex(x => x.Status)
-                .HasDatabaseName("IX_BankStatements_Status");
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

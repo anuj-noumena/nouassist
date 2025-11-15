@@ -1,0 +1,24 @@
+{
+  "culture": "en",
+  "texts": {
+    "Learning:TopicNotFound": "The learning topic was not found.",
+    "Learning:InvalidTopicTitle": "Topic title cannot be empty or whitespace.",
+    "Learning:InvalidEstimatedHours": "Estimated hours must be greater than zero.",
+    "Learning:InvalidProgress": "Progress must be between 0 and 100.",
+    "Learning:CannotAddChildToNonFolder": "Cannot add child topics to a non-folder topic.",
+    "Learning:CircularReferenceDetected": "Circular reference detected in topic hierarchy.",
+    "Learning:SessionNotFound": "The learning session was not found.",
+    "Learning:SessionAlreadyCompleted": "This learning session is already completed.",
+    "Learning:SessionPaused": "Cannot advance a paused learning session.",
+    "Learning:PhaseNotCompleted": "Phase {0} must be completed before advancing.",
+    "Learning:InvalidPhase": "Invalid learning phase: {0}.",
+    "Learning:CannotPauseCompletedSession": "Cannot pause a completed learning session.",
+    "Learning:SessionNotPaused": "The session is not currently paused.",
+    "Learning:NoteNotFound": "The learning note was not found.",
+    "Learning:InvalidNoteContent": "Note content cannot be empty.",
+    "Learning:MindmapNotFound": "The mindmap was not found.",
+    "Learning:InvalidMindmapData": "Mindmap data is invalid or empty.",
+    "Learning:InvalidCycleNumber": "Cycle number must be between 1 and 4.",
+    "Learning:CycleAlreadyCompleted": "Cycle {0} is already completed."
+  }
+}

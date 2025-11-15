@@ -13,10 +13,13 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement
         DbSet<Project> Projects { get; }
         DbSet<ProjectSprint> Sprints { get; }
         
-        // Entities
+        // Entities (if not configured as owned entities)
         DbSet<ProjectDependency> ProjectDependencies { get; }
-        DbSet<ProjectSuccessCriterion> ProjectSuccessCriteria { get; }
         DbSet<ProjectEvent> ProjectEvents { get; }
         DbSet<ProjectRequirement> ProjectRequirements { get; }
+        
+        // Note: ProjectSuccessCriterion can be accessed through Project.SuccessCriteria
+        // If you need direct access, uncomment:
+        // DbSet<ProjectSuccessCriterion> ProjectSuccessCriteria { get; }
     }
 }

@@ -1,11 +1,11 @@
 using System;
+using Volo.Abp.Domain.Entities.Events.Distributed;
 using Volo.Abp.EventBus;
-using Volo.Abp.MultiTenancy;
 
 namespace NouAssist.WorkManagement.Approval.Events
 {
-    [EventName("NouAssist.Approval.RequestCreated")]
-    public class ApprovalRequestCreatedEto : IMultiTenant
+    [EventName("WorkManagement.Approval.RequestCreated")]
+    public class ApprovalRequestCreatedEto : EtoBase
     {
         public Guid RequestId { get; set; }
         public Guid WorkflowId { get; set; }

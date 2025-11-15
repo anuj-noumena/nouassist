@@ -13,90 +13,74 @@ namespace NouAssist.FinancialManagement.Permissions
                 L("Permission:FinancialManagement"));
 
             // General Ledger Permissions
-            var generalLedger = financialManagementGroup.AddPermission(
+            var glPermission = financialManagementGroup.AddPermission(
                 FinancialManagementPermissions.GeneralLedger.Default,
                 L("Permission:GeneralLedger"));
 
-            generalLedger.AddChild(
+            glPermission.AddChild(
                 FinancialManagementPermissions.GeneralLedger.ViewAccounts,
                 L("Permission:ViewAccounts"));
-
-            generalLedger.AddChild(
+            glPermission.AddChild(
                 FinancialManagementPermissions.GeneralLedger.ManageAccounts,
                 L("Permission:ManageAccounts"));
-
-            generalLedger.AddChild(
+            glPermission.AddChild(
+                FinancialManagementPermissions.GeneralLedger.CreateJournalEntries,
+                L("Permission:CreateJournalEntries"));
+            glPermission.AddChild(
                 FinancialManagementPermissions.GeneralLedger.PostJournalEntries,
                 L("Permission:PostJournalEntries"));
-
-            generalLedger.AddChild(
+            glPermission.AddChild(
                 FinancialManagementPermissions.GeneralLedger.ReverseJournalEntries,
                 L("Permission:ReverseJournalEntries"));
-
-            generalLedger.AddChild(
+            glPermission.AddChild(
                 FinancialManagementPermissions.GeneralLedger.ClosePeriods,
                 L("Permission:ClosePeriods"));
 
             // Accounts Payable Permissions
-            var accountsPayable = financialManagementGroup.AddPermission(
+            var apPermission = financialManagementGroup.AddPermission(
                 FinancialManagementPermissions.AccountsPayable.Default,
                 L("Permission:AccountsPayable"));
 
-            accountsPayable.AddChild(
+            apPermission.AddChild(
                 FinancialManagementPermissions.AccountsPayable.ViewBills,
                 L("Permission:ViewBills"));
-
-            accountsPayable.AddChild(
+            apPermission.AddChild(
                 FinancialManagementPermissions.AccountsPayable.CreateBills,
                 L("Permission:CreateBills"));
-
-            accountsPayable.AddChild(
+            apPermission.AddChild(
                 FinancialManagementPermissions.AccountsPayable.ApproveBills,
                 L("Permission:ApproveBills"));
-
-            accountsPayable.AddChild(
-                FinancialManagementPermissions.AccountsPayable.ProcessPayments,
-                L("Permission:ProcessPayments"));
+            apPermission.AddChild(
+                FinancialManagementPermissions.AccountsPayable.PayBills,
+                L("Permission:PayBills"));
 
             // Accounts Receivable Permissions
-            var accountsReceivable = financialManagementGroup.AddPermission(
+            var arPermission = financialManagementGroup.AddPermission(
                 FinancialManagementPermissions.AccountsReceivable.Default,
                 L("Permission:AccountsReceivable"));
 
-            accountsReceivable.AddChild(
+            arPermission.AddChild(
                 FinancialManagementPermissions.AccountsReceivable.ViewInvoices,
                 L("Permission:ViewInvoices"));
-
-            accountsReceivable.AddChild(
+            arPermission.AddChild(
                 FinancialManagementPermissions.AccountsReceivable.CreateInvoices,
                 L("Permission:CreateInvoices"));
-
-            accountsReceivable.AddChild(
-                FinancialManagementPermissions.AccountsReceivable.SendInvoices,
-                L("Permission:SendInvoices"));
-
-            accountsReceivable.AddChild(
-                FinancialManagementPermissions.AccountsReceivable.ProcessPayments,
-                L("Permission:ProcessPayments"));
+            arPermission.AddChild(
+                FinancialManagementPermissions.AccountsReceivable.RecordPayments,
+                L("Permission:RecordPayments"));
 
             // Financial Planning Permissions
-            var financialPlanning = financialManagementGroup.AddPermission(
+            var fpPermission = financialManagementGroup.AddPermission(
                 FinancialManagementPermissions.FinancialPlanning.Default,
                 L("Permission:FinancialPlanning"));
 
-            financialPlanning.AddChild(
-                FinancialManagementPermissions.FinancialPlanning.ViewExpenses,
-                L("Permission:ViewExpenses"));
-
-            financialPlanning.AddChild(
+            fpPermission.AddChild(
                 FinancialManagementPermissions.FinancialPlanning.CreateExpenses,
                 L("Permission:CreateExpenses"));
-
-            financialPlanning.AddChild(
+            fpPermission.AddChild(
                 FinancialManagementPermissions.FinancialPlanning.ApproveExpenses,
                 L("Permission:ApproveExpenses"));
-
-            financialPlanning.AddChild(
+            fpPermission.AddChild(
                 FinancialManagementPermissions.FinancialPlanning.ManageBudgets,
                 L("Permission:ManageBudgets"));
         }

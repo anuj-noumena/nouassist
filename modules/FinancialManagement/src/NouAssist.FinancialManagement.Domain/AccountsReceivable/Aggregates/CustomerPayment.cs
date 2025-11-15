@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using NouAssist.FinancialManagement.AccountsReceivable.Enums;
-using NouAssist.FinancialManagement.AccountsReceivable.Events;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -14,14 +11,12 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public Guid? TenantId { get; private set; }
         public Guid CustomerId { get; private set; }
         public MonetaryValue Amount { get; private set; }
-        public MonetaryValue UnappliedAmount { get; private set; }
         public DateTime PaymentDate { get; private set; }
         public string PaymentMethod { get; private set; }
         public string Reference { get; private set; }
-        public PaymentSource Source { get; private set; }
-        public bool IsFullyApplied { get; private set; }
+        public PaymentSource PaymentSource { get; private set; }
 
-        protected CustomerPayment() { } // For ORM
+        protected CustomerPayment() { }
 
         public CustomerPayment(
             Guid id,
@@ -31,52 +26,23 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
             DateTime paymentDate,
             string paymentMethod,
             string reference,
-            PaymentSource source)
-            : base(id)
+            PaymentSource source) : base(id)
         {
-            if (amount.IsNegative || amount.IsZero)
-                throw new BusinessException("AccountsReceivable:InvalidPaymentAmount",
-                    "Payment amount must be positive");
-
             TenantId = tenantId;
             CustomerId = customerId;
-            Amount = amount;
-            UnappliedAmount = amount;
+            Amount = Check.NotNull(amount, nameof(amount));
             PaymentDate = paymentDate;
-            PaymentMethod = Check.NotNullOrWhiteSpace(paymentMethod, nameof(paymentMethod), 50);
-            Reference = Check.NotNullOrWhiteSpace(reference, nameof(reference), 100);
-            Source = source;
-            IsFullyApplied = false;
-
-            AddDistributedEvent(new PaymentReceivedEto
-            {
-                IdempotencyKey = Guid.NewGuid().ToString(),
-                PaymentId = Id,
-                CustomerId = CustomerId,
-                Amount = Amount,
-                PaymentDate = PaymentDate,
-                PaymentMethod = PaymentMethod,
-                PaymentSource = Source.ToString(),
-                Reference = Reference,
-                RecordedBy = CreatorId.Value,
-                TenantId = TenantId
-            });
+            PaymentMethod = Check.NotNullOrWhiteSpace(paymentMethod, nameof(paymentMethod));
+            Reference = Check.NotNullOrWhiteSpace(reference, nameof(reference));
+            PaymentSource = source;
         }
+    }
 
-        public void ApplyToInvoice(MonetaryValue appliedAmount)
-        {
-            if (appliedAmount.Amount > UnappliedAmount.Amount)
-                throw new BusinessException("AccountsReceivable:InsufficientUnappliedAmount",
-                    "Applied amount exceeds unapplied payment amount");
-
-            UnappliedAmount = UnappliedAmount.Subtract(appliedAmount);
-            IsFullyApplied = UnappliedAmount.IsZero;
-        }
-
-        public void UnapplyFromInvoice(MonetaryValue unappliedAmount)
-        {
-            UnappliedAmount = UnappliedAmount.Add(unappliedAmount);
-            IsFullyApplied = false;
-        }
+    public enum PaymentSource : byte
+    {
+        Manual = 1,
+        OnlinePortal = 2,
+        PaymentGateway = 3,
+        BankTransfer = 4
     }
 }

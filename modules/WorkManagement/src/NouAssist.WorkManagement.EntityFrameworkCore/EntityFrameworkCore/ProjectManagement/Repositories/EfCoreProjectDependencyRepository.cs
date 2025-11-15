@@ -43,8 +43,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Reposit
             return await query
                 .Where(d => d.ProjectId == projectId &&
                            d.IsBlocking &&
-                           d.Status == ProjectDependencyStatus.Active &&
-                           !d.IsResolved)
+                           d.Status == ProjectDependencyStatus.Active)
                 .OrderBy(d => d.ExpectedResolutionDate)
                 .ToListAsync(cancellationToken);
         }

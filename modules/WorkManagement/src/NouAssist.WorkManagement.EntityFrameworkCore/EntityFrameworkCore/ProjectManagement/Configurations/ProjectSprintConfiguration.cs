@@ -15,14 +15,14 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
 
             builder.HasKey(x => x.Id);
 
-            // Relationships
+            // === RELATIONSHIPS ===
             builder.Property(x => x.ProjectId)
                 .IsRequired();
 
             builder.Property(x => x.TenantId)
                 .IsRequired(false);
 
-            // Basic Info
+            // === BASIC INFO ===
             builder.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(200);
@@ -31,46 +31,60 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
                 .IsRequired()
                 .HasMaxLength(1000);
 
-            builder.Property(x => x.ReleaseTheme)
-                .HasMaxLength(500);
+            // === TIMELINE (Value Object - Owned Entity) ===
+            builder.OwnsOne(x => x.Timeline, timeline =>
+            {
+                timeline.Property(t => t.StartDate)
+                    .HasColumnName("StartDate")
+                    .IsRequired();
 
-            // Dates
-            builder.Property(x => x.StartDate)
-                .IsRequired();
+                timeline.Property(t => t.EndDate)
+                    .HasColumnName("EndDate")
+                    .IsRequired();
 
-            builder.Property(x => x.EndDate)
-                .IsRequired();
+                timeline.Property(t => t.ActualStartDate)
+                    .HasColumnName("ActualStartDate")
+                    .IsRequired(false);
 
-            // Metrics
-            builder.Property(x => x.PlannedStoryPoints)
-                .IsRequired()
-                .HasDefaultValue(0);
+                timeline.Property(t => t.ActualEndDate)
+                    .HasColumnName("ActualEndDate")
+                    .IsRequired(false);
+            });
 
-            builder.Property(x => x.CompletedStoryPoints)
-                .IsRequired()
-                .HasDefaultValue(0);
+            // === METRICS (Value Object - Owned Entity) ===
+            builder.OwnsOne(x => x.Metrics, metrics =>
+            {
+                metrics.Property(m => m.PlannedStoryPoints)
+                    .HasColumnName("PlannedStoryPoints")
+                    .IsRequired()
+                    .HasDefaultValue(0);
 
-            builder.Property(x => x.VelocityEstimate)
-                .IsRequired()
-                .HasDefaultValue(0);
+                metrics.Property(m => m.CompletedStoryPoints)
+                    .HasColumnName("CompletedStoryPoints")
+                    .IsRequired()
+                    .HasDefaultValue(0);
 
-            builder.Property(x => x.ActualVelocity)
-                .IsRequired()
-                .HasDefaultValue(0);
+                metrics.Property(m => m.VelocityEstimate)
+                    .HasColumnName("VelocityEstimate")
+                    .IsRequired()
+                    .HasDefaultValue(0);
 
-            // Status
+                metrics.Property(m => m.ActualVelocity)
+                    .HasColumnName("ActualVelocity")
+                    .IsRequired()
+                    .HasDefaultValue(0);
+            });
+
+            // === STATUS ===
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            builder.Property(x => x.CompletedAt)
-                .IsRequired(false);
-
-            builder.Property(x => x.CompletedBy)
-                .HasMaxLength(256);
-
             builder.Property(x => x.RetrospectiveNotes)
+                .HasMaxLength(5000);
+
+            builder.Property(x => x.ReviewNotes)
                 .HasMaxLength(5000);
 
             // Extra Properties
@@ -82,11 +96,11 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
                 .IsConcurrencyToken()
                 .HasMaxLength(40);
 
-            // Indexes
+            // === INDEXES ===
             builder.HasIndex(x => x.ProjectId);
             builder.HasIndex(x => x.Status);
-            builder.HasIndex(x => new { x.StartDate, x.EndDate });
             builder.HasIndex(x => x.TenantId);
+            builder.HasIndex(x => new { x.ProjectId, x.Status });
         }
     }
 }

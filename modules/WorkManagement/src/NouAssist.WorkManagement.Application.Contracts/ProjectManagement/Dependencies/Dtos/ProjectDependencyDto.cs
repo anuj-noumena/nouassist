@@ -13,19 +13,20 @@ namespace NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos
 
         public int LagDays { get; set; }
         public bool IsBlocking { get; set; }
+        public DependencyStrength Strength { get; set; }
         public ProjectDependencyStatus Status { get; set; }
 
         public string Description { get; set; }
         public string Notes { get; set; }
 
         public DateTime? ExpectedResolutionDate { get; set; }
-        public DateTime? ActualResolutionDate { get; set; }
-        public string ResolvedBy { get; set; }
-
-        public Guid? ApprovalRequestId { get; set; }
+        public DateTime? ResolvedAt { get; set; }
+        public Guid? ResolvedBy { get; set; }
+        public string ResolutionNote { get; set; }
 
         // Computed
         public bool IsOverdue { get; set; }
-        public string DependencyTypeDescription { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsResolved { get; set; }
     }
 }

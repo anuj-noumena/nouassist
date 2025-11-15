@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
-using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore
 {
@@ -12,11 +11,14 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore
         {
             Check.NotNull(builder, nameof(builder));
 
-            // Apply all IEntityTypeConfiguration classes from this assembly
+            // Apply all entity type configurations from this assembly
             builder.ApplyConfigurationsFromAssembly(typeof(FinancialManagementDbContext).Assembly);
 
-            // Configure schema for all tables
-            builder.HasDefaultSchema(FinancialManagementDbProperties.DbSchema);
+            // Configure schema
+            builder.HasDefaultSchema(Shared.FinancialManagementDbProperties.DbSchema);
+
+            // Additional global configurations can go here
+            // e.g., custom value converters, query filters, etc.
         }
     }
 }

@@ -1,0 +1,31 @@
+{
+  "culture": "en",
+  "texts": {
+    "DocumentManagement:InvalidFileSize": "File size must be between 1 byte and 50 MB.",
+    "DocumentManagement:UnsupportedFileType": "File type '{0}' is not supported.",
+    "DocumentManagement:DocumentNotFound": "Document with ID '{0}' was not found.",
+    "DocumentManagement:CannotDeleteReferenced": "Cannot delete document that is referenced by other entities.",
+    "DocumentManagement:AccessDenied": "You do not have permission to access this document.",
+    "DocumentManagement:DocumentAlreadyProcessed": "Document has already been processed."
+  }
+}
+{
+  "culture": "en",
+  "texts": {
+    "Permission:DocumentManagement": "Document Management",
+    "Permission:Documents": "Documents",
+    "Permission:Documents.View": "View Documents",
+    "Permission:Documents.Upload": "Upload Documents",
+    "Permission:Documents.Download": "Download Documents",
+    "Permission:Documents.Update": "Update Documents",
+    "Permission:Documents.Delete": "Delete Documents",
+    "Permission:Documents.Archive": "Archive Documents",
+    "Permission:Documents.ProcessOCR": "Process OCR",
+    "Permission:Folders": "Folders",
+    "Permission:Folders.View": "View Folders",
+    "Permission:Folders.Create": "Create Folder",
+    "Permission:Folders.Update": "Update Folder",
+    "Permission:Folders.Delete": "Delete Folder",
+    "Permission:Folders.Manage": "Manage Folder Documents"
+  }
+}

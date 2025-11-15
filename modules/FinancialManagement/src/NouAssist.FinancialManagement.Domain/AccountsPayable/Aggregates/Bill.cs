@@ -16,15 +16,15 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public Guid? TenantId { get; private set; }
         public string BillNumber { get; private set; }
         public Guid VendorId { get; private set; }
+        public string VendorName { get; private set; }
         public MonetaryValue Amount { get; private set; }
         public DateTime IssueDate { get; private set; }
         public DateTime DueDate { get; private set; }
         public BillStatus Status { get; private set; }
         public Guid CategoryId { get; private set; }
         public Guid? ProjectId { get; private set; }
-        public Guid? AttachedDocumentId { get; private set; }
+        public Guid? DocumentId { get; private set; }
         public bool RequiresApproval { get; private set; }
-        public string Notes { get; private set; }
 
         private readonly List<BillApproval> _approvals = new();
         public IReadOnlyCollection<BillApproval> Approvals => _approvals.AsReadOnly();
@@ -32,108 +32,90 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         private readonly List<BillLineItem> _lineItems = new();
         public IReadOnlyCollection<BillLineItem> LineItems => _lineItems.AsReadOnly();
 
-        protected Bill() { } // For ORM
+        protected Bill() { }
 
         public Bill(
             Guid id,
             Guid? tenantId,
             string billNumber,
             Guid vendorId,
+            string vendorName,
             MonetaryValue amount,
             DateTime issueDate,
             DateTime dueDate,
             Guid categoryId,
             Guid? projectId = null,
-            Guid? attachedDocumentId = null,
-            string notes = null)
-            : base(id)
+            Guid? documentId = null,
+            bool requiresApproval = true) : base(id)
         {
-            if (dueDate < issueDate)
-                throw new BusinessException("AccountsPayable:InvalidDueDate",
-                    "Due date cannot be before issue date");
-
             TenantId = tenantId;
-            BillNumber = Check.NotNullOrWhiteSpace(billNumber, nameof(billNumber), 50);
+            BillNumber = Check.NotNullOrWhiteSpace(billNumber, nameof(billNumber));
             VendorId = vendorId;
+            VendorName = Check.NotNullOrWhiteSpace(vendorName, nameof(vendorName));
             Amount = Check.NotNull(amount, nameof(amount));
+            
+            if (dueDate < issueDate)
+                throw new BusinessException("AP:InvalidDueDate", 
+                    "Due date cannot be before issue date");
+            
             IssueDate = issueDate;
             DueDate = dueDate;
-            Status = BillStatus.Draft;
             CategoryId = categoryId;
             ProjectId = projectId;
-            AttachedDocumentId = attachedDocumentId;
-            Notes = notes;
-            RequiresApproval = DetermineIfApprovalRequired(amount);
-        }
-
-        public void AddLineItem(BillLineItem lineItem)
-        {
-            if (Status != BillStatus.Draft)
-                throw new BusinessException("AccountsPayable:CannotModifyApprovedBill",
-                    "Cannot add line items to non-draft bills");
-
-            _lineItems.Add(lineItem);
-            RecalculateAmount();
-        }
-
-        public void Submit()
-        {
-            if (Status != BillStatus.Draft)
-                throw new BusinessException("AccountsPayable:BillAlreadySubmitted",
-                    "Bill has already been submitted");
-
-            Status = RequiresApproval ? BillStatus.PendingApproval : BillStatus.Approved;
+            DocumentId = documentId;
+            Status = BillStatus.Draft;
+            RequiresApproval = requiresApproval;
 
             AddDistributedEvent(new BillCreatedEto
             {
                 IdempotencyKey = Guid.NewGuid().ToString(),
                 BillId = Id,
+                TenantId = TenantId,
                 BillNumber = BillNumber,
                 VendorId = VendorId,
-                VendorName = "Vendor", // Should be loaded from Vendor aggregate
+                VendorName = VendorName,
                 Amount = Amount,
                 DueDate = DueDate,
                 CategoryId = CategoryId,
                 ProjectId = ProjectId,
                 RequiresApproval = RequiresApproval,
-                CreatedBy = CreatorId.Value,
-                TenantId = TenantId
+                CreatedBy = CreatorId.GetValueOrDefault()
             });
         }
 
-        public void Approve(Guid approvedBy, ApprovalLevel level, string comments = null)
+        public void AddLineItem(BillLineItem lineItem)
         {
-            if (Status != BillStatus.PendingApproval)
-                throw new BusinessException("AccountsPayable:BillNotPendingApproval",
-                    "Bill is not pending approval");
+            if (Status != BillStatus.Draft)
+                throw new BusinessException("AP:CannotModifyBill", 
+                    "Cannot add line items to non-draft bills");
 
-            var approval = new BillApproval(Id, approvedBy, level, true, comments);
+            _lineItems.Add(lineItem);
+        }
+
+        public void Approve(Guid approverId, ApprovalLevel level, string comments = null)
+        {
+            if (Status != BillStatus.PendingApproval && Status != BillStatus.Draft)
+                throw new BusinessException("AP:InvalidStatus", 
+                    "Bill cannot be approved in current status");
+
+            var approval = new BillApproval(Id, approverId, level, comments);
             _approvals.Add(approval);
 
-            // Check if all required approvals are obtained
             if (HasAllRequiredApprovals())
             {
                 Status = BillStatus.Approved;
             }
-        }
-
-        public void Reject(Guid rejectedBy, ApprovalLevel level, string reason)
-        {
-            if (Status != BillStatus.PendingApproval)
-                throw new BusinessException("AccountsPayable:BillNotPendingApproval",
-                    "Bill is not pending approval");
-
-            var approval = new BillApproval(Id, rejectedBy, level, false, reason);
-            _approvals.Add(approval);
-
-            Status = BillStatus.Cancelled;
+            else
+            {
+                Status = BillStatus.PendingApproval;
+            }
         }
 
         public void MarkAsPaid(Guid paymentId, DateTime paymentDate, string confirmationNumber)
         {
-            if (Status != BillStatus.Approved)
-                throw new BusinessException("AccountsPayable:BillNotApproved",
-                    "Only approved bills can be marked as paid");
+            if (Status != BillStatus.Approved && Status != BillStatus.Scheduled)
+                throw new BusinessException("AP:CannotPay", 
+                    "Only approved or scheduled bills can be paid");
 
             Status = BillStatus.Paid;
 
@@ -141,38 +123,37 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
             {
                 IdempotencyKey = Guid.NewGuid().ToString(),
                 BillId = Id,
+                TenantId = TenantId,
                 PaymentId = paymentId,
                 VendorId = VendorId,
+                VendorName = VendorName,
                 Amount = Amount,
                 PaymentDate = paymentDate,
-                PaymentMethod = "ACH", // Should come from payment details
+                PaymentMethod = "ACH", // Simplified
                 ConfirmationNumber = confirmationNumber,
                 CategoryId = CategoryId,
-                ProjectId = ProjectId,
-                TenantId = TenantId
+                ProjectId = ProjectId
             });
         }
 
-        private void RecalculateAmount()
+        public void Cancel(string reason)
         {
-            if (_lineItems.Any())
-            {
-                var total = _lineItems.Sum(li => li.Total.Amount);
-                var currency = _lineItems.First().Total.Currency;
-                Amount = new MonetaryValue(total, currency);
-            }
-        }
+            if (Status == BillStatus.Paid)
+                throw new BusinessException("AP:CannotCancelPaid", 
+                    "Cannot cancel paid bills");
 
-        private bool DetermineIfApprovalRequired(MonetaryValue amount)
-        {
-            // Simple threshold-based approval requirement
-            return amount.Amount > 1000m;
+            Status = BillStatus.Cancelled;
         }
 
         private bool HasAllRequiredApprovals()
         {
-            // Simplified - should check against approval policy
-            return _approvals.Any(a => a.IsApproved);
+            // Simplified - in production, check against policy
+            return _approvals.Count >= 1;
+        }
+
+        public bool IsOverdue()
+        {
+            return DateTime.UtcNow.Date > DueDate.Date && Status != BillStatus.Paid;
         }
     }
 }

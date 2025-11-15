@@ -14,14 +14,23 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
         Task<TaskDto> UpdateAsync(Guid id, UpdateTaskDto input);
         Task DeleteAsync(Guid id);
         
-        Task<TaskDto> AddActionStepAsync(Guid id, CreateTaskActionStepDto input);
-        Task<TaskDto> UpdateActionStepAsync(Guid id, Guid stepId, CreateTaskActionStepDto input);
-        Task<TaskDto> RemoveActionStepAsync(Guid id, Guid stepId);
-        Task<TaskDto> ReorderActionStepsAsync(Guid id, Guid[] orderedStepIds);
+        // Updated from ActionStep to ChecklistItem
+        Task<TaskDto> AddChecklistItemAsync(Guid id, CreateChecklistItemDto input);
+        Task<TaskDto> UpdateChecklistItemAsync(Guid id, Guid itemId, CreateChecklistItemDto input);
+        Task<TaskDto> RemoveChecklistItemAsync(Guid id, Guid itemId);
+        Task<TaskDto> ReorderChecklistItemsAsync(Guid id, Guid[] orderedItemIds);
         
         Task<TaskDto> AddAcceptanceCriterionAsync(Guid id, CreateAcceptanceCriterionDto input);
         Task<TaskDto> UpdateAcceptanceCriterionAsync(Guid id, Guid criterionId, CreateAcceptanceCriterionDto input);
         Task<TaskDto> RemoveAcceptanceCriterionAsync(Guid id, Guid criterionId);
+        
+        // GTD Organization
+        Task<TaskDto> AssignToAreaAsync(Guid id, Guid areaId);
+        Task<TaskDto> RemoveFromAreaAsync(Guid id);
+        Task<TaskDto> AssignToContextAsync(Guid id, Guid contextId);
+        Task<TaskDto> RemoveFromContextAsync(Guid id);
+        Task<TaskDto> MoveToProjectAsync(Guid id, Guid projectId);
+        Task<TaskDto> MoveToAreaAsync(Guid id, Guid areaId);
         
         Task<TaskDto> ActivateAsync(Guid id);
         Task<TaskDto> DeactivateAsync(Guid id);

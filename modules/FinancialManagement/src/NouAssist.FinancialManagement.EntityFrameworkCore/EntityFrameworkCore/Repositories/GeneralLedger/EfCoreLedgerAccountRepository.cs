@@ -1,19 +1,18 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using NouAssist.FinancialManagement.GeneralLedger.Data;
-using NouAssist.FinancialManagement.GeneralLedger.Enums;
+using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.GeneralLedger
 {
     public class EfCoreLedgerAccountRepository 
-        : EfCoreRepository<IFinancialManagementDbContext, LedgerAccount, Guid>,
+        : EfCoreRepository<IFinancialManagementDbContext, LedgerAccount, Guid>, 
           ILedgerAccountRepository
     {
         public EfCoreLedgerAccountRepository(
@@ -23,53 +22,37 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.General
         }
 
         public async Task<LedgerAccount> GetByAccountNumberAsync(
-            string accountNumber,
+            AccountNumber accountNumber,
             CancellationToken cancellationToken = default)
         {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
+            var dbContext = await GetDbContextAsync();
+            return await dbContext.LedgerAccounts
                 .FirstOrDefaultAsync(
-                    a => a.AccountNumber == accountNumber,
+                    a => a.AccountNumber.Number == accountNumber.Number,
                     GetCancellationToken(cancellationToken));
         }
 
-        public async Task<List<LedgerAccount>> GetByTypeAsync(
-            AccountType type,
-            bool activeOnly = true,
+        public async Task<bool> IsAccountNumberUniqueAsync(
+            AccountNumber accountNumber,
+            Guid? excludeId = null,
             CancellationToken cancellationToken = default)
         {
-            var dbSet = await GetDbSetAsync();
-            var query = dbSet.Where(a => a.Type == type);
+            var dbContext = await GetDbContextAsync();
+            var query = dbContext.LedgerAccounts
+                .Where(a => a.AccountNumber.Number == accountNumber.Number);
 
-            if (activeOnly)
+            if (excludeId.HasValue)
             {
-                query = query.Where(a => a.IsActive);
+                query = query.Where(a => a.Id != excludeId.Value);
             }
 
-            return await query
-                .OrderBy(a => a.AccountNumber)
-                .ToListAsync(GetCancellationToken(cancellationToken));
+            return !await query.AnyAsync(GetCancellationToken(cancellationToken));
         }
 
-        public async Task<List<LedgerAccount>> GetAllActiveAccountsAsync(
-            CancellationToken cancellationToken = default)
+        public override async Task<IQueryable<LedgerAccount>> WithDetailsAsync()
         {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
-                .Where(a => a.IsActive)
-                .OrderBy(a => a.AccountNumber)
-                .ToListAsync(GetCancellationToken(cancellationToken));
-        }
-
-        public async Task<bool> AccountNumberExistsAsync(
-            string accountNumber,
-            CancellationToken cancellationToken = default)
-        {
-            var dbSet = await GetDbSetAsync();
-            return await dbSet
-                .AnyAsync(
-                    a => a.AccountNumber == accountNumber,
-                    GetCancellationToken(cancellationToken));
+            return (await GetQueryableAsync())
+                .Include(a => a.AccountNumber);
         }
     }
 }

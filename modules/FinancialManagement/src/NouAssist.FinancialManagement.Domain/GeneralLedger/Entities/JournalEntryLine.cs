@@ -9,14 +9,15 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Entities
     {
         public Guid BatchId { get; private set; }
         public Guid AccountId { get; private set; }
+        public AccountNumber AccountNumber { get; private set; }
         public MonetaryValue DebitAmount { get; private set; }
         public MonetaryValue CreditAmount { get; private set; }
         public string Memo { get; private set; }
         public string Reference { get; private set; }
         public Guid? SourceEntityId { get; private set; }
-        public string SourceEntityType { get; private set; }
+        public EntityType? SourceEntityType { get; private set; }
 
-        protected JournalEntryLine() { } // For ORM
+        protected JournalEntryLine() { }
 
         public JournalEntryLine(
             Guid batchId,
@@ -26,29 +27,29 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Entities
             string memo,
             string reference = null,
             Guid? sourceEntityId = null,
-            string sourceEntityType = null)
+            EntityType? sourceEntityType = null)
         {
             BatchId = batchId;
             AccountId = accountId;
-
-            if (debitAmount != null && creditAmount != null)
-                throw new BusinessException("GeneralLedger:BothDebitAndCredit",
-                    "A journal line cannot have both debit and credit amounts");
-
-            if (debitAmount == null && creditAmount == null)
-                throw new BusinessException("GeneralLedger:NoDebitOrCredit",
-                    "A journal line must have either a debit or credit amount");
-
-            if (debitAmount?.IsNegative == true || creditAmount?.IsNegative == true)
-                throw new BusinessException("GeneralLedger:NegativeAmount",
-                    "Journal line amounts must be positive");
-
             DebitAmount = debitAmount;
             CreditAmount = creditAmount;
-            Memo = Check.NotNullOrWhiteSpace(memo, nameof(memo), 500);
+            Memo = Check.NotNullOrWhiteSpace(memo, nameof(memo));
             Reference = reference;
             SourceEntityId = sourceEntityId;
             SourceEntityType = sourceEntityType;
+
+            ValidateAmounts();
+        }
+
+        private void ValidateAmounts()
+        {
+            if (DebitAmount == null && CreditAmount == null)
+                throw new BusinessException("GL:NoAmount", 
+                    "Line must have either debit or credit amount");
+
+            if (DebitAmount != null && CreditAmount != null)
+                throw new BusinessException("GL:BothAmounts", 
+                    "Line cannot have both debit and credit amounts");
         }
 
         public override object[] GetKeys()

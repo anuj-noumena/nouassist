@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.TimeManagement.Calendar.Aggregates;
 using NouAssist.TimeManagement.Calendar.CalendarEvents.Dtos;
 using NouAssist.TimeManagement.Calendar.Data;
@@ -196,11 +197,11 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
 
         private ISpecification<CalendarEvent> CreateListSpecification(GetCalendarEventListDto input)
         {
-            var spec = new Specification<CalendarEvent>(e => true);
+            ISpecification<CalendarEvent> spec = new BaseSpecification<CalendarEvent>(e => true);
 
             if (input.CalendarId.HasValue)
             {
-                spec = spec.And(new Specification<CalendarEvent>(e => e.CalendarId == input.CalendarId.Value));
+                spec = spec.And(new BaseSpecification<CalendarEvent>(e => e.CalendarId == input.CalendarId.Value));
             }
 
             if (input.StartDate.HasValue && input.EndDate.HasValue)
@@ -210,12 +211,12 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
 
             if (input.IsRecurring.HasValue)
             {
-                spec = spec.And(new Specification<CalendarEvent>(e => e.IsRecurring == input.IsRecurring.Value));
+                spec = spec.And(new BaseSpecification<CalendarEvent>(e => e.IsRecurring == input.IsRecurring.Value));
             }
 
             if (!input.IncludeCancelled)
             {
-                spec = spec.And(new Specification<CalendarEvent>(e => !e.IsCancelled));
+                spec = spec.And(new BaseSpecification<CalendarEvent>(e => !e.IsCancelled));
             }
 
             return spec;

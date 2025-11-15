@@ -1,5 +1,7 @@
 using System;
 using NouAssist.FinancialManagement.GeneralLedger.Enums;
+using NouAssist.FinancialManagement.GeneralLedger.Events;
+using NouAssist.FinancialManagement.Shared.Enums;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -10,72 +12,87 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
     public class LedgerAccount : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         public Guid? TenantId { get; private set; }
-        public string AccountNumber { get; private set; }
+        public AccountNumber AccountNumber { get; private set; }
         public string Name { get; private set; }
-        public string Description { get; private set; }
         public AccountType Type { get; private set; }
         public MonetaryValue CurrentBalance { get; private set; }
         public Guid? ParentAccountId { get; private set; }
         public bool IsActive { get; private set; }
         public bool AllowsPosting { get; private set; }
+        public string Description { get; private set; }
 
-        protected LedgerAccount() { } // For ORM
+        protected LedgerAccount() { } // EF Core
 
         public LedgerAccount(
             Guid id,
             Guid? tenantId,
-            string accountNumber,
+            AccountNumber accountNumber,
             string name,
             AccountType type,
             string currency,
             Guid? parentAccountId = null,
-            string description = null)
-            : base(id)
+            string description = null) : base(id)
         {
             TenantId = tenantId;
-            AccountNumber = Check.NotNullOrWhiteSpace(accountNumber, nameof(accountNumber), 20);
-            Name = Check.NotNullOrWhiteSpace(name, nameof(name), 200);
-            Description = description;
+            AccountNumber = Check.NotNull(accountNumber, nameof(accountNumber));
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             Type = type;
-            CurrentBalance = new MonetaryValue(0, currency);
+            CurrentBalance = MonetaryValue.Zero(currency);
             ParentAccountId = parentAccountId;
             IsActive = true;
             AllowsPosting = true;
+            Description = description;
+
+            AddLocalEvent(new AccountCreatedEvent
+            {
+                AccountId = Id,
+                TenantId = TenantId,
+                AccountNumber = AccountNumber,
+                Name = Name,
+                Type = Type
+            });
         }
 
         public void UpdateBalance(MonetaryValue amount, DebitCreditIndicator indicator)
         {
-            if (!IsActive)
-                throw new BusinessException("GeneralLedger:CannotUpdateInactiveAccount", 
-                    "Cannot update balance of inactive account");
+            Check.NotNull(amount, nameof(amount));
+
+            if (amount.Currency != CurrentBalance.Currency)
+                throw new BusinessException("GL:CurrencyMismatch", 
+                    $"Cannot update balance with different currency");
 
             var previousBalance = CurrentBalance;
 
-            CurrentBalance = CalculateNewBalance(CurrentBalance, amount, indicator);
+            CurrentBalance = indicator == DebitCreditIndicator.Debit
+                ? CurrentBalance.Add(amount)
+                : CurrentBalance.Subtract(amount);
 
-            AddDistributedEvent(new GeneralLedger.Events.AccountBalanceUpdatedEto
+            AddLocalEvent(new AccountBalanceUpdatedEvent
             {
-                IdempotencyKey = Guid.NewGuid().ToString(),
                 AccountId = Id,
+                TenantId = TenantId,
                 PreviousBalance = previousBalance,
                 NewBalance = CurrentBalance,
                 ChangeAmount = amount,
-                ChangeType = indicator,
-                TenantId = TenantId
+                ChangeType = indicator
             });
         }
 
         public void Deactivate()
         {
-            if (CurrentBalance.Amount != 0)
-                throw new BusinessException("GeneralLedger:CannotDeactivateWithBalance",
-                    "Cannot deactivate account with non-zero balance");
+            if (!IsActive)
+                throw new BusinessException("GL:AccountAlreadyInactive", 
+                    "Account is already inactive");
 
             IsActive = false;
         }
 
-        public void Reactivate()
+        public void Activate()
         {
+            if (IsActive)
+                throw new BusinessException("GL:AccountAlreadyActive", 
+                    "Account is already active");
+
             IsActive = true;
         }
 
@@ -91,7 +108,7 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
 
         public void UpdateName(string newName)
         {
-            Name = Check.NotNullOrWhiteSpace(newName, nameof(newName), 200);
+            Name = Check.NotNullOrWhiteSpace(newName, nameof(newName));
         }
 
         public void UpdateDescription(string newDescription)
@@ -99,27 +116,33 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             Description = newDescription;
         }
 
-        private MonetaryValue CalculateNewBalance(
-            MonetaryValue currentBalance, 
-            MonetaryValue amount, 
-            DebitCreditIndicator indicator)
+        public void MoveTo(Guid? newParentAccountId)
         {
-            // For Asset and Expense accounts: Debit increases, Credit decreases
-            // For Liability, Equity, and Revenue: Credit increases, Debit decreases
-            var isNormalDebit = Type == AccountType.Asset || Type == AccountType.Expense;
+            if (newParentAccountId == Id)
+                throw new BusinessException("GL:CannotMoveToSelf", 
+                    "Cannot move account to itself");
 
-            if (indicator == DebitCreditIndicator.Debit)
-            {
-                return isNormalDebit 
-                    ? currentBalance.Add(amount) 
-                    : currentBalance.Subtract(amount);
-            }
-            else
-            {
-                return isNormalDebit 
-                    ? currentBalance.Subtract(amount) 
-                    : currentBalance.Add(amount);
-            }
+            ParentAccountId = newParentAccountId;
         }
+    }
+
+    // Local events (not published outside aggregate)
+    public class AccountCreatedEvent
+    {
+        public Guid AccountId { get; set; }
+        public Guid? TenantId { get; set; }
+        public AccountNumber AccountNumber { get; set; }
+        public string Name { get; set; }
+        public AccountType Type { get; set; }
+    }
+
+    public class AccountBalanceUpdatedEvent
+    {
+        public Guid AccountId { get; set; }
+        public Guid? TenantId { get; set; }
+        public MonetaryValue PreviousBalance { get; set; }
+        public MonetaryValue NewBalance { get; set; }
+        public MonetaryValue ChangeAmount { get; set; }
+        public DebitCreditIndicator ChangeType { get; set; }
     }
 }

@@ -73,6 +73,22 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
             Status = ProjectDependencyStatus.Active;
         }
         
+        public void Update(string description, string notes, int lagDays, bool isBlocking, DateTime? expectedResolutionDate)
+        {
+            Description = description;
+            Notes = notes;
+        
+            if (lagDays < 0)
+            {
+                throw new BusinessException("Projects:NegativeLag");
+            }
+        
+            LagDays = lagDays;
+            IsBlocking = isBlocking;
+            ExpectedResolutionDate = expectedResolutionDate;
+        }
+
+        
         public void Resolve(Guid resolvedBy, string note = null)
         {
             if (Status == ProjectDependencyStatus.Resolved)

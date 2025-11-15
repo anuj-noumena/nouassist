@@ -4,6 +4,7 @@ using System.Linq;
 using NouAssist.FinancialManagement.GeneralLedger.Entities;
 using NouAssist.FinancialManagement.GeneralLedger.Enums;
 using NouAssist.FinancialManagement.GeneralLedger.Events;
+using NouAssist.FinancialManagement.Shared.Enums;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -15,46 +16,45 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
     {
         public Guid? TenantId { get; private set; }
         public string BatchNumber { get; private set; }
-        public DateTime PostingDate { get; private set; }
+        public TransactionDate PostingDate { get; private set; }
         public string Description { get; private set; }
-        public string Reference { get; private set; }
         public BatchStatus Status { get; private set; }
+        public string Reference { get; private set; }
         public Guid? SourceEntityId { get; private set; }
-        public string SourceEntityType { get; private set; }
+        public EntityType? SourceEntityType { get; private set; }
 
         private readonly List<JournalEntryLine> _lines = new();
         public IReadOnlyCollection<JournalEntryLine> Lines => _lines.AsReadOnly();
 
-        public bool IsBalanced => CalculateBalance();
-
-        protected JournalEntryBatch() { } // For ORM
+        protected JournalEntryBatch() { } // EF Core
 
         public JournalEntryBatch(
             Guid id,
             Guid? tenantId,
             string batchNumber,
-            DateTime postingDate,
+            TransactionDate postingDate,
             string description,
-            string reference = null,
             Guid? sourceEntityId = null,
-            string sourceEntityType = null)
-            : base(id)
+            EntityType? sourceEntityType = null,
+            string reference = null) : base(id)
         {
             TenantId = tenantId;
-            BatchNumber = Check.NotNullOrWhiteSpace(batchNumber, nameof(batchNumber), 50);
-            PostingDate = postingDate;
-            Description = Check.NotNullOrWhiteSpace(description, nameof(description), 500);
-            Reference = reference;
+            BatchNumber = Check.NotNullOrWhiteSpace(batchNumber, nameof(batchNumber));
+            PostingDate = Check.NotNull(postingDate, nameof(postingDate));
+            Description = Check.NotNullOrWhiteSpace(description, nameof(description));
             Status = BatchStatus.Draft;
             SourceEntityId = sourceEntityId;
             SourceEntityType = sourceEntityType;
+            Reference = reference;
         }
 
         public void AddLine(JournalEntryLine line)
         {
+            Check.NotNull(line, nameof(line));
+
             if (Status != BatchStatus.Draft)
-                throw new BusinessException("GeneralLedger:CannotModifyPostedBatch",
-                    "Cannot add lines to posted or reversed batch");
+                throw new BusinessException("GL:CannotModifyPostedBatch", 
+                    "Cannot add lines to a posted or reversed batch");
 
             _lines.Add(line);
         }
@@ -62,110 +62,120 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void Post(Guid postedBy)
         {
             if (Status != BatchStatus.Draft)
-                throw new BusinessException("GeneralLedger:BatchAlreadyPosted",
+                throw new BusinessException("GL:BatchAlreadyPosted", 
                     "Batch has already been posted");
 
-            if (_lines.Count < 2)
-                throw new BusinessException("GeneralLedger:InsufficientLines",
-                    "Journal entry batch must have at least 2 lines");
-
-            if (!IsBalanced)
-                throw new BusinessException("GeneralLedger:BatchNotBalanced",
-                    "Journal entry batch is not balanced (debits must equal credits)");
+            ValidateForPosting();
 
             Status = BatchStatus.Posted;
-
-            var lineEvents = _lines.Select(l => new JournalEntryLinePostedDto
-            {
-                AccountId = l.AccountId,
-                Amount = l.DebitAmount ?? l.CreditAmount,
-                DebitCredit = l.DebitAmount != null ? "Debit" : "Credit",
-                Memo = l.Memo
-            }).ToList();
+            
+            var totalAmount = CalculateTotalAmount();
 
             AddDistributedEvent(new JournalBatchPostedEto
             {
                 IdempotencyKey = Guid.NewGuid().ToString(),
                 BatchId = Id,
+                TenantId = TenantId,
                 BatchNumber = BatchNumber,
-                PostingDate = PostingDate,
-                Lines = lineEvents,
-                TotalAmount = CalculateTotalAmount(),
+                PostingDate = PostingDate.Date,
+                Lines = _lines.Select(l => new JournalEntryLinePostedEto
+                {
+                    AccountId = l.AccountId,
+                    AccountNumber = l.AccountNumber?.Number,
+                    DebitAmount = l.DebitAmount,
+                    CreditAmount = l.CreditAmount,
+                    Memo = l.Memo
+                }).ToList(),
+                TotalAmount = totalAmount,
                 PostedBy = postedBy,
-                TenantId = TenantId
+                PostedAt = Clock.Now
             });
         }
 
-        public JournalEntryBatch Reverse(Guid reversedBy, DateTime reversalDate, string reason)
+        public JournalEntryBatch Reverse(string reversalReason, TransactionDate reversalDate, Guid reversedBy)
         {
             if (Status != BatchStatus.Posted)
-                throw new BusinessException("GeneralLedger:CannotReverseUnposted",
+                throw new BusinessException("GL:CannotReverseUnpostedBatch", 
                     "Only posted batches can be reversed");
 
             Status = BatchStatus.Reversed;
 
+            // Create reversal batch
             var reversalBatch = new JournalEntryBatch(
                 Guid.NewGuid(),
                 TenantId,
                 $"{BatchNumber}-REV",
                 reversalDate,
-                $"Reversal: {reason}",
-                BatchNumber,
+                $"Reversal: {Description} - {reversalReason}",
                 Id,
-                "JournalEntryBatch");
+                EntityType.JournalEntryBatch,
+                $"Reversal of {BatchNumber}"
+            );
 
+            // Add reversed lines
             foreach (var line in _lines)
             {
-                var reversalLine = new JournalEntryLine(
+                var reversedLine = new JournalEntryLine(
                     reversalBatch.Id,
                     line.AccountId,
-                    line.CreditAmount, // Swap debit and credit
-                    line.DebitAmount,
+                    line.DebitAmount != null ? null : line.CreditAmount,
+                    line.DebitAmount != null ? line.DebitAmount : null,
                     $"Reversal: {line.Memo}",
-                    line.Reference);
-
-                reversalBatch.AddLine(reversalLine);
+                    line.Reference
+                );
+                reversalBatch.AddLine(reversedLine);
             }
 
             return reversalBatch;
         }
 
-        private bool CalculateBalance()
+        public bool IsBalanced()
         {
-            var currencyGroups = _lines.GroupBy(l => 
-                (l.DebitAmount ?? l.CreditAmount).Currency);
+            var debitTotal = _lines
+                .Where(l => l.DebitAmount != null)
+                .Sum(l => l.DebitAmount.Amount);
+            
+            var creditTotal = _lines
+                .Where(l => l.CreditAmount != null)
+                .Sum(l => l.CreditAmount.Amount);
 
-            foreach (var group in currencyGroups)
+            return Math.Abs(debitTotal - creditTotal) < 0.01m;
+        }
+
+        private void ValidateForPosting()
+        {
+            if (_lines.Count < 2)
+                throw new BusinessException("GL:InsufficientLines", 
+                    "Journal entry must have at least 2 lines");
+
+            if (!IsBalanced())
+                throw new BusinessException("GL:BatchNotBalanced", 
+                    "Journal entry batch is not balanced");
+
+            foreach (var line in _lines)
             {
-                var totalDebits = group
-                    .Where(l => l.DebitAmount != null)
-                    .Sum(l => l.DebitAmount.Amount);
+                if (line.DebitAmount == null && line.CreditAmount == null)
+                    throw new BusinessException("GL:LineHasNoAmount", 
+                        "Journal entry line must have either debit or credit amount");
 
-                var totalCredits = group
-                    .Where(l => l.CreditAmount != null)
-                    .Sum(l => l.CreditAmount.Amount);
-
-                var difference = Math.Abs(totalDebits - totalCredits);
-                if (difference > 0.01m) // Allow for small rounding differences
-                    return false;
+                if (line.DebitAmount != null && line.CreditAmount != null)
+                    throw new BusinessException("GL:LineBothDebitCredit", 
+                        "Journal entry line cannot have both debit and credit amounts");
             }
-
-            return true;
         }
 
         private MonetaryValue CalculateTotalAmount()
         {
-            if (!_lines.Any()) 
-                return new MonetaryValue(0, "USD");
+            var firstLine = _lines.FirstOrDefault();
+            if (firstLine == null)
+                return null;
 
-            var firstLine = _lines.First();
-            var currency = (firstLine.DebitAmount ?? firstLine.CreditAmount).Currency;
-
-            var total = _lines
+            var currency = firstLine.DebitAmount?.Currency ?? firstLine.CreditAmount?.Currency;
+            var totalDebits = _lines
                 .Where(l => l.DebitAmount != null)
                 .Sum(l => l.DebitAmount.Amount);
 
-            return new MonetaryValue(total, currency);
+            return new MonetaryValue(totalDebits, currency);
         }
     }
 }

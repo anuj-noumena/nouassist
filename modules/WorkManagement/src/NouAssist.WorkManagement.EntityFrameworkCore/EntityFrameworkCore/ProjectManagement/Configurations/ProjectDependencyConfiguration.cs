@@ -15,7 +15,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
 
             builder.HasKey(x => x.Id);
 
-            // Relationships
+            // === RELATIONSHIPS ===
             builder.Property(x => x.ProjectId)
                 .IsRequired();
 
@@ -25,7 +25,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
             builder.Property(x => x.TenantId)
                 .IsRequired(false);
 
-            // Dependency Info
+            // === DEPENDENCY INFO ===
             builder.Property(x => x.DependencyType)
                 .IsRequired()
                 .HasConversion<string>()
@@ -39,6 +39,11 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
                 .IsRequired()
                 .HasDefaultValue(true);
 
+            builder.Property(x => x.Strength)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasConversion<string>()
@@ -50,35 +55,35 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
             builder.Property(x => x.Notes)
                 .HasMaxLength(5000);
 
-            // Resolution
             builder.Property(x => x.ExpectedResolutionDate)
                 .IsRequired(false);
 
-            builder.Property(x => x.ActualResolutionDate)
+            // === RESOLUTION ===
+            builder.Property(x => x.ResolvedAt)
                 .IsRequired(false);
 
             builder.Property(x => x.ResolvedBy)
-                .HasMaxLength(256);
-
-            builder.Property(x => x.ApprovalRequestId)
                 .IsRequired(false);
 
-            // // Extra Properties
-            // builder.Property(x => x.ExtraProperties)
-            //     .HasColumnName(nameof(ProjectDependency.ExtraProperties));
+            builder.Property(x => x.ResolutionNote)
+                .HasMaxLength(2000);
 
-            // // Concurrency Stamp
-            // builder.Property(x => x.ConcurrencyStamp)
-            //     .IsConcurrencyToken()
-            //     .HasMaxLength(40);
+            // Extra Properties
+            builder.Property(x => x.ExtraProperties)
+                .HasColumnName(nameof(ProjectDependency.ExtraProperties));
 
-            // Indexes
+            // Concurrency Stamp
+            builder.Property(x => x.ConcurrencyStamp)
+                .IsConcurrencyToken()
+                .HasMaxLength(40);
+
+            // === INDEXES ===
             builder.HasIndex(x => x.ProjectId);
             builder.HasIndex(x => x.DependsOnProjectId);
             builder.HasIndex(x => x.Status);
+            builder.HasIndex(x => x.TenantId);
             builder.HasIndex(x => new { x.ProjectId, x.Status });
             builder.HasIndex(x => new { x.IsBlocking, x.Status });
-            builder.HasIndex(x => x.TenantId);
         }
     }
 }

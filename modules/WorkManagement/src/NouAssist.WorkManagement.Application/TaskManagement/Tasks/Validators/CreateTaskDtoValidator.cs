@@ -20,17 +20,22 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Validators
             RuleFor(x => x.DefaultUrgency)
                 .InclusiveBetween(0.0, 1.0);
 
-            RuleFor(x => x.EstimateMinutes)
+            RuleFor(x => x.DefaultEstimateMinutes)
                 .GreaterThan(0)
-                .When(x => x.EstimateMinutes.HasValue);
+                .When(x => x.DefaultEstimateMinutes.HasValue);
 
-            RuleFor(x => x.ActionSteps)
-                .Must(steps => steps == null || steps.Count <= 50)
-                .WithMessage("Maximum 50 action steps allowed.");
+            // GTD validation: cannot be in both project and area
+            RuleFor(x => x)
+                .Must(x => !(x.ProjectId.HasValue && x.AreaId.HasValue))
+                .WithMessage("Task cannot belong to both a Project and an Area.");
 
-            RuleForEach(x => x.ActionSteps)
-                .SetValidator(new CreateTaskActionStepDtoValidator())
-                .When(x => x.ActionSteps != null);
+            RuleFor(x => x.ChecklistItems)
+                .Must(items => items == null || items.Count <= 100)
+                .WithMessage("Maximum 100 checklist items allowed.");
+
+            RuleForEach(x => x.ChecklistItems)
+                .SetValidator(new CreateChecklistItemDtoValidator())
+                .When(x => x.ChecklistItems != null);
 
             RuleFor(x => x.AcceptanceCriteria)
                 .Must(criteria => criteria == null || criteria.Count <= 20)
@@ -42,15 +47,15 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Validators
         }
     }
 
-    public class CreateTaskActionStepDtoValidator : AbstractValidator<CreateTaskActionStepDto>
+    public class CreateChecklistItemDtoValidator : AbstractValidator<CreateChecklistItemDto>
     {
-        public CreateTaskActionStepDtoValidator()
+        public CreateChecklistItemDtoValidator()
         {
             RuleFor(x => x.Title)
                 .NotEmpty()
                 .MaximumLength(500);
 
-            RuleFor(x => x.Notes)
+            RuleFor(x => x.Description)
                 .MaximumLength(2000);
         }
     }

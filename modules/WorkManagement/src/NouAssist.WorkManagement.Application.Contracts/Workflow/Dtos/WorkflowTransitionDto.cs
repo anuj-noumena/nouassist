@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NouAssist.WorkManagement.Workflow.Enums;
 
 namespace NouAssist.WorkManagement.Workflow.Dtos
 {
@@ -11,8 +12,13 @@ namespace NouAssist.WorkManagement.Workflow.Dtos
         public string Description { get; set; }
         public Guid FromStatusId { get; set; }
         public Guid ToStatusId { get; set; }
-        public List<string> AllowedRoles { get; set; } = new();
-        public List<Guid> AllowedUserIds { get; set; } = new();
+        
+        // NEW: Added Purpose
+        public TransitionPurpose Purpose { get; set; }
+        
+        // REMOVED: AllowedRoles and AllowedUserIds (moved to TransitionPermissionPolicy)
+        // These are now managed separately through TransitionPermissionPolicy
+        
         public bool RequiresComment { get; set; }
         public bool RequiresResolution { get; set; }
         public bool IsGlobal { get; set; }
@@ -21,7 +27,9 @@ namespace NouAssist.WorkManagement.Workflow.Dtos
         public string ButtonColor { get; set; }
         public bool HasConditions { get; set; }
         public bool HasValidators { get; set; }
-        public bool HasRestrictions { get; set; }
+        
+        // REMOVED: HasRestrictions (now handled by TransitionPermissionPolicy)
+        
         public List<WorkflowActionDto> Actions { get; set; } = new();
     }
 }

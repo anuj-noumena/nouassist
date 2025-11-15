@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
-using NouAssist.FinancialManagement.GeneralLedger.Enums;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.GeneralLedger
@@ -10,68 +11,70 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
     {
         public void Configure(EntityTypeBuilder<LedgerAccount> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "LedgerAccounts",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
-            builder.Property(x => x.AccountNumber)
-                .IsRequired()
-                .HasMaxLength(20);
+            // AccountNumber value object
+            builder.OwnsOne(x => x.AccountNumber, an =>
+            {
+                an.Property(a => a.Number)
+                    .HasColumnName("AccountNumber")
+                    .IsRequired()
+                    .HasMaxLength(AccountConsts.MaxAccountNumberLength);
+            });
 
             builder.Property(x => x.Name)
                 .IsRequired()
-                .HasMaxLength(200);
-
-            builder.Property(x => x.Description)
-                .HasMaxLength(500);
+                .HasMaxLength(AccountConsts.MaxAccountNameLength);
 
             builder.Property(x => x.Type)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            // MonetaryValue - CurrentBalance
-            builder.OwnsOne(x => x.CurrentBalance, balance =>
+            // CurrentBalance value object
+            builder.OwnsOne(x => x.CurrentBalance, cb =>
             {
-                balance.Property(b => b.Amount)
-                    .HasColumnName("CurrentBalance_Amount")
-                    .HasPrecision(18, 4)
-                    .IsRequired();
-
-                balance.Property(b => b.Currency)
-                    .HasColumnName("CurrentBalance_Currency")
+                cb.Property(b => b.Amount)
+                    .HasColumnName("CurrentBalance")
+                    .HasPrecision(18, 4);
+                
+                cb.Property(b => b.Currency)
+                    .HasColumnName("Currency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                balance.Ignore(b => b.DecimalPlaces);
             });
 
             builder.Property(x => x.ParentAccountId);
             builder.Property(x => x.IsActive).IsRequired();
             builder.Property(x => x.AllowsPosting).IsRequired();
+            
+            builder.Property(x => x.Description)
+                .HasMaxLength(FinancialConsts.MaxDescriptionLength);
 
             // Indexes
-            builder.HasIndex(x => x.AccountNumber)
+            builder.HasIndex(x => x.IsActive);
+            builder.HasIndex(x => x.Type);
+            builder.HasIndex(x => x.ParentAccountId);
+            
+            // Unique constraint on account number within tenant
+            builder.HasIndex(x => new { x.TenantId, x.AccountNumber })
                 .IsUnique()
-                .HasDatabaseName("IX_LedgerAccounts_AccountNumber");
+                .HasDatabaseName("IX_LedgerAccounts_TenantId_AccountNumber");
 
-            builder.HasIndex(x => x.Type)
-                .HasDatabaseName("IX_LedgerAccounts_Type");
+            // Self-referencing relationship
+            builder.HasOne<LedgerAccount>()
+                .WithMany()
+                .HasForeignKey(x => x.ParentAccountId)
+                .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasIndex(x => x.ParentAccountId)
-                .HasDatabaseName("IX_LedgerAccounts_ParentAccountId");
-
-            builder.HasIndex(x => new { x.Type, x.IsActive })
-                .HasDatabaseName("IX_LedgerAccounts_Type_IsActive");
-
-            // Multi-tenancy
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_LedgerAccounts_TenantId");
+            // Concurrency token
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

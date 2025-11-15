@@ -1,0 +1,29 @@
+{
+  "culture": "en",
+  "texts": {
+    "Permission:Learning": "Learning Management",
+    "Permission:Topics": "Topics",
+    "Permission:Topics.Create": "Create Topics",
+    "Permission:Topics.Update": "Update Topics",
+    "Permission:Topics.Delete": "Delete Topics",
+    "Permission:Topics.ManageChildren": "Manage Child Topics",
+    "Permission:LearningSessions": "Learning Sessions",
+    "Permission:LearningSessions.Start": "Start Sessions",
+    "Permission:LearningSessions.Advance": "Advance Phases",
+    "Permission:LearningSessions.Pause": "Pause Sessions",
+    "Permission:LearningSessions.Resume": "Resume Sessions",
+    "Permission:LearningSessions.RecordData": "Record Session Data",
+    "Permission:LearningNotes": "Learning Notes",
+    "Permission:LearningNotes.Create": "Create Notes",
+    "Permission:LearningNotes.Update": "Update Notes",
+    "Permission:LearningNotes.Delete": "Delete Notes",
+    "Permission:Mindmaps": "Mindmaps",
+    "Permission:Mindmaps.Create": "Create Mindmaps",
+    "Permission:Mindmaps.Update": "Update Mindmaps",
+    "Permission:Mindmaps.Delete": "Delete Mindmaps",
+    "Permission:BookReadingHistories": "Book Reading Histories",
+    "Permission:BookReadingHistories.Create": "Create Reading Histories",
+    "Permission:BookReadingHistories.Update": "Update Reading Histories",
+    "Permission:BookReadingHistories.Delete": "Delete Reading Histories"
+  }
+}

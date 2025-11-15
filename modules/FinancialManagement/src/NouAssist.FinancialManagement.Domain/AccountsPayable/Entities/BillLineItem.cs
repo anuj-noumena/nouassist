@@ -11,8 +11,9 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Entities
         public string Description { get; private set; }
         public decimal Quantity { get; private set; }
         public MonetaryValue UnitPrice { get; private set; }
-        public MonetaryValue Total { get; private set; }
+        public MonetaryValue LineTotal { get; private set; }
         public Guid? ProductId { get; private set; }
+        public string TaxCode { get; private set; }
 
         protected BillLineItem() { }
 
@@ -21,18 +22,21 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Entities
             string description,
             decimal quantity,
             MonetaryValue unitPrice,
-            Guid? productId = null)
+            Guid? productId = null,
+            string taxCode = null)
         {
-            if (quantity <= 0)
-                throw new ArgumentException("Quantity must be positive", nameof(quantity));
-
             BillId = billId;
-            Description = Check.NotNullOrWhiteSpace(description, nameof(description), 500);
+            Description = Check.NotNullOrWhiteSpace(description, nameof(description));
+            
+            if (quantity <= 0)
+                throw new BusinessException("AP:InvalidQuantity", 
+                    "Quantity must be greater than zero");
+            
             Quantity = quantity;
             UnitPrice = Check.NotNull(unitPrice, nameof(unitPrice));
+            LineTotal = unitPrice.Multiply(quantity);
             ProductId = productId;
-            
-            Total = unitPrice.Multiply(quantity);
+            TaxCode = taxCode;
         }
 
         public override object[] GetKeys()

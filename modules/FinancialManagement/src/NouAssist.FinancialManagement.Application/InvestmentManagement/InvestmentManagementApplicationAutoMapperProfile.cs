@@ -1,0 +1,32 @@
+using AutoMapper;
+using NouAssist.InvestmentManagement.Aggregates;
+using NouAssist.InvestmentManagement.Entities;
+using NouAssist.InvestmentManagement.InvestmentGoals.Dtos;
+using NouAssist.InvestmentManagement.Portfolios.Dtos;
+
+namespace NouAssist.InvestmentManagement
+{
+    public class InvestmentManagementApplicationAutoMapperProfile : Profile
+    {
+        public InvestmentManagementApplicationAutoMapperProfile()
+        {
+            // Portfolio mappings
+            CreateMap<Portfolio, PortfolioDto>()
+                .ForMember(dest => dest.CurrentAllocation, opt => opt.MapFrom(src => src.GetCurrentAllocation()))
+                .ForMember(dest => dest.RecentTransactions, opt => opt.Ignore());
+
+            CreateMap<Holding, HoldingDto>()
+                .ForMember(dest => dest.UnrealizedGainLoss, opt => opt.MapFrom(src => src.GetUnrealizedGainLoss()))
+                .ForMember(dest => dest.UnrealizedGainLossPercentage, opt => opt.MapFrom(src => src.GetUnrealizedGainLossPercentage()));
+
+            CreateMap<InvestmentTransaction, InvestmentTransactionDto>();
+
+            CreateMap<ValueObjects.PortfolioAllocation, PortfolioAllocationDto>();
+
+            // InvestmentGoal mappings
+            CreateMap<InvestmentGoal, InvestmentGoalDto>()
+                .ForMember(dest => dest.MonthsRemaining, opt => opt.MapFrom(src => src.GetMonthsRemaining()))
+                .ForMember(dest => dest.RequiredMonthlyContribution, opt => opt.MapFrom(src => src.GetRequiredMonthlyContribution()));
+        }
+    }
+}

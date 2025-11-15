@@ -11,9 +11,6 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         [StringLength(4000)]
         public string Description { get; set; }
 
-        [StringLength(4000)]
-        public string Notes { get; set; }
-
         [StringLength(2000)]
         public string ExpectedResult { get; set; }
 
@@ -23,12 +20,18 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         [Range(0.0, 1.0)]
         public double? DefaultUrgency { get; set; }
 
+        // GTD Organization
+        public Guid? AreaId { get; set; }
+        public Guid? ContextId { get; set; }
+
+        // Default values for instances
         public Guid? DefaultContextId { get; set; }
         public Guid? DefaultAreaId { get; set; }
-        public Guid? DefaultSprintId { get; set; }
         public Guid? TaskTypeId { get; set; }
 
-        public int? EstimateMinutes { get; set; }
+        public int? DefaultEstimateMinutes { get; set; }
         public DateTime? DefaultDueDate { get; set; }
+        public Guid? DefaultWorkflowId { get; set; }
+        public Guid? DefaultAssigneeId { get; set; }
     }
 }

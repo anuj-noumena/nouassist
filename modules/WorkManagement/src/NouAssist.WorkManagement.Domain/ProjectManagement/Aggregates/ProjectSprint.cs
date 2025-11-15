@@ -53,6 +53,12 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
             Metrics = SprintMetrics.Initialize(velocityEstimate ?? 0);
         }
         
+        public void UpdateDetails(string name, string goal)
+        {
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
+            Goal = Check.NotNullOrWhiteSpace(goal, nameof(goal));
+        }
+
         public void UpdateDates(DateTime startDate, DateTime endDate)
         {
             Timeline = Timeline.Update(startDate, endDate);

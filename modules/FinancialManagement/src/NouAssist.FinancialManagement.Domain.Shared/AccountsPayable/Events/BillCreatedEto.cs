@@ -5,11 +5,12 @@ using Volo.Abp.MultiTenancy;
 
 namespace NouAssist.FinancialManagement.AccountsPayable.Events
 {
-    [EventName("FinancialManagement.AccountsPayable.BillCreated")]
+    [EventName("NouAssist.AP.BillCreated")]
     public class BillCreatedEto : IMultiTenant
     {
         public string IdempotencyKey { get; set; }
         public Guid BillId { get; set; }
+        public Guid? TenantId { get; set; }
         public string BillNumber { get; set; }
         public Guid VendorId { get; set; }
         public string VendorName { get; set; }
@@ -19,6 +20,5 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Events
         public Guid? ProjectId { get; set; }
         public bool RequiresApproval { get; set; }
         public Guid CreatedBy { get; set; }
-        public Guid? TenantId { get; set; }
     }
 }

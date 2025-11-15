@@ -1,6 +1,5 @@
 using System;
 using NouAssist.FinancialManagement.AccountsReceivable.Enums;
-using NouAssist.FinancialManagement.AccountsReceivable.ValueObjects;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -12,94 +11,82 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
     {
         public Guid? TenantId { get; private set; }
         public string Name { get; private set; }
-        public string TaxId { get; private set; }
+        public TaxId TaxId { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
+        public string BillingAddress { get; private set; }
         public CustomerType Type { get; private set; }
-        public CreditTerms CreditTerms { get; private set; }
+        public int CreditTermsDays { get; private set; }
+        public MonetaryValue CreditLimit { get; private set; }
         public MonetaryValue CurrentBalance { get; private set; }
         public bool IsActive { get; private set; }
-        public bool IsCreditSuspended { get; private set; }
+        public bool CreditOnHold { get; private set; }
 
-        protected Customer() { } // For ORM
+        protected Customer() { }
 
         public Customer(
             Guid id,
             Guid? tenantId,
             string name,
+            TaxId taxId,
             string email,
             CustomerType type,
-            CreditTerms creditTerms,
-            string taxId = null,
-            string phone = null)
-            : base(id)
+            int creditTermsDays = 30) : base(id)
         {
             TenantId = tenantId;
-            Name = Check.NotNullOrWhiteSpace(name, nameof(name), 200);
-            Email = Check.NotNullOrWhiteSpace(email, nameof(email), 200);
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             TaxId = taxId;
-            Phone = phone;
+            Email = Check.NotNullOrWhiteSpace(email, nameof(email));
             Type = type;
-            CreditTerms = Check.NotNull(creditTerms, nameof(creditTerms));
-            CurrentBalance = new MonetaryValue(0, creditTerms.Currency);
+            CreditTermsDays = creditTermsDays;
             IsActive = true;
-            IsCreditSuspended = false;
+            CreditOnHold = false;
+            CreditLimit = MonetaryValue.Zero("USD");
+            CurrentBalance = MonetaryValue.Zero("USD");
         }
 
-        public void UpdateCreditTerms(CreditTerms newTerms, string justification)
+        public void UpdateCreditLimit(MonetaryValue newLimit, string justification)
         {
-            if (string.IsNullOrWhiteSpace(justification))
-                throw new BusinessException("AccountsReceivable:JustificationRequired",
-                    "Justification required for credit terms change");
+            if (newLimit.IsNegative)
+                throw new BusinessException("AR:InvalidCreditLimit", 
+                    "Credit limit cannot be negative");
 
-            CreditTerms = Check.NotNull(newTerms, nameof(newTerms));
-        }
-
-        public void AddToBalance(MonetaryValue amount)
-        {
-            CurrentBalance = CurrentBalance.Add(amount);
-        }
-
-        public void SubtractFromBalance(MonetaryValue amount)
-        {
-            CurrentBalance = CurrentBalance.Subtract(amount);
+            CreditLimit = newLimit;
         }
 
         public void SuspendCredit(string reason)
         {
-            if (string.IsNullOrWhiteSpace(reason))
-                throw new BusinessException("AccountsReceivable:ReasonRequired",
-                    "Reason required for credit suspension");
-
-            IsCreditSuspended = true;
+            CreditOnHold = true;
         }
 
         public void RestoreCredit()
         {
-            IsCreditSuspended = false;
+            CreditOnHold = false;
+        }
+
+        public void UpdateBalance(MonetaryValue amount, bool increase)
+        {
+            CurrentBalance = increase
+                ? CurrentBalance.Add(amount)
+                : CurrentBalance.Subtract(amount);
+        }
+
+        public bool CanExtendCredit(MonetaryValue requestedAmount)
+        {
+            if (CreditOnHold)
+                return false;
+
+            var proposedBalance = CurrentBalance.Add(requestedAmount);
+            return proposedBalance.Amount <= CreditLimit.Amount;
         }
 
         public void Deactivate()
         {
             if (CurrentBalance.Amount > 0)
-                throw new BusinessException("AccountsReceivable:CustomerHasBalance",
+                throw new BusinessException("AR:CannotDeactivateWithBalance", 
                     "Cannot deactivate customer with outstanding balance");
 
             IsActive = false;
-        }
-
-        public void Reactivate()
-        {
-            IsActive = true;
-        }
-
-        public bool CanExtendCredit(MonetaryValue requestedAmount)
-        {
-            if (!IsActive || IsCreditSuspended)
-                return false;
-
-            var proposedBalance = CurrentBalance.Amount + requestedAmount.Amount;
-            return proposedBalance <= CreditTerms.CreditLimit;
         }
     }
 }

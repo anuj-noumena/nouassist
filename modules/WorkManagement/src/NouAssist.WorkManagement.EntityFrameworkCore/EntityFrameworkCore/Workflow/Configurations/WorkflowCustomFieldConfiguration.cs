@@ -33,26 +33,12 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
             builder.Property(x => x.IsActive)
                 .IsRequired();
 
-            // Collections stored as JSON
-            builder.OwnsMany(x => x.VisibleInStatusIds, visiBuilder =>
-            {
-                visiBuilder.ToJson();
-            });
+            // JSON strings for rules
+            builder.Property(x => x.VisibilityRules)
+                .HasColumnType("nvarchar(max)"); // or "text" for PostgreSQL
 
-            builder.OwnsMany(x => x.RequiredInStatusIds, reqBuilder =>
-            {
-                reqBuilder.ToJson();
-            });
-
-            builder.OwnsMany(x => x.ReadOnlyInStatusIds, roBuilder =>
-            {
-                roBuilder.ToJson();
-            });
-
-            builder.OwnsMany(x => x.RequiredForTransitionIds, rftBuilder =>
-            {
-                rftBuilder.ToJson();
-            });
+            builder.Property(x => x.ValidationRules)
+                .HasColumnType("nvarchar(max)"); // or "text" for PostgreSQL
 
             // Indexes
             builder.HasIndex(x => x.WorkflowSchemeId);

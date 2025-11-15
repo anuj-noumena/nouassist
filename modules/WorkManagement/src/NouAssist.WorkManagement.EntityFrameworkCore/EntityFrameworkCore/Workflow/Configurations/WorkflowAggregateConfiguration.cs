@@ -30,11 +30,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
             builder.Property(x => x.IsActive)
                 .IsRequired();
 
-            // Collection: Properties (stored as JSON)
-            builder.OwnsOne(x => x.Properties, propsBuilder =>
-            {
-                propsBuilder.ToJson();
-            });
+            // ExtraProperties are automatically configured by ABP's ConfigureByConvention()
+            builder.ConfigureExtraProperties();
 
             // Relationships
             builder.HasMany(x => x.Statuses)

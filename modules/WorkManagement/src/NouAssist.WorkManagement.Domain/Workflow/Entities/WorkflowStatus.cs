@@ -42,15 +42,13 @@ namespace NouAssist.WorkManagement.Workflow.Entities
             ExtraProperties = new ();
         }
         
-        // public void SetProperty(string key, object value)
-        // {
-        //     // if (_properties == null)
-        //     // {
-        //     //     _properties = new Dictionary<string, object>();
-        //     // }
-        //     //
-        //     // _properties[key] = value;
-        // }
+        public void UpdateInfo(string name, string description, string color)
+        {
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
+            Description = description;
+            Color = color;
+        }
+
 
         public bool IsTodo => Category == WorkflowStatusCategory.Todo;
         public bool IsInProgress => Category == WorkflowStatusCategory.InProgress;

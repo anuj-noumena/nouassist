@@ -22,5 +22,19 @@ namespace NouAssist.WorkManagement.Workflow
 
         Task<WorkflowDto> GetDefaultWorkflowAsync();
         Task<List<WorkflowTransitionDto>> GetAvailableTransitionsAsync(Guid workflowId, Guid currentStatusId);
+        
+        // NEW: Status management
+        Task<WorkflowStatusDto> AddStatusAsync(CreateWorkflowStatusDto input);
+        Task<WorkflowStatusDto> UpdateStatusAsync(Guid id, UpdateWorkflowStatusDto input);
+        Task RemoveStatusAsync(Guid workflowId, Guid statusId);
+        Task<WorkflowStatusDto> GetStatusAsync(Guid id);
+        
+        // NEW: Transition management
+        Task<WorkflowTransitionDto> AddTransitionAsync(CreateWorkflowTransitionDto input);
+        Task<WorkflowTransitionDto> UpdateTransitionAsync(Guid id, UpdateWorkflowTransitionDto input);
+        Task RemoveTransitionAsync(Guid workflowId, Guid transitionId);
+        
+        // NEW: Validation
+        Task ValidateWorkflowAsync(Guid workflowId);
     }
 }

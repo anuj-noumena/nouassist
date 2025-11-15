@@ -1,0 +1,14 @@
+{
+  "culture": "en",
+  "texts": {
+    "InvestmentManagement:PortfolioNotActive": "Portfolio must be active to perform transactions.",
+    "InvestmentManagement:InsufficientCash": "Insufficient cash balance for this transaction.",
+    "InvestmentManagement:HoldingNotFound": "The specified holding was not found in the portfolio.",
+    "InvestmentManagement:InsufficientQuantity": "Insufficient quantity of holding to sell.",
+    "InvestmentManagement:AmountMustBePositive": "Amount must be greater than zero.",
+    "InvestmentManagement:InsufficientCashBalance": "Insufficient cash balance for withdrawal.",
+    "InvestmentManagement:QuantityMustBePositive": "Quantity must be greater than zero.",
+    "InvestmentManagement:InvalidSellQuantity": "Invalid sell quantity specified.",
+    "InvestmentManagement:TargetDateMustBeFuture": "Target date must be in the future."
+  }
+}

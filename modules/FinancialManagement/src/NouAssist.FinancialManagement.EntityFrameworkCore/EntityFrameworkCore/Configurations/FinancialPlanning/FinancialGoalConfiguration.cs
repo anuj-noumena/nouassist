@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
-using NouAssist.FinancialManagement.FinancialPlanning.Entities;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.FinancialPlanning
@@ -10,89 +11,67 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Finan
     {
         public void Configure(EntityTypeBuilder<FinancialGoal> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "FinancialGoals",
                 FinancialManagementDbProperties.DbSchema);
 
+            builder.ConfigureByConvention();
+
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.UserId).IsRequired();
-            builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
+            
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(FinancialConsts.MaxNameLength);
 
             builder.Property(x => x.Type)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            // MonetaryValue - TargetAmount
-            builder.OwnsOne(x => x.TargetAmount, target =>
+            // TargetAmount value object
+            builder.OwnsOne(x => x.TargetAmount, ta =>
             {
-                target.Property(t => t.Amount)
+                ta.Property(m => m.Amount)
                     .HasColumnName("TargetAmount")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                target.Property(t => t.Currency)
-                    .HasColumnName("TargetCurrency")
+                
+                ta.Property(m => m.Currency)
+                    .HasColumnName("Currency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                target.Ignore(t => t.DecimalPlaces);
             });
 
-            builder.Property(x => x.TargetDate).IsRequired();
-
-            // MonetaryValue - CurrentAmount
-            builder.OwnsOne(x => x.CurrentAmount, current =>
+            // CurrentAmount value object
+            builder.OwnsOne(x => x.CurrentAmount, ca =>
             {
-                current.Property(c => c.Amount)
+                ca.Property(m => m.Amount)
                     .HasColumnName("CurrentAmount")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                current.Property(c => c.Currency)
-                    .HasColumnName("CurrentCurrency")
+                
+                ca.Property(m => m.Currency)
+                    .HasColumnName("CurrentAmountCurrency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                current.Ignore(c => c.DecimalPlaces);
             });
 
+            builder.Property(x => x.TargetDate).IsRequired();
+            
             builder.Property(x => x.Status)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(50);
 
-            builder.Property(x => x.Description).HasMaxLength(1000);
+            builder.Property(x => x.Description)
+                .HasMaxLength(FinancialConsts.MaxDescriptionLength);
 
-            // Relationships
-            builder.HasMany<GoalContribution>()
-                .WithOne()
-                .HasForeignKey(c => c.GoalId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasIndex(x => x.UserId);
+            builder.HasIndex(x => x.Status);
 
-            // Indexes
-            builder.HasIndex(x => x.UserId)
-                .HasDatabaseName("IX_FinancialGoals_UserId");
-
-            builder.HasIndex(x => x.Type)
-                .HasDatabaseName("IX_FinancialGoals_Type");
-
-            builder.HasIndex(x => x.Status)
-                .HasDatabaseName("IX_FinancialGoals_Status");
-
-            builder.HasIndex(x => x.TargetDate)
-                .HasDatabaseName("IX_FinancialGoals_TargetDate");
-
-            builder.HasIndex(x => new { x.UserId, x.Status })
-                .HasDatabaseName("IX_FinancialGoals_UserId_Status");
-
-            builder.HasIndex(x => x.TenantId)
-                .HasDatabaseName("IX_FinancialGoals_TenantId");
+            builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
 }

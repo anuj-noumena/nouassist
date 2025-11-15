@@ -2,6 +2,7 @@
 using NouAssist.WorkManagement.Workflow.Aggregates;
 using NouAssist.WorkManagement.Workflow.Dtos;
 using NouAssist.WorkManagement.Workflow.Entities;
+using System.Text.Json;
 
 namespace NouAssist.WorkManagement.Workflow;
 
@@ -23,12 +24,13 @@ public class WorkflowApplicationAutoMapperProfile : Profile
             .ForMember(dest => dest.IsBlocked, opt => opt.MapFrom(src => src.IsBlocked))
             .ForMember(dest => dest.IsTerminal, opt => opt.MapFrom(src => src.IsTerminal));
 
-        // WorkflowTransition Entity
+        // WorkflowTransition Entity - UPDATED
         CreateMap<WorkflowTransition, WorkflowTransitionDto>()
+            .ForMember(dest => dest.Purpose, opt => opt.MapFrom(src => src.Purpose))
             .ForMember(dest => dest.HasConditions, opt => opt.MapFrom(src => src.HasConditions))
             .ForMember(dest => dest.HasValidators, opt => opt.MapFrom(src => src.HasValidators))
-            .ForMember(dest => dest.HasRestrictions, opt => opt.MapFrom(src => src.HasRestrictions))
             .ForMember(dest => dest.Actions, opt => opt.MapFrom(src => src.Actions));
+        // Note: Removed AllowedRoles, AllowedUserIds, HasRestrictions mappings
 
         // WorkflowAction Entity
         CreateMap<WorkflowAction, WorkflowActionDto>()
@@ -41,16 +43,32 @@ public class WorkflowApplicationAutoMapperProfile : Profile
         // WorkflowSchemeMapping Entity
         CreateMap<WorkflowSchemeMapping, WorkflowSchemeMappingDto>();
 
-        // WorkflowCustomField Entity
-        CreateMap<WorkflowCustomField, WorkflowCustomFieldDto>();
-        
-        // TransitionPermissionPolicy Aggregate
+        // WorkflowCustomField Entity - UPDATED with custom mapping
+        CreateMap<WorkflowCustomField, WorkflowCustomFieldDto>()
+            .ForMember(dest => dest.VisibilityRules, opt => opt.MapFrom(src =>
+                string.IsNullOrEmpty(src.VisibilityRules)
+                    ? new FieldVisibilityRulesDto()
+                    : JsonSerializer.Deserialize<FieldVisibilityRulesDto>(src.VisibilityRules)))
+            .ForMember(dest => dest.ValidationRules, opt => opt.MapFrom(src =>
+                string.IsNullOrEmpty(src.ValidationRules)
+                    ? new FieldValidationRulesDto()
+                    : JsonSerializer.Deserialize<FieldValidationRulesDto>(src.ValidationRules)));
 
+        // DTO to Entity mappings for WorkflowCustomField
+        CreateMap<FieldVisibilityRulesDto, FieldVisibilityRules>();
+        CreateMap<FieldVisibilityRules, FieldVisibilityRulesDto>();
+
+        CreateMap<FieldValidationRulesDto, FieldValidationRules>();
+        CreateMap<FieldValidationRules, FieldValidationRulesDto>();
+
+        // TransitionPermissionPolicy Aggregate
         CreateMap<TransitionPermissionPolicy, TransitionPermissionPolicyDto>()
-            .ForMember(dest => dest.HasRestrictions, opt => opt.MapFrom(src => src.HasRestrictions));
-        
-        CreateMap<CreateTransitionPermissionPolicyDto, TransitionPermissionPolicy>();
-        CreateMap<UpdateTransitionPermissionPolicyDto, TransitionPermissionPolicy>();
+            .ForMember(dest => dest.HasRestrictions, opt => opt.MapFrom(src => src.HasRestrictions))
+            .ForMember(dest => dest.AllowedRoles, opt => opt.MapFrom(src => src.AllowedRoles))
+            .ForMember(dest => dest.AllowedUserIds, opt => opt.MapFrom(src => src.AllowedUserIds));
+
+        CreateMap<CreateWorkflowStatusDto, WorkflowStatus>();
+        CreateMap<CreateWorkflowTransitionDto, WorkflowTransition>();
+        CreateMap<CreateWorkflowActionDto, WorkflowAction>();
     }
 }
-

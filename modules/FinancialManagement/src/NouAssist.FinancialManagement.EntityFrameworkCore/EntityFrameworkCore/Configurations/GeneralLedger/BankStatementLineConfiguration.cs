@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.GeneralLedger.Entities;
-using Volo.Abp.EntityFrameworkCore.Modeling;
+using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.Shared.Constants;
 
 namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.GeneralLedger
 {
@@ -9,50 +10,45 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.Configurations.Gener
     {
         public void Configure(EntityTypeBuilder<BankStatementLine> builder)
         {
-            builder.ConfigureByConvention();
-
             builder.ToTable(
                 FinancialManagementDbProperties.DbTablePrefix + "BankStatementLines",
                 FinancialManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
-            // Properties
             builder.Property(x => x.StatementId).IsRequired();
             builder.Property(x => x.TransactionDate).IsRequired();
-            builder.Property(x => x.Description).IsRequired().HasMaxLength(500);
-            builder.Property(x => x.ReferenceNumber).HasMaxLength(100);
+            
+            builder.Property(x => x.Description)
+                .IsRequired()
+                .HasMaxLength(FinancialConsts.MaxDescriptionLength);
 
-            // MonetaryValue - Amount
-            builder.OwnsOne(x => x.Amount, amount =>
+            // Amount value object
+            builder.OwnsOne(x => x.Amount, a =>
             {
-                amount.Property(a => a.Amount)
+                a.Property(m => m.Amount)
                     .HasColumnName("Amount")
                     .HasPrecision(18, 4)
                     .IsRequired();
-
-                amount.Property(a => a.Currency)
+                
+                a.Property(m => m.Currency)
                     .HasColumnName("Currency")
                     .HasMaxLength(3)
                     .IsRequired();
-
-                amount.Ignore(a => a.DecimalPlaces);
             });
 
-            builder.Property(x => x.MatchStatus)
-                .IsRequired()
-                .HasConversion<string>()
-                .HasMaxLength(50);
+            builder.Property(x => x.ReferenceNumber)
+                .HasMaxLength(FinancialConsts.MaxReferenceLength);
+
+            builder.Property(x => x.IsMatched).IsRequired();
+            builder.Property(x => x.MatchedJournalBatchId);
+            builder.Property(x => x.MatchedBy);
+            builder.Property(x => x.MatchedDate);
 
             // Indexes
-            builder.HasIndex(x => x.StatementId)
-                .HasDatabaseName("IX_BankStatementLines_StatementId");
-
-            builder.HasIndex(x => x.TransactionDate)
-                .HasDatabaseName("IX_BankStatementLines_TransactionDate");
-
-            builder.HasIndex(x => x.MatchStatus)
-                .HasDatabaseName("IX_BankStatementLines_MatchStatus");
+            builder.HasIndex(x => x.StatementId);
+            builder.HasIndex(x => x.IsMatched);
+            builder.HasIndex(x => x.TransactionDate);
         }
     }
 }

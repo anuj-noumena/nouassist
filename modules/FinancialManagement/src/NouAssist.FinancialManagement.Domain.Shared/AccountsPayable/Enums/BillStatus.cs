@@ -5,8 +5,9 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Enums
         Draft = 1,
         PendingApproval = 2,
         Approved = 3,
-        Paid = 4,
-        Overdue = 5,
-        Cancelled = 6
+        Scheduled = 4,
+        Paid = 5,
+        Overdue = 6,
+        Cancelled = 7
     }
 }

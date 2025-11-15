@@ -10,20 +10,22 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos
         public Guid? TenantId { get; set; }
         public string Name { get; set; }
         public string Goal { get; set; }
-        public string ReleaseTheme { get; set; }
 
+        // Timeline (from value object)
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public DateTime? ActualStartDate { get; set; }
+        public DateTime? ActualEndDate { get; set; }
 
+        // Metrics (from value object)
         public int PlannedStoryPoints { get; set; }
         public int CompletedStoryPoints { get; set; }
         public int VelocityEstimate { get; set; }
         public int ActualVelocity { get; set; }
 
         public SprintStatus Status { get; set; }
-        public DateTime? CompletedAt { get; set; }
-        public string CompletedBy { get; set; }
         public string RetrospectiveNotes { get; set; }
+        public string ReviewNotes { get; set; }
 
         // Computed
         public int DurationInDays { get; set; }

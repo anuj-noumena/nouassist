@@ -1,14 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
-using NouAssist.FinancialManagement.AccountsPayable.Data;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
-using NouAssist.FinancialManagement.AccountsReceivable.Data;
 using NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.AccountsPayable;
 using NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.AccountsReceivable;
-using NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.FinancialPlanning;
 using NouAssist.FinancialManagement.EntityFrameworkCore.Repositories.GeneralLedger;
-using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
-using NouAssist.FinancialManagement.FinancialPlanning.Data;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using NouAssist.FinancialManagement.GeneralLedger.Data;
 using Volo.Abp.EntityFrameworkCore;
@@ -27,37 +22,24 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore
         {
             context.Services.AddAbpDbContext<FinancialManagementDbContext>(options =>
             {
-                // General Ledger Repositories
+                // Register custom repositories
                 options.AddRepository<LedgerAccount, EfCoreLedgerAccountRepository>();
-                options.AddRepository<JournalEntryBatch, EfCoreJournalEntryRepository>();
+                options.AddRepository<JournalEntryBatch, EfCoreJournalEntryBatchRepository>();
                 options.AddRepository<AccountingPeriod, EfCoreAccountingPeriodRepository>();
-
-                // Accounts Payable Repositories
-                options.AddRepository<Vendor, EfCoreVendorRepository>();
+                
                 options.AddRepository<Bill, EfCoreBillRepository>();
-
-                // Accounts Receivable Repositories
-                options.AddRepository<Customer, EfCoreCustomerRepository>();
+                options.AddRepository<Vendor, EfCoreRepository<IFinancialManagementDbContext, Vendor, Guid>>();
+                
                 options.AddRepository<Invoice, EfCoreInvoiceRepository>();
-                options.AddDefaultRepository<CustomerPayment>();
-                options.AddDefaultRepository<CreditMemo>();
-                options.AddDefaultRepository<CollectionCase>();
+                options.AddRepository<Customer, EfCoreRepository<IFinancialManagementDbContext, Customer, Guid>>();
 
-                // Financial Planning Repositories
-                options.AddRepository<Expense, EfCoreExpenseRepository>();
-                options.AddRepository<Budget, EfCoreBudgetRepository>();
-                options.AddRepository<FinancialGoal, EfCoreFinancialGoalRepository>();
-
-                // Enable default repositories for other aggregates
+                // Add default repositories for other aggregates
                 options.AddDefaultRepositories(includeAllEntities: false);
             });
 
             Configure<AbpDbContextOptions>(options =>
             {
-                options.Configure<FinancialManagementDbContext>(ctx =>
-                {
-                    ctx.UseNpgsql();
-                });
+                options.UseNpgsql();
             });
         }
     }

@@ -16,9 +16,13 @@ namespace NouAssist.WorkManagement.ProjectManagement.Projects.Validators
                 .MaximumLength(ProjectDomainConstants.MaxDescriptionLength)
                 .When(x => !string.IsNullOrWhiteSpace(x.Description));
 
-            RuleFor(x => x.Summary)
-                .MaximumLength(ProjectDomainConstants.MaxSummaryLength)
-                .When(x => !string.IsNullOrWhiteSpace(x.Summary));
+            RuleFor(x => x.Vision)
+                .MaximumLength(ProjectDomainConstants.MaxDescriptionLength)
+                .When(x => !string.IsNullOrWhiteSpace(x.Vision));
+
+            RuleFor(x => x.Purpose)
+                .MaximumLength(ProjectDomainConstants.MaxDescriptionLength)
+                .When(x => !string.IsNullOrWhiteSpace(x.Purpose));
 
             RuleFor(x => x.ExpectedOutcome)
                 .MaximumLength(ProjectDomainConstants.MaxDescriptionLength)

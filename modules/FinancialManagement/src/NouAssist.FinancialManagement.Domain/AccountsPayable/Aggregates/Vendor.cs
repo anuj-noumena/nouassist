@@ -1,5 +1,4 @@
 using System;
-using NouAssist.FinancialManagement.AccountsPayable.ValueObjects;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -11,79 +10,68 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
     {
         public Guid? TenantId { get; private set; }
         public string Name { get; private set; }
-        public string TaxId { get; private set; }
-        public ContactInfo ContactInfo { get; private set; }
-        public PaymentTerms DefaultTerms { get; private set; }
-        public PaymentMethod PreferredMethod { get; private set; }
-        public bool IsActive { get; private set; }
+        public TaxId TaxId { get; private set; }
+        public string Email { get; private set; }
+        public string Phone { get; private set; }
+        public string Address { get; private set; }
+        public int PaymentTermsDays { get; private set; }
+        public string PreferredPaymentMethod { get; private set; }
         public MonetaryValue CreditLimit { get; private set; }
-        public MonetaryValue CurrentBalance { get; private set; }
+        public bool IsActive { get; private set; }
 
-        protected Vendor() { } // For ORM
+        protected Vendor() { }
 
         public Vendor(
             Guid id,
             Guid? tenantId,
             string name,
-            ContactInfo contactInfo,
-            PaymentTerms defaultTerms,
-            PaymentMethod preferredMethod,
-            MonetaryValue creditLimit = null,
-            string taxId = null)
-            : base(id)
+            TaxId taxId,
+            string email,
+            int paymentTermsDays = 30,
+            string preferredPaymentMethod = "ACH") : base(id)
         {
             TenantId = tenantId;
-            Name = Check.NotNullOrWhiteSpace(name, nameof(name), 200);
+            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             TaxId = taxId;
-            ContactInfo = Check.NotNull(contactInfo, nameof(contactInfo));
-            DefaultTerms = Check.NotNull(defaultTerms, nameof(defaultTerms));
-            PreferredMethod = preferredMethod;
+            Email = Check.NotNullOrWhiteSpace(email, nameof(email));
+            PaymentTermsDays = paymentTermsDays;
+            PreferredPaymentMethod = preferredPaymentMethod;
             IsActive = true;
-            CreditLimit = creditLimit ?? new MonetaryValue(0, "USD");
-            CurrentBalance = new MonetaryValue(0, "USD");
+            CreditLimit = MonetaryValue.Zero("USD");
         }
 
-        public void UpdateContactInfo(ContactInfo newContactInfo)
+        public void UpdateContactInfo(string email, string phone, string address)
         {
-            ContactInfo = Check.NotNull(newContactInfo, nameof(newContactInfo));
+            Email = Check.NotNullOrWhiteSpace(email, nameof(email));
+            Phone = phone;
+            Address = address;
         }
 
-        public void UpdatePaymentTerms(PaymentTerms newTerms, PaymentMethod? newMethod = null)
+        public void SetPaymentTerms(int days, string method)
         {
-            DefaultTerms = Check.NotNull(newTerms, nameof(newTerms));
-            if (newMethod.HasValue)
-                PreferredMethod = newMethod.Value;
+            if (days < 0)
+                throw new BusinessException("AP:InvalidPaymentTerms", 
+                    "Payment terms cannot be negative");
+
+            PaymentTermsDays = days;
+            PreferredPaymentMethod = method;
         }
 
-        public void UpdateCreditLimit(MonetaryValue newLimit)
+        public void SetCreditLimit(MonetaryValue limit)
         {
-            if (newLimit.IsNegative)
-                throw new BusinessException("AccountsPayable:NegativeCreditLimit",
+            if (limit.IsNegative)
+                throw new BusinessException("AP:InvalidCreditLimit", 
                     "Credit limit cannot be negative");
 
-            CreditLimit = newLimit;
-        }
-
-        public void AddToBalance(MonetaryValue amount)
-        {
-            CurrentBalance = CurrentBalance.Add(amount);
-        }
-
-        public void SubtractFromBalance(MonetaryValue amount)
-        {
-            CurrentBalance = CurrentBalance.Subtract(amount);
+            CreditLimit = limit;
         }
 
         public void Deactivate()
         {
-            if (CurrentBalance.Amount > 0)
-                throw new BusinessException("AccountsPayable:VendorHasBalance",
-                    "Cannot deactivate vendor with outstanding balance");
-
             IsActive = false;
         }
 
-        public void Reactivate()
+        public void Activate()
         {
             IsActive = true;
         }

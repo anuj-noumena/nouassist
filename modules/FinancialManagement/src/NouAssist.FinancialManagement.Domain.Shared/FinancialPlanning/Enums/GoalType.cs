@@ -6,6 +6,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Enums
         DebtReduction = 2,
         Investment = 3,
         Purchase = 4,
-        Emergency = 5
+        Emergency = 5,
+        Retirement = 6
     }
 }

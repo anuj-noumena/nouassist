@@ -1,0 +1,286 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'paged_result_dto.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$PagedResultDto<T> {
+
+ List<T> get items; int get totalCount;
+/// Create a copy of PagedResultDto
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PagedResultDtoCopyWith<T, PagedResultDto<T>> get copyWith => _$PagedResultDtoCopyWithImpl<T, PagedResultDto<T>>(this as PagedResultDto<T>, _$identity);
+
+  /// Serializes this PagedResultDto to a JSON map.
+  Map<String, dynamic> toJson(Object? Function(T) toJsonT);
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PagedResultDto<T>&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(items),totalCount);
+
+@override
+String toString() {
+  return 'PagedResultDto<$T>(items: $items, totalCount: $totalCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PagedResultDtoCopyWith<T,$Res>  {
+  factory $PagedResultDtoCopyWith(PagedResultDto<T> value, $Res Function(PagedResultDto<T>) _then) = _$PagedResultDtoCopyWithImpl;
+@useResult
+$Res call({
+ List<T> items, int totalCount
+});
+
+
+
+
+}
+/// @nodoc
+class _$PagedResultDtoCopyWithImpl<T,$Res>
+    implements $PagedResultDtoCopyWith<T, $Res> {
+  _$PagedResultDtoCopyWithImpl(this._self, this._then);
+
+  final PagedResultDto<T> _self;
+  final $Res Function(PagedResultDto<T>) _then;
+
+/// Create a copy of PagedResultDto
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? items = null,Object? totalCount = null,}) {
+  return _then(_self.copyWith(
+items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
+as List<T>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PagedResultDto].
+extension PagedResultDtoPatterns<T> on PagedResultDto<T> {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _PagedResultDto<T> value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _PagedResultDto() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _PagedResultDto<T> value)  $default,){
+final _that = this;
+switch (_that) {
+case _PagedResultDto():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _PagedResultDto<T> value)?  $default,){
+final _that = this;
+switch (_that) {
+case _PagedResultDto() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<T> items,  int totalCount)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _PagedResultDto() when $default != null:
+return $default(_that.items,_that.totalCount);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<T> items,  int totalCount)  $default,) {final _that = this;
+switch (_that) {
+case _PagedResultDto():
+return $default(_that.items,_that.totalCount);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<T> items,  int totalCount)?  $default,) {final _that = this;
+switch (_that) {
+case _PagedResultDto() when $default != null:
+return $default(_that.items,_that.totalCount);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable(genericArgumentFactories: true)
+
+class _PagedResultDto<T> implements PagedResultDto<T> {
+  const _PagedResultDto({required final  List<T> items, required this.totalCount}): _items = items;
+  factory _PagedResultDto.fromJson(Map<String, dynamic> json,T Function(Object?) fromJsonT) => _$PagedResultDtoFromJson(json,fromJsonT);
+
+ final  List<T> _items;
+@override List<T> get items {
+  if (_items is EqualUnmodifiableListView) return _items;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_items);
+}
+
+@override final  int totalCount;
+
+/// Create a copy of PagedResultDto
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$PagedResultDtoCopyWith<T, _PagedResultDto<T>> get copyWith => __$PagedResultDtoCopyWithImpl<T, _PagedResultDto<T>>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
+  return _$PagedResultDtoToJson<T>(this, toJsonT);
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PagedResultDto<T>&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_items),totalCount);
+
+@override
+String toString() {
+  return 'PagedResultDto<$T>(items: $items, totalCount: $totalCount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$PagedResultDtoCopyWith<T,$Res> implements $PagedResultDtoCopyWith<T, $Res> {
+  factory _$PagedResultDtoCopyWith(_PagedResultDto<T> value, $Res Function(_PagedResultDto<T>) _then) = __$PagedResultDtoCopyWithImpl;
+@override @useResult
+$Res call({
+ List<T> items, int totalCount
+});
+
+
+
+
+}
+/// @nodoc
+class __$PagedResultDtoCopyWithImpl<T,$Res>
+    implements _$PagedResultDtoCopyWith<T, $Res> {
+  __$PagedResultDtoCopyWithImpl(this._self, this._then);
+
+  final _PagedResultDto<T> _self;
+  final $Res Function(_PagedResultDto<T>) _then;
+
+/// Create a copy of PagedResultDto
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? items = null,Object? totalCount = null,}) {
+  return _then(_PagedResultDto<T>(
+items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
+as List<T>,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+// dart format on

@@ -61,49 +61,119 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
-            label: 'Dashboard',
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final bool isLargeScreen = constraints.maxWidth >= 600;
+
+        return Scaffold(
+          body: Row(
+            children: [
+              if (isLargeScreen)
+                NavigationRail(
+                  extended: constraints.maxWidth >= 900,
+                  selectedIndex: _selectedIndex,
+                  onDestinationSelected: (index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  },
+                  labelType: constraints.maxWidth >= 900
+                      ? NavigationRailLabelType.none
+                      : NavigationRailLabelType.all,
+                  destinations: const [
+                    NavigationRailDestination(
+                      icon: Icon(Icons.dashboard_outlined),
+                      selectedIcon: Icon(Icons.dashboard),
+                      label: Text('Dashboard'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.task_outlined),
+                      selectedIcon: Icon(Icons.task),
+                      label: Text('Tasks'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.view_column_outlined),
+                      selectedIcon: Icon(Icons.view_column),
+                      label: Text('Board'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.calendar_today_outlined),
+                      selectedIcon: Icon(Icons.calendar_today),
+                      label: Text('Calendar'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.check_circle_outline),
+                      selectedIcon: Icon(Icons.check_circle),
+                      label: Text('GTD'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.school_outlined),
+                      selectedIcon: Icon(Icons.school),
+                      label: Text('Learning'),
+                    ),
+                  ],
+                  leading: isLargeScreen
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: FloatingActionButton(
+                            elevation: 0,
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            child: const Icon(Icons.menu),
+                          ),
+                        )
+                      : null,
+                ),
+              const VerticalDivider(thickness: 1, width: 1),
+              Expanded(
+                child: _screens[_selectedIndex],
+              ),
+            ],
           ),
-          NavigationDestination(
-            icon: Icon(Icons.task_outlined),
-            selectedIcon: Icon(Icons.task),
-            label: 'Tasks',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.view_column_outlined),
-            selectedIcon: Icon(Icons.view_column),
-            label: 'Board',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.calendar_today_outlined),
-            selectedIcon: Icon(Icons.calendar_today),
-            label: 'Calendar',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.check_circle_outline),
-            selectedIcon: Icon(Icons.check_circle),
-            label: 'GTD',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.school_outlined),
-            selectedIcon: Icon(Icons.school),
-            label: 'Learning',
-          ),
-        ],
-      ),
-      drawer: Drawer(
+          bottomNavigationBar: isLargeScreen
+              ? null
+              : NavigationBar(
+                  selectedIndex: _selectedIndex,
+                  onDestinationSelected: (index) {
+                    setState(() {
+                      _selectedIndex = index;
+                    });
+                  },
+                  destinations: const [
+                    NavigationDestination(
+                      icon: Icon(Icons.dashboard_outlined),
+                      selectedIcon: Icon(Icons.dashboard),
+                      label: 'Dashboard',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.task_outlined),
+                      selectedIcon: Icon(Icons.task),
+                      label: 'Tasks',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.view_column_outlined),
+                      selectedIcon: Icon(Icons.view_column),
+                      label: 'Board',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.calendar_today_outlined),
+                      selectedIcon: Icon(Icons.calendar_today),
+                      label: 'Calendar',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.check_circle_outline),
+                      selectedIcon: Icon(Icons.check_circle),
+                      label: 'GTD',
+                    ),
+                    NavigationDestination(
+                      icon: Icon(Icons.school_outlined),
+                      selectedIcon: Icon(Icons.school),
+                      label: 'Learning',
+                    ),
+                  ],
+                ),
+          drawer: Drawer(
         child: ListView(
           children: [
             const DrawerHeader(
@@ -294,6 +364,8 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+        );
+      },
     );
   }
 }

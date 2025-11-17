@@ -13,10 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
 {
     public class EfCoreWorkflowCustomFieldRepository
-        : EfCoreRepository<IWorkflowDbContext, WorkflowCustomField, Guid>, IWorkflowCustomFieldRepository
+        : EfCoreRepository<IWorkManagementDbContext, WorkflowCustomField, Guid>, IWorkflowCustomFieldRepository
     {
         public EfCoreWorkflowCustomFieldRepository(
-            IDbContextProvider<IWorkflowDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

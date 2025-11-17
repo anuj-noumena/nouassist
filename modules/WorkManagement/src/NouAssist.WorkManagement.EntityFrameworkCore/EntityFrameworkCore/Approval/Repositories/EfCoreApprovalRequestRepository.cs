@@ -14,11 +14,11 @@ using Volo.Abp.Specifications;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
 {
     public class EfCoreApprovalRequestRepository 
-        : EfCoreRepository<IApprovalDbContext, ApprovalRequest, Guid>, 
+        : EfCoreRepository<IWorkManagementDbContext, ApprovalRequest, Guid>, 
           IApprovalRequestRepository
     {
         public EfCoreApprovalRequestRepository(
-            IDbContextProvider<IApprovalDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

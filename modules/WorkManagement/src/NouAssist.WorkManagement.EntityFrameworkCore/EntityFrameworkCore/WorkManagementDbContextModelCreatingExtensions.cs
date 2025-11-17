@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement;
 using Volo.Abp;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore;
@@ -9,6 +10,8 @@ public static class WorkManagementDbContextModelCreatingExtensions
         this ModelBuilder builder)
     {
         Check.NotNull(builder, nameof(builder));
+
+        builder.ApplyConfigurationsFromAssembly(typeof(WorkManagementDbContext).Assembly);
 
         /* Configure all entities here. Example:
 

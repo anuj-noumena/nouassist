@@ -8,7 +8,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
     {
         public void Configure(EntityTypeBuilder<WorkflowSchemeMapping> builder)
         {
-            builder.ToTable(WorkflowDbProperties.DbTablePrefix + "SchemeMappings", WorkflowDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "SchemeMappings", WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

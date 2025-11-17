@@ -40,13 +40,4 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         public CreateComplexityEstimationDto DefaultComplexityEstimation { get; set; }
         public CognitiveLoad? DefaultCognitiveLoad { get; set; }
     }
-
-    public class CreateComplexityEstimationDto
-    {
-        [Required]
-        public int Value { get; set; }
-
-        [Required]
-        public ComplexityScale Scale { get; set; }
-    }
 }

@@ -14,9 +14,9 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
 {
     public class EfCoreApprovalAnalyticsRepository : IApprovalAnalyticsRepository, ITransientDependency
     {
-        private readonly IDbContextProvider<IApprovalDbContext> _dbContextProvider;
+        private readonly IDbContextProvider<IWorkManagementDbContext> _dbContextProvider;
 
-        public EfCoreApprovalAnalyticsRepository(IDbContextProvider<IApprovalDbContext> dbContextProvider)
+        public EfCoreApprovalAnalyticsRepository(IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
         {
             _dbContextProvider = dbContextProvider;
         }

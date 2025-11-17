@@ -11,8 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(TasksDbProperties.DbTablePrefix + "TaskTypes",
-                          TasksDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "TaskTypes",
+                          WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

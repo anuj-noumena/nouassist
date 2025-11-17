@@ -14,10 +14,10 @@ using Volo.Abp.Specifications;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Repositories
 {
     public class EfCoreReviewRepository 
-        : EfCoreRepository<IReviewsDbContext, Review, Guid>, IReviewRepository
+        : EfCoreRepository<IWorkManagementDbContext, Review, Guid>, IReviewRepository
     {
         public EfCoreReviewRepository(
-            IDbContextProvider<IReviewsDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

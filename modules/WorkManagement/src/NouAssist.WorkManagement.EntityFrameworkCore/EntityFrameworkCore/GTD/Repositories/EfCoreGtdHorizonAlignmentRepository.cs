@@ -5,16 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD.Repositories
 {
     public class EfCoreGtdHorizonAlignmentRepository 
-        : EfCoreRepository<IGtdDbContext, GtdHorizonAlignment, Guid>, IGtdHorizonAlignmentRepository
+        : EfCoreRepository<IWorkManagementDbContext, GtdHorizonAlignment, Guid>, IGtdHorizonAlignmentRepository
     {
         public EfCoreGtdHorizonAlignmentRepository(
-            IDbContextProvider<IGtdDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

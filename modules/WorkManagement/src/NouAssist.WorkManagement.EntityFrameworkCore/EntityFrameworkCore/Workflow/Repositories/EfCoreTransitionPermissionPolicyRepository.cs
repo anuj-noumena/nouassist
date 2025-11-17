@@ -7,17 +7,18 @@ using Microsoft.EntityFrameworkCore;
 using NouAssist.WorkManagement.Workflow.Aggregates;
 using NouAssist.WorkManagement.Workflow.Data;
 using NouAssist.WorkManagement.Workflow.Enums;
+using NouAssist.WorkManagement.Workflow.ValueObjects;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
 {
     public class EfCoreTransitionPermissionPolicyRepository
-        : EfCoreRepository<IWorkflowDbContext, TransitionPermissionPolicy, Guid>,
+        : EfCoreRepository<IWorkManagementDbContext, TransitionPermissionPolicy, Guid>,
           ITransitionPermissionPolicyRepository
     {
         public EfCoreTransitionPermissionPolicyRepository(
-            IDbContextProvider<IWorkflowDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
@@ -153,11 +154,12 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
             CancellationToken cancellationToken = default)
         {
             var dbSet = await GetDbSetAsync();
-            
+            var userIdCheck = new AllowedUserId(userId);
             try
             {
+                
                 return await dbSet
-                    .Where(p => p.IsActive && p.AllowedUserIds.Contains(userId))
+                    .Where(p => p.IsActive && p.AllowedUserIds.Contains(userIdCheck))
                     .OrderByDescending(p => p.Priority)
                     .ToListAsync(cancellationToken);
             }
@@ -169,7 +171,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Repositories
                     .ToListAsync(cancellationToken);
 
                 return allPolicies
-                    .Where(p => p.AllowedUserIds.Contains(userId))
+                    .Where(p => p.AllowedUserIds.Contains(userIdCheck))
                     .OrderByDescending(p => p.Priority)
                     .ToList();
             }

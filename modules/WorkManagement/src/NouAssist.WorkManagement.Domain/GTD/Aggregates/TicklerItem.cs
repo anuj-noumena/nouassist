@@ -13,19 +13,19 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
     {
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; set; }
         public string? Description { get; set; }
         public string? Notes { get; set; }
         public DateTime TickleDate { get; private set; }
-        public TimeSpan? TickleTime { get; private set; }
+        public TimeSpan? TickleTime { get; set; }
         public TicklerStatus Status { get; private set; }
         public DateTime? SurfacedAt { get; private set; }
         public DateTime? ActionedAt { get; private set; }
         public DateTime? DismissedAt { get; private set; }
         public DateTime? SnoozeUntil { get; private set; }
         public TicklerActionType? ActionType { get; private set; }
-        public ImportanceScore Importance { get; private set; }
-        public UrgencyScore Urgency { get; private set; }
+        public ImportanceScore Importance { get; set; }
+        public UrgencyScore Urgency { get; set; }
         public bool IsRecurring { get; private set; }
         public RecurrenceRule? RecurrencePattern { get; private set; }
         public Guid? ContextId { get; set; }

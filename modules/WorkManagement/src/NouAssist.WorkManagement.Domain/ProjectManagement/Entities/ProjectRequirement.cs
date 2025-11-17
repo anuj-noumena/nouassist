@@ -1,11 +1,13 @@
 using System;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp;
+using Volo.Abp.Data;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Entities
 {
-    public class ProjectRequirement : FullAuditedEntity<Guid>
+    public class ProjectRequirement : FullAuditedEntity<Guid>, IHasConcurrencyStamp, IHasExtraProperties
     {
         public Guid ProjectId { get; private set; }
         public string Title { get; private set; }
@@ -83,5 +85,8 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
         {
             Status = ProjectRequirementStatus.Rejected;
         }
+
+        public string ConcurrencyStamp { get; set; }
+        public ExtraPropertyDictionary ExtraProperties { get; }
     }
 }

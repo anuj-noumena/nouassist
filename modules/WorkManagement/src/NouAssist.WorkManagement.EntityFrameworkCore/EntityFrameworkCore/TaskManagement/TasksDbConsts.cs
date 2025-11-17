@@ -29,5 +29,9 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement
         public const int MaxResolutionNoteLength = 2000;
         public const int MaxBlockedReasonLength = 1000;
         public const int MaxFlaggedReasonLength = 1000;
+        
+        // TaskActionStep
+        public const int MaxStepTitleLength = 500;
+        public const int MaxStepNotesLength = 2000;
     }
 }

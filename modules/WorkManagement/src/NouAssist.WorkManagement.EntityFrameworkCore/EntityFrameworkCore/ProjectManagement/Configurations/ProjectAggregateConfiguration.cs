@@ -13,7 +13,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable("Projects", "Projects");
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "Projects", WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -136,9 +136,9 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
             builder.OwnsMany(x => x.SuccessCriteria, successCriteria =>
             {
                 successCriteria.ToTable("ProjectSuccessCriteria", "Projects");
-                
+
                 successCriteria.WithOwner().HasForeignKey("ProjectId");
-                
+
                 successCriteria.Property<Guid>("Id").ValueGeneratedNever();
                 successCriteria.HasKey("Id");
 
@@ -215,7 +215,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
                     .HasColumnName("Metadata")
                     .HasColumnType("jsonb");
 
-                successCriteria.ConfigureByConvention();
+                //successCriteria.ConfigureByConvention();
             });
 
             // Extra Properties

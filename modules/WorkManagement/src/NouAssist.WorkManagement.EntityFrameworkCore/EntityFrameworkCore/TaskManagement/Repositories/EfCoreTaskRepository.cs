@@ -14,10 +14,10 @@ using Task = NouAssist.WorkManagement.TaskManagement.Aggregates.Task;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositories
 {
     public class EfCoreTaskRepository 
-        : EfCoreRepository<ITasksDbContext, Aggregates_Task, Guid>, ITaskRepository
+        : EfCoreRepository<IWorkManagementDbContext, Aggregates_Task, Guid>, ITaskRepository
     {
         public EfCoreTaskRepository(
-            IDbContextProvider<ITasksDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

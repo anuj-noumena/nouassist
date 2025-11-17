@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.Core.ValueObjects;
-using NouAssist.GTD.Aggregates;
-using NouAssist.GTD.Dtos;
+using NouAssist.SharedKernel.ValueObjects;
+using NouAssist.WorkManagement.GTD.Aggregates;
+using NouAssist.WorkManagement.GTD.Dtos;
 
-namespace NouAssist.GTD
+namespace NouAssist.WorkManagement.GTD
 {
     public class GtdApplicationAutoMapperProfile : Profile
     {

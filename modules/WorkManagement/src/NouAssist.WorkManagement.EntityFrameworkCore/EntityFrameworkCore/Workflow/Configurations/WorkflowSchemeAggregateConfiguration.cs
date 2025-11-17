@@ -11,7 +11,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(WorkflowDbProperties.DbTablePrefix + "Schemes", WorkflowDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "Schemes", WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

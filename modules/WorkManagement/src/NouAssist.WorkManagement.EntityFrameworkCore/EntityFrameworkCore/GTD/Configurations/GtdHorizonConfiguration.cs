@@ -11,8 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(GtdDbProperties.DbTablePrefix + "Horizons",
-                            GtdDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "Horizons",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

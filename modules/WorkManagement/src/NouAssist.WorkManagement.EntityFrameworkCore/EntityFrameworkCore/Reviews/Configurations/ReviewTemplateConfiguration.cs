@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.Reviews.Aggregates;
@@ -11,8 +12,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(ReviewsDbProperties.DbTablePrefix + "ReviewTemplates",
-                           ReviewsDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "ReviewTemplates",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -52,7 +53,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Configurations
             builder.Property(x => x.ReflectionPrompts)
                 .HasConversion(
                     v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<string>>(v, (System.Text.Json.JsonSerializerOptions)null) ?? new List<string>()
+                    v => System.Text.Json.JsonSerializer.Deserialize<List<string>>(v,
+                        (System.Text.Json.JsonSerializerOptions)null) ?? new List<string>()
                 )
                 .HasColumnType("jsonb");
 

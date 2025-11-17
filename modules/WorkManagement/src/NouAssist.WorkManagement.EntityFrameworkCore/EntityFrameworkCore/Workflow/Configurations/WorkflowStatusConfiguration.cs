@@ -9,7 +9,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
     {
         public void Configure(EntityTypeBuilder<WorkflowStatus> builder)
         {
-            builder.ToTable(WorkflowDbProperties.DbTablePrefix + "Statuses", WorkflowDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "Statuses", WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

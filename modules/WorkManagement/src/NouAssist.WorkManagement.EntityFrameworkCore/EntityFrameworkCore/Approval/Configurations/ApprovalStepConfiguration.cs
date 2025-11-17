@@ -15,8 +15,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                ApprovalDbProperties.DbTablePrefix + "ApprovalSteps",
-                ApprovalDbProperties.DbSchema
+                WorkManagementDbProperties.DbTablePrefix + "ApprovalSteps",
+                WorkManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);
@@ -41,56 +41,63 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
                 .HasMaxLength(100);
 
             // Collection properties as JSON
-            builder.Property("_approverUserIds")
+
+            // **FIX 1:** Explicitly provide typeof(List<Guid>) to Serialize
+            builder.Property<List<Guid>>("_approverUserIds") // <-- Assumed you mean Property<T> for a private field
                 .HasColumnName("ApproverUserIds")
                 .HasColumnType("jsonb")
                 .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
+                    v => System.Text.Json.JsonSerializer.Serialize(v, typeof(List<Guid>), (System.Text.Json.JsonSerializerOptions)null),
                     v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
                 );
 
-            builder.Property("_approverRoleIds")
+            // **FIX 2:** Explicitly provide typeof(List<Guid>) to Serialize
+            builder.Property<List<Guid>>("_approverRoleIds") // <-- Assumed you mean Property<T> for a private field
                 .HasColumnName("ApproverRoleIds")
                 .HasColumnType("jsonb")
                 .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
+                    v => System.Text.Json.JsonSerializer.Serialize(v, typeof(List<Guid>), (System.Text.Json.JsonSerializerOptions)null),
                     v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
                 );
 
-            builder.Property("_approverTeamIds")
+            // **FIX 3:** Explicitly provide typeof(List<Guid>) to Serialize
+            builder.Property<List<Guid>>("_approverTeamIds") // <-- Assumed you mean Property<T> for a private field
                 .HasColumnName("ApproverTeamIds")
                 .HasColumnType("jsonb")
                 .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
+                    v => System.Text.Json.JsonSerializer.Serialize(v, typeof(List<Guid>), (System.Text.Json.JsonSerializerOptions)null),
                     v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
                 );
 
+            // **FIX 4:** Explicitly provide typeof(Dictionary<string, object>) to Serialize
             builder.Property(x => x.Conditions)
                 .HasColumnType("jsonb")
                 .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
+                    v => System.Text.Json.JsonSerializer.Serialize(v, typeof(Dictionary<string, object>), (System.Text.Json.JsonSerializerOptions)null),
                     v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null)
                 );
 
-            // CustomFields as CustomFieldValues value object stored as JSONB
+            // **FIX 5:** Explicitly provide typeof(Dictionary<string, object>) for v.GetValues()
             builder.Property(x => x.CustomFields)
                 .HasColumnName("CustomFields")
                 .HasColumnType("jsonb")
                 .HasConversion(
                     v => System.Text.Json.JsonSerializer.Serialize(
-                        v.GetValues(), 
+                        v.GetValues(),
+                        typeof(Dictionary<string, object>), // <-- Explicit type
                         (System.Text.Json.JsonSerializerOptions)null),
                     v => CustomFieldValues.Create(
                         System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(
-                            v, 
+                            v,
                             (System.Text.Json.JsonSerializerOptions)null))
                 )
                 .IsRequired();
 
+            // **FIX 6:** Explicitly provide typeof(Dictionary<string, object>) to Serialize
             builder.Property(x => x.Metadata)
                 .HasColumnType("jsonb")
                 .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
+                    v => System.Text.Json.JsonSerializer.Serialize(v, typeof(Dictionary<string, object>), (System.Text.Json.JsonSerializerOptions)null),
                     v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null)
                 );
 

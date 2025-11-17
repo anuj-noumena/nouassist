@@ -11,8 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(GtdDbProperties.DbTablePrefix + "HorizonAlignments",
-                            GtdDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "HorizonAlignments",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

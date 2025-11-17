@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace NouAssist.WorkManagement.Workflow.Entities
@@ -9,7 +10,7 @@ namespace NouAssist.WorkManagement.Workflow.Entities
     /// <summary>
     /// Simplified custom field configuration
     /// </summary>
-    public class WorkflowCustomField : FullAuditedEntity<Guid>
+    public class WorkflowCustomField : FullAuditedEntity<Guid>, IHasConcurrencyStamp
     {
         public Guid WorkflowSchemeId { get; private set; }
         public Guid CustomFieldDefinitionId { get; private set; }
@@ -61,6 +62,8 @@ namespace NouAssist.WorkManagement.Workflow.Entities
             var rules = JsonSerializer.Deserialize<FieldVisibilityRules>(VisibilityRules);
             return rules.IsVisibleInStatus(statusId);
         }
+
+        public string ConcurrencyStamp { get; set; }
     }
 
     // Supporting classes

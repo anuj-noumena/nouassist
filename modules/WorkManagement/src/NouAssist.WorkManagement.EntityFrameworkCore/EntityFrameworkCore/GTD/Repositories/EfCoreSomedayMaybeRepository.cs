@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
+using NouAssist.WorkManagement.GTD.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD.Repositories
 {
     public class EfCoreSomedayMaybeRepository 
-        : EfCoreRepository<IGtdDbContext, SomedayMaybeItem, Guid>, ISomedayMaybeRepository
+        : EfCoreRepository<IWorkManagementDbContext, SomedayMaybeItem, Guid>, ISomedayMaybeRepository
     {
         public EfCoreSomedayMaybeRepository(
-            IDbContextProvider<IGtdDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

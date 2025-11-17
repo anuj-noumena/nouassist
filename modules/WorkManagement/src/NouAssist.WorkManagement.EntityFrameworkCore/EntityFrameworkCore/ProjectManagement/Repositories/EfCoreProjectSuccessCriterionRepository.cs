@@ -12,11 +12,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Repositories
 {
     public class EfCoreProjectSuccessCriterionRepository 
-        : EfCoreRepository<IProjectsDbContext, ProjectSuccessCriterion, Guid>, 
+        : EfCoreRepository<IWorkManagementDbContext, ProjectSuccessCriterion, Guid>, 
           IProjectSuccessCriterionRepository
     {
         public EfCoreProjectSuccessCriterionRepository(
-            IDbContextProvider<IProjectsDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

@@ -11,7 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Configu
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable("ProjectDependencies", "Projects");
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "ProjectDependencies",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

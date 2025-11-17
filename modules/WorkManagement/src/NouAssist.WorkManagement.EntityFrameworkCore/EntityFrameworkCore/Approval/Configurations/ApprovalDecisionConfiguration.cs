@@ -10,8 +10,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
         public void Configure(EntityTypeBuilder<ApprovalDecision> builder)
         {
             builder.ToTable(
-                ApprovalDbProperties.DbTablePrefix + "ApprovalDecisions",
-                ApprovalDbProperties.DbSchema
+                WorkManagementDbProperties.DbTablePrefix + "ApprovalDecisions",
+                WorkManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);

@@ -1,19 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
 using NouAssist.WorkManagement.GTD.Dtos;
 using NouAssist.WorkManagement.GTD.Entities;
+using NouAssist.WorkManagement.GTD.Enums;
+using NouAssist.WorkManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.GTD.GTD
 {
-    [Authorize(GtdPermissions.SomedayMaybe.Default)]
+    [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Default)]
     public class SomedayMaybeAppService : ApplicationService, ISomedayMaybeAppService
     {
         private readonly ISomedayMaybeRepository _somedayMaybeRepository;
@@ -74,7 +78,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return new ListResultDto<SomedayMaybeItemDto>(dtos);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Create)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Create)]
         public async Task<SomedayMaybeItemDto> CreateAsync(CreateSomedayMaybeItemDto input)
         {
             var userId = CurrentUser.GetId();
@@ -99,7 +103,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> UpdateAsync(Guid id, UpdateSomedayMaybeItemDto input)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -120,13 +124,13 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Delete)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _somedayMaybeRepository.DeleteAsync(id);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Promote)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Promote)]
         public async Task<SomedayMaybeItemDto> PromoteAsync(Guid id, PromoteSomedayMaybeDto input)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -135,7 +139,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> ArchiveAsync(Guid id)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -144,7 +148,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> ActivateAsync(Guid id)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -153,7 +157,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Update)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Update)]
         public async Task<SomedayMaybeItemDto> PutOnHoldAsync(Guid id)
         {
             var item = await _somedayMaybeRepository.GetAsync(id);
@@ -162,7 +166,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
         }
 
-        [Authorize(GtdPermissions.SomedayMaybe.Review)]
+        [Authorize(WorkManagementPermissions.GTD.SomedayMaybe.Review)]
         public async Task<SomedayMaybeItemDto> ReviewAsync(Guid id, ReviewSomedayMaybeDto input)
         {
             var userId = CurrentUser.GetId();

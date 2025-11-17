@@ -8,7 +8,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
     {
         public void Configure(EntityTypeBuilder<WorkflowTransition> builder)
         {
-            builder.ToTable(WorkflowDbProperties.DbTablePrefix + "Transitions", WorkflowDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "Transitions",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -60,10 +61,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Workflow.Configurations
                 conditionsBuilder.Property(c => c.Operator).HasMaxLength(50);
             });
 
-            builder.OwnsOne(x => x.Validators, validatorsBuilder =>
-            {
-                validatorsBuilder.ToJson();
-            });
+            builder.OwnsOne(x => x.Validators, validatorsBuilder => { validatorsBuilder.ToJson(); });
 
             // Relationships
             builder.HasMany(x => x.Actions)

@@ -7,7 +7,7 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
 {
     public class Followup : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
-        public Guid? TaskInstanceId { get; private set; }
+        public Guid? TaskInstanceId { get; internal set; }
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
         public DateTime FollowupAt { get; private set; }

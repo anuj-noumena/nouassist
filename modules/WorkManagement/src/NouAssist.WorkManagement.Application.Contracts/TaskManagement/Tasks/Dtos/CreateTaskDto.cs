@@ -85,13 +85,4 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         [StringLength(2000)]
         public string TestScenario { get; set; }
     }
-
-    public class CreateComplexityEstimationDto
-    {
-        [Required]
-        public int Value { get; set; }
-
-        [Required]
-        public ComplexityScale Scale { get; set; }
-    }
 }

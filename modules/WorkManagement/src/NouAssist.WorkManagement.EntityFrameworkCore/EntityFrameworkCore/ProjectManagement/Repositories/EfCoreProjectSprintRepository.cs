@@ -13,10 +13,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.ProjectManagement.Repositories
 {
     public class EfCoreProjectSprintRepository 
-        : EfCoreRepository<IProjectsDbContext, ProjectSprint, Guid>, IProjectSprintRepository
+        : EfCoreRepository<IWorkManagementDbContext, ProjectSprint, Guid>, IProjectSprintRepository
     {
         public EfCoreProjectSprintRepository(
-            IDbContextProvider<IProjectsDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

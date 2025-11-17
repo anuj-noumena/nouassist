@@ -20,33 +20,33 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         // === IDENTITY ===
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public Guid? ProjectId { get; set; }
-        public Guid? TaskTypeId { get; set; }
+        public Guid? ProjectId { get; private set; }
+        public Guid? TaskTypeId { get; private set; }
 
         // === CONTENT ===
         public string Title { get; private set; }
-        public string Description { get; set; }
-        public string ExpectedResult { get; set; }
-        public string Notes { get; set; }
+        public string Description { get; private set; }
+        public string ExpectedResult { get; private set; }
+        public string Notes { get; private set; }
         
         // === HIERARCHY ===
         public TaskHierarchy Hierarchy { get; private set; }
 
         // === GTD ORGANIZATION ===
-        public Guid? AreaId { get; set; } // GTD Area of Responsibility
-        public Guid? ContextId { get; set; } // GTD Context (where/with what)
+        public Guid? AreaId { get; private set; } // GTD Area of Responsibility
+        public Guid? ContextId { get; private set; } // GTD Context (where/with what)
         
         // === DEFAULTS FOR INSTANCES ===
         public double DefaultImportance { get; private set; }
         public double DefaultUrgency { get; private set; }
         public DateTime? DefaultDueDate {get; private set;}
-        public int? DefaultEstimateMinutes { get; set; }
-        public Guid? DefaultWorkflowId { get; set; }
-        public Guid? DefaultAssigneeId { get; set; }
-        public Guid? DefaultAreaId { get; set; } // Default area for instances
-        public Guid? DefaultContextId { get; set; } // Default context for instances
-        public ComplexityEstimation DefaultComplexityEstimation { get; set; }
-        public CognitiveLoad? DefaultCognitiveLoad { get; set; }
+        public int? DefaultEstimateMinutes { get; private set; }
+        public Guid? DefaultWorkflowId { get; private set; }
+        public Guid? DefaultAssigneeId { get; private set; }
+        public Guid? DefaultAreaId { get; private set; } // Default area for instances
+        public Guid? DefaultContextId { get; private set; } // Default context for instances
+        public ComplexityEstimation DefaultComplexityEstimation { get; private set; }
+        public CognitiveLoad? DefaultCognitiveLoad { get; private set; }
 
         // === RECURRENCE ===
         public RecurrenceRule RecurrenceRule { get; private set; }

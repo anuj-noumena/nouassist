@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NouAssist.WorkManagement.Workflow.Enums;
+using NouAssist.WorkManagement.Workflow.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -69,13 +70,13 @@ namespace NouAssist.WorkManagement.Workflow.Aggregates
         /// <summary>
         /// Backing field for specific user IDs allowed to perform this transition.
         /// </summary>
-        private readonly List<Guid> _allowedUserIds = new();
+        private readonly List<AllowedUserId> _allowedUserIds = new();
 
         /// <summary>
         /// Read-only collection of user IDs that can perform this transition.
         /// Empty list means no user-specific restrictions.
         /// </summary>
-        public IReadOnlyCollection<Guid> AllowedUserIds => _allowedUserIds.AsReadOnly();
+        public IReadOnlyCollection<AllowedUserId> AllowedUserIds => _allowedUserIds.AsReadOnly();
 
         /// <summary>
         /// Protected parameterless constructor for ORM.

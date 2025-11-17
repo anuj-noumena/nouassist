@@ -11,8 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(TasksDbProperties.DbTablePrefix + "ChecklistItems",
-                TasksDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "ChecklistItems",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

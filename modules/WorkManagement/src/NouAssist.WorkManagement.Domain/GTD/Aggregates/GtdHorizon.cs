@@ -12,7 +12,7 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
         public GtdHorizonLevel HorizonLevel { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string? Description { get; set; }
         public string? Content { get; set; }
         public string? LifePurpose { get; set; }

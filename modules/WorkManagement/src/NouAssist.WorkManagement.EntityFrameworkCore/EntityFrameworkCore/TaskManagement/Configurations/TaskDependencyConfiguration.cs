@@ -8,8 +8,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
     {
         public void Configure(EntityTypeBuilder<TaskDependency> builder)
         {
-            builder.ToTable(TasksDbProperties.DbTablePrefix + "TaskDependencies",
-                          TasksDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "TaskDependencies",
+                          WorkManagementDbProperties.DbSchema);
 
             // Composite key based on dependency type
             builder.HasKey(x => new { x.TaskId, x.TaskInstanceId, x.DependsOnTaskId, x.DependsOnTaskInstanceId });

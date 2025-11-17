@@ -7,11 +7,11 @@ namespace NouAssist.WorkManagement.GTD.Aggregates
 {
     public class WaitingFor : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
-        public Guid? TaskInstanceId { get; private set; }
+        public Guid? TaskInstanceId { get; set; }
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
         public WaitingForType WfType { get; private set; }
-        public Guid? ForUserId { get; private set; }
+        public Guid? ForUserId { get; set; }
         public string? ExternalReferenceJson { get; set; }
         public string? Reason { get; set; }
         public WaitingForStatus Status { get; private set; }

@@ -11,8 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.GTD.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(GtdDbProperties.DbTablePrefix + "TicklerItems",
-                            GtdDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "TicklerItems",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

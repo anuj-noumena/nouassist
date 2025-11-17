@@ -13,11 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
 {
     public class EfCoreApprovalWorkflowRepository 
-        : EfCoreRepository<IApprovalDbContext, ApprovalWorkflow, Guid>, 
+        : EfCoreRepository<IWorkManagementDbContext, ApprovalWorkflow, Guid>, 
           IApprovalWorkflowRepository
     {
         public EfCoreApprovalWorkflowRepository(
-            IDbContextProvider<IApprovalDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

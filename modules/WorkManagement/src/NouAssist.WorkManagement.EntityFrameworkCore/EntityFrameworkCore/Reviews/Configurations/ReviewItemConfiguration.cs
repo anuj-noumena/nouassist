@@ -11,8 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Reviews.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(ReviewsDbProperties.DbTablePrefix + "ReviewItems",
-                           ReviewsDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "ReviewItems",
+                WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

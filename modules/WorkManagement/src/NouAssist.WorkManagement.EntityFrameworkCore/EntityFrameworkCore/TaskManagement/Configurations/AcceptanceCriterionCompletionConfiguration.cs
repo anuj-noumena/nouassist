@@ -11,8 +11,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(TasksDbProperties.DbTablePrefix + "AcceptanceCriterionCompletions",
-                          TasksDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "AcceptanceCriterionCompletions",
+                WorkManagementDbProperties.DbSchema);
 
             // Composite key
             builder.HasKey(x => new { x.TaskInstanceId, x.CriterionId });

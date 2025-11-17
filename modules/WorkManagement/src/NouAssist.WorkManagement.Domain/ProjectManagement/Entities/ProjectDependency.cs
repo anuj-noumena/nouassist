@@ -1,6 +1,8 @@
 using System;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 using Volo.Abp;
+using Volo.Abp.Data;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 using Volo.Abp.Timing;
@@ -11,7 +13,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
     /// ProjectDependency - Relationship between projects
     /// OPTIMIZED: Better validation, cleaner state
     /// </summary>
-    public class ProjectDependency : FullAuditedEntity<Guid>, IMultiTenant
+    public class ProjectDependency : FullAuditedEntity<Guid>, IMultiTenant, IHasConcurrencyStamp, IHasExtraProperties
     {
         public Guid ProjectId { get; private set; }
         public Guid DependsOnProjectId { get; private set; }
@@ -130,5 +132,8 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
                                  DateTime.UtcNow > ExpectedResolutionDate.Value &&
                                  !IsResolved;
         public TimeSpan LagDuration => TimeSpan.FromDays(LagDays);
+        public string ConcurrencyStamp { get; set; }
+        
+        public ExtraPropertyDictionary ExtraProperties { get; }
     }
 }

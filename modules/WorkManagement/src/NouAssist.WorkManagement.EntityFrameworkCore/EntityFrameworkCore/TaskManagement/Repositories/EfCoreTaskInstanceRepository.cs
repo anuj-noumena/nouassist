@@ -13,10 +13,10 @@ using Volo.Abp.Specifications;
 namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositories
 {
     public class EfCoreTaskInstanceRepository 
-        : EfCoreRepository<ITasksDbContext, TaskInstance, Guid>, ITaskInstanceRepository
+        : EfCoreRepository<IWorkManagementDbContext, TaskInstance, Guid>, ITaskInstanceRepository
     {
         public EfCoreTaskInstanceRepository(
-            IDbContextProvider<ITasksDbContext> dbContextProvider)
+            IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

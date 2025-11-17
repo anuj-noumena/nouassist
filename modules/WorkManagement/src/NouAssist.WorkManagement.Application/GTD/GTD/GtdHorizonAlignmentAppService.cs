@@ -61,7 +61,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (input.AlignmentStrength.HasValue)
-                alignment.SetAlignmentStrength(input.AlignmentStrength.Value);
+                alignment.UpdateStrength(input.AlignmentStrength.Value);
 
             await _alignmentRepository.InsertAsync(alignment);
             return ObjectMapper.Map<GtdHorizonAlignment, GtdHorizonAlignmentDto>(alignment);
@@ -70,7 +70,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
         public async Task<GtdHorizonAlignmentDto> UpdateStrengthAsync(Guid id, int strength)
         {
             var alignment = await _alignmentRepository.GetAsync(id);
-            alignment.SetAlignmentStrength(strength);
+            alignment.UpdateStrength(strength);
             await _alignmentRepository.UpdateAsync(alignment);
             return ObjectMapper.Map<GtdHorizonAlignment, GtdHorizonAlignmentDto>(alignment);
         }

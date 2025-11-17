@@ -8,8 +8,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
     {
         public void Configure(EntityTypeBuilder<TaskTypeCustomField> builder)
         {
-            builder.ToTable(TasksDbProperties.DbTablePrefix + "TaskTypeCustomFields",
-                          TasksDbProperties.DbSchema);
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "TaskTypeCustomFields",
+                          WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

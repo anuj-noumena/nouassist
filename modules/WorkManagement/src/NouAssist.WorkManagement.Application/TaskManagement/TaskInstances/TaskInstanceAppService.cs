@@ -12,6 +12,7 @@ using NouAssist.WorkManagement.TaskManagement.Managers;
 using NouAssist.WorkManagement.TaskManagement.Services;
 using NouAssist.WorkManagement.TaskManagement.Specifications;
 using NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using NouAssist.WorkManagement.Workflow.Data;
 using NouAssist.WorkManagement.Workflow.Entities;
 using NouAssist.WorkManagement.Workflow.Enums;
@@ -97,7 +98,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             var taskBlueprint = await _taskRepository.GetWithDetailsAsync(input.TaskId);
 
             // Use domain manager to create instance from blueprint
-            var taskInstance = await _taskInstanceManager.CreateFromBlueprintAsync(
+            var taskInstance = await _taskInstanceManager.CreateAsync(
                 input.TaskId,
                 input.ProjectId,
                 input.WorkflowStatusId,
@@ -929,7 +930,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             return result;
         }
 
-        [Authorize(TasksPermissions.TaskInstances.Delete)]
+        [Authorize(WorkManagementPermissions.TaskManagement.TaskInstances.Delete)]
         public async Task<BulkUpdateResultDto> BulkDeleteAsync(Guid[] taskInstanceIds)
         {
             var result = new BulkUpdateResultDto();

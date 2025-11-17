@@ -15,8 +15,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                ApprovalDbProperties.DbTablePrefix + "ApprovalWorkflows",
-                ApprovalDbProperties.DbSchema
+                WorkManagementDbProperties.DbTablePrefix + "ApprovalWorkflows",
+                WorkManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);
@@ -46,11 +46,11 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
                 .HasColumnType("jsonb")
                 .HasConversion(
                     v => System.Text.Json.JsonSerializer.Serialize(
-                        v.GetValues(), 
+                        v.GetValues(),
                         (System.Text.Json.JsonSerializerOptions)null),
                     v => CustomFieldValues.Create(
                         System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(
-                            v, 
+                            v,
                             (System.Text.Json.JsonSerializerOptions)null))
                 )
                 .IsRequired();
@@ -60,7 +60,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
                 .HasColumnType("jsonb")
                 .HasConversion(
                     v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null)
+                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v,
+                        (System.Text.Json.JsonSerializerOptions)null)
                 );
 
             // Relationships - Steps
@@ -80,4 +81,4 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
             builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();
         }
     }
-}}
+}

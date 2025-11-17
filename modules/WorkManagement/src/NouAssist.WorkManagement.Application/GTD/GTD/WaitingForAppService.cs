@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.WorkManagement.GTD.Aggregates;
 using NouAssist.WorkManagement.GTD.Data;
 using NouAssist.WorkManagement.GTD.Dtos;
+using NouAssist.WorkManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.WorkManagement.GTD.GTD
 {
-    [Authorize(GtdPermissions.WaitingFor.Default)]
+    [Authorize(WorkManagementPermissions.GTD.WaitingFor.Default)]
     public class WaitingForAppService : ApplicationService, IWaitingForAppService
     {
         private readonly IWaitingForRepository _waitingForRepository;
@@ -42,7 +44,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return new ListResultDto<WaitingForDto>(dtos);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Create)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Create)]
         public async Task<WaitingForDto> CreateAsync(CreateWaitingForDto input)
         {
             var userId = CurrentUser.GetId();
@@ -70,7 +72,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Update)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Update)]
         public async Task<WaitingForDto> UpdateAsync(Guid id, UpdateWaitingForDto input)
         {
             var item = await _waitingForRepository.GetAsync(id);
@@ -88,13 +90,13 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Delete)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _waitingForRepository.DeleteAsync(id);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Resolve)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Resolve)]
         public async Task<WaitingForDto> ResolveAsync(Guid id)
         {
             var item = await _waitingForRepository.GetAsync(id);
@@ -103,7 +105,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Update)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Update)]
         public async Task<WaitingForDto> PutOnHoldAsync(Guid id)
         {
             var item = await _waitingForRepository.GetAsync(id);
@@ -112,7 +114,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Update)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Update)]
         public async Task<WaitingForDto> ReactivateAsync(Guid id)
         {
             var item = await _waitingForRepository.GetAsync(id);
@@ -121,7 +123,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Update)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Update)]
         public async Task<WaitingForDto> CancelAsync(Guid id)
         {
             var item = await _waitingForRepository.GetAsync(id);
@@ -130,7 +132,7 @@ namespace NouAssist.WorkManagement.GTD.GTD
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);
         }
 
-        [Authorize(GtdPermissions.WaitingFor.Update)]
+        [Authorize(WorkManagementPermissions.GTD.WaitingFor.Update)]
         public async Task<WaitingForDto> EscalateAsync(Guid id)
         {
             var item = await _waitingForRepository.GetAsync(id);

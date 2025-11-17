@@ -30,6 +30,7 @@ public class WorkManagementPermissions
         {
             public const string Default = GroupName + ".Requests";
             public const string Create = Default + ".Create";
+            public const string Update = Default + ".Update";
             public const string View = Default + ".View";
             public const string Approve = Default + ".Approve";
             public const string Reject = Default + ".Reject";

@@ -2,7 +2,7 @@ using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.TaxManagement.Entities
+namespace NouAssist.FinancialManagement.TaxManagement.Entities
 {
     public class EstimatedTaxPayment : Entity<Guid>
     {

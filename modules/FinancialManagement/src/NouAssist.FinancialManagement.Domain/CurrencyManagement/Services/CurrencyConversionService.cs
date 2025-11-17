@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.CurrencyManagement.Data;
-using NouAssist.CurrencyManagement.ValueObjects;
+using NouAssist.FinancialManagement.CurrencyManagement.Data;
+using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.CurrencyManagement.Services
+namespace NouAssist.FinancialManagement.CurrencyManagement.Services
 {
     public class CurrencyConversionService : DomainService
     {

@@ -2,14 +2,14 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-using NouAssist.DocumentManagement.Aggregates;
-using NouAssist.DocumentManagement.Data;
 using NouAssist.DocumentManagement.Enums;
-using NouAssist.DocumentManagement.ValueObjects;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.Data;
+using NouAssist.FinancialManagement.DocumentManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.DocumentManagement.Services
+namespace NouAssist.FinancialManagement.DocumentManagement.Services
 {
     public class DocumentStorageService : DomainService
     {

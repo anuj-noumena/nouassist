@@ -1,8 +1,9 @@
 using System;
 using NouAssist.AuditTrail.Enums;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.AuditTrail.Aggregates
+namespace NouAssist.FinancialManagement.AuditTrail.Aggregates
 {
     public class AuditSearchCriteria : Entity<Guid>
     {

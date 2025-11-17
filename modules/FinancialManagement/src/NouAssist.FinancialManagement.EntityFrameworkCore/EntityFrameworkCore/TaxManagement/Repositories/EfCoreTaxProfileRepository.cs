@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.TaxManagement.Aggregates;
-using NouAssist.TaxManagement.Data;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

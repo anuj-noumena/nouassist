@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CreditScoreMonitoring.Entities;
 using NouAssist.CreditScoreMonitoring.Enums;
-using NouAssist.CreditScoreMonitoring.ValueObjects;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Entities;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CreditScoreMonitoring.Aggregates
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates
 {
     public class CreditReport : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

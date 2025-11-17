@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
@@ -77,7 +78,7 @@ namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
                 deduction.Property(d => d.AllowedAmount).HasPrecision(18, 2);
                 deduction.Property(d => d.Notes).HasMaxLength(1000);
 
-                deduction.HasKey("TaxReturnId", nameof(Entities.TaxDeduction.Category), nameof(Entities.TaxDeduction.Description));
+                deduction.HasKey("TaxReturnId", nameof(TaxDeduction.Category), nameof(TaxDeduction.Description));
             });
 
             // Relationships - Documents (owned collection)

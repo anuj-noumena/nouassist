@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.InvestmentManagement.Aggregates;
-using NouAssist.InvestmentManagement.Data;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Data;
+using NouAssist.FinancialManagement.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.Services;
 using NouAssist.InvestmentManagement.Permissions;
 using NouAssist.InvestmentManagement.Portfolios.Dtos;
-using NouAssist.InvestmentManagement.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -39,7 +40,7 @@ namespace NouAssist.InvestmentManagement.Portfolios
             dto.RecentTransactions = portfolio.Transactions
                 .OrderByDescending(t => t.TransactionDate)
                 .Take(10)
-                .Select(t => ObjectMapper.Map<Entities.InvestmentTransaction, InvestmentTransactionDto>(t))
+                .Select(t => ObjectMapper.Map<InvestmentTransaction, InvestmentTransactionDto>(t))
                 .ToList();
 
             return dto;

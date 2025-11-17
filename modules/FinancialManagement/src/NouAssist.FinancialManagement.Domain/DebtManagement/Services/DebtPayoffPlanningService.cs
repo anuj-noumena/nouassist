@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DebtManagement.Aggregates;
 using NouAssist.DebtManagement.Enums;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.DebtManagement.Services
+namespace NouAssist.FinancialManagement.DebtManagement.Services
 {
     public class DebtPayoffPlanningService : DomainService
     {

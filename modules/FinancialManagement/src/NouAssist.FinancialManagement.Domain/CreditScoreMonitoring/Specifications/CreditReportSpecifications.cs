@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.CreditScoreMonitoring.Aggregates;
 using NouAssist.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.CreditScoreMonitoring.Specifications
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Specifications
 {
     public class LatestCreditReportsSpecification : Specification<CreditReport>
     {

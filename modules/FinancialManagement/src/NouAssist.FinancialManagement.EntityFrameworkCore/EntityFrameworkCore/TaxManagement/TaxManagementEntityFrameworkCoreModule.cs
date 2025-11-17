@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.TaxManagement.Aggregates;
-using NouAssist.TaxManagement.Data;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using NouAssist.TaxManagement.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSQL;

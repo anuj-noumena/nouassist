@@ -46,9 +46,6 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         // === APPROVAL ===
         public Guid? ApprovalRequestId { get; private set; }
         
-        // === HIERARCHY ===
-        public TaskHierarchy Hierarchy { get; private set; }
-        
         // === COLLABORATION ===
         public TaskCollaboration Collaboration { get; private set; }
         
@@ -71,7 +68,17 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         // === CHILD COLLECTIONS ===
         private readonly List<TaskChecklistItem> _checklistItems = new();
         public IReadOnlyCollection<TaskChecklistItem> ChecklistItems => _checklistItems.AsReadOnly();
-
+        
+        // === ACCEPTANCE CRITERIA ===
+        private readonly List<AcceptanceCriterionCompletion> _acceptanceCriteriaCompletions = new();
+        public IReadOnlyCollection<AcceptanceCriterionCompletion> AcceptanceCriteriaCompletions => 
+            _acceptanceCriteriaCompletions.AsReadOnly();
+        
+        // === ACTION STEPS ===
+        private readonly List<TaskActionStepCompletion> _actionStepsCompletions = new();
+        public IReadOnlyCollection<TaskActionStepCompletion> ActionStepCompletions => 
+            _actionStepsCompletions.AsReadOnly();
+        
         private readonly List<TaskDependency> _dependencies = new();
         public IReadOnlyCollection<TaskDependency> Dependencies => _dependencies.AsReadOnly();
 
@@ -112,7 +119,6 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             Priority = new ImportanceUrgencyMatrix(importance, urgency);
             WorkTracking = TaskWorkTracking.NotStarted();
             Schedule = TaskSchedule.Empty();
-            Hierarchy = TaskHierarchy.Root();
             Collaboration = TaskCollaboration.Empty();
             CustomFields = CustomFieldValues.Create();
 
@@ -532,6 +538,69 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             WorkTracking = WorkTracking.UpdateProgress(progress);
         }
 
+        // === Acceptance Criteria ===
+        public void InitializeAcceptanceCriteria(List<Guid> acceptanceCriteriaItemIds)
+        {
+            foreach (var itemId in acceptanceCriteriaItemIds)
+            {
+                _acceptanceCriteriaCompletions.Add(new AcceptanceCriterionCompletion(Id, itemId));
+            }
+        }
+
+        public void AcceptanceCriteriaMarkAsMet(Guid itemId, Guid userId)
+        {
+            var item = _acceptanceCriteriaCompletions.FirstOrDefault(i => i.CriterionId == itemId);
+            if (item == null)
+            {
+                throw new BusinessException("Tasks:AcceptanceCriteriaNotFound");
+            }
+
+            item.MarkAsMet(userId);
+        }
+
+        public void AcceptanceCriteriaMarkAsUnmet(Guid itemId)
+        {
+            var item = _acceptanceCriteriaCompletions.FirstOrDefault(i => i.CriterionId == itemId);
+            if (item == null)
+            {
+                throw new BusinessException("Tasks:AcceptanceCriteriaNotFound");
+            }
+            
+            item.UnmarkAsMet();
+        }
+
+        
+        // === Action steps ===
+        public void InitializeActionSteps(List<Guid> actionStepsIds)
+        {
+            foreach (var itemId in actionStepsIds)
+            {
+                _actionStepsCompletions.Add(new TaskActionStepCompletion(Id, itemId));
+            }
+        }
+
+        public void MarkActionStepComplete(Guid itemId, Guid userId)
+        {
+            var item = _actionStepsCompletions.FirstOrDefault(i => i.TaskActionStepId == itemId);
+            if (item == null)
+            {
+                throw new BusinessException("Tasks:ActionStepNotFound");
+            }
+
+            item.Complete(userId);
+        }
+
+        public void MarkActionStepUncomplete(Guid itemId)
+        {
+            var item = _actionStepsCompletions.FirstOrDefault(i => i.TaskActionStepId == itemId);
+            if (item == null)
+            {
+                throw new BusinessException("Tasks:ActionStepNotFound");
+            }
+            
+            item.Uncomplete();
+        }
+        
         // === DEPENDENCIES ===
         public void AddDependency(
             Guid dependsOnTaskInstanceId, 

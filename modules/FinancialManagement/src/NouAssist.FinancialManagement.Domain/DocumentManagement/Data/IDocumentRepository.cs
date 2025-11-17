@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.DocumentManagement.Aggregates;
 using NouAssist.DocumentManagement.Enums;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.DocumentManagement.Data
+namespace NouAssist.FinancialManagement.DocumentManagement.Data
 {
     public interface IDocumentRepository : IRepository<Document, Guid>
     {

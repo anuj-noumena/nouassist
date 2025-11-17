@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using NouAssist.WorkManagement.ProjectManagement.Projects.Dtos;
+using NouAssist.WorkManagement.ProjectManagement.SuccessCriteria.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

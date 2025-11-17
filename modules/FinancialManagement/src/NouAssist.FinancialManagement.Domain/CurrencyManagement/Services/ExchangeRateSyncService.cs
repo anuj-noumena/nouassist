@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.CurrencyManagement.Aggregates;
-using NouAssist.CurrencyManagement.Data;
 using NouAssist.CurrencyManagement.Enums;
-using NouAssist.CurrencyManagement.ValueObjects;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.Data;
+using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.CurrencyManagement.Services
+namespace NouAssist.FinancialManagement.CurrencyManagement.Services
 {
     public class ExchangeRateSyncService : DomainService
     {

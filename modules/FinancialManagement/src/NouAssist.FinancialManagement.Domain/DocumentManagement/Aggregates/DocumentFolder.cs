@@ -5,7 +5,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DocumentManagement.Aggregates
+namespace NouAssist.FinancialManagement.DocumentManagement.Aggregates
 {
     public class DocumentFolder : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

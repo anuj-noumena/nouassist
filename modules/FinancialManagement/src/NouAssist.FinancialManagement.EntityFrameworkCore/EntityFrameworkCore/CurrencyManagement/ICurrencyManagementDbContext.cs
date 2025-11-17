@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 

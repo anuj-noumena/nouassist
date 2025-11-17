@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.CurrencyManagement.EntityFrameworkCore.Configurations

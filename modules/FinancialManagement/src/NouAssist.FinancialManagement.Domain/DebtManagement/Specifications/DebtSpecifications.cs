@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.DebtManagement.Aggregates;
 using NouAssist.DebtManagement.Enums;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.DebtManagement.Specifications
+namespace NouAssist.FinancialManagement.DebtManagement.Specifications
 {
     public class ActiveDebtsSpecification : Specification<DebtAccount>
     {

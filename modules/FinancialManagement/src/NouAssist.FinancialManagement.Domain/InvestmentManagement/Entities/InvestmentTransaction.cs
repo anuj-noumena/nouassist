@@ -3,7 +3,7 @@ using NouAssist.InvestmentManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.InvestmentManagement.Entities
+namespace NouAssist.FinancialManagement.InvestmentManagement.Entities
 {
     public class InvestmentTransaction : CreationAuditedEntity<Guid>
     {

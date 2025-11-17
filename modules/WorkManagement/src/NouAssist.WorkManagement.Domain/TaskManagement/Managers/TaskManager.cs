@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.TaskManagement.Exceptions;
 using NouAssist.WorkManagement.TaskManagement.Specifications;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.WorkManagement.TaskManagement.Managers
@@ -33,6 +34,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
             Guid? projectId = null,
             Guid? areaId = null,
             Guid? contextId = null,
+            TaskHierarchy ? taskHierarchy = null,
             string description = null,
             double? defaultImportance = null,
             double? defaultUrgency = null)
@@ -59,6 +61,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
                 projectId,
                 areaId: areaId,
                 contextId: contextId,
+                taskHierarchy: taskHierarchy,
                 defaultImportance ?? TasksConsts.DefaultImportance,
                 defaultUrgency ?? TasksConsts.DefaultUrgency);
 

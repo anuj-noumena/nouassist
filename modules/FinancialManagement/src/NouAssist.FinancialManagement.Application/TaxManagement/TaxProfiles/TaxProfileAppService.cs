@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.TaxManagement.Aggregates;
-using NouAssist.TaxManagement.Data;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Data;
 using NouAssist.TaxManagement.Permissions;
 using NouAssist.TaxManagement.TaxProfiles.Dtos;
 using Volo.Abp.Application.Services;

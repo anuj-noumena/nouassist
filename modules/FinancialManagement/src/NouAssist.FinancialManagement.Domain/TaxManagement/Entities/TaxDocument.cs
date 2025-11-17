@@ -3,7 +3,7 @@ using NouAssist.TaxManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.TaxManagement.Entities
+namespace NouAssist.FinancialManagement.TaxManagement.Entities
 {
     public class TaxDocument : CreationAuditedEntity<Guid>
     {

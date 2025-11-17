@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.TaxManagement.Entities;
+using NouAssist.FinancialManagement.TaxManagement.Entities;
+using NouAssist.FinancialManagement.TaxManagement.ValueObjects;
 using NouAssist.TaxManagement.Enums;
-using NouAssist.TaxManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.TaxManagement.Aggregates
+namespace NouAssist.FinancialManagement.TaxManagement.Aggregates
 {
     public class TaxReturn : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

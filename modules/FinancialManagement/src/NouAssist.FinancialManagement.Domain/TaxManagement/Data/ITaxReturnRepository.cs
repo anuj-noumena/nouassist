@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.TaxManagement.Data
+namespace NouAssist.FinancialManagement.TaxManagement.Data
 {
     public interface ITaxReturnRepository : IRepository<TaxReturn, Guid>
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NouAssist.CreditScoreMonitoring.Enums;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CreditScoreMonitoring.ValueObjects
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.ValueObjects
 {
     public class CreditScoreSnapshot : ValueObject
     {

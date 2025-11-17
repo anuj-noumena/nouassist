@@ -23,22 +23,14 @@ namespace NouAssist.WorkManagement.Shared.ValueObjects
         /// <summary>
         /// Default constructor for ORM or JSON deserialization.
         /// </summary>
-        protected Metadata()
-        {
-            _entries = new Dictionary<string, object>();
-        }
-
-        public static Metadata Create()
-        {
-            return new Metadata();
-        }
-
-        /// <summary>
-        /// Initializes metadata with a predefined set of key–value pairs.
-        /// </summary>
-        public Metadata(Dictionary<string, object> entries)
+        private Metadata(Dictionary<string, object>? entries=null)
         {
             _entries = entries ?? new Dictionary<string, object>();
+        }
+
+        public static Metadata Create(Dictionary<string, object>? entries=null)
+        {
+            return new Metadata(entries);
         }
 
         /// <summary>
@@ -104,6 +96,11 @@ namespace NouAssist.WorkManagement.Shared.ValueObjects
             return default;
         }
 
+        public Dictionary<string, object> GetValues()
+        {
+            return new Dictionary<string, object>(_entries);
+        }
+        
         /// <summary>
         /// Returns true if the metadata contains a specific key.
         /// </summary>

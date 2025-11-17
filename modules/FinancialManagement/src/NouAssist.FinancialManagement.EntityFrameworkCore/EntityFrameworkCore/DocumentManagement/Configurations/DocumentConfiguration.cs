@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.DocumentManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.DocumentManagement.EntityFrameworkCore.Configurations

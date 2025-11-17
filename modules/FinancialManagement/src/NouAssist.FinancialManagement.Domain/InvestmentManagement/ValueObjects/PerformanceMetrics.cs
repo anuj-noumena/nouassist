@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.InvestmentManagement.ValueObjects
+namespace NouAssist.FinancialManagement.InvestmentManagement.ValueObjects
 {
     public class PerformanceMetrics : ValueObject
     {

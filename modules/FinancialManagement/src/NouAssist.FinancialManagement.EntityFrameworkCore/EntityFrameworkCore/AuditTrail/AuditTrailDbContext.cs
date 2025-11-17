@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 

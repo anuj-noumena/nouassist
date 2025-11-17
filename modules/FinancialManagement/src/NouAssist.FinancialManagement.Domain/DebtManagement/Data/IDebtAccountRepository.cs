@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.DebtManagement.Aggregates;
 using NouAssist.DebtManagement.Enums;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.DebtManagement.Data
+namespace NouAssist.FinancialManagement.DebtManagement.Data
 {
     public interface IDebtAccountRepository : IRepository<DebtAccount, Guid>
     {

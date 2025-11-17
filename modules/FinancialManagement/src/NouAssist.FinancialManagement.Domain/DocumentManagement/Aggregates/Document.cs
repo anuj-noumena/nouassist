@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using NouAssist.DocumentManagement.Domain.Shared.Events;
 using NouAssist.DocumentManagement.Enums;
-using NouAssist.DocumentManagement.ValueObjects;
+using NouAssist.FinancialManagement.DocumentManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DocumentManagement.Aggregates
+namespace NouAssist.FinancialManagement.DocumentManagement.Aggregates
 {
     public class Document : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

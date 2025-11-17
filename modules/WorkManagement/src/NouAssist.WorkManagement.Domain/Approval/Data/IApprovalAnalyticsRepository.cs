@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NouAssist.WorkManagement.Approval.Model;
 
 namespace NouAssist.WorkManagement.Approval.Data
 {
@@ -13,6 +14,6 @@ namespace NouAssist.WorkManagement.Approval.Data
         Task<Dictionary<Guid, double>> GetAverageProcessingTimeByWorkflowAsync(DateTime startDate, DateTime endDate);
         Task<Dictionary<DateTime, int>> GetRequestCountByDateAsync(DateTime startDate, DateTime endDate);
         Task<Dictionary<Guid, int>> GetDecisionCountByUserAsync(DateTime startDate, DateTime endDate);
-        Task<List<ApprovalTrendDto>> GetTrendDataAsync(DateTime startDate, DateTime endDate, string interval);
+        Task<List<ApprovalTrend>> GetTrendDataAsync(DateTime startDate, DateTime endDate, string interval);
     }
 }

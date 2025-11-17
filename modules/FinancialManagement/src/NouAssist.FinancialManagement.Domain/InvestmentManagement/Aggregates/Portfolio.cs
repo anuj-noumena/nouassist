@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.ValueObjects;
 using NouAssist.InvestmentManagement.Enums;
-using NouAssist.InvestmentManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.InvestmentManagement.Aggregates
+namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
 {
     public class Portfolio : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

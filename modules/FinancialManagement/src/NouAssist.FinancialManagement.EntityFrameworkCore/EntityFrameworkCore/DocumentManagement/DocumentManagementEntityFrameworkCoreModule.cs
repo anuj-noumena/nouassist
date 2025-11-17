@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.DocumentManagement.Aggregates;
-using NouAssist.DocumentManagement.Data;
 using NouAssist.DocumentManagement.EntityFrameworkCore.Repositories;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;

@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 

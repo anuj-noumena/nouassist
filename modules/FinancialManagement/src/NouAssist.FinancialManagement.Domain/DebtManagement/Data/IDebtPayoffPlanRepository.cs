@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.DebtManagement.Data
+namespace NouAssist.FinancialManagement.DebtManagement.Data
 {
     public interface IDebtPayoffPlanRepository : IRepository<DebtPayoffPlan, Guid>
     {

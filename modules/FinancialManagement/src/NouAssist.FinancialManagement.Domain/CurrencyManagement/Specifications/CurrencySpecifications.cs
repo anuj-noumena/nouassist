@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.CurrencyManagement.Aggregates;
 using NouAssist.CurrencyManagement.Enums;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.CurrencyManagement.Specifications
+namespace NouAssist.FinancialManagement.CurrencyManagement.Specifications
 {
     public class ActiveCurrenciesSpecification : Specification<Currency>
     {

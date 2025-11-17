@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CurrencyManagement.Aggregates;
-using NouAssist.CurrencyManagement.Data;
 using NouAssist.CurrencyManagement.Dtos;
 using NouAssist.CurrencyManagement.Enums;
 using NouAssist.CurrencyManagement.Permissions;
-using NouAssist.CurrencyManagement.Services;
-using NouAssist.CurrencyManagement.ValueObjects;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.Data;
+using NouAssist.FinancialManagement.CurrencyManagement.Services;
+using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

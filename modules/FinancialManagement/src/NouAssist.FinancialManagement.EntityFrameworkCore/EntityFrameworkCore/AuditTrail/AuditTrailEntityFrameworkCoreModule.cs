@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.AuditTrail.Aggregates;
-using NouAssist.AuditTrail.Data;
 using NouAssist.AuditTrail.EntityFrameworkCore.Repositories;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;

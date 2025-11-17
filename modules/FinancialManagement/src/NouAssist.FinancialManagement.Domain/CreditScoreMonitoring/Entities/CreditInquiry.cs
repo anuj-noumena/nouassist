@@ -3,7 +3,7 @@ using NouAssist.CreditScoreMonitoring.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.CreditScoreMonitoring.Entities
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Entities
 {
     public class CreditInquiry : Entity<Guid>
     {

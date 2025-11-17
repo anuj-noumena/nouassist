@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CreditScoreMonitoring.Aggregates;
 using NouAssist.CreditScoreMonitoring.CreditDisputes.Dtos;
-using NouAssist.CreditScoreMonitoring.Data;
 using NouAssist.CreditScoreMonitoring.Enums;
 using NouAssist.CreditScoreMonitoring.Permissions;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Data;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CurrencyManagement.ValueObjects
+namespace NouAssist.FinancialManagement.CurrencyManagement.ValueObjects
 {
     public class MonetaryAmount : ValueObject
     {
@@ -11,7 +11,9 @@ namespace NouAssist.CurrencyManagement.ValueObjects
         public CurrencyCode Currency { get; init; }
         public int DecimalPlaces { get; init; }
 
-        protected MonetaryAmount() { }
+        protected MonetaryAmount()
+        {
+        }
 
         public MonetaryAmount(decimal amount, CurrencyCode currency)
         {
@@ -55,9 +57,9 @@ namespace NouAssist.CurrencyManagement.ValueObjects
         {
             return currencyCode switch
             {
-                "JPY" => 0,  // Japanese Yen has no decimals
-                "BTC" => 8,  // Bitcoin has 8 decimals
-                _ => 2       // Most currencies have 2 decimals
+                "JPY" => 0, // Japanese Yen has no decimals
+                "BTC" => 8, // Bitcoin has 8 decimals
+                _ => 2 // Most currencies have 2 decimals
             };
         }
 
@@ -69,7 +71,7 @@ namespace NouAssist.CurrencyManagement.ValueObjects
 
         public override string ToString()
         {
-            return $"{Amount:F{DecimalPlaces}} {Currency}";
+            return $"{Amount.ToString($"F{DecimalPlaces}")} {Currency}";
         }
     }
 }

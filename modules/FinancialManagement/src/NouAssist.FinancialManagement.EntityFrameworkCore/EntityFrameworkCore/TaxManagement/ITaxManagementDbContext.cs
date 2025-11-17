@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 

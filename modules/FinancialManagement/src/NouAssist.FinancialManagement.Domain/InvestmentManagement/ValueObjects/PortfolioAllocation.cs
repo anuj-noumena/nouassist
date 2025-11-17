@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.InvestmentManagement.ValueObjects
+namespace NouAssist.FinancialManagement.InvestmentManagement.ValueObjects
 {
     public class PortfolioAllocation : ValueObject
     {

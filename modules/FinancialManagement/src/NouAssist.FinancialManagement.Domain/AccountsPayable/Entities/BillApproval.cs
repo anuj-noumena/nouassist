@@ -23,7 +23,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Entities
             BillId = billId;
             ApproverId = approverId;
             Level = level;
-            ApprovedDate = Clock.Now;
+            ApprovedDate = DateTime.UtcNow;
             Comments = comments;
         }
 

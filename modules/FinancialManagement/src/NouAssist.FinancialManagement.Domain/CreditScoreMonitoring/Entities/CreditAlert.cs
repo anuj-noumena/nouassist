@@ -3,7 +3,7 @@ using NouAssist.CreditScoreMonitoring.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.CreditScoreMonitoring.Entities
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Entities
 {
     public class CreditAlert : CreationAuditedEntity<Guid>
     {

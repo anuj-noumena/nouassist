@@ -5,9 +5,8 @@ using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.AuditTrail.Aggregates;
-using NouAssist.AuditTrail.Data;
-using NouAssist.AuditTrail.Specifications;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

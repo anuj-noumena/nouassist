@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 

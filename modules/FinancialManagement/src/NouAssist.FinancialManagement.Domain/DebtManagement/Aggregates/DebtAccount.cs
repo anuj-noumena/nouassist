@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DebtManagement.Entities;
 using NouAssist.DebtManagement.Enums;
-using NouAssist.DebtManagement.ValueObjects;
+using NouAssist.FinancialManagement.DebtManagement.Entities;
+using NouAssist.FinancialManagement.DebtManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DebtManagement.Aggregates
+namespace NouAssist.FinancialManagement.DebtManagement.Aggregates
 {
     public class DebtAccount : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -60,7 +60,7 @@ namespace NouAssist.DebtManagement.Aggregates
             MinimumPayment = Check.Positive(minimumPayment, nameof(minimumPayment));
             PaymentFrequency = paymentFrequency;
             Status = DebtStatus.Active;
-            StartDate = Clock.Now;
+            StartDate = DateTime.UtcNow;
         }
 
         public void RecordPayment(
@@ -108,9 +108,9 @@ namespace NouAssist.DebtManagement.Aggregates
             var dailyRate = InterestRate / 365 / 100;
             var lastPaymentDate = _payments.Any() 
                 ? _payments.Max(p => p.PaymentDate) 
-                : StartDate ?? Clock.Now;
+                : StartDate ?? DateTime.UtcNow;
             
-            var daysSinceLastPayment = (Clock.Now - lastPaymentDate).Days;
+            var daysSinceLastPayment = (DateTime.UtcNow - lastPaymentDate).Days;
             var interestAmount = CurrentBalance * (decimal)dailyRate * daysSinceLastPayment;
             var principalAmount = paymentAmount - interestAmount;
 

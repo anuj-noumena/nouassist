@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.CurrencyManagement.Aggregates;
-using NouAssist.CurrencyManagement.Data;
 using NouAssist.CurrencyManagement.EntityFrameworkCore.Repositories;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSql;
 using Volo.Abp.Modularity;

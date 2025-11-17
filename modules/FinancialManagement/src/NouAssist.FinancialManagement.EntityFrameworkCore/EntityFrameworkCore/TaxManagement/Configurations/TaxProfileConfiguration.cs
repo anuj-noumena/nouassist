@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations

@@ -4,7 +4,7 @@ using System.IO;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DocumentManagement.ValueObjects
+namespace NouAssist.FinancialManagement.DocumentManagement.ValueObjects
 {
     public class FileMetadata : ValueObject
     {

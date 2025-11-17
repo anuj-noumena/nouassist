@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.DebtManagement.Aggregates;
 using NouAssist.DebtManagement.Enums;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
@@ -69,9 +70,9 @@ namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
                     DebtManagementDbProperties.DbSchema
                 );
 
-                payment.WithOwner().HasForeignKey(nameof(Aggregates.DebtAccount) + "Id");
+                payment.WithOwner().HasForeignKey(nameof(DebtAccount) + "Id");
 
-                payment.Property<Guid>(nameof(Aggregates.DebtAccount) + "Id").IsRequired();
+                payment.Property<Guid>(nameof(DebtAccount) + "Id").IsRequired();
                 
                 payment.Property(p => p.PaymentDate).IsRequired();
                 payment.Property(p => p.PaymentAmount).IsRequired().HasPrecision(18, 2);
@@ -87,7 +88,7 @@ namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
                 payment.Property(p => p.TransactionReference).HasMaxLength(100);
                 payment.Property(p => p.Notes).HasMaxLength(500);
 
-                payment.HasKey(nameof(Aggregates.DebtAccount) + "Id", nameof(Entities.DebtPayment.PaymentDate));
+                payment.HasKey(nameof(DebtAccount) + "Id", nameof(DebtPayment.PaymentDate));
             });
 
             // Indexes

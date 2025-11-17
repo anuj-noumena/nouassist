@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.ValueObjects;
 using NouAssist.TaxManagement.Enums;
-using NouAssist.TaxManagement.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.TaxManagement.Services
+namespace NouAssist.FinancialManagement.TaxManagement.Services
 {
     public class TaxCalculationService : DomainService
     {

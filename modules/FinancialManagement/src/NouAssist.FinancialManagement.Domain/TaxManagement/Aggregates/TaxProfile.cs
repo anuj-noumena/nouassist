@@ -5,7 +5,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.TaxManagement.Aggregates
+namespace NouAssist.FinancialManagement.TaxManagement.Aggregates
 {
     public class TaxProfile : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

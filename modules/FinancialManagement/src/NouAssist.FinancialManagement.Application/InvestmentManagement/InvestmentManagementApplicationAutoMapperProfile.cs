@@ -1,6 +1,7 @@
 using AutoMapper;
-using NouAssist.InvestmentManagement.Aggregates;
-using NouAssist.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.ValueObjects;
 using NouAssist.InvestmentManagement.InvestmentGoals.Dtos;
 using NouAssist.InvestmentManagement.Portfolios.Dtos;
 
@@ -21,7 +22,7 @@ namespace NouAssist.InvestmentManagement
 
             CreateMap<InvestmentTransaction, InvestmentTransactionDto>();
 
-            CreateMap<ValueObjects.PortfolioAllocation, PortfolioAllocationDto>();
+            CreateMap<PortfolioAllocation, PortfolioAllocationDto>();
 
             // InvestmentGoal mappings
             CreateMap<InvestmentGoal, InvestmentGoalDto>()

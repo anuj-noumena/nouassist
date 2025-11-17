@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.AuditTrail.Data
+namespace NouAssist.FinancialManagement.AuditTrail.Data
 {
     public interface IAuditEntryRepository : IRepository<AuditEntry, Guid>
     {

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CreditScoreMonitoring.Aggregates;
 using NouAssist.CreditScoreMonitoring.CreditReports.Dtos;
-using NouAssist.CreditScoreMonitoring.Data;
 using NouAssist.CreditScoreMonitoring.Enums;
 using NouAssist.CreditScoreMonitoring.Permissions;
-using NouAssist.CreditScoreMonitoring.Services;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Data;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -195,7 +195,7 @@ namespace NouAssist.CreditScoreMonitoring.CreditReports
         {
             var report = await _creditReportRepository.GetAsync(reportId);
 
-            var plan = new Services.CreditImprovementPlan
+            var plan = new CreditImprovementPlan
             {
                 ReduceUtilizationTo = planDto.ReduceUtilizationTo,
                 PayOffDelinquentAccounts = planDto.PayOffDelinquentAccounts,

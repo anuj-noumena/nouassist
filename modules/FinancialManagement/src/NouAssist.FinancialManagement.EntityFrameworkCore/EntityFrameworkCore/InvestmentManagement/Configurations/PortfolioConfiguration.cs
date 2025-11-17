@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations
@@ -78,7 +79,7 @@ namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations
                 holding.Property(h => h.MarketValue).HasPrecision(18, 2);
                 holding.Property(h => h.UtilizationPercentage).HasPrecision(5, 2);
 
-                holding.HasKey("PortfolioId", nameof(Entities.Holding.Symbol));
+                holding.HasKey("PortfolioId", nameof(Holding.Symbol));
                 holding.HasIndex(h => h.Symbol);
             });
 

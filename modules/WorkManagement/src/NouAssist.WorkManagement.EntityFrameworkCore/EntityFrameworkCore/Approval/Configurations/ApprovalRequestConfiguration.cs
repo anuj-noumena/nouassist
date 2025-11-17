@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NouAssist.WorkManagement.Approval.Aggregates;
 using NouAssist.WorkManagement.Approval.Entities;
 using NouAssist.WorkManagement.Shared.ValueObjects;
@@ -37,43 +41,60 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Configurations
 
             builder.Property(x => x.CancellationReason).HasMaxLength(1000);
 
+            var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+            
             // Collections as JSON
-            builder.Property("_completedStepIds")
+            var stepIdsConverter = new ValueConverter<List<Guid>, string>(
+                v => JsonSerializer.Serialize(v, jsonOptions),
+                v => JsonSerializer.Deserialize<List<Guid>>(v, jsonOptions) ?? new List<Guid>()
+            );
+
+            var stepIdsComparer = new ValueComparer<List<Guid>>(
+                (c1, c2) => JsonSerializer.Serialize(c1, jsonOptions) == JsonSerializer.Serialize(c2, jsonOptions),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList() // Snapshot method to prevent reference mutation issues
+            );
+
+            builder.Property<List<Guid>>("_completedStepIds") // Try to use generic property access if possible, or cast
                 .HasColumnName("CompletedStepIds")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
-
+                .HasConversion(stepIdsConverter, stepIdsComparer);
+            
+            
             // CustomFields as CustomFieldValues value object stored as JSONB
+            var customFieldsConverter = new ValueConverter<CustomFieldValues, string>(
+                v => JsonSerializer.Serialize(v.GetValues(), jsonOptions),
+                v => CustomFieldValues.Create(JsonSerializer.Deserialize<Dictionary<string, object>>(v, jsonOptions))
+            );
+
+            var customFieldsComparer = new ValueComparer<CustomFieldValues>(
+                (c1, c2) => JsonSerializer.Serialize(c1.GetValues(), jsonOptions) == JsonSerializer.Serialize(c2.GetValues(), jsonOptions),
+                c => c.GetValues().GetHashCode(),
+                c => CustomFieldValues.Create(new Dictionary<string, object>(c.GetValues())) // Deep copy for snapshot
+            );
+
             builder.Property(x => x.CustomFields)
                 .HasColumnName("CustomFields")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(
-                        v.GetValues(), 
-                        (System.Text.Json.JsonSerializerOptions)null),
-                    v => CustomFieldValues.Create(
-                        System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(
-                            v, 
-                            (System.Text.Json.JsonSerializerOptions)null))
-                )
+                .HasConversion(customFieldsConverter, customFieldsComparer)
                 .IsRequired();
-
+            
             // Metadata as Metadata value object stored as JSONB
+            var metadataConverter = new ValueConverter<Metadata, string>(
+                v => JsonSerializer.Serialize(v.GetValues(), jsonOptions),
+                v => Metadata.Create(JsonSerializer.Deserialize<Dictionary<string, object>>(v, jsonOptions))
+            );
+
+            var metadataComparer = new ValueComparer<Metadata>(
+                (c1, c2) => JsonSerializer.Serialize(c1.GetValues(), jsonOptions) == JsonSerializer.Serialize(c2.GetValues(), jsonOptions),
+                c => c.GetValues().GetHashCode(),
+                c => Metadata.Create(new Dictionary<string, object>(c.GetValues()))
+            );
+
             builder.Property(x => x.Metadata)
                 .HasColumnName("Metadata")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(
-                        v.GetValues(), 
-                        (System.Text.Json.JsonSerializerOptions)null),
-                    v => Metadata.Create(
-                        System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(
-                            v, 
-                            (System.Text.Json.JsonSerializerOptions)null))
-                )
+                .HasConversion(metadataConverter, metadataComparer)
                 .IsRequired();
 
             // SLA Deadline

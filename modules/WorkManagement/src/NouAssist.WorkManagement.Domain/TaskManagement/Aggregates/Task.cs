@@ -26,6 +26,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public string Title { get; private set; }
         public string Description { get; set; }
         public string ExpectedResult { get; set; }
+        
+        // === HIERARCHY ===
+        public TaskHierarchy Hierarchy { get; private set; }
 
         // === GTD ORGANIZATION ===
         public Guid? AreaId { get; set; } // GTD Area of Responsibility
@@ -67,6 +70,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             Guid? projectId = null,
             Guid? areaId = null,
             Guid? contextId = null,
+            TaskHierarchy? taskHierarchy = null,
             double defaultImportance = 0.5,
             double defaultUrgency = 0.5) : base(id)
         {
@@ -77,6 +81,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             AreaId = areaId;
             ContextId = contextId;
             
+            Hierarchy = taskHierarchy ?? TaskHierarchy.Root();
             SetDefaults(defaultImportance, defaultUrgency);
             
             IsActive = true;
@@ -99,6 +104,11 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         {
             DefaultImportance = ImportanceUrgencyMatrix.ValidateImportance(importance);
             DefaultUrgency = ImportanceUrgencyMatrix.ValidateUrgency(urgency);
+        }
+
+        public void UpdateHirearchy(TaskHierarchy taskHirearchy)
+        {
+            Hierarchy = taskHirearchy;
         }
 
         // === GTD ORGANIZATION METHODS ===

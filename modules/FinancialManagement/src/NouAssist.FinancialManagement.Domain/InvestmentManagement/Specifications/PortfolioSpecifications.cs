@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.InvestmentManagement.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.InvestmentManagement.Specifications
+namespace NouAssist.FinancialManagement.InvestmentManagement.Specifications
 {
     public class ActivePortfoliosSpecification : Specification<Portfolio>
     {

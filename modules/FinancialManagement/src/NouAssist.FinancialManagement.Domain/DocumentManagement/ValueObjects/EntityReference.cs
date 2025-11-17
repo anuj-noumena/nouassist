@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DocumentManagement.ValueObjects
+namespace NouAssist.FinancialManagement.DocumentManagement.ValueObjects
 {
     public class EntityReference : ValueObject
     {

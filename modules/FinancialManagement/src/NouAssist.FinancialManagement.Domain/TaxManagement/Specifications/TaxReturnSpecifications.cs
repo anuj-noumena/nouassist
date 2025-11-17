@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using NouAssist.TaxManagement.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.TaxManagement.Specifications
+namespace NouAssist.FinancialManagement.TaxManagement.Specifications
 {
     public class UnfiledTaxReturnsSpecification : Specification<TaxReturn>
     {

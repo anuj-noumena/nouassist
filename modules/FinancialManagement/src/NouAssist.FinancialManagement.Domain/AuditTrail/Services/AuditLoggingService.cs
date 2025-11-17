@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using NouAssist.AuditTrail.Aggregates;
 using NouAssist.AuditTrail.Domain.Shared.Events;
 using NouAssist.AuditTrail.Enums;
-using NouAssist.AuditTrail.ValueObjects;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.AuditTrail.Services
+namespace NouAssist.FinancialManagement.AuditTrail.Services
 {
     public class AuditLoggingService : DomainService
     {

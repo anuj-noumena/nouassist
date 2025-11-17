@@ -1,8 +1,8 @@
 using AutoMapper;
-using NouAssist.CreditScoreMonitoring.Aggregates;
 using NouAssist.CreditScoreMonitoring.CreditDisputes.Dtos;
 using NouAssist.CreditScoreMonitoring.CreditReports.Dtos;
-using NouAssist.CreditScoreMonitoring.Entities;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Entities;
 
 namespace NouAssist.CreditScoreMonitoring
 {

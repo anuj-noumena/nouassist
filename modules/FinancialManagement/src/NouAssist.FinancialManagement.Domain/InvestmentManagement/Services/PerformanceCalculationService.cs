@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.ValueObjects;
 using NouAssist.InvestmentManagement.Enums;
-using NouAssist.InvestmentManagement.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.InvestmentManagement.Services
+namespace NouAssist.FinancialManagement.InvestmentManagement.Services
 {
     public class PerformanceCalculationService : DomainService
     {

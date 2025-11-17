@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.InvestmentManagement.Aggregates;
-using NouAssist.InvestmentManagement.Data;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.InvestmentManagement.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSQL;

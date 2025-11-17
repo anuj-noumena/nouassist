@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.DocumentManagement.Aggregates;
-using NouAssist.DocumentManagement.Data;
 using NouAssist.DocumentManagement.Dtos;
 using NouAssist.DocumentManagement.Permissions;
-using NouAssist.DocumentManagement.Services;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.Data;
+using NouAssist.FinancialManagement.DocumentManagement.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

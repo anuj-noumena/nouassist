@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using NouAssist.AuditTrail.Aggregates;
-using NouAssist.AuditTrail.Data;
+using NouAssist.FinancialManagement.AuditTrail.Data;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.AuditTrail.Services
+namespace NouAssist.FinancialManagement.AuditTrail.Services
 {
     public class AuditArchiveService : DomainService
     {

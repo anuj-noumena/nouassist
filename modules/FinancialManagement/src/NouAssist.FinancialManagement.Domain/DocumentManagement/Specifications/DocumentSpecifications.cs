@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.DocumentManagement.Aggregates;
 using NouAssist.DocumentManagement.Enums;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.DocumentManagement.Specifications
+namespace NouAssist.FinancialManagement.DocumentManagement.Specifications
 {
     public class DocumentsByTypeSpecification : Specification<Document>
     {

@@ -1,8 +1,8 @@
 using AutoMapper;
-using NouAssist.DebtManagement.Aggregates;
 using NouAssist.DebtManagement.DebtAccounts.Dtos;
-using NouAssist.DebtManagement.Entities;
 using NouAssist.DebtManagement.PayoffPlans.Dtos;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Entities;
 
 namespace NouAssist.DebtManagement
 {

@@ -1,6 +1,7 @@
 using AutoMapper;
-using NouAssist.DocumentManagement.Aggregates;
 using NouAssist.DocumentManagement.Dtos;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.ValueObjects;
 
 namespace NouAssist.DocumentManagement
 {
@@ -17,7 +18,7 @@ namespace NouAssist.DocumentManagement
                 .ForMember(dest => dest.EntityId, opt => opt.MapFrom(src => src.EntityReference != null ? src.EntityReference.EntityId : null))
                 .ForMember(dest => dest.OCRResult, opt => opt.MapFrom(src => src.OCRResult));
 
-            CreateMap<ValueObjects.OCRResult, OCRResultDto>();
+            CreateMap<OCRResult, OCRResultDto>();
 
             CreateMap<DocumentFolder, DocumentFolderDto>()
                 .ForMember(dest => dest.DocumentCount, opt => opt.MapFrom(src => src.DocumentIds.Count));

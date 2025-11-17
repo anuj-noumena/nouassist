@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.AuditTrail.Aggregates;
-using NouAssist.AuditTrail.Data;
 using NouAssist.AuditTrail.Dtos;
 using NouAssist.AuditTrail.Permissions;
-using NouAssist.AuditTrail.Services;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Data;
+using NouAssist.FinancialManagement.AuditTrail.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

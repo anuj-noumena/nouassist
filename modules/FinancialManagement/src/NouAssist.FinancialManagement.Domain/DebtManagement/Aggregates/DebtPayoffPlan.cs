@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DebtManagement.Entities;
 using NouAssist.DebtManagement.Enums;
+using NouAssist.FinancialManagement.DebtManagement.Entities;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DebtManagement.Aggregates
+namespace NouAssist.FinancialManagement.DebtManagement.Aggregates
 {
     public class DebtPayoffPlan : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

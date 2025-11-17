@@ -3,7 +3,7 @@ using NouAssist.DebtManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.DebtManagement.Entities
+namespace NouAssist.FinancialManagement.DebtManagement.Entities
 {
     public class DebtPayment : Entity
     {

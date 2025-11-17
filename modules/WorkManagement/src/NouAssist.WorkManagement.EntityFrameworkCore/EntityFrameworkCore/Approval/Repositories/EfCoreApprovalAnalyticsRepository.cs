@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.WorkManagement.Approval.Data;
+using NouAssist.WorkManagement.Approval.Enums;
+using NouAssist.WorkManagement.Approval.Model;
 using NouAssist.WorkManagement.EntityFrameworkCore.Approval;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
@@ -46,7 +48,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
                 .Select(g => new
                 {
                     WorkflowId = g.Key,
-                    AvgHours = g.Average(r => EF.Functions.DateDiffHour(r.SubmittedAt, r.CompletedAt.Value))
+                    AvgHours = g.Average(r => (r.CompletedAt.Value - r.SubmittedAt).TotalHours)
                 })
                 .ToDictionaryAsync(x => x.WorkflowId, x => (double)x.AvgHours);
         }
@@ -75,7 +77,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
             return new Dictionary<Guid, int>();
         }
 
-        public async Task<List<ApprovalTrendDto>> GetTrendDataAsync(
+        public async Task<List<ApprovalTrend>> GetTrendDataAsync(
             DateTime startDate, 
             DateTime endDate, 
             string interval)
@@ -86,16 +88,16 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.Approval.Repositories
             var trends = await dbContext.ApprovalRequests
                 .Where(r => r.SubmittedAt >= startDate && r.SubmittedAt <= endDate)
                 .GroupBy(r => r.SubmittedAt.Date)
-                .Select(g => new ApprovalTrendDto
+                .Select(g => new ApprovalTrend
                 {
                     Date = g.Key,
                     RequestsCreated = g.Count(),
                     RequestsCompleted = g.Count(r => r.CompletedAt.HasValue),
-                    RequestsApproved = g.Count(r => r.Status == Enums.ApprovalStatus.Approved),
-                    RequestsRejected = g.Count(r => r.Status == Enums.ApprovalStatus.Rejected),
-                    RequestsCancelled = g.Count(r => r.Status == Enums.ApprovalStatus.Cancelled),
-                    PendingRequests = g.Count(r => r.Status == Enums.ApprovalStatus.Pending || 
-                                                    r.Status == Enums.ApprovalStatus.InProgress)
+                    RequestsApproved = g.Count(r => r.Status == ApprovalStatus.Approved),
+                    RequestsRejected = g.Count(r => r.Status == ApprovalStatus.Rejected),
+                    RequestsCancelled = g.Count(r => r.Status == ApprovalStatus.Cancelled),
+                    PendingRequests = g.Count(r => r.Status == ApprovalStatus.Pending || 
+                                                    r.Status == ApprovalStatus.InProgress)
                 })
                 .OrderBy(t => t.Date)
                 .ToListAsync();

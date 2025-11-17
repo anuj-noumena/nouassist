@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.DocumentManagement.Aggregates;
-using NouAssist.DocumentManagement.Data;
-using NouAssist.DocumentManagement.ValueObjects;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.Data;
+using NouAssist.FinancialManagement.DocumentManagement.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.DocumentManagement.Services
+namespace NouAssist.FinancialManagement.DocumentManagement.Services
 {
     public class DocumentOCRService : DomainService
     {

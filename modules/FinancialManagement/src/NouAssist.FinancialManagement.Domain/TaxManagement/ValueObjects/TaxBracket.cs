@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.TaxManagement.ValueObjects
+namespace NouAssist.FinancialManagement.TaxManagement.ValueObjects
 {
     public class TaxBracket : ValueObject
     {

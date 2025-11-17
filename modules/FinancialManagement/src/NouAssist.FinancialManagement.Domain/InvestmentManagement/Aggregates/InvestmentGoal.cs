@@ -4,7 +4,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.InvestmentManagement.Aggregates
+namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
 {
     public class InvestmentGoal : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

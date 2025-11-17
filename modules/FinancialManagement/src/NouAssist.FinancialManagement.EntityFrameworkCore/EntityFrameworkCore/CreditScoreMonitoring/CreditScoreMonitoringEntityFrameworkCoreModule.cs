@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.CreditScoreMonitoring.Aggregates;
-using NouAssist.CreditScoreMonitoring.Data;
 using NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Repositories;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;

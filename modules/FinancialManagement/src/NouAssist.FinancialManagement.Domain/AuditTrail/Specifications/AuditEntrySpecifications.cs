@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.AuditTrail.Aggregates;
 using NouAssist.AuditTrail.Enums;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.AuditTrail.Specifications
+namespace NouAssist.FinancialManagement.AuditTrail.Specifications
 {
     public class AuditEntriesByEntitySpecification : Specification<AuditEntry>
     {

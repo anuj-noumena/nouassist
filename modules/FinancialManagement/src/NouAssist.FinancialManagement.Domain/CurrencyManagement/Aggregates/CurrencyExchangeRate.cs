@@ -1,12 +1,12 @@
 using System;
 using NouAssist.CurrencyManagement.Domain.Shared.Events;
 using NouAssist.CurrencyManagement.Enums;
-using NouAssist.CurrencyManagement.ValueObjects;
+using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CurrencyManagement.Aggregates
+namespace NouAssist.FinancialManagement.CurrencyManagement.Aggregates
 {
     public class CurrencyExchangeRate : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -56,7 +56,7 @@ namespace NouAssist.CurrencyManagement.Aggregates
                 Rate = rate,
                 EffectiveDate = effectiveDate,
                 Provider = provider,
-                UpdatedAt = Clock.Now
+                UpdatedAt = DateTime.UtcNow
             });
         }
 
@@ -73,7 +73,7 @@ namespace NouAssist.CurrencyManagement.Aggregates
                 Rate = newRate,
                 EffectiveDate = effectiveDate,
                 Provider = Provider,
-                UpdatedAt = Clock.Now
+                UpdatedAt = DateTime.UtcNow
             });
         }
 

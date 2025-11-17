@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CreditScoreMonitoring.Aggregates;
 using NouAssist.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.CreditScoreMonitoring.Services
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Services
 {
     public class CreditScoreAnalysisService : DomainService
     {

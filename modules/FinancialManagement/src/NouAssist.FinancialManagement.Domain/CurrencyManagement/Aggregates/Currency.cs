@@ -1,12 +1,12 @@
 using System;
 using NouAssist.CurrencyManagement.Domain.Shared.Events;
 using NouAssist.CurrencyManagement.Enums;
-using NouAssist.CurrencyManagement.ValueObjects;
+using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CurrencyManagement.Aggregates
+namespace NouAssist.FinancialManagement.CurrencyManagement.Aggregates
 {
     public class Currency : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -55,7 +55,7 @@ namespace NouAssist.CurrencyManagement.Aggregates
                 TenantId = TenantId,
                 CurrencyCode = Code.Code,
                 CurrencyName = Name,
-                ActivatedAt = Clock.Now
+                ActivatedAt = DateTime.UtcNow
             });
         }
 

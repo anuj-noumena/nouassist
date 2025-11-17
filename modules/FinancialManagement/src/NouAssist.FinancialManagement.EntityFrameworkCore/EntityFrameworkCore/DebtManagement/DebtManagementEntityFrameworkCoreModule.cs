@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
-using NouAssist.DebtManagement.Aggregates;
-using NouAssist.DebtManagement.Data;
 using NouAssist.DebtManagement.EntityFrameworkCore.Repositories;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;

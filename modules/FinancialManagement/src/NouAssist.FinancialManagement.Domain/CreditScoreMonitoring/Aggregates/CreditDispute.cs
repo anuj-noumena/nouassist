@@ -4,7 +4,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CreditScoreMonitoring.Aggregates
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates
 {
     public class CreditDispute : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -42,7 +42,7 @@ namespace NouAssist.CreditScoreMonitoring.Aggregates
             DisputeReason = Check.NotNullOrWhiteSpace(disputeReason, nameof(disputeReason));
             SupportingDocumentation = supportingDocumentation;
             Status = DisputeStatus.Submitted;
-            SubmittedDate = Clock.Now;
+            SubmittedDate = DateTime.UtcNow;
         }
 
         public void MarkAsUnderInvestigation(string confirmationNumber)
@@ -64,7 +64,7 @@ namespace NouAssist.CreditScoreMonitoring.Aggregates
             }
 
             Status = DisputeStatus.Resolved;
-            ResolutionDate = Clock.Now;
+            ResolutionDate = DateTime.UtcNow;
             ResolutionNotes = Check.NotNullOrWhiteSpace(resolutionNotes, nameof(resolutionNotes));
         }
 
@@ -76,7 +76,7 @@ namespace NouAssist.CreditScoreMonitoring.Aggregates
             }
 
             Status = DisputeStatus.Rejected;
-            ResolutionDate = Clock.Now;
+            ResolutionDate = DateTime.UtcNow;
             ResolutionNotes = Check.NotNullOrWhiteSpace(rejectionReason, nameof(rejectionReason));
         }
 
@@ -88,7 +88,7 @@ namespace NouAssist.CreditScoreMonitoring.Aggregates
             }
 
             Status = DisputeStatus.Cancelled;
-            ResolutionDate = Clock.Now;
+            ResolutionDate = DateTime.UtcNow;
         }
     }
 }

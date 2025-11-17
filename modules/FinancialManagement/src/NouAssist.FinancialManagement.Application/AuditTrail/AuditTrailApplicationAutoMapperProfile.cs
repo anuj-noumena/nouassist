@@ -1,6 +1,6 @@
 using AutoMapper;
-using NouAssist.AuditTrail.Aggregates;
 using NouAssist.AuditTrail.Dtos;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 
 namespace NouAssist.AuditTrail
 {

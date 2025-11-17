@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
@@ -73,7 +74,7 @@ namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
                 account.Property(a => a.UtilizationPercentage).HasPrecision(5, 2);
                 account.Property(a => a.MarketValue).HasPrecision(18, 2);
 
-                account.HasKey("CreditReportId", nameof(Entities.CreditAccount.AccountNumber));
+                account.HasKey("CreditReportId", nameof(CreditAccount.AccountNumber));
             });
 
             // Relationships - Inquiries (owned collection)

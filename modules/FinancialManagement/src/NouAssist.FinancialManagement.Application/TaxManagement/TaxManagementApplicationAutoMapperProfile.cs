@@ -1,6 +1,6 @@
 using AutoMapper;
-using NouAssist.TaxManagement.Aggregates;
-using NouAssist.TaxManagement.Entities;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Entities;
 using NouAssist.TaxManagement.TaxProfiles.Dtos;
 using NouAssist.TaxManagement.TaxReturns.Dtos;
 

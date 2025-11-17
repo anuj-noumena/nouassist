@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
@@ -55,7 +56,7 @@ namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
                 debt.Property(d => d.AllocatedMonthlyPayment).IsRequired().HasPrecision(18, 2);
                 debt.Property(d => d.IsIncluded).IsRequired();
 
-                debt.HasKey(nameof(DebtPayoffPlan) + "Id", nameof(Entities.PayoffPlanDebt.DebtAccountId));
+                debt.HasKey(nameof(DebtPayoffPlan) + "Id", nameof(PayoffPlanDebt.DebtAccountId));
 
                 debt.HasIndex(d => d.PayoffOrder);
             });

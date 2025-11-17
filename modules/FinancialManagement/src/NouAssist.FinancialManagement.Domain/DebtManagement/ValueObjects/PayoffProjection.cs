@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DebtManagement.ValueObjects
+namespace NouAssist.FinancialManagement.DebtManagement.ValueObjects
 {
     public class PayoffProjection : ValueObject
     {

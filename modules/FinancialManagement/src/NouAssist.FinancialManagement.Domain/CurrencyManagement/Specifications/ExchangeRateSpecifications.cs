@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.CurrencyManagement.Aggregates;
-using NouAssist.CurrencyManagement.ValueObjects;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.CurrencyManagement.Specifications
+namespace NouAssist.FinancialManagement.CurrencyManagement.Specifications
 {
     public class ActiveExchangeRatesSpecification : Specification<CurrencyExchangeRate>
     {

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CurrencyManagement.Aggregates;
-using NouAssist.CurrencyManagement.ValueObjects;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.CurrencyManagement.Data
+namespace NouAssist.FinancialManagement.CurrencyManagement.Data
 {
     public interface ICurrencyExchangeRateRepository : IRepository<CurrencyExchangeRate, Guid>
     {

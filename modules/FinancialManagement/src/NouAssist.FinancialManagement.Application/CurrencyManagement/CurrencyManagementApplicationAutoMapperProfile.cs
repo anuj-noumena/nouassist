@@ -1,6 +1,6 @@
 using AutoMapper;
-using NouAssist.CurrencyManagement.Aggregates;
 using NouAssist.CurrencyManagement.Dtos;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 
 namespace NouAssist.CurrencyManagement
 {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CreditScoreMonitoring.ValueObjects
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.ValueObjects
 {
     public class CreditUtilization : ValueObject
     {

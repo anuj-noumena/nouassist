@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.CurrencyManagement.ValueObjects
+namespace NouAssist.FinancialManagement.CurrencyManagement.ValueObjects
 {
     public class CurrencyCode : ValueObject
     {

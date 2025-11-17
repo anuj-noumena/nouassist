@@ -2,7 +2,7 @@ using System;
 using NouAssist.AuditTrail.Enums;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.AuditTrail.Services
+namespace NouAssist.FinancialManagement.AuditTrail.Services
 {
     public class ComplianceFlagDeterminationService : DomainService
     {

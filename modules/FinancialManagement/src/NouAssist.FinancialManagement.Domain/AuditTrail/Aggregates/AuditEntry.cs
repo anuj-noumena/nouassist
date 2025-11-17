@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using NouAssist.AuditTrail.Enums;
-using NouAssist.AuditTrail.ValueObjects;
+using NouAssist.FinancialManagement.AuditTrail.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.AuditTrail.Aggregates
+namespace NouAssist.FinancialManagement.AuditTrail.Aggregates
 {
     public class AuditEntry : AggregateRoot<Guid>, IMultiTenant
     {
@@ -42,7 +42,7 @@ namespace NouAssist.AuditTrail.Aggregates
             int retentionDays = 2555) : base(id) // Default 7 years
         {
             TenantId = tenantId;
-            Timestamp = Clock.Now;
+            Timestamp = DateTime.UtcNow;
             EntityReference = Check.NotNull(entityReference, nameof(entityReference));
             EventType = eventType;
             UserContext = Check.NotNull(userContext, nameof(userContext));
@@ -64,7 +64,7 @@ namespace NouAssist.AuditTrail.Aggregates
             }
 
             IsArchived = true;
-            ArchivedAt = Clock.Now;
+            ArchivedAt = DateTime.UtcNow;
             RetentionPolicy = new RetentionPolicy(
                 RetentionPolicy.RetentionDays,
                 Timestamp,

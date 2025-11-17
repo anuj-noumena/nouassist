@@ -13,7 +13,13 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement
         public DbSet<Task> Tasks { get; set; }
         public DbSet<TaskInstance> TaskInstances { get; set; }
         public DbSet<TaskType> TaskTypes { get; set; }
-        
+
+        // New Aggregates (split from Task and TaskInstance)
+        public DbSet<TaskTemplate> TaskTemplates { get; set; }
+        public DbSet<TaskInstanceChecklist> TaskInstanceChecklists { get; set; }
+        public DbSet<TaskDependencyAggregate> TaskDependencyAggregates { get; set; }
+        public DbSet<TaskCollaborationAggregate> TaskCollaborationAggregates { get; set; }
+
         // Child entities
         public DbSet<ChecklistItem> ChecklistItems { get; set; }
         public DbSet<TaskChecklistItem> TaskChecklistItems { get; set; }
@@ -32,11 +38,19 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement
             base.OnModelCreating(builder);
 
             builder.ConfigureTasks();
-            
+
             // Apply all configurations
             builder.ApplyConfiguration(new TaskAggregateConfiguration());
             builder.ApplyConfiguration(new TaskInstanceAggregateConfiguration());
             builder.ApplyConfiguration(new TaskTypeAggregateConfiguration());
+
+            // New aggregate configurations (split from Task and TaskInstance)
+            builder.ApplyConfiguration(new TaskTemplateConfiguration());
+            builder.ApplyConfiguration(new TaskInstanceChecklistConfiguration());
+            builder.ApplyConfiguration(new TaskDependencyAggregateConfiguration());
+            builder.ApplyConfiguration(new TaskCollaborationAggregateConfiguration());
+
+            // Entity configurations
             builder.ApplyConfiguration(new ChecklistItemConfiguration());
             builder.ApplyConfiguration(new TaskChecklistItemConfiguration());
             builder.ApplyConfiguration(new AcceptanceCriterionConfiguration());

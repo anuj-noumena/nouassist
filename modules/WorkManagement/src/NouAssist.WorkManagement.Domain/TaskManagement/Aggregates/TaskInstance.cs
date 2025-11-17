@@ -48,12 +48,11 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         
         // === HIERARCHY ===
         public TaskHierarchy Hierarchy { get; private set; }
-        
-        // === COLLABORATION ===
-        public TaskCollaboration Collaboration { get; private set; }
-        
+
         // === CUSTOM DATA ===
         public CustomFieldValues CustomFields { get; private set; }
+
+        // NOTE: Collaboration has been moved to TaskCollaborationAggregate
         
         // === BLOCKING/FLAGS ===
         private string _blockingReason;
@@ -68,12 +67,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         private string _resolutionNote;
         public bool IsResolved => !string.IsNullOrEmpty(_resolution);
 
-        // === CHILD COLLECTIONS ===
-        private readonly List<TaskChecklistItem> _checklistItems = new();
-        public IReadOnlyCollection<TaskChecklistItem> ChecklistItems => _checklistItems.AsReadOnly();
-
-        private readonly List<TaskDependency> _dependencies = new();
-        public IReadOnlyCollection<TaskDependency> Dependencies => _dependencies.AsReadOnly();
+        // NOTE: ChecklistItems moved to TaskInstanceChecklist aggregate
+        // NOTE: Dependencies moved to TaskDependencyAggregate
 
         // === CONSTRUCTION ===
         protected TaskInstance() { }
@@ -113,8 +108,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             WorkTracking = TaskWorkTracking.NotStarted();
             Schedule = TaskSchedule.Empty();
             Hierarchy = TaskHierarchy.Root();
-            Collaboration = TaskCollaboration.Empty();
             CustomFields = CustomFieldValues.Create();
+            // NOTE: Collaboration is now managed by TaskCollaborationAggregate
 
             AddDistributedEvent(new TaskInstanceCreatedEto
             {
@@ -486,106 +481,11 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             _flagReason = null;
         }
 
-        // === CHECKLIST ===
-        public void InitializeChecklist(List<Guid> checklistItemIds)
-        {
-            foreach (var itemId in checklistItemIds)
-            {
-                _checklistItems.Add(new TaskChecklistItem(Id, itemId));
-            }
-        }
+        // NOTE: Checklist management methods moved to TaskInstanceChecklist aggregate
 
-        public void CheckItem(Guid itemId, Guid? userId = null)
-        {
-            var item = _checklistItems.FirstOrDefault(i => i.ChecklistItemId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:ChecklistItemNotFound");
-            }
+        // NOTE: Dependency management methods moved to TaskDependencyAggregate
 
-            item.Check(userId);
-            UpdateProgressFromChecklist();
-        }
-
-        public void UncheckItem(Guid itemId)
-        {
-            var item = _checklistItems.FirstOrDefault(i => i.ChecklistItemId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:ChecklistItemNotFound");
-            }
-
-            item.Uncheck();
-            UpdateProgressFromChecklist();
-        }
-
-        private void UpdateProgressFromChecklist()
-        {
-            if (_checklistItems.Count == 0)
-            {
-                return;
-            }
-
-            var checkedCount = _checklistItems.Count(i => i.IsChecked);
-            var progress = (double)checkedCount / _checklistItems.Count * 100.0;
-            
-            WorkTracking = WorkTracking.UpdateProgress(progress);
-        }
-
-        // === DEPENDENCIES ===
-        public void AddDependency(
-            Guid dependsOnTaskInstanceId, 
-            DependencyType type,
-            int lagMinutes = 0,
-            bool isBlocking = true)
-        {
-            if (dependsOnTaskInstanceId == Id)
-            {
-                throw new BusinessException("Tasks:CannotDependOnSelf");
-            }
-
-            if (_dependencies.Any(d => d.DependsOnTaskInstanceId == dependsOnTaskInstanceId))
-            {
-                throw new BusinessException("Tasks:DependencyAlreadyExists");
-            }
-
-            var dependency = TaskDependency.CreateInstanceDependency(
-                Id, dependsOnTaskInstanceId, type, lagMinutes, isBlocking);
-            
-            _dependencies.Add(dependency);
-        }
-
-        public void RemoveDependency(Guid dependsOnTaskInstanceId)
-        {
-            var dependency = _dependencies.FirstOrDefault(d => 
-                d.DependsOnTaskInstanceId == dependsOnTaskInstanceId);
-            
-            if (dependency != null)
-            {
-                _dependencies.Remove(dependency);
-            }
-        }
-
-        // === COLLABORATION ===
-        public void AddWatcher(Guid userId)
-        {
-            Collaboration = Collaboration.AddWatcher(userId);
-        }
-
-        public void RemoveWatcher(Guid userId)
-        {
-            Collaboration = Collaboration.RemoveWatcher(userId);
-        }
-
-        public void IncrementComments()
-        {
-            Collaboration = Collaboration.IncrementComments();
-        }
-
-        public void IncrementAttachments()
-        {
-            Collaboration = Collaboration.IncrementAttachments();
-        }
+        // NOTE: Collaboration methods moved to TaskCollaborationAggregate
 
         // === CUSTOM FIELDS ===
         public void SetCustomFieldValue(string key, object value)
@@ -623,10 +523,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 
         // === COMPUTED PROPERTIES ===
         public bool RequiresApproval => ApprovalRequestId.HasValue;
-        public bool HasBlockingDependencies => _dependencies.Any(d => d.IsBlocking);
         public double CompletionRate => WorkTracking.ProgressPercent;
         public bool IsOverdue => Schedule.IsOverdue;
-        public bool HasWatchers => Collaboration.WatcherCount > 0;
+        // NOTE: HasBlockingDependencies and HasWatchers are now in respective aggregates
         
         // GTD-specific computed properties
         public bool IsInArea => AreaId.HasValue;

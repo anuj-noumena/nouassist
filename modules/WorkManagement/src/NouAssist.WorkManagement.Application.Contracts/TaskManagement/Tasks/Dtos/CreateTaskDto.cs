@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 
 namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
 {
@@ -37,6 +38,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         public DateTime? DefaultDueDate { get; set; }
         public Guid? DefaultWorkflowId { get; set; }
         public Guid? DefaultAssigneeId { get; set; }
+        public CreateComplexityEstimationDto DefaultComplexityEstimation { get; set; }
+        public CognitiveLoad? DefaultCognitiveLoad { get; set; }
 
         public RecurrenceRuleDto RecurrenceRule { get; set; }
 
@@ -78,5 +81,14 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
 
         [StringLength(2000)]
         public string TestScenario { get; set; }
+    }
+
+    public class CreateComplexityEstimationDto
+    {
+        [Required]
+        public int Value { get; set; }
+
+        [Required]
+        public ComplexityScale Scale { get; set; }
     }
 }

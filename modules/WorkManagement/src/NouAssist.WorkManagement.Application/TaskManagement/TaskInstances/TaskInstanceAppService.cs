@@ -118,6 +118,22 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
                 taskInstance.PlannedStartDate = input.PlannedStartDate.Value;
             }
 
+            // Set complexity estimation if provided
+            if (input.ComplexityEstimation != null)
+            {
+                var complexityEstimation = new ComplexityEstimation(
+                    input.ComplexityEstimation.Value,
+                    input.ComplexityEstimation.Scale
+                );
+                taskInstance.SetComplexityEstimation(complexityEstimation);
+            }
+
+            // Set cognitive load if provided
+            if (input.CognitiveLoad.HasValue)
+            {
+                taskInstance.SetCognitiveLoad(input.CognitiveLoad.Value);
+            }
+
             await _taskInstanceRepository.UpdateAsync(taskInstance);
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
@@ -166,6 +182,22 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             if (input.IsFlagged.HasValue)
             {
                 taskInstance.UpdateFlag(input.IsFlagged.Value, input.FlaggedReason);
+            }
+
+            // Update complexity estimation if provided
+            if (input.ComplexityEstimation != null)
+            {
+                var complexityEstimation = new ComplexityEstimation(
+                    input.ComplexityEstimation.Value,
+                    input.ComplexityEstimation.Scale
+                );
+                taskInstance.SetComplexityEstimation(complexityEstimation);
+            }
+
+            // Update cognitive load if provided
+            if (input.CognitiveLoad.HasValue)
+            {
+                taskInstance.SetCognitiveLoad(input.CognitiveLoad.Value);
             }
 
             await _taskInstanceRepository.UpdateAsync(taskInstance);

@@ -10,6 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="NouAssist.WorkManagement.Application"></InternalsVisibleTo>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.3.6"/>
     <ProjectReference Include="..\..\..\SharedKernel\src\NouAssist.SharedKernel.Domain\NouAssist.SharedKernel.Domain.csproj" />
     <ProjectReference Include="..\NouAssist.WorkManagement.Domain.Shared\NouAssist.WorkManagement.Domain.Shared.csproj" />

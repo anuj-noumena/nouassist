@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.ProjectManagement.Enums;
 
 namespace NouAssist.WorkManagement.ProjectManagement.Dependencies.Dtos

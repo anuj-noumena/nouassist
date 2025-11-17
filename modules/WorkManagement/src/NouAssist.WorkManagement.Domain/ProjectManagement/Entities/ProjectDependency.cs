@@ -19,7 +19,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
         public Guid? TenantId { get; private set; }
         
         // === TIMING ===
-        public int LagDays { get; private set; }
+        public int LagDays { get; internal set; }
         
         // === IMPACT ===
         public bool IsBlocking { get; set; }
@@ -130,12 +130,5 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
                                  DateTime.UtcNow > ExpectedResolutionDate.Value &&
                                  !IsResolved;
         public TimeSpan LagDuration => TimeSpan.FromDays(LagDays);
-    }
-    
-    public enum DependencyStrength
-    {
-        Hard = 1,        // Must be satisfied
-        Soft = 2,        // Should be satisfied
-        Informational = 3 // Nice to know
     }
 }

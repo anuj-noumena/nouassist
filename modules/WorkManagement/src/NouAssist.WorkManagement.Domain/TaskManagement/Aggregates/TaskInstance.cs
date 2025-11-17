@@ -20,7 +20,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
     {
         // === CORE IDENTITY ===
         public Guid TaskId { get; private set; }
-        public Guid WorkflowId { get; private set; }
+        public Guid WorkflowId { get; private set; }// cached property, determined from task type
         public Guid? ProjectId { get; private set; }
         public Guid? TenantId { get; private set; }
         public int EntityVersion { get; private set; }
@@ -70,9 +70,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public IReadOnlyCollection<TaskChecklistItem> ChecklistItems => _checklistItems.AsReadOnly();
         
         // === ACCEPTANCE CRITERIA ===
-        private readonly List<AcceptanceCriterionCompletion> _acceptanceCriteriaCompletions = new();
-        public IReadOnlyCollection<AcceptanceCriterionCompletion> AcceptanceCriteriaCompletions => 
-            _acceptanceCriteriaCompletions.AsReadOnly();
+        private readonly List<AcceptanceCriterionCompletion> _criterionCompletions = new();
+        public IReadOnlyCollection<AcceptanceCriterionCompletion> CriterionCompletions => 
+            _criterionCompletions.AsReadOnly();
         
         // === ACTION STEPS ===
         private readonly List<TaskActionStepCompletion> _actionStepsCompletions = new();
@@ -543,13 +543,13 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         {
             foreach (var itemId in acceptanceCriteriaItemIds)
             {
-                _acceptanceCriteriaCompletions.Add(new AcceptanceCriterionCompletion(Id, itemId));
+                _criterionCompletions.Add(new AcceptanceCriterionCompletion(Id, itemId));
             }
         }
 
         public void AcceptanceCriteriaMarkAsMet(Guid itemId, Guid userId)
         {
-            var item = _acceptanceCriteriaCompletions.FirstOrDefault(i => i.CriterionId == itemId);
+            var item = _criterionCompletions.FirstOrDefault(i => i.CriterionId == itemId);
             if (item == null)
             {
                 throw new BusinessException("Tasks:AcceptanceCriteriaNotFound");
@@ -560,7 +560,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 
         public void AcceptanceCriteriaMarkAsUnmet(Guid itemId)
         {
-            var item = _acceptanceCriteriaCompletions.FirstOrDefault(i => i.CriterionId == itemId);
+            var item = _criterionCompletions.FirstOrDefault(i => i.CriterionId == itemId);
             if (item == null)
             {
                 throw new BusinessException("Tasks:AcceptanceCriteriaNotFound");

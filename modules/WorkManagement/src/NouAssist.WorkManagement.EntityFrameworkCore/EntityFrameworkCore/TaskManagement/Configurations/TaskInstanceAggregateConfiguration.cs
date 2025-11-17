@@ -120,22 +120,7 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
                     .HasConversion<string>()
                     .HasMaxLength(50);
             });
-
-            // Value Object: TaskHierarchy (owned entity)
-            builder.OwnsOne(x => x.Hierarchy, hierarchyBuilder =>
-            {
-                hierarchyBuilder.Property(h => h.ParentId)
-                    .HasColumnName("ParentInstanceId");
-
-                hierarchyBuilder.Property(h => h.Level)
-                    .HasColumnName("HierarchyLevel")
-                    .IsRequired()
-                    .HasDefaultValue(0);
-
-                hierarchyBuilder.Property(h => h.Path)
-                    .HasColumnName("HierarchyPath")
-                    .HasMaxLength(4000);
-            });
+            
 
             // Value Object: TaskCollaboration (owned entity)
             builder.OwnsOne(x => x.Collaboration, collabBuilder =>

@@ -65,22 +65,13 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         private string _resolutionNote;
         public bool IsResolved => !string.IsNullOrEmpty(_resolution);
 
-        // === CHILD COLLECTIONS ===
-        private readonly List<TaskChecklistItem> _checklistItems = new();
-        public IReadOnlyCollection<TaskChecklistItem> ChecklistItems => _checklistItems.AsReadOnly();
-        
-        // === ACCEPTANCE CRITERIA ===
-        private readonly List<AcceptanceCriterionCompletion> _acceptanceCriteriaCompletions = new();
-        public IReadOnlyCollection<AcceptanceCriterionCompletion> AcceptanceCriteriaCompletions => 
-            _acceptanceCriteriaCompletions.AsReadOnly();
-        
-        // === ACTION STEPS ===
-        private readonly List<TaskActionStepCompletion> _actionStepsCompletions = new();
-        public IReadOnlyCollection<TaskActionStepCompletion> ActionStepCompletions => 
-            _actionStepsCompletions.AsReadOnly();
-        
-        private readonly List<TaskDependency> _dependencies = new();
-        public IReadOnlyCollection<TaskDependency> Dependencies => _dependencies.AsReadOnly();
+        // === AGGREGATE REFERENCES ===
+        // Child collections have been moved to separate aggregates:
+        // - TaskChecklistCompletion (aggregate) contains checklist item completions
+        // - TaskAcceptanceCompletion (aggregate) contains acceptance criteria completions
+        // - TaskActionStepsCompletion (aggregate) contains action step completions
+        // - TaskDependencies (aggregate) contains task dependencies
+        // Access them via their respective repositories using TaskInstanceId
 
         // === CONSTRUCTION ===
         protected TaskInstance() { }
@@ -493,147 +484,20 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         }
 
         // === CHECKLIST ===
-        public void InitializeChecklist(List<Guid> checklistItemIds)
-        {
-            foreach (var itemId in checklistItemIds)
-            {
-                _checklistItems.Add(new TaskChecklistItem(Id, itemId));
-            }
-        }
+        // Checklist management has been moved to TaskChecklistCompletion aggregate
+        // Use ITaskChecklistCompletionRepository to manage checklist completions
 
-        public void CheckItem(Guid itemId, Guid? userId = null)
-        {
-            var item = _checklistItems.FirstOrDefault(i => i.ChecklistItemId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:ChecklistItemNotFound");
-            }
+        // === ACCEPTANCE CRITERIA ===
+        // Acceptance criteria management has been moved to TaskAcceptanceCompletion aggregate
+        // Use ITaskAcceptanceCompletionRepository to manage acceptance criteria completions
 
-            item.Check(userId);
-            UpdateProgressFromChecklist();
-        }
+        // === ACTION STEPS ===
+        // Action steps management has been moved to TaskActionStepsCompletion aggregate
+        // Use ITaskActionStepsCompletionRepository to manage action step completions
 
-        public void UncheckItem(Guid itemId)
-        {
-            var item = _checklistItems.FirstOrDefault(i => i.ChecklistItemId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:ChecklistItemNotFound");
-            }
-
-            item.Uncheck();
-            UpdateProgressFromChecklist();
-        }
-
-        private void UpdateProgressFromChecklist()
-        {
-            if (_checklistItems.Count == 0)
-            {
-                return;
-            }
-
-            var checkedCount = _checklistItems.Count(i => i.IsChecked);
-            var progress = (double)checkedCount / _checklistItems.Count * 100.0;
-            
-            WorkTracking = WorkTracking.UpdateProgress(progress);
-        }
-
-        // === Acceptance Criteria ===
-        public void InitializeAcceptanceCriteria(List<Guid> acceptanceCriteriaItemIds)
-        {
-            foreach (var itemId in acceptanceCriteriaItemIds)
-            {
-                _acceptanceCriteriaCompletions.Add(new AcceptanceCriterionCompletion(Id, itemId));
-            }
-        }
-
-        public void AcceptanceCriteriaMarkAsMet(Guid itemId, Guid userId)
-        {
-            var item = _acceptanceCriteriaCompletions.FirstOrDefault(i => i.CriterionId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:AcceptanceCriteriaNotFound");
-            }
-
-            item.MarkAsMet(userId);
-        }
-
-        public void AcceptanceCriteriaMarkAsUnmet(Guid itemId)
-        {
-            var item = _acceptanceCriteriaCompletions.FirstOrDefault(i => i.CriterionId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:AcceptanceCriteriaNotFound");
-            }
-            
-            item.UnmarkAsMet();
-        }
-
-        
-        // === Action steps ===
-        public void InitializeActionSteps(List<Guid> actionStepsIds)
-        {
-            foreach (var itemId in actionStepsIds)
-            {
-                _actionStepsCompletions.Add(new TaskActionStepCompletion(Id, itemId));
-            }
-        }
-
-        public void MarkActionStepComplete(Guid itemId, Guid userId)
-        {
-            var item = _actionStepsCompletions.FirstOrDefault(i => i.TaskActionStepId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:ActionStepNotFound");
-            }
-
-            item.Complete(userId);
-        }
-
-        public void MarkActionStepUncomplete(Guid itemId)
-        {
-            var item = _actionStepsCompletions.FirstOrDefault(i => i.TaskActionStepId == itemId);
-            if (item == null)
-            {
-                throw new BusinessException("Tasks:ActionStepNotFound");
-            }
-            
-            item.Uncomplete();
-        }
-        
         // === DEPENDENCIES ===
-        public void AddDependency(
-            Guid dependsOnTaskInstanceId, 
-            DependencyType type,
-            int lagMinutes = 0,
-            bool isBlocking = true)
-        {
-            if (dependsOnTaskInstanceId == Id)
-            {
-                throw new BusinessException("Tasks:CannotDependOnSelf");
-            }
-
-            if (_dependencies.Any(d => d.DependsOnTaskInstanceId == dependsOnTaskInstanceId))
-            {
-                throw new BusinessException("Tasks:DependencyAlreadyExists");
-            }
-
-            var dependency = TaskDependency.CreateInstanceDependency(
-                Id, dependsOnTaskInstanceId, type, lagMinutes, isBlocking);
-            
-            _dependencies.Add(dependency);
-        }
-
-        public void RemoveDependency(Guid dependsOnTaskInstanceId)
-        {
-            var dependency = _dependencies.FirstOrDefault(d => 
-                d.DependsOnTaskInstanceId == dependsOnTaskInstanceId);
-            
-            if (dependency != null)
-            {
-                _dependencies.Remove(dependency);
-            }
-        }
+        // Dependency management has been moved to TaskDependencies aggregate
+        // Use ITaskDependenciesRepository to manage task dependencies
 
         // === COLLABORATION ===
         public void AddWatcher(Guid userId)
@@ -692,7 +556,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 
         // === COMPUTED PROPERTIES ===
         public bool RequiresApproval => ApprovalRequestId.HasValue;
-        public bool HasBlockingDependencies => _dependencies.Any(d => d.IsBlocking);
+        // HasBlockingDependencies: Query TaskDependencies aggregate
         public double CompletionRate => WorkTracking.ProgressPercent;
         public bool IsOverdue => Schedule.IsOverdue;
         public bool HasWatchers => Collaboration.WatcherCount > 0;

@@ -51,14 +51,11 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public bool IsActive { get; private set; }
         public int Version { get; private set; }
 
-        // === CHECKLIST ===
-        private readonly List<ChecklistItem> _checklistItems = new();
-        public IReadOnlyCollection<ChecklistItem> ChecklistItems => _checklistItems.AsReadOnly();
-
-        // === ACCEPTANCE CRITERIA ===
-        private readonly List<AcceptanceCriterion> _acceptanceCriteria = new();
-        public IReadOnlyCollection<AcceptanceCriterion> AcceptanceCriteria => 
-            _acceptanceCriteria.AsReadOnly();
+        // === AGGREGATE REFERENCES ===
+        // Checklist and AcceptanceCriteria have been moved to separate aggregates:
+        // - TaskChecklist (aggregate) contains ChecklistItems
+        // - TaskAcceptanceCriteria (aggregate) contains AcceptanceCriteria
+        // Access them via their respective repositories using TaskId
 
         protected Task() { }
 
@@ -255,91 +252,12 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         }
 
         // === CHECKLIST MANAGEMENT ===
-        public void AddChecklistItem(string title, bool isRequired = false)
-        {
-            var maxOrder = _checklistItems.Any() 
-                ? _checklistItems.Max(i => i.OrderIndex) 
-                : -1;
-
-            var item = new ChecklistItem(
-                Guid.NewGuid(),
-                Id,
-                title,
-                maxOrder + 1,
-                isRequired);
-
-            _checklistItems.Add(item);
-            Version++;
-            
-            AddDistributedEvent(new TaskChecklistItemAddedEto
-            {
-                TaskId = Id,
-                TenantId = TenantId,
-                ChecklistItemId = item.Id,
-                ItemTitle = title,
-                IsRequired = isRequired,
-                OrderIndex = maxOrder + 1,
-                Version = Version,
-                AddedAt = DateTime.UtcNow
-            });
-        }
-
-        public void RemoveChecklistItem(Guid itemId)
-        {
-            var item = _checklistItems.FirstOrDefault(i => i.Id == itemId);
-            if (item != null)
-            {
-                _checklistItems.Remove(item);
-                ReorderChecklistItems();
-                Version++;
-                
-                AddDistributedEvent(new TaskChecklistItemRemovedEto
-                {
-                    TaskId = Id,
-                    TenantId = TenantId,
-                    ChecklistItemId = itemId,
-                    Version = Version,
-                    RemovedAt = DateTime.UtcNow
-                });
-            }
-        }
-
-        public void ReorderChecklistItems(List<Guid> orderedIds)
-        {
-            for (int i = 0; i < orderedIds.Count; i++)
-            {
-                var item = _checklistItems.FirstOrDefault(ci => ci.Id == orderedIds[i]);
-                item?.UpdateOrder(i);
-            }
-            Version++;
-        }
-
-        private void ReorderChecklistItems()
-        {
-            var items = _checklistItems.OrderBy(i => i.OrderIndex).ToList();
-            for (int i = 0; i < items.Count; i++)
-            {
-                items[i].UpdateOrder(i);
-            }
-        }
+        // Checklist management has been moved to TaskChecklist aggregate
+        // Use ITaskChecklistRepository to manage checklist items
 
         // === ACCEPTANCE CRITERIA ===
-        public void AddAcceptanceCriterion(string description, int? priority = null)
-        {
-            var criterion = new AcceptanceCriterion(Id, description, priority);
-            _acceptanceCriteria.Add(criterion);
-            Version++;
-        }
-
-        public void RemoveAcceptanceCriterion(Guid criterionId)
-        {
-            var criterion = _acceptanceCriteria.FirstOrDefault(c => c.Id == criterionId);
-            if (criterion != null)
-            {
-                _acceptanceCriteria.Remove(criterion);
-                Version++;
-            }
-        }
+        // Acceptance criteria management has been moved to TaskAcceptanceCriteria aggregate
+        // Use ITaskAcceptanceCriteriaRepository to manage acceptance criteria
 
         // === RECURRENCE ===
         public void SetRecurrence(RecurrenceRule rule)
@@ -415,9 +333,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
 
         // === COMPUTED ===
         public bool IsRecurring => RecurrenceRule != null;
-        public bool HasChecklist => _checklistItems.Any();
-        public bool HasAcceptanceCriteria => _acceptanceCriteria.Any();
-        public int RequiredChecklistItemCount => _checklistItems.Count(i => i.IsRequired);
+        // HasChecklist and HasAcceptanceCriteria: Query TaskChecklist and TaskAcceptanceCriteria aggregates
         public bool IsInArea => AreaId.HasValue;
         public bool IsInProject => ProjectId.HasValue;
         public bool IsInContext => ContextId.HasValue;

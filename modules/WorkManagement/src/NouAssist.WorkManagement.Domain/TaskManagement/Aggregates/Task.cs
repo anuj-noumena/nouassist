@@ -207,6 +207,98 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             });
         }
 
+        // === DEFAULTS UPDATE METHODS ===
+
+        /// <summary>
+        /// Updates default priority (importance and urgency) for instances
+        /// </summary>
+        public void UpdateDefaultPriority(double importance, double urgency)
+        {
+            var oldImportance = DefaultImportance;
+            var oldUrgency = DefaultUrgency;
+
+            DefaultImportance = ImportanceUrgencyMatrix.ValidateImportance(importance);
+            DefaultUrgency = ImportanceUrgencyMatrix.ValidateUrgency(urgency);
+            Version++;
+
+            AddDistributedEvent(new TaskDefaultPriorityUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldImportance = oldImportance,
+                NewImportance = DefaultImportance,
+                OldUrgency = oldUrgency,
+                NewUrgency = DefaultUrgency,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates default schedule (due date and estimate) for instances
+        /// </summary>
+        public void UpdateDefaultSchedule(DateTime? defaultDueDate, int? defaultEstimateMinutes)
+        {
+            var oldDueDate = DefaultDueDate;
+            var oldEstimate = DefaultEstimateMinutes;
+
+            DefaultDueDate = defaultDueDate;
+            DefaultEstimateMinutes = defaultEstimateMinutes;
+            Version++;
+
+            AddDistributedEvent(new TaskDefaultScheduleUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldDefaultDueDate = oldDueDate,
+                NewDefaultDueDate = defaultDueDate,
+                OldDefaultEstimateMinutes = oldEstimate,
+                NewDefaultEstimateMinutes = defaultEstimateMinutes,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates default assignee for instances
+        /// </summary>
+        public void UpdateDefaultAssignee(Guid? defaultAssigneeId)
+        {
+            var oldAssigneeId = DefaultAssigneeId;
+            DefaultAssigneeId = defaultAssigneeId;
+            Version++;
+
+            AddDistributedEvent(new TaskDefaultAssigneeUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldDefaultAssigneeId = oldAssigneeId,
+                NewDefaultAssigneeId = defaultAssigneeId,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates default workflow for instances
+        /// </summary>
+        public void UpdateDefaultWorkflow(Guid? defaultWorkflowId)
+        {
+            var oldWorkflowId = DefaultWorkflowId;
+            DefaultWorkflowId = defaultWorkflowId;
+            Version++;
+
+            AddDistributedEvent(new TaskDefaultWorkflowUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldDefaultWorkflowId = oldWorkflowId,
+                NewDefaultWorkflowId = defaultWorkflowId,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
         /// <summary>
         /// Sets default GTD organization for instances created from this blueprint
         /// </summary>
@@ -436,12 +528,56 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             });
         }
 
+        // === IDENTITY UPDATE METHODS ===
+
+        /// <summary>
+        /// Updates the owner of the task blueprint
+        /// </summary>
+        public void UpdateOwner(Guid newOwnerId)
+        {
+            var oldOwnerId = OwnerId;
+            OwnerId = newOwnerId;
+            Version++;
+
+            AddDistributedEvent(new TaskOwnerUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldOwnerId = oldOwnerId,
+                NewOwnerId = newOwnerId,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates the task type
+        /// </summary>
+        public void UpdateTaskType(Guid? newTaskTypeId)
+        {
+            var oldTaskTypeId = TaskTypeId;
+            TaskTypeId = newTaskTypeId;
+            Version++;
+
+            AddDistributedEvent(new TaskTypeUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldTaskTypeId = oldTaskTypeId,
+                NewTaskTypeId = newTaskTypeId,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        // === CONTENT UPDATE METHODS ===
+
         public void UpdateTitle(string newTitle)
         {
             var oldTitle = Title;
             Title = Check.NotNullOrWhiteSpace(newTitle, nameof(newTitle));
             Version++;
-            
+
             AddDistributedEvent(new TaskTitleUpdatedEto
             {
                 TaskId = Id,
@@ -451,6 +587,92 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 Version = Version,
                 UpdatedAt = DateTime.UtcNow
             });
+        }
+
+        /// <summary>
+        /// Updates the task description
+        /// </summary>
+        public void UpdateDescription(string newDescription)
+        {
+            var oldDescription = Description;
+            Description = newDescription;
+            Version++;
+
+            AddDistributedEvent(new TaskDescriptionUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldDescription = oldDescription,
+                NewDescription = newDescription,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates the expected result
+        /// </summary>
+        public void UpdateExpectedResult(string newExpectedResult)
+        {
+            var oldExpectedResult = ExpectedResult;
+            ExpectedResult = newExpectedResult;
+            Version++;
+
+            AddDistributedEvent(new TaskExpectedResultUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldExpectedResult = oldExpectedResult,
+                NewExpectedResult = newExpectedResult,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates the task notes
+        /// </summary>
+        public void UpdateNotes(string newNotes)
+        {
+            var oldNotes = Notes;
+            Notes = newNotes;
+            Version++;
+
+            AddDistributedEvent(new TaskNotesUpdatedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                OldNotes = oldNotes,
+                NewNotes = newNotes,
+                Version = Version,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates all content fields together
+        /// </summary>
+        public void UpdateContent(string title, string description, string expectedResult, string notes)
+        {
+            if (Title != title && !string.IsNullOrWhiteSpace(title))
+            {
+                UpdateTitle(title);
+            }
+
+            if (Description != description)
+            {
+                UpdateDescription(description);
+            }
+
+            if (ExpectedResult != expectedResult)
+            {
+                UpdateExpectedResult(expectedResult);
+            }
+
+            if (Notes != notes)
+            {
+                UpdateNotes(notes);
+            }
         }
 
         // === COMPUTED ===

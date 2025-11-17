@@ -139,6 +139,102 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             });
         }
 
+        // === IDENTITY UPDATE METHODS ===
+
+        /// <summary>
+        /// Updates the workflow for this task instance
+        /// </summary>
+        public void UpdateWorkflow(Guid newWorkflowId)
+        {
+            var oldWorkflowId = WorkflowId;
+            WorkflowId = newWorkflowId;
+
+            AddDistributedEvent(new TaskInstanceWorkflowUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldWorkflowId = oldWorkflowId,
+                NewWorkflowId = newWorkflowId,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        // === OWNERSHIP UPDATE METHODS ===
+
+        /// <summary>
+        /// Updates the owner of this task instance
+        /// </summary>
+        public void UpdateOwner(Guid newOwnerId)
+        {
+            var oldOwnerId = OwnerId;
+            OwnerId = newOwnerId;
+
+            AddDistributedEvent(new TaskInstanceOwnerUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldOwnerId = oldOwnerId,
+                NewOwnerId = newOwnerId,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates the reporter of this task instance
+        /// </summary>
+        public void UpdateReporter(Guid? newReporterId)
+        {
+            var oldReporterId = ReporterId;
+            ReporterId = newReporterId;
+
+            AddDistributedEvent(new TaskInstanceReporterUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldReporterId = oldReporterId,
+                NewReporterId = newReporterId,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        /// <summary>
+        /// Updates the team assignment for this task instance
+        /// </summary>
+        public void UpdateTeam(Guid? newTeamId)
+        {
+            var oldTeamId = TeamId;
+            TeamId = newTeamId;
+
+            AddDistributedEvent(new TaskInstanceTeamUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldTeamId = oldTeamId,
+                NewTeamId = newTeamId,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        // === NOTES UPDATE METHODS ===
+
+        /// <summary>
+        /// Updates the notes for this task instance
+        /// </summary>
+        public void UpdateNotes(string newNotes)
+        {
+            var oldNotes = Notes;
+            Notes = newNotes;
+
+            AddDistributedEvent(new TaskInstanceNotesUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                OldNotes = oldNotes,
+                NewNotes = newNotes,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
         // === GTD ORGANIZATION METHODS ===
 
         /// <summary>

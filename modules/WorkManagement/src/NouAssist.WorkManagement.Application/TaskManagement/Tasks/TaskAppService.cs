@@ -88,6 +88,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
 
             task.Description = input.Description;
             task.ExpectedResult = input.ExpectedResult;
+            task.Notes = input.Notes;
             task.DefaultContextId = input.DefaultContextId;
             task.DefaultAreaId = input.DefaultAreaId;
             task.TaskTypeId = input.TaskTypeId;
@@ -166,6 +167,11 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             if (input.ExpectedResult != null)
             {
                 task.ExpectedResult = input.ExpectedResult;
+            }
+
+            if (input.Notes != null)
+            {
+                task.Notes = input.Notes;
             }
 
             if (input.DefaultImportance.HasValue && input.DefaultUrgency.HasValue)

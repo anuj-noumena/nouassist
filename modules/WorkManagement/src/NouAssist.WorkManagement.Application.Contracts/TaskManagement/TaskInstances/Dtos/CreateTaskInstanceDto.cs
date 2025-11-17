@@ -37,6 +37,9 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 
         public int? EstimatedMinutes { get; set; }
 
+        [StringLength(4000)]
+        public string Notes { get; set; }
+
         public CreateComplexityEstimationDto ComplexityEstimation { get; set; }
         public CognitiveLoad? CognitiveLoad { get; set; }
     }

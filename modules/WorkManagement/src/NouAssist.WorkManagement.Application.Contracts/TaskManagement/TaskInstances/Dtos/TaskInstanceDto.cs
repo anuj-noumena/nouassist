@@ -57,6 +57,9 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
         public int AttachmentsCount { get; set; }
         public List<Guid> Watchers { get; set; }
 
+        // Notes
+        public string Notes { get; set; }
+
         // Blocking/Flagging
         public bool IsBlocked { get; set; }
         public string BlockedReason { get; set; }

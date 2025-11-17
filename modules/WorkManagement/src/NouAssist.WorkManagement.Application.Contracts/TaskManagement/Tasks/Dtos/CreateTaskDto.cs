@@ -23,6 +23,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         [StringLength(2000)]
         public string ExpectedResult { get; set; }
 
+        [StringLength(4000)]
+        public string Notes { get; set; }
+
         [Range(0.0, 1.0)]
         public double DefaultImportance { get; set; } = 0.5;
 

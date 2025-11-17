@@ -27,6 +27,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public string Title { get; private set; }
         public string Description { get; set; }
         public string ExpectedResult { get; set; }
+        public string Notes { get; set; }
         
         // === HIERARCHY ===
         public TaskHierarchy Hierarchy { get; private set; }

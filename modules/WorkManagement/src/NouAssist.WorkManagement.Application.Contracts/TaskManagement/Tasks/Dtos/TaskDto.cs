@@ -17,7 +17,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         
         public string Description { get; set; }
         public string ExpectedResult { get; set; }
-        
+        public string Notes { get; set; }
+
         public double DefaultImportance { get; set; }
         public double DefaultUrgency { get; set; }
         

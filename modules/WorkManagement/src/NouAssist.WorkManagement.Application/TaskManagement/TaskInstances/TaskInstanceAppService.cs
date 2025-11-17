@@ -134,6 +134,12 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
                 taskInstance.SetCognitiveLoad(input.CognitiveLoad.Value);
             }
 
+            // Set notes if provided
+            if (!string.IsNullOrEmpty(input.Notes))
+            {
+                taskInstance.Notes = input.Notes;
+            }
+
             await _taskInstanceRepository.UpdateAsync(taskInstance);
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
@@ -198,6 +204,12 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             if (input.CognitiveLoad.HasValue)
             {
                 taskInstance.SetCognitiveLoad(input.CognitiveLoad.Value);
+            }
+
+            // Update notes if provided
+            if (input.Notes != null)
+            {
+                taskInstance.Notes = input.Notes;
             }
 
             await _taskInstanceRepository.UpdateAsync(taskInstance);

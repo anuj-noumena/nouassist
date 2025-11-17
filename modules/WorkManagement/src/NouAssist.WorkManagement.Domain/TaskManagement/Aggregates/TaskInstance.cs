@@ -53,7 +53,10 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         
         // === CUSTOM DATA ===
         public CustomFieldValues CustomFields { get; private set; }
-        
+
+        // === NOTES ===
+        public string Notes { get; set; }
+
         // === BLOCKING/FLAGS ===
         private string _blockingReason;
         private DateTime? _blockedAt;

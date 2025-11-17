@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.WorkManagement.TaskManagement.Enums;
+using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
 
 namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
@@ -32,7 +34,10 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 
         [Range(0.0, 1.0)]
         public double? Urgency { get; set; }
-        
+
         public int? EstimatedMinutes { get; set; }
+
+        public CreateComplexityEstimationDto ComplexityEstimation { get; set; }
+        public CognitiveLoad? CognitiveLoad { get; set; }
     }
 }

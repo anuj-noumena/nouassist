@@ -120,7 +120,24 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
                     .HasConversion<string>()
                     .HasMaxLength(50);
             });
-            
+
+            // Value Object: ComplexityEstimation (owned entity)
+            builder.OwnsOne(x => x.ComplexityEstimation, complexityBuilder =>
+            {
+                complexityBuilder.Property(c => c.Value)
+                    .HasColumnName("ComplexityValue")
+                    .IsRequired();
+
+                complexityBuilder.Property(c => c.Scale)
+                    .HasColumnName("ComplexityScale")
+                    .IsRequired()
+                    .HasConversion<byte>();
+            });
+
+            // CognitiveLoad
+            builder.Property(x => x.CognitiveLoad)
+                .HasConversion<byte?>()
+                .HasColumnName("CognitiveLoad");
 
             // Value Object: TaskCollaboration (owned entity)
             builder.OwnsOne(x => x.Collaboration, collabBuilder =>

@@ -64,6 +64,23 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
 
             builder.Property(x => x.DefaultContextId);
 
+            builder.Property(x => x.DefaultCognitiveLoad)
+                .HasConversion<byte?>()
+                .HasColumnName("DefaultCognitiveLoad");
+
+            // Value Object: DefaultComplexityEstimation (owned entity)
+            builder.OwnsOne(x => x.DefaultComplexityEstimation, complexityBuilder =>
+            {
+                complexityBuilder.Property(c => c.Value)
+                    .HasColumnName("DefaultComplexityValue")
+                    .IsRequired();
+
+                complexityBuilder.Property(c => c.Scale)
+                    .HasColumnName("DefaultComplexityScale")
+                    .IsRequired()
+                    .HasConversion<byte>();
+            });
+
             // State
             builder.Property(x => x.IsActive)
                 .IsRequired()

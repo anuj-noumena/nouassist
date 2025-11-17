@@ -42,6 +42,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public TaskWorkTracking WorkTracking { get; private set; }
         public TaskSchedule Schedule { get; private set; }
         public ImportanceUrgencyMatrix Priority { get; private set; }
+        public ComplexityEstimation ComplexityEstimation { get; private set; }
+        public CognitiveLoad? CognitiveLoad { get; private set; }
         
         // === APPROVAL ===
         public Guid? ApprovalRequestId { get; private set; }
@@ -688,6 +690,61 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public void UpdatePriority(double importance, double urgency)
         {
             Priority = new ImportanceUrgencyMatrix(importance, urgency);
+        }
+
+        // === COMPLEXITY AND COGNITIVE LOAD ===
+        public void SetComplexityEstimation(ComplexityEstimation estimation)
+        {
+            ComplexityEstimation = estimation;
+
+            AddDistributedEvent(new TaskInstanceComplexityEstimationUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                ComplexityValue = estimation?.Value,
+                ComplexityScale = estimation?.Scale,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        public void ClearComplexityEstimation()
+        {
+            ComplexityEstimation = null;
+
+            AddDistributedEvent(new TaskInstanceComplexityEstimationUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                ComplexityValue = null,
+                ComplexityScale = null,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        public void SetCognitiveLoad(CognitiveLoad cognitiveLoad)
+        {
+            CognitiveLoad = cognitiveLoad;
+
+            AddDistributedEvent(new TaskInstanceCognitiveLoadUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                CognitiveLoad = cognitiveLoad,
+                UpdatedAt = DateTime.UtcNow
+            });
+        }
+
+        public void ClearCognitiveLoad()
+        {
+            CognitiveLoad = null;
+
+            AddDistributedEvent(new TaskInstanceCognitiveLoadUpdatedEto
+            {
+                TaskInstanceId = Id,
+                TenantId = TenantId,
+                CognitiveLoad = null,
+                UpdatedAt = DateTime.UtcNow
+            });
         }
 
         // === COMPUTED PROPERTIES ===

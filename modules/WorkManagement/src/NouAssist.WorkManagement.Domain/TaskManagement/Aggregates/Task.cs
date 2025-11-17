@@ -24,10 +24,10 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public Guid? TaskTypeId { get; private set; }
 
         // === CONTENT ===
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public string ExpectedResult { get; private set; }
-        public string Notes { get; private set; }
+        public string Title { get; internal set; }
+        public string Description { get; internal set; }
+        public string ExpectedResult { get; internal set; }
+        public string Notes { get; internal set; }
         
         // === HIERARCHY ===
         public TaskHierarchy Hierarchy { get; private set; }
@@ -64,12 +64,18 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public IReadOnlyCollection<AcceptanceCriterion> AcceptanceCriteria => 
             _acceptanceCriteria.AsReadOnly();
 
+        // === ACTION STEPS ===
+        private readonly List<TaskActionStep> _actionSteps = new();
+        public IReadOnlyCollection<TaskActionStep> ActionSteps => 
+            _actionSteps.AsReadOnly();
+        
         protected Task() { }
 
         public Task(
             Guid id,
             Guid ownerId,
             string title,
+            Guid taskTypeId,
             Guid? tenantId = null,
             Guid? projectId = null,
             Guid? areaId = null,
@@ -79,6 +85,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             double defaultUrgency = 0.5) : base(id)
         {
             OwnerId = ownerId;
+            TaskTypeId = taskTypeId;
             Title = Check.NotNullOrWhiteSpace(title, nameof(title));
             TenantId = tenantId;
             ProjectId = projectId;
@@ -454,6 +461,76 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 items[i].UpdateOrder(i);
             }
         }
+        
+        // === ACTION STEPS MANAGEMENT ===
+        public void AddActionStep(string title, string? notes = null, bool? isRequired = false)
+        {
+            var maxOrder = _actionSteps.Any() 
+                ? _actionSteps.Max(i => i.Sequence) 
+                : -1;
+
+            var item = new TaskActionStep(
+                Guid.NewGuid(),
+                Id,
+                title,
+                notes,
+                isRequired ?? false,
+                maxOrder + 1);
+
+            _actionSteps.Add(item);
+            Version++;
+            
+            AddDistributedEvent(new TaskActionStepItemAddedEto
+            {
+                TaskId = Id,
+                TenantId = TenantId,
+                ActionStepId = item.Id,
+                ActionStepTitle = title,
+                IsRequired = isRequired ?? false,
+                Sequence = maxOrder + 1,
+                Version = Version,
+                AddedAt = DateTime.UtcNow
+            });
+        }
+
+        public void RemoveActionStep(Guid itemId)
+        {
+            var item = _actionSteps.FirstOrDefault(i => i.Id == itemId);
+            if (item != null)
+            {
+                _actionSteps.Remove(item);
+                ReorderChecklistItems();
+                Version++;
+                
+                AddDistributedEvent(new TaskActionStepItemRemovedEto
+                {
+                    TaskId = Id,
+                    TenantId = TenantId,
+                    ActionStepId = itemId,
+                    Version = Version,
+                    RemovedAt = DateTime.UtcNow
+                });
+            }
+        }
+
+        public void ReorderActionSteps(List<Guid> orderedIds)
+        {
+            for (int i = 0; i < orderedIds.Count; i++)
+            {
+                var item = _actionSteps.FirstOrDefault(ci => ci.Id == orderedIds[i]);
+                item?.UpdateSequence(i);
+            }
+            Version++;
+        }
+
+        private void ReorderActionSteps()
+        {
+            var items = _actionSteps.OrderBy(i => i.Sequence).ToList();
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].UpdateSequence(i);
+            }
+        }
 
         // === ACCEPTANCE CRITERIA ===
         public void AddAcceptanceCriterion(string description, int? priority = null)
@@ -527,29 +604,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
                 DeactivatedAt = DateTime.UtcNow
             });
         }
-
-        // === IDENTITY UPDATE METHODS ===
-
-        /// <summary>
-        /// Updates the owner of the task blueprint
-        /// </summary>
-        public void UpdateOwner(Guid newOwnerId)
-        {
-            var oldOwnerId = OwnerId;
-            OwnerId = newOwnerId;
-            Version++;
-
-            AddDistributedEvent(new TaskOwnerUpdatedEto
-            {
-                TaskId = Id,
-                TenantId = TenantId,
-                OldOwnerId = oldOwnerId,
-                NewOwnerId = newOwnerId,
-                Version = Version,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
+        
         /// <summary>
         /// Updates the task type
         /// </summary>
@@ -571,107 +626,30 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         }
 
         // === CONTENT UPDATE METHODS ===
-
-        public void UpdateTitle(string newTitle)
-        {
-            var oldTitle = Title;
-            Title = Check.NotNullOrWhiteSpace(newTitle, nameof(newTitle));
-            Version++;
-
-            AddDistributedEvent(new TaskTitleUpdatedEto
-            {
-                TaskId = Id,
-                TenantId = TenantId,
-                OldTitle = oldTitle,
-                NewTitle = newTitle,
-                Version = Version,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
-        /// <summary>
-        /// Updates the task description
-        /// </summary>
-        public void UpdateDescription(string newDescription)
-        {
-            var oldDescription = Description;
-            Description = newDescription;
-            Version++;
-
-            AddDistributedEvent(new TaskDescriptionUpdatedEto
-            {
-                TaskId = Id,
-                TenantId = TenantId,
-                OldDescription = oldDescription,
-                NewDescription = newDescription,
-                Version = Version,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
-        /// <summary>
-        /// Updates the expected result
-        /// </summary>
-        public void UpdateExpectedResult(string newExpectedResult)
-        {
-            var oldExpectedResult = ExpectedResult;
-            ExpectedResult = newExpectedResult;
-            Version++;
-
-            AddDistributedEvent(new TaskExpectedResultUpdatedEto
-            {
-                TaskId = Id,
-                TenantId = TenantId,
-                OldExpectedResult = oldExpectedResult,
-                NewExpectedResult = newExpectedResult,
-                Version = Version,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
-        /// <summary>
-        /// Updates the task notes
-        /// </summary>
-        public void UpdateNotes(string newNotes)
-        {
-            var oldNotes = Notes;
-            Notes = newNotes;
-            Version++;
-
-            AddDistributedEvent(new TaskNotesUpdatedEto
-            {
-                TaskId = Id,
-                TenantId = TenantId,
-                OldNotes = oldNotes,
-                NewNotes = newNotes,
-                Version = Version,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
+        
         /// <summary>
         /// Updates all content fields together
         /// </summary>
-        public void UpdateContent(string title, string description, string expectedResult, string notes)
+        public void UpdateContent(string? title, string? description, string? expectedResult, string? notes)
         {
             if (Title != title && !string.IsNullOrWhiteSpace(title))
             {
-                UpdateTitle(title);
+                Title = title;
             }
 
-            if (Description != description)
+            if (Description != description && description != null)
             {
-                UpdateDescription(description);
+                Description = description;
             }
 
-            if (ExpectedResult != expectedResult)
+            if (ExpectedResult != expectedResult && expectedResult != null)
             {
-                UpdateExpectedResult(expectedResult);
+                ExpectedResult = expectedResult;
             }
 
-            if (Notes != notes)
+            if (Notes != notes && notes != null)
             {
-                UpdateNotes(notes);
+                Notes = notes;
             }
         }
 

@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.Learning.Aggregates;
 using NouAssist.Learning.Enums;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.Learning.Specifications
+namespace NouAssist.LearningDevelopment.Learning.Specifications
 {
     public class ActiveSessionsSpecification : Specification<LearningSession>
     {

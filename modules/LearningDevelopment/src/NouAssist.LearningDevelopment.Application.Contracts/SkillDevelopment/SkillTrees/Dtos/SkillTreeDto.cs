@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.SkillDevelopment.SkillTrees.Dtos
+namespace NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees.Dtos
 {
     public class SkillTreeDto : FullAuditedEntityDto<Guid>
     {

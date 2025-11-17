@@ -15,13 +15,14 @@ namespace NouAssist.WorkManagement.TaskManagement.Entities
         protected TaskActionStep() { }
 
         public TaskActionStep(
+            Guid actionStepId,
             Guid taskId,
             string title,
             string notes = null,
             bool isRequired = false,
             int sequence = 0)
         {
-            Id = Guid.NewGuid();
+            Id = actionStepId;
             TaskId = taskId;
             Title = Check.NotNullOrWhiteSpace(title, nameof(title), maxLength: 500);
             Notes = notes;

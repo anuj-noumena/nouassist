@@ -2,7 +2,7 @@ using NouAssist.SkillDevelopment.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.SkillDevelopment.Permissions
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Permissions
 {
     public class SkillDevelopmentPermissionDefinitionProvider : PermissionDefinitionProvider
     {

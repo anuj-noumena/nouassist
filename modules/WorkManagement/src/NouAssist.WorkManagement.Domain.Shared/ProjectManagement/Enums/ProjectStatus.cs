@@ -4,10 +4,13 @@ namespace NouAssist.WorkManagement.ProjectManagement.Enums
     {
         Template = 0,
         Planned = 1,
-        Active = 2,
-        OnHold = 3,
-        Completed = 4,
-        Cancelled = 5
+        Initiation = 2,
+        Active = 3,//executing
+        OnHold = 4,
+        Monitoring = 5,
+        Closing = 6,
+        Completed = 7,
+        Cancelled = 8
     }
 
     public enum ProjectHealth : byte

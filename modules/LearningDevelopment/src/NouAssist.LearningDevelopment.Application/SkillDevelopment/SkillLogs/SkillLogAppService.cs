@@ -2,15 +2,15 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.SkillDevelopment.Aggregates;
-using NouAssist.SkillDevelopment.Data;
-using NouAssist.SkillDevelopment.Permissions;
-using NouAssist.SkillDevelopment.SkillLogs.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Data;
+using NouAssist.LearningDevelopment.SkillDevelopment.Permissions;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillLogs.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.SkillDevelopment.SkillLogs
+namespace NouAssist.LearningDevelopment.SkillDevelopment.SkillLogs
 {
     [Authorize(SkillDevelopmentPermissions.SkillLogs.Default)]
     public class SkillLogAppService : ApplicationService, ISkillLogAppService

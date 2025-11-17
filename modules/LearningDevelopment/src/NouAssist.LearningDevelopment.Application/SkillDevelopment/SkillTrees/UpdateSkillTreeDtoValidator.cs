@@ -1,7 +1,8 @@
 using FluentValidation;
-using NouAssist.SkillDevelopment.SkillTrees.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees.Dtos;
+using NouAssist.SkillDevelopment;
 
-namespace NouAssist.SkillDevelopment.SkillTrees
+namespace NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees
 {
     public class UpdateSkillTreeDtoValidator : AbstractValidator<UpdateSkillTreeDto>
     {

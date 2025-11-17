@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.Learning.Entities;
 using NouAssist.Learning.Enums;
 using NouAssist.Learning.Events;
+using NouAssist.LearningDevelopment.Learning.Entities;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Learning.Aggregates
+namespace NouAssist.LearningDevelopment.Learning.Aggregates
 {
     /// <summary>
     /// Aggregate root orchestrating the 6-phase learning workflow
@@ -44,7 +44,7 @@ namespace NouAssist.Learning.Aggregates
             ReviewCycle = 0;
             Completed = false;
             Paused = false;
-            LastActivity = Clock.Now;
+            LastActivity = DateTime.UtcNow;
 
             // Initialize all phase milestones
             InitializePhaseMilestones();
@@ -105,7 +105,7 @@ namespace NouAssist.Learning.Aggregates
                 TenantId = TenantId,
                 Phase = CurrentPhase,
                 TimeSpentMs = _timeTracking[(int)CurrentPhase],
-                CompletedAt = Clock.Now
+                CompletedAt = DateTime.UtcNow
             });
 
             // Advance phase
@@ -116,7 +116,7 @@ namespace NouAssist.Learning.Aggregates
             else
             {
                 CurrentPhase = (LearningPhase)((int)CurrentPhase + 1);
-                LastActivity = Clock.Now;
+                LastActivity = DateTime.UtcNow;
             }
         }
 
@@ -124,13 +124,13 @@ namespace NouAssist.Learning.Aggregates
         {
             var milestone = GetCurrentPhaseMilestone();
             milestone.MarkCompleted(timeSpentMs);
-            LastActivity = Clock.Now;
+            LastActivity = DateTime.UtcNow;
         }
 
         private void CompleteSession()
         {
             Completed = true;
-            LastActivity = Clock.Now;
+            LastActivity = DateTime.UtcNow;
 
             var totalTime = _timeTracking.Values.Sum();
 
@@ -141,7 +141,7 @@ namespace NouAssist.Learning.Aggregates
                 TenantId = TenantId,
                 SessionId = Id,
                 TotalTimeSpentMs = totalTime,
-                MasteredAt = Clock.Now
+                MasteredAt = DateTime.UtcNow
             });
         }
 
@@ -155,8 +155,8 @@ namespace NouAssist.Learning.Aggregates
             if (!Paused)
             {
                 Paused = true;
-                PausedAt = Clock.Now;
-                LastActivity = Clock.Now;
+                PausedAt = DateTime.UtcNow;
+                LastActivity = DateTime.UtcNow;
             }
         }
 
@@ -168,8 +168,8 @@ namespace NouAssist.Learning.Aggregates
             }
 
             Paused = false;
-            ResumedAt = Clock.Now;
-            LastActivity = Clock.Now;
+            ResumedAt = DateTime.UtcNow;
+            LastActivity = DateTime.UtcNow;
         }
 
         public void IncrementReviewCycle()
@@ -177,13 +177,13 @@ namespace NouAssist.Learning.Aggregates
             if (CurrentPhase == LearningPhase.SpacedRepetition)
             {
                 ReviewCycle++;
-                LastActivity = Clock.Now;
+                LastActivity = DateTime.UtcNow;
             }
         }
 
         public void RecordActivity()
         {
-            LastActivity = Clock.Now;
+            LastActivity = DateTime.UtcNow;
         }
 
         public int GetTotalTimeSpent()

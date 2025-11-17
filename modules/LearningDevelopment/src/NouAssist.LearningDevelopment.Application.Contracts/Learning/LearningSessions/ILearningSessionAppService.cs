@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Learning.LearningSessions.Dtos;
+using NouAssist.LearningDevelopment.Learning.LearningSessions.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Learning.LearningSessions
+namespace NouAssist.LearningDevelopment.Learning.LearningSessions
 {
     public interface ILearningSessionAppService : IApplicationService
     {

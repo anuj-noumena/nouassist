@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Learning.BookReadingHistories.Dtos;
+using NouAssist.LearningDevelopment.Learning.BookReadingHistories.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Learning.BookReadingHistories
+namespace NouAssist.LearningDevelopment.Learning.BookReadingHistories
 {
     public interface IBookReadingHistoryAppService : IApplicationService
     {

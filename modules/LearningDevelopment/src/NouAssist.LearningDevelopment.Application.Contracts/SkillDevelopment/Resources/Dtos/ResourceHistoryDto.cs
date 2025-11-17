@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NouAssist.SkillDevelopment.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.SkillDevelopment.Resources.Dtos
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Resources.Dtos
 {
     public class ResourceHistoryDto : FullAuditedEntityDto<Guid>
     {

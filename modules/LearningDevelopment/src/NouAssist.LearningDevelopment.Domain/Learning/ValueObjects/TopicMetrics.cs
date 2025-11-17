@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.Learning.ValueObjects
+namespace NouAssist.LearningDevelopment.Learning.ValueObjects
 {
     /// <summary>
     /// Represents calculated metrics for a learning topic

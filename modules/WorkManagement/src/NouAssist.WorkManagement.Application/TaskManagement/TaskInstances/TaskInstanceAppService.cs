@@ -100,11 +100,17 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             // Use domain manager to create instance from blueprint
             var taskInstance = await _taskInstanceManager.CreateAsync(
                 input.TaskId,
-                input.ProjectId,
+                input.WorkflowId,
                 input.WorkflowStatusId,
                 _currentUser.GetId(),
+                input.ProjectId,
+                input.AreaId,
+                input.ContextId,
+                input.ReporterId,
                 input.AssigneeId,
-                input.PlannedDueDate
+                input.Importance,
+                input.Urgency,
+                _currentUser.TenantId
             );
 
             // Override priority if provided

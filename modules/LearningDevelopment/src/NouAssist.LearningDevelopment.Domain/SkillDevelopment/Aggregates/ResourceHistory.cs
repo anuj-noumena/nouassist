@@ -5,7 +5,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.SkillDevelopment.Aggregates
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
 {
     public class ResourceHistory : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -37,7 +37,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
             Title = Check.NotNullOrWhiteSpace(title, nameof(title));
             Type = type;
             TenantId = tenantId;
-            AccessedAt = Clock.Now;
+            AccessedAt = DateTime.UtcNow;
             Progress = 0;
         }
 
@@ -48,7 +48,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
                     .WithData("Progress", progress);
             
             Progress = progress;
-            AccessedAt = Clock.Now;
+            AccessedAt = DateTime.UtcNow;
         }
 
         public void SetSourceUrl(string url)

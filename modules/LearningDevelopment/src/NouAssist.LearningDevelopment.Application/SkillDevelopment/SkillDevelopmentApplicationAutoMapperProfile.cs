@@ -1,14 +1,14 @@
 using AutoMapper;
-using NouAssist.SkillDevelopment.Aggregates;
-using NouAssist.SkillDevelopment.DevelopmentSessions.Dtos;
-using NouAssist.SkillDevelopment.Entities;
-using NouAssist.SkillDevelopment.Resources.Dtos;
-using NouAssist.SkillDevelopment.SkillLogs.Dtos;
-using NouAssist.SkillDevelopment.Skills.Dtos;
-using NouAssist.SkillDevelopment.SkillTrees.Dtos;
-using NouAssist.SkillDevelopment.ValueObjects;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.DevelopmentSessions.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Entities;
+using NouAssist.LearningDevelopment.SkillDevelopment.Resources.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillLogs.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Skills.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects;
 
-namespace NouAssist.SkillDevelopment
+namespace NouAssist.LearningDevelopment.SkillDevelopment
 {
     public class SkillDevelopmentApplicationAutoMapperProfile : Profile
     {

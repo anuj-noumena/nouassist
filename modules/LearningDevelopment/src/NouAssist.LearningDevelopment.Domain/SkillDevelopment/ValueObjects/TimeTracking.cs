@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.SkillDevelopment.ValueObjects
+namespace NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects
 {
     public class TimeTracking : ValueObject
     {

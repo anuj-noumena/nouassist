@@ -1,4 +1,4 @@
-namespace NouAssist.Learning.EntityFrameworkCore
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning
 {
     public static class LearningDbProperties
     {

@@ -5,7 +5,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Learning.Aggregates
+namespace NouAssist.LearningDevelopment.Learning.Aggregates
 {
     /// <summary>
     /// Aggregate root for learning notes (Cornell-style or general)

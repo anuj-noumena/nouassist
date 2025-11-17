@@ -1,13 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Learning.Aggregates;
-using NouAssist.Learning.Data;
-using NouAssist.Learning.Mindmaps.Dtos;
-using NouAssist.Learning.Permissions;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.Data;
+using NouAssist.LearningDevelopment.Learning.Mindmaps.Dtos;
+using NouAssist.LearningDevelopment.Learning.Permissions;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
-namespace NouAssist.Learning.Mindmaps
+namespace NouAssist.LearningDevelopment.Learning.Mindmaps
 {
     [Authorize(LearningPermissions.Mindmaps.Default)]
     public class MindmapAppService : ApplicationService, IMindmapAppService

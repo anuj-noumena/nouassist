@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.Learning.Aggregates;
-using NouAssist.Learning.Entities;
 using NouAssist.Learning.Enums;
-using NouAssist.Learning.ValueObjects;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.Entities;
+using NouAssist.LearningDevelopment.Learning.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Learning.Services
+namespace NouAssist.LearningDevelopment.Learning.Services
 {
     /// <summary>
     /// Domain service for orchestrating learning workflow operations

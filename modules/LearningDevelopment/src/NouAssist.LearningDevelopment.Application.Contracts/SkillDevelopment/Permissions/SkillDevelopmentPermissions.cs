@@ -1,4 +1,4 @@
-namespace NouAssist.SkillDevelopment.Permissions
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Permissions
 {
     public static class SkillDevelopmentPermissions
     {

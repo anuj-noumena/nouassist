@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Learning.BookReadingHistories.Dtos
+namespace NouAssist.LearningDevelopment.Learning.BookReadingHistories.Dtos
 {
     public class BookReadingHistoryDto : FullAuditedEntityDto<Guid>
     {

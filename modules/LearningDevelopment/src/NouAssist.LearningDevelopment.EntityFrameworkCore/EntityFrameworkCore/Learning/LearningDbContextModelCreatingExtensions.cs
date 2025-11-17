@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp;
 
-namespace NouAssist.Learning.EntityFrameworkCore
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning
 {
     public static class LearningDbContextModelCreatingExtensions
     {

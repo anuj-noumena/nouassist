@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects;
 using NouAssist.SkillDevelopment.Enums;
-using NouAssist.SkillDevelopment.ValueObjects;
-using Volo.Abp;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.SkillDevelopment.Services
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Services
 {
     public class SkillProgressionService : DomainService
     {

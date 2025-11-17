@@ -1,10 +1,10 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.Learning.Data
+namespace NouAssist.LearningDevelopment.Learning.Data
 {
     public interface IMindmapRepository : IRepository<Mindmap, Guid>
     {

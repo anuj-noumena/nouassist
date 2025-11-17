@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.Learning.Enums;
 
-namespace NouAssist.Learning.Topics.Dtos
+namespace NouAssist.LearningDevelopment.Learning.Topics.Dtos
 {
     public class CreateTopicDto
     {

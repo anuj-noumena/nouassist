@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.SkillDevelopment.Skills.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Skills.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.SkillDevelopment.Skills
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Skills
 {
     public interface ISkillAppService : IApplicationService
     {

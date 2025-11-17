@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.SkillDevelopment.ValueObjects
+namespace NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects
 {
     public class AssessmentResult : ValueObject
     {

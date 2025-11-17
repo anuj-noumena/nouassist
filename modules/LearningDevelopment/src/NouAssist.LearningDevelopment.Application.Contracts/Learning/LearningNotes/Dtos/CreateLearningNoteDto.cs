@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.Learning.Enums;
 
-namespace NouAssist.Learning.LearningNotes.Dtos
+namespace NouAssist.LearningDevelopment.Learning.LearningNotes.Dtos
 {
     public class CreateLearningNoteDto
     {

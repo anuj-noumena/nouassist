@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Learning.Mindmaps.Dtos
+namespace NouAssist.LearningDevelopment.Learning.Mindmaps.Dtos
 {
     public class MindmapDto : FullAuditedEntityDto<Guid>
     {

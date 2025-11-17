@@ -2,7 +2,7 @@ using System;
 using NouAssist.Learning.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Learning.LearningNotes.Dtos
+namespace NouAssist.LearningDevelopment.Learning.LearningNotes.Dtos
 {
     public class GetLearningNoteListDto : PagedAndSortedResultRequestDto
     {

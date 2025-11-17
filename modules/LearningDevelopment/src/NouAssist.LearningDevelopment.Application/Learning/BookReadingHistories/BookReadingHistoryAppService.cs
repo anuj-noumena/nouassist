@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Learning.Aggregates;
-using NouAssist.Learning.BookReadingHistories.Dtos;
-using NouAssist.Learning.Data;
-using NouAssist.Learning.Permissions;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.BookReadingHistories.Dtos;
+using NouAssist.LearningDevelopment.Learning.Data;
+using NouAssist.LearningDevelopment.Learning.Permissions;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
-namespace NouAssist.Learning.BookReadingHistories
+namespace NouAssist.LearningDevelopment.Learning.BookReadingHistories
 {
     [Authorize(LearningPermissions.BookReadingHistories.Default)]
     public class BookReadingHistoryAppService : ApplicationService, IBookReadingHistoryAppService

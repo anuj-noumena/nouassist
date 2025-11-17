@@ -5,7 +5,7 @@ using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.SkillDevelopment.Aggregates
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
 {
     public class SkillLog : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

@@ -1,20 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.SkillDevelopment.Aggregates;
-using NouAssist.SkillDevelopment.Data;
-using NouAssist.SkillDevelopment.Permissions;
-using NouAssist.SkillDevelopment.Services;
-using NouAssist.SkillDevelopment.Skills.Dtos;
-using NouAssist.SkillDevelopment.Specifications;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Data;
+using NouAssist.LearningDevelopment.SkillDevelopment.Permissions;
+using NouAssist.LearningDevelopment.SkillDevelopment.Services;
+using NouAssist.LearningDevelopment.SkillDevelopment.Skills.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.SkillDevelopment.Skills
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Skills
 {
     [Authorize(SkillDevelopmentPermissions.Skills.Default)]
     public class SkillAppService : ApplicationService, ISkillAppService

@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.SkillDevelopment;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.SkillDevelopment.EntityFrameworkCore
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment
 {
     [ConnectionStringName(SkillDevelopmentDbProperties.ConnectionStringName)]
     public interface ISkillDevelopmentDbContext : IEfCoreDbContext

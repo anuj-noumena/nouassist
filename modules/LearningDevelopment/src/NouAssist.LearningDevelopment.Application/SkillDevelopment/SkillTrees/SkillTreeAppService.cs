@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.SkillDevelopment.Aggregates;
-using NouAssist.SkillDevelopment.Data;
-using NouAssist.SkillDevelopment.Permissions;
-using NouAssist.SkillDevelopment.SkillTrees.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Data;
+using NouAssist.LearningDevelopment.SkillDevelopment.Permissions;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.SkillDevelopment.SkillTrees
+namespace NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees
 {
     [Authorize(SkillDevelopmentPermissions.SkillTrees.Default)]
     public class SkillTreeAppService : ApplicationService, ISkillTreeAppService

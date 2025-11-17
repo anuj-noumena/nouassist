@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Learning.LearningSessions.Dtos
+namespace NouAssist.LearningDevelopment.Learning.LearningSessions.Dtos
 {
     public class RecordPreLearningQuestionsDto
     {

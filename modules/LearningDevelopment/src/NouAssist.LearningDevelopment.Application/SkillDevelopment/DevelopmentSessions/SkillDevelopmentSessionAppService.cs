@@ -3,19 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.SkillDevelopment.Aggregates;
-using NouAssist.SkillDevelopment.Data;
-using NouAssist.SkillDevelopment.DevelopmentSessions.Dtos;
-using NouAssist.SkillDevelopment.Entities;
-using NouAssist.SkillDevelopment.Permissions;
-using NouAssist.SkillDevelopment.Services;
-using NouAssist.SkillDevelopment.ValueObjects;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Data;
+using NouAssist.LearningDevelopment.SkillDevelopment.DevelopmentSessions.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Entities;
+using NouAssist.LearningDevelopment.SkillDevelopment.Permissions;
+using NouAssist.LearningDevelopment.SkillDevelopment.Services;
+using NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.SkillDevelopment.DevelopmentSessions
+namespace NouAssist.LearningDevelopment.SkillDevelopment.DevelopmentSessions
 {
     [Authorize(SkillDevelopmentPermissions.DevelopmentSessions.Default)]
     public class SkillDevelopmentSessionAppService : ApplicationService, ISkillDevelopmentSessionAppService

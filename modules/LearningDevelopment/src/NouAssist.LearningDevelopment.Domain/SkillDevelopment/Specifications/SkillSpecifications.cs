@@ -1,10 +1,10 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
 using NouAssist.SkillDevelopment.Enums;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.SkillDevelopment.Specifications
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Specifications
 {
     public class ActiveSkillsSpecification : Specification<Skill>
     {

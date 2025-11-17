@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.SkillDevelopment.Aggregates
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
 {
     public class SkillTree : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {

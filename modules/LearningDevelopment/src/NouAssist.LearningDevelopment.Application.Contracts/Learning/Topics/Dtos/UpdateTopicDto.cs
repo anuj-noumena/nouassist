@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.Learning.Enums;
 
-namespace NouAssist.Learning.Topics.Dtos
+namespace NouAssist.LearningDevelopment.Learning.Topics.Dtos
 {
     public class UpdateTopicDto
     {
@@ -27,12 +27,6 @@ namespace NouAssist.Learning.Topics.Dtos
         public string LearningGoals { get; set; }
 
         public List<string> Tags { get; set; }
-    }
-
-    public class UpdateTopicStatusDto
-    {
-        [Required]
-        public TopicStatus Status { get; set; }
     }
 
     public class UpdateTopicProgressDto

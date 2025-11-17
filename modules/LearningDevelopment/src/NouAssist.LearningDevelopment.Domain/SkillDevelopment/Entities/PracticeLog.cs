@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.SkillDevelopment.Entities
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
 {
     public class PracticeLog : Entity
     {

@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Learning.LearningNotes.Dtos;
+using NouAssist.LearningDevelopment.Learning.LearningNotes.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Learning.LearningNotes
+namespace NouAssist.LearningDevelopment.Learning.LearningNotes
 {
     public interface ILearningNoteAppService : IApplicationService
     {

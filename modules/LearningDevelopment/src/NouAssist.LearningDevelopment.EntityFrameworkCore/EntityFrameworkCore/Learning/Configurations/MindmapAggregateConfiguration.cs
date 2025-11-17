@@ -1,10 +1,9 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.Learning.EntityFrameworkCore.Configurations
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurations
 {
     public class MindmapAggregateConfiguration : IEntityTypeConfiguration<Mindmap>
     {

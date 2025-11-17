@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using NouAssist.Learning.Enums;
 using NouAssist.Learning.Events;
-using NouAssist.Learning.ValueObjects;
+using NouAssist.LearningDevelopment.Learning.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.Learning.Aggregates
+namespace NouAssist.LearningDevelopment.Learning.Aggregates
 {
     /// <summary>
     /// Aggregate root representing a hierarchical learning topic or folder

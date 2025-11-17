@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Learning.Aggregates;
-using NouAssist.Learning.Data;
-using NouAssist.Learning.Permissions;
-using NouAssist.Learning.Services;
-using NouAssist.Learning.Specifications;
-using NouAssist.Learning.Topics.Dtos;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.Data;
+using NouAssist.LearningDevelopment.Learning.Permissions;
+using NouAssist.LearningDevelopment.Learning.Services;
+using NouAssist.LearningDevelopment.Learning.Specifications;
+using NouAssist.LearningDevelopment.Learning.Topics.Dtos;
+using NouAssist.LearningDevelopment.Learning.ValueObjects;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
+using Volo.Abp.Users;
 
-namespace NouAssist.Learning.Topics
+namespace NouAssist.LearningDevelopment.Learning.Topics
 {
     [Authorize(LearningPermissions.Topics.Default)]
     public class TopicAppService : ApplicationService, ITopicAppService
@@ -229,16 +231,16 @@ namespace NouAssist.Learning.Topics
             }
 
             var metrics = _progressService.CalculateTopicMetrics(topic, session);
-            return ObjectMapper.Map<ValueObjects.TopicMetrics, TopicMetricsDto>(metrics);
+            return ObjectMapper.Map<TopicMetrics, TopicMetricsDto>(metrics);
         }
 
         private ISpecification<Topic> CreateListSpecification(GetTopicListDto input)
         {
-            var spec = Specification<Topic>.True;
+            ISpecification<Topic> spec = new BaseSpecification<Topic>();
 
             if (input.Status.HasValue)
             {
-                spec = spec.And(new Specification<Topic>(t => t.Status == input.Status.Value));
+                spec = spec.And(new BaseSpecification<Topic>(t => t.Status == input.Status.Value));
             }
 
             if (input.Difficulty.HasValue)
@@ -253,7 +255,7 @@ namespace NouAssist.Learning.Topics
 
             if (input.IsFolder.HasValue)
             {
-                spec = spec.And(new Specification<Topic>(t => t.IsFolder == input.IsFolder.Value));
+                spec = spec.And(new BaseSpecification<Topic>(t => t.IsFolder == input.IsFolder.Value));
             }
 
             if (input.ParentId.HasValue)
@@ -268,12 +270,12 @@ namespace NouAssist.Learning.Topics
 
             if (input.MaxProgress.HasValue)
             {
-                spec = spec.And(new Specification<Topic>(t => t.Progress <= input.MaxProgress.Value));
+                spec = spec.And(new BaseSpecification<Topic>(t => t.Progress <= input.MaxProgress.Value));
             }
 
             if (!string.IsNullOrWhiteSpace(input.SearchKeyword))
             {
-                spec = spec.And(new Specification<Topic>(t => 
+                spec = spec.And(new BaseSpecification<Topic>(t => 
                     t.Title.Contains(input.SearchKeyword) || 
                     t.Description.Contains(input.SearchKeyword)));
             }

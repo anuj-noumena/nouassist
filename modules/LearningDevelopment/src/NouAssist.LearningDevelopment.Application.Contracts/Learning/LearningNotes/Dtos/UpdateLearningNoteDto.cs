@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.Learning.LearningNotes.Dtos
+namespace NouAssist.LearningDevelopment.Learning.LearningNotes.Dtos
 {
     public class UpdateLearningNoteDto
     {

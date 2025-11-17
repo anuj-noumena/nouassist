@@ -1,7 +1,7 @@
 using FluentValidation;
-using NouAssist.Learning.Topics.Dtos;
+using NouAssist.LearningDevelopment.Learning.Topics.Dtos;
 
-namespace NouAssist.Learning.Topics.Validators
+namespace NouAssist.LearningDevelopment.Learning.Topics.Validators
 {
     public class UpdateTopicDtoValidator : AbstractValidator<UpdateTopicDto>
     {

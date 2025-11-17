@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using NouAssist.SkillDevelopment.Entities;
+using NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects;
 using NouAssist.SkillDevelopment.Enums;
 using NouAssist.SkillDevelopment.Events;
-using NouAssist.SkillDevelopment.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.SkillDevelopment.Aggregates
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
 {
     public class Skill : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -61,7 +59,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
             ParentId = parentId;
             IsCategory = isCategory;
             Status = SkillStatus.NotStarted;
-            CurrentProficiency = new ProficiencyScore(0, Clock.Now, "Initial assessment");
+            CurrentProficiency = new ProficiencyScore(0, DateTime.UtcNow, "Initial assessment");
         }
 
         public void UpdateDescription(string description)
@@ -125,7 +123,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
         public void UpdateProficiency(int score, string notes, Guid userId)
         {
             var previousScore = CurrentProficiency.Score;
-            CurrentProficiency = new ProficiencyScore(score, Clock.Now, notes);
+            CurrentProficiency = new ProficiencyScore(score, DateTime.UtcNow, notes);
             
             // Publish progress event
             AddDistributedEvent(new SkillProgressUpdatedEto
@@ -135,7 +133,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
                 TenantId = TenantId,
                 PreviousProficiency = previousScore,
                 CurrentProficiency = score,
-                UpdatedAt = Clock.Now
+                UpdatedAt = DateTime.UtcNow
             });
 
             // Auto-update status based on proficiency
@@ -168,7 +166,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
                 UserId = UserId,
                 TenantId = TenantId,
                 SkillTitle = Title,
-                MasteredAt = Clock.Now,
+                MasteredAt = DateTime.UtcNow,
                 FinalProficiencyScore = CurrentProficiency.Score,
                 TotalPracticeHours = EstimatedPracticeHours
             });

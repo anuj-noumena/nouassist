@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.SkillDevelopment.Resources.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Resources.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.SkillDevelopment.Resources
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Resources
 {
     public interface IResourceHistoryAppService : IApplicationService
     {

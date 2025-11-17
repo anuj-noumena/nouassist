@@ -1,7 +1,7 @@
 using FluentValidation;
-using NouAssist.Learning.LearningSessions.Dtos;
+using NouAssist.LearningDevelopment.Learning.LearningSessions.Dtos;
 
-namespace NouAssist.Learning.LearningSessions.Validators
+namespace NouAssist.LearningDevelopment.Learning.LearningSessions.Validators
 {
     public class RecordBloomAssessmentDtoValidator : AbstractValidator<RecordBloomAssessmentDto>
     {

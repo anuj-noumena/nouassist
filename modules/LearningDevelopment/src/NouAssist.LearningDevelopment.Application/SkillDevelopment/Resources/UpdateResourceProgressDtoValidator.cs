@@ -1,7 +1,7 @@
 using FluentValidation;
-using NouAssist.SkillDevelopment.Resources.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Resources.Dtos;
 
-namespace NouAssist.SkillDevelopment.Resources
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Resources
 {
     public class UpdateResourceProgressDtoValidator : AbstractValidator<UpdateResourceProgressDto>
     {

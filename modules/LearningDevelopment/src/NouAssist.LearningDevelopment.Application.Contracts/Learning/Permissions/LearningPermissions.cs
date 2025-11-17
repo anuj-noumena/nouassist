@@ -1,4 +1,4 @@
-namespace NouAssist.Learning.Permissions
+namespace NouAssist.LearningDevelopment.Learning.Permissions
 {
     public static class LearningPermissions
     {

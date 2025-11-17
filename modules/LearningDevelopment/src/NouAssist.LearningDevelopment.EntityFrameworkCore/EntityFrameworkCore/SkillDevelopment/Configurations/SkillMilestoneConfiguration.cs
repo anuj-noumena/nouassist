@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.SkillDevelopment.Entities;
-using NouAssist.SkillDevelopment.ValueObjects;
+using NouAssist.LearningDevelopment.SkillDevelopment.Entities;
+using NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects;
+using NouAssist.SkillDevelopment;
 
-namespace NouAssist.SkillDevelopment.EntityFrameworkCore.Configurations
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Configurations
 {
     public class SkillMilestoneConfiguration : IEntityTypeConfiguration<SkillMilestone>
     {

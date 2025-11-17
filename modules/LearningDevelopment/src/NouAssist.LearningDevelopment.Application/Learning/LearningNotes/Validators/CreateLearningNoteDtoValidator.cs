@@ -1,8 +1,8 @@
 using FluentValidation;
 using NouAssist.Learning.Enums;
-using NouAssist.Learning.LearningNotes.Dtos;
+using NouAssist.LearningDevelopment.Learning.LearningNotes.Dtos;
 
-namespace NouAssist.Learning.LearningNotes.Validators
+namespace NouAssist.LearningDevelopment.Learning.LearningNotes.Validators
 {
     public class CreateLearningNoteDtoValidator : AbstractValidator<CreateLearningNoteDto>
     {

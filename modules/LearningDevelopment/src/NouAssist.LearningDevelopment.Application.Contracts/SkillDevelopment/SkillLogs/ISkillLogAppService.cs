@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.SkillDevelopment.SkillLogs.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillLogs.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.SkillDevelopment.SkillLogs
+namespace NouAssist.LearningDevelopment.SkillDevelopment.SkillLogs
 {
     public interface ISkillLogAppService : IApplicationService
     {

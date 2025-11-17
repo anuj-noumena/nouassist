@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.SkillDevelopment.Entities;
+using NouAssist.LearningDevelopment.SkillDevelopment.Entities;
 using NouAssist.SkillDevelopment.Enums;
 using NouAssist.SkillDevelopment.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.SkillDevelopment.Aggregates
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
 {
     public class SkillDevelopmentSession : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
@@ -46,10 +46,10 @@ namespace NouAssist.SkillDevelopment.Aggregates
             ReviewCycle = 0;
             Completed = false;
             Paused = false;
-            LastActivity = Clock.Now;
+            LastActivity = DateTime.UtcNow;
 
             // Initialize first milestone
-            _milestones[DevelopmentStep.Assessment] = new SkillMilestone(Id, DevelopmentStep.Assessment, Clock.Now);
+            _milestones[DevelopmentStep.Assessment] = new SkillMilestone(Id, DevelopmentStep.Assessment, DateTime.UtcNow);
         }
 
         public SkillMilestone GetCurrentMilestone()
@@ -80,7 +80,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
                 UserId = UserId,
                 TenantId = TenantId,
                 CompletedStep = CurrentStep,
-                CompletedAt = Clock.Now,
+                CompletedAt = DateTime.UtcNow,
                 TimeSpentMinutes = currentMilestone.TimeTracking.TotalMinutes
             });
 
@@ -93,8 +93,8 @@ namespace NouAssist.SkillDevelopment.Aggregates
 
             // Move to next step
             CurrentStep = (DevelopmentStep)((int)CurrentStep + 1);
-            _milestones[CurrentStep] = new SkillMilestone(Id, CurrentStep, Clock.Now);
-            LastActivity = Clock.Now;
+            _milestones[CurrentStep] = new SkillMilestone(Id, CurrentStep, DateTime.UtcNow);
+            LastActivity = DateTime.UtcNow;
         }
 
         public void CompleteCurrentStep()
@@ -103,8 +103,8 @@ namespace NouAssist.SkillDevelopment.Aggregates
             if (milestone == null)
                 throw new BusinessException("SkillDevelopment:NoActiveMilestone");
             
-            milestone.MarkCompleted(Clock.Now);
-            LastActivity = Clock.Now;
+            milestone.MarkCompleted(DateTime.UtcNow);
+            LastActivity = DateTime.UtcNow;
         }
 
         public void Pause()
@@ -116,7 +116,7 @@ namespace NouAssist.SkillDevelopment.Aggregates
                 throw new BusinessException("SkillDevelopment:SessionAlreadyPaused");
             
             Paused = true;
-            PausedAt = Clock.Now;
+            PausedAt = DateTime.UtcNow;
         }
 
         public void Resume()
@@ -125,8 +125,8 @@ namespace NouAssist.SkillDevelopment.Aggregates
                 throw new BusinessException("SkillDevelopment:SessionNotPaused");
             
             Paused = false;
-            ResumedAt = Clock.Now;
-            LastActivity = Clock.Now;
+            ResumedAt = DateTime.UtcNow;
+            LastActivity = DateTime.UtcNow;
         }
 
         public void StartReviewCycle()
@@ -136,14 +136,14 @@ namespace NouAssist.SkillDevelopment.Aggregates
             
             ReviewCycle++;
             CurrentStep = DevelopmentStep.Review;
-            _milestones[CurrentStep] = new SkillMilestone(Id, CurrentStep, Clock.Now);
-            LastActivity = Clock.Now;
+            _milestones[CurrentStep] = new SkillMilestone(Id, CurrentStep, DateTime.UtcNow);
+            LastActivity = DateTime.UtcNow;
         }
 
         private void CompleteSession()
         {
             Completed = true;
-            LastActivity = Clock.Now;
+            LastActivity = DateTime.UtcNow;
             
             // Calculate overall proficiency gain
             OverallProficiencyGain = CalculateProficiencyGain();

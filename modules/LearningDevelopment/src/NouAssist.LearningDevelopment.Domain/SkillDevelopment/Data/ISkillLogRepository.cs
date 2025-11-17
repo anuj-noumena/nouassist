@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
 using NouAssist.SkillDevelopment.Enums;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.SkillDevelopment.Data
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Data
 {
     public interface ISkillLogRepository : IRepository<SkillLog, Guid>
     {

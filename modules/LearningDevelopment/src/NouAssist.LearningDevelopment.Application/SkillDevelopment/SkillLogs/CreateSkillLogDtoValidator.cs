@@ -1,7 +1,8 @@
 using FluentValidation;
-using NouAssist.SkillDevelopment.SkillLogs.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillLogs.Dtos;
+using NouAssist.SkillDevelopment;
 
-namespace NouAssist.SkillDevelopment.SkillLogs
+namespace NouAssist.LearningDevelopment.SkillDevelopment.SkillLogs
 {
     public class CreateSkillLogDtoValidator : AbstractValidator<CreateSkillLogDto>
     {

@@ -791,61 +791,6 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
             Priority = new ImportanceUrgencyMatrix(importance, urgency);
         }
 
-        // === COMPLEXITY AND COGNITIVE LOAD ===
-        public void SetComplexityEstimation(ComplexityEstimation estimation)
-        {
-            ComplexityEstimation = estimation;
-
-            AddDistributedEvent(new TaskInstanceComplexityEstimationUpdatedEto
-            {
-                TaskInstanceId = Id,
-                TenantId = TenantId,
-                ComplexityValue = estimation?.Value,
-                ComplexityScale = estimation?.Scale,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
-        public void ClearComplexityEstimation()
-        {
-            ComplexityEstimation = null;
-
-            AddDistributedEvent(new TaskInstanceComplexityEstimationUpdatedEto
-            {
-                TaskInstanceId = Id,
-                TenantId = TenantId,
-                ComplexityValue = null,
-                ComplexityScale = null,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
-        public void SetCognitiveLoad(CognitiveLoad cognitiveLoad)
-        {
-            CognitiveLoad = cognitiveLoad;
-
-            AddDistributedEvent(new TaskInstanceCognitiveLoadUpdatedEto
-            {
-                TaskInstanceId = Id,
-                TenantId = TenantId,
-                CognitiveLoad = cognitiveLoad,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
-        public void ClearCognitiveLoad()
-        {
-            CognitiveLoad = null;
-
-            AddDistributedEvent(new TaskInstanceCognitiveLoadUpdatedEto
-            {
-                TaskInstanceId = Id,
-                TenantId = TenantId,
-                CognitiveLoad = null,
-                UpdatedAt = DateTime.UtcNow
-            });
-        }
-
         // === COMPUTED PROPERTIES ===
         public bool RequiresApproval => ApprovalRequestId.HasValue;
         public bool HasBlockingDependencies => _dependencies.Any(d => d.IsBlocking);

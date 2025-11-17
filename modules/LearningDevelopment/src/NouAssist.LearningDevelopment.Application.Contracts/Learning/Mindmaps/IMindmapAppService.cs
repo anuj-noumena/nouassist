@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Learning.Mindmaps.Dtos;
+using NouAssist.LearningDevelopment.Learning.Mindmaps.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Learning.Mindmaps
+namespace NouAssist.LearningDevelopment.Learning.Mindmaps
 {
     public interface IMindmapAppService : IApplicationService
     {

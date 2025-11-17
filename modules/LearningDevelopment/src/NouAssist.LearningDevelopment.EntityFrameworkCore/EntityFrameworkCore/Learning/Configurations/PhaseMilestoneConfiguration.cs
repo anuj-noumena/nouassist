@@ -1,11 +1,9 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Learning.Entities;
-using NouAssist.Learning.Enums;
-using NouAssist.Learning.ValueObjects;
+using NouAssist.LearningDevelopment.Learning.Entities;
+using NouAssist.LearningDevelopment.Learning.ValueObjects;
 
-namespace NouAssist.Learning.EntityFrameworkCore.Configurations
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurations
 {
     public class PhaseMilestoneConfiguration : IEntityTypeConfiguration<PhaseMilestone>
     {

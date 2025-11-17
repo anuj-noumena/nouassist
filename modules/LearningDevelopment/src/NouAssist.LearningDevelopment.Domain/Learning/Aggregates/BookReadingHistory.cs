@@ -2,7 +2,7 @@ using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace NouAssist.Learning.Aggregates
+namespace NouAssist.LearningDevelopment.Learning.Aggregates
 {
     /// <summary>
     /// Aggregate root for tracking book reading progress
@@ -34,7 +34,7 @@ namespace NouAssist.Learning.Aggregates
             BookId = Check.NotNullOrWhiteSpace(bookId, nameof(bookId));
             Title = Check.NotNullOrWhiteSpace(title, nameof(title));
             TopicId = topicId;
-            Timestamp = Clock.Now;
+            Timestamp = DateTime.UtcNow;
             LastReadPage = 0;
         }
 
@@ -52,7 +52,7 @@ namespace NouAssist.Learning.Aggregates
                     : 0;
             }
 
-            Timestamp = Clock.Now;
+            Timestamp = DateTime.UtcNow;
         }
 
         public void UpdateBookDetails(string title, string author, string coverImageUrl)

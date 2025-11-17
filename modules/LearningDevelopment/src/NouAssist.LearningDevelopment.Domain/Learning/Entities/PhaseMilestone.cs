@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using NouAssist.Learning.Enums;
-using NouAssist.Learning.ValueObjects;
+using NouAssist.LearningDevelopment.Learning.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.Learning.Entities
+namespace NouAssist.LearningDevelopment.Learning.Entities
 {
     /// <summary>
     /// Represents progress checkpoint for a specific learning phase
@@ -44,7 +44,7 @@ namespace NouAssist.Learning.Entities
             SessionId = sessionId;
             Phase = phase;
             Completed = false;
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
             Questions = new List<string>();
             SectionReflections = new Dictionary<string, string>();
             SpacedCycles = new Dictionary<int, CycleProgress>();
@@ -59,7 +59,7 @@ namespace NouAssist.Learning.Entities
                     $"This operation is only valid for Pre-learning phase.");
             }
             Questions.AddRange(questions);
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void AddSectionReflection(string sectionKey, string reflection)
@@ -70,7 +70,7 @@ namespace NouAssist.Learning.Entities
                     $"This operation is only valid for Active Learning phase.");
             }
             SectionReflections[sectionKey] = Check.NotNullOrWhiteSpace(reflection, nameof(reflection));
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void SetCornellSummary(string summary)
@@ -81,7 +81,7 @@ namespace NouAssist.Learning.Entities
                     $"This operation is only valid for Feynman Summary phase.");
             }
             CornellSummary = Check.NotNullOrWhiteSpace(summary, nameof(summary));
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void SetBloomAssessment(BloomAssessmentResult assessment)
@@ -92,7 +92,7 @@ namespace NouAssist.Learning.Entities
                     $"This operation is only valid for Bloom Assessment phase.");
             }
             BloomAssessment = Check.NotNull(assessment, nameof(assessment));
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void AddSpacedCycle(CycleProgress cycle)
@@ -108,7 +108,7 @@ namespace NouAssist.Learning.Entities
                     $"Cycle {cycle.CycleNumber} is already completed.");
             }
             SpacedCycles[cycle.CycleNumber] = cycle;
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void SetMasteryValidation(Dictionary<string, object> validation)
@@ -119,15 +119,15 @@ namespace NouAssist.Learning.Entities
                     $"This operation is only valid for Mastery phase.");
             }
             MasteryValidation = validation ?? new Dictionary<string, object>();
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void MarkCompleted(int timeSpentMs)
         {
             Completed = true;
-            CompletedAt = Clock.Now;
+            CompletedAt = DateTime.UtcNow;
             TimeSpentMs = timeSpentMs;
-            UpdatedAt = Clock.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public override object[] GetKeys() => new object[] { SessionId, (int)Phase };

@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Learning.EntityFrameworkCore
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning
 {
     [ConnectionStringName(LearningDbProperties.ConnectionStringName)]
     public interface ILearningDbContext : IEfCoreDbContext

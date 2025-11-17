@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.SkillDevelopment.Data
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Data
 {
     public interface ISkillDevelopmentSessionRepository : IRepository<SkillDevelopmentSession, Guid>
     {

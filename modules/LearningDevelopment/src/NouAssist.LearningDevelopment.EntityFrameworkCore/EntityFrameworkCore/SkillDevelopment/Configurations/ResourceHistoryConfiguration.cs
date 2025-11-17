@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.SkillDevelopment;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.SkillDevelopment.EntityFrameworkCore.Configurations
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Configurations
 {
     public class ResourceHistoryConfiguration : IEntityTypeConfiguration<ResourceHistory>
     {

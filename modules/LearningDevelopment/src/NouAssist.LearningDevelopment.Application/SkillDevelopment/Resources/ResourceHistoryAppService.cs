@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.SkillDevelopment.Aggregates;
-using NouAssist.SkillDevelopment.Data;
-using NouAssist.SkillDevelopment.Permissions;
-using NouAssist.SkillDevelopment.Resources.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Data;
+using NouAssist.LearningDevelopment.SkillDevelopment.Permissions;
+using NouAssist.LearningDevelopment.SkillDevelopment.Resources.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.SkillDevelopment.Resources
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Resources
 {
     [Authorize(SkillDevelopmentPermissions.Resources.Default)]
     public class ResourceHistoryAppService : ApplicationService, IResourceHistoryAppService

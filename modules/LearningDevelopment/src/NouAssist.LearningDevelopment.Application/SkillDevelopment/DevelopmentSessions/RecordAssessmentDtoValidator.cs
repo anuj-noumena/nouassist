@@ -1,7 +1,8 @@
+using System.Linq;
 using FluentValidation;
-using NouAssist.SkillDevelopment.DevelopmentSessions.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.DevelopmentSessions.Dtos;
 
-namespace NouAssist.SkillDevelopment.DevelopmentSessions
+namespace NouAssist.LearningDevelopment.SkillDevelopment.DevelopmentSessions
 {
     public class RecordAssessmentDtoValidator : AbstractValidator<RecordAssessmentDto>
     {

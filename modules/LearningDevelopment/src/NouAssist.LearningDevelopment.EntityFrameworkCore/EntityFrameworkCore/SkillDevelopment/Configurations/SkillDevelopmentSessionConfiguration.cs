@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.SkillDevelopment.Aggregates;
-using NouAssist.SkillDevelopment.Entities;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.SkillDevelopment;
 using NouAssist.SkillDevelopment.Enums;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.SkillDevelopment.EntityFrameworkCore.Configurations
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Configurations
 {
     public class SkillDevelopmentSessionConfiguration : IEntityTypeConfiguration<SkillDevelopmentSession>
     {

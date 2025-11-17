@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
 using Volo.Abp.Specifications;
 
-namespace NouAssist.SkillDevelopment.Specifications
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Specifications
 {
     public class ActiveSessionsSpecification : Specification<SkillDevelopmentSession>
     {

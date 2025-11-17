@@ -31,6 +31,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
         public async Task<Aggregates.Task> CreateAsync(
             Guid ownerId,
             string title,
+            Guid taskType,
             Guid? projectId = null,
             Guid? areaId = null,
             Guid? contextId = null,
@@ -57,6 +58,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
                 GuidGenerator.Create(),
                 ownerId,
                 title,
+                taskType,
                 CurrentTenant.Id,
                 projectId,
                 areaId: areaId,
@@ -64,7 +66,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
                 taskHierarchy: taskHierarchy,
                 defaultImportance ?? TasksConsts.DefaultImportance,
                 defaultUrgency ?? TasksConsts.DefaultUrgency);
-
+            
             task.Description = description;
 
             _logger.LogInformation(
@@ -76,22 +78,16 @@ namespace NouAssist.WorkManagement.TaskManagement.Managers
 
         public async Task<Aggregates.Task> UpdateAsync(
             Guid taskId,
-            string newTitle = null,
-            string newDescription = null,
+            string? newTitle = null,
+            string? newDescription = null,
+            string? expectedResult = null,
+            string? newNotes = null,
             double? newImportance = null,
             double? newUrgency = null)
         {
             var task = await _taskRepository.GetAsync(taskId);
 
-            if (newTitle != null)
-            {
-                task.UpdateTitle(newTitle);
-            }
-
-            if (newDescription != null)
-            {
-                task.Description = newDescription;
-            }
+            task.UpdateContent(newTitle, newDescription, expectedResult, newNotes);
 
             if (newImportance.HasValue && newUrgency.HasValue)
             {

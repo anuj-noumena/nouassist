@@ -1,7 +1,8 @@
 using FluentValidation;
-using NouAssist.SkillDevelopment.Resources.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.Resources.Dtos;
+using NouAssist.SkillDevelopment;
 
-namespace NouAssist.SkillDevelopment.Resources
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Resources
 {
     public class CreateResourceHistoryDtoValidator : AbstractValidator<CreateResourceHistoryDto>
     {

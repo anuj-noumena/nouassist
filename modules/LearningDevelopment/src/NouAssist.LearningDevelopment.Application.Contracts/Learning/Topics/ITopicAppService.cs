@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Learning.Topics.Dtos;
+using NouAssist.LearningDevelopment.Learning.Topics.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.Learning.Topics
+namespace NouAssist.LearningDevelopment.Learning.Topics
 {
     public interface ITopicAppService : IApplicationService
     {

@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.SkillDevelopment.DevelopmentSessions.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.DevelopmentSessions.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.SkillDevelopment.DevelopmentSessions
+namespace NouAssist.LearningDevelopment.SkillDevelopment.DevelopmentSessions
 {
     public interface ISkillDevelopmentSessionAppService : IApplicationService
     {

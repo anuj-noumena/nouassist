@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NouAssist.Learning.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.Learning.LearningSessions.Dtos
+namespace NouAssist.LearningDevelopment.Learning.LearningSessions.Dtos
 {
     public class LearningSessionDto : FullAuditedEntityDto<Guid>
     {

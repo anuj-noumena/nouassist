@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.SkillDevelopment.SkillTrees.Dtos;
+using NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.SkillDevelopment.SkillTrees
+namespace NouAssist.LearningDevelopment.SkillDevelopment.SkillTrees
 {
     public interface ISkillTreeAppService : IApplicationService
     {

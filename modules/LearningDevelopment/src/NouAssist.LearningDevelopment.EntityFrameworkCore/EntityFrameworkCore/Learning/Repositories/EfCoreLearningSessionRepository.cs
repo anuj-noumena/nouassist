@@ -4,13 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Learning.Aggregates;
-using NouAssist.Learning.Data;
-using NouAssist.Learning.Entities;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.Learning.EntityFrameworkCore.Repositories
+namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Repositories
 {
     public class EfCoreLearningSessionRepository 
         : EfCoreRepository<ILearningDbContext, LearningSession, Guid>, ILearningSessionRepository

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects;
 using NouAssist.SkillDevelopment.Enums;
-using NouAssist.SkillDevelopment.ValueObjects;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.SkillDevelopment.Entities
+namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
 {
     public class SkillMilestone : Entity
     {

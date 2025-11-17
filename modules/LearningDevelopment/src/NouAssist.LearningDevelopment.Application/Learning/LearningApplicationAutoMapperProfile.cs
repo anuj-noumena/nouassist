@@ -1,14 +1,14 @@
 using AutoMapper;
-using NouAssist.Learning.Aggregates;
-using NouAssist.Learning.BookReadingHistories.Dtos;
-using NouAssist.Learning.Entities;
-using NouAssist.Learning.LearningSessions.Dtos;
-using NouAssist.Learning.LearningNotes.Dtos;
-using NouAssist.Learning.Mindmaps.Dtos;
-using NouAssist.Learning.Topics.Dtos;
-using NouAssist.Learning.ValueObjects;
+using NouAssist.LearningDevelopment.Learning.Aggregates;
+using NouAssist.LearningDevelopment.Learning.BookReadingHistories.Dtos;
+using NouAssist.LearningDevelopment.Learning.Entities;
+using NouAssist.LearningDevelopment.Learning.LearningNotes.Dtos;
+using NouAssist.LearningDevelopment.Learning.LearningSessions.Dtos;
+using NouAssist.LearningDevelopment.Learning.Mindmaps.Dtos;
+using NouAssist.LearningDevelopment.Learning.Topics.Dtos;
+using NouAssist.LearningDevelopment.Learning.ValueObjects;
 
-namespace NouAssist.Learning
+namespace NouAssist.LearningDevelopment.Learning
 {
     public class LearningApplicationAutoMapperProfile : Profile
     {

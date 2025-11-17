@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
@@ -29,7 +30,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         
         public int? DefaultEstimateMinutes { get; set; }
         public DateTime? DefaultDueDate { get; set; }
-        
+        public ComplexityEstimationDto DefaultComplexityEstimation { get; set; }
+        public CognitiveLoad? DefaultCognitiveLoad { get; set; }
+
         public bool IsRecurring { get; set; }
         public RecurrenceRuleDto RecurrenceRule { get; set; }
         
@@ -75,5 +78,13 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
         public DateTime? EndDate { get; set; }
         public int? Count { get; set; }
         public List<DayOfWeek> DaysOfWeek { get; set; }
+    }
+
+    public class ComplexityEstimationDto
+    {
+        public int Value { get; set; }
+        public ComplexityScale Scale { get; set; }
+        public string DisplayValue { get; set; }
+        public double NormalizedComplexity { get; set; }
     }
 }

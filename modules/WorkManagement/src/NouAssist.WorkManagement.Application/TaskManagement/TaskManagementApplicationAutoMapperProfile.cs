@@ -29,6 +29,10 @@ namespace NouAssist.WorkManagement.TaskManagement
             CreateMap<RecurrenceRule, RecurrenceRuleDto>()
                 .ForMember(dest => dest.Frequency, opt => opt.MapFrom(src => src.Frequency.ToString()));
 
+            CreateMap<ComplexityEstimation, ComplexityEstimationDto>()
+                .ForMember(dest => dest.DisplayValue, opt => opt.MapFrom(src => src.ToString()))
+                .ForMember(dest => dest.NormalizedComplexity, opt => opt.MapFrom(src => src.GetNormalizedComplexity()));
+
             // TaskInstance mappings - Map from value objects
             CreateMap<TaskInstance, TaskInstanceDto>()
                 // Work Tracking

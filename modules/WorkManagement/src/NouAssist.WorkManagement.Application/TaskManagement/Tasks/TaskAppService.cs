@@ -96,6 +96,20 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             task.DefaultWorkflowId = input.DefaultWorkflowId;
             task.DefaultAssigneeId = input.DefaultAssigneeId;
 
+            if (input.DefaultComplexityEstimation != null)
+            {
+                var complexityEstimation = new ComplexityEstimation(
+                    input.DefaultComplexityEstimation.Value,
+                    input.DefaultComplexityEstimation.Scale
+                );
+                task.SetDefaultComplexityEstimation(complexityEstimation);
+            }
+
+            if (input.DefaultCognitiveLoad.HasValue)
+            {
+                task.SetDefaultCognitiveLoad(input.DefaultCognitiveLoad.Value);
+            }
+
             if (input.RecurrenceRule != null)
             {
                 var recurrenceRule = new RecurrenceRule(
@@ -182,6 +196,20 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             if (input.DefaultDueDate.HasValue)
             {
                 task.DefaultDueDate = input.DefaultDueDate;
+            }
+
+            if (input.DefaultComplexityEstimation != null)
+            {
+                var complexityEstimation = new ComplexityEstimation(
+                    input.DefaultComplexityEstimation.Value,
+                    input.DefaultComplexityEstimation.Scale
+                );
+                task.SetDefaultComplexityEstimation(complexityEstimation);
+            }
+
+            if (input.DefaultCognitiveLoad.HasValue)
+            {
+                task.SetDefaultCognitiveLoad(input.DefaultCognitiveLoad.Value);
             }
 
             await _taskRepository.UpdateAsync(task);

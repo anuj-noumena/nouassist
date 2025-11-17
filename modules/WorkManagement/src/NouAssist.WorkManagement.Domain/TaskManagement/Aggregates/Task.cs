@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NouAssist.WorkManagement.TaskManagement.Entities;
+using NouAssist.WorkManagement.TaskManagement.Enums;
 using NouAssist.WorkManagement.TaskManagement.Events;
 using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
@@ -43,6 +44,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         public Guid? DefaultAssigneeId { get; set; }
         public Guid? DefaultAreaId { get; set; } // Default area for instances
         public Guid? DefaultContextId { get; set; } // Default context for instances
+        public ComplexityEstimation DefaultComplexityEstimation { get; set; }
+        public CognitiveLoad? DefaultCognitiveLoad { get; set; }
 
         // === RECURRENCE ===
         public RecurrenceRule RecurrenceRule { get; private set; }
@@ -210,6 +213,42 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates
         {
             DefaultAreaId = defaultAreaId;
             DefaultContextId = defaultContextId;
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets default complexity estimation for instances created from this blueprint
+        /// </summary>
+        public void SetDefaultComplexityEstimation(ComplexityEstimation estimation)
+        {
+            DefaultComplexityEstimation = estimation;
+            Version++;
+        }
+
+        /// <summary>
+        /// Clears default complexity estimation
+        /// </summary>
+        public void ClearDefaultComplexityEstimation()
+        {
+            DefaultComplexityEstimation = null;
+            Version++;
+        }
+
+        /// <summary>
+        /// Sets default cognitive load for instances created from this blueprint
+        /// </summary>
+        public void SetDefaultCognitiveLoad(CognitiveLoad cognitiveLoad)
+        {
+            DefaultCognitiveLoad = cognitiveLoad;
+            Version++;
+        }
+
+        /// <summary>
+        /// Clears default cognitive load
+        /// </summary>
+        public void ClearDefaultCognitiveLoad()
+        {
+            DefaultCognitiveLoad = null;
             Version++;
         }
 

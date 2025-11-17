@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.WorkManagement.TaskManagement.Enums;
+using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
 
 namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
 {
@@ -26,7 +28,11 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
         // Work tracking
         public bool? IsNextAction { get; set; }
         public int? EstimatedMinutes { get; set; }
-        
+
+        // Complexity and Cognitive Load
+        public CreateComplexityEstimationDto ComplexityEstimation { get; set; }
+        public CognitiveLoad? CognitiveLoad { get; set; }
+
         // Flags
         public bool? IsFlagged { get; set; }
         [StringLength(1000)]

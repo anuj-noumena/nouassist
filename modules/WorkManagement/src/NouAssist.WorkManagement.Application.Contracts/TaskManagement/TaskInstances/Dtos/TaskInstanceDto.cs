@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using NouAssist.WorkManagement.TaskManagement.Enums;
+using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;
 using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
@@ -41,6 +43,10 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
         public double Importance { get; set; }
         public double Urgency { get; set; }
         public string EisenhowerQuadrant { get; set; }
+
+        // Complexity and Cognitive Load
+        public ComplexityEstimationDto ComplexityEstimation { get; set; }
+        public CognitiveLoad? CognitiveLoad { get; set; }
 
         // Hierarchy (from TaskHierarchy value object)
         public Guid? ParentInstanceId { get; set; }

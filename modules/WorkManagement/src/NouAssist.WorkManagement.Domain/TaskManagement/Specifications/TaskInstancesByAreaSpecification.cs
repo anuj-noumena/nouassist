@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.WorkManagement.TaskManagement.Specifications

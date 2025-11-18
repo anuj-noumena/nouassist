@@ -1,5 +1,6 @@
 using AutoMapper;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Entities;
 using NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos;
 using NouAssist.WorkManagement.TaskManagement.Tasks.Dtos;

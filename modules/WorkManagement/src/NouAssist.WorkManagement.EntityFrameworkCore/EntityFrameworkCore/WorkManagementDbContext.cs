@@ -9,6 +9,7 @@ using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.Reviews.Aggregates;
 using NouAssist.WorkManagement.Reviews.Entities;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Entities;
 using NouAssist.WorkManagement.Workflow.Aggregates;
 using NouAssist.WorkManagement.Workflow.Entities;

@@ -48,10 +48,22 @@ namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
                     }
                     break;
 
+                case ComplexityScale.Unknown:
+                    // No validation needed for unknown scale
+                    break;
+
                 default:
                     throw new BusinessException("Tasks:InvalidComplexityScale",
                         $"Unknown complexity scale: {scale}");
             }
+        }
+
+        /// <summary>
+        /// Creates an Unknown complexity estimation
+        /// </summary>
+        public static ComplexityEstimation Unknown()
+        {
+            return new ComplexityEstimation(0, ComplexityScale.Unknown);
         }
 
         /// <summary>
@@ -94,6 +106,7 @@ namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
                 },
                 ComplexityScale.TShirt => Value / 6.0,
                 ComplexityScale.Numeric => Value / 10.0,
+                ComplexityScale.Unknown => 0.0,
                 _ => 0.0
             };
         }
@@ -109,6 +122,7 @@ namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
             return Scale switch
             {
                 ComplexityScale.TShirt => GetTShirtSize(),
+                ComplexityScale.Unknown => "Unknown",
                 _ => Value.ToString()
             };
         }

@@ -1,5 +1,6 @@
 using System.Linq;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.WorkManagement.TaskManagement.Services

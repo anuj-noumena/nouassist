@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.TaskManagement.Services;
 using Volo.Abp;

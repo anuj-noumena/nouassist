@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.Workflow.Data;
 using NouAssist.WorkManagement.Workflow.Entities;
@@ -112,7 +113,7 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
 
                 // Create the subtask instance
                 var guidGenerator = LazyServiceProvider.LazyGetRequiredService<IGuidGenerator>();
-                var subtaskInstance = new TaskManagement.Aggregates.TaskInstance(
+                var subtaskInstance = new TaskInstance(
                     id: guidGenerator.Create(),
                     taskId: taskId,
                     workflowId: workflowId,

@@ -18,6 +18,8 @@ namespace NouAssist.WorkManagement.TaskManagement.Enums
         /// <summary>
         /// Numeric scale: 1-10
         /// </summary>
-        Numeric = 3
+        Numeric = 3,
+        
+        Unknown = 4
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurations

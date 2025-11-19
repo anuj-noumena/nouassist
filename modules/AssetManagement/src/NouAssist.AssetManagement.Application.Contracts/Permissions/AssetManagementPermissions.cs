@@ -16,7 +16,7 @@ public class AssetManagementPermissions
     {
         public const string GroupName = "Resources";
 
-        public static class Resources
+        public static class Resource
         {
             public const string Default = GroupName + ".Resources";
             public const string Upload = Default + ".Upload";

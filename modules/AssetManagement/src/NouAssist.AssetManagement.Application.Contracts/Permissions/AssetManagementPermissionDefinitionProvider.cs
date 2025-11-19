@@ -12,25 +12,25 @@ public class AssetManagementPermissionDefinitionProvider : PermissionDefinitionP
 
         // Resources Management Permissions
         var resourcesPermission = assetManagementGroup.AddPermission(
-            AssetManagementPermissions.Resources.Resources.Default,
+            AssetManagementPermissions.Resources.Resource.Default,
             L("Permission:Resources.Resources"));
         resourcesPermission.AddChild(
-            AssetManagementPermissions.Resources.Resources.Upload,
+            AssetManagementPermissions.Resources.Resource.Upload,
             L("Permission:Resources.Resources.Upload"));
         resourcesPermission.AddChild(
-            AssetManagementPermissions.Resources.Resources.Download,
+            AssetManagementPermissions.Resources.Resource.Download,
             L("Permission:Resources.Resources.Download"));
         resourcesPermission.AddChild(
-            AssetManagementPermissions.Resources.Resources.Update,
+            AssetManagementPermissions.Resources.Resource.Update,
             L("Permission:Resources.Resources.Update"));
         resourcesPermission.AddChild(
-            AssetManagementPermissions.Resources.Resources.Delete,
+            AssetManagementPermissions.Resources.Resource.Delete,
             L("Permission:Resources.Resources.Delete"));
         resourcesPermission.AddChild(
-            AssetManagementPermissions.Resources.Resources.ManageVersions,
+            AssetManagementPermissions.Resources.Resource.ManageVersions,
             L("Permission:Resources.Resources.ManageVersions"));
         resourcesPermission.AddChild(
-            AssetManagementPermissions.Resources.Resources.ManagePermissions,
+            AssetManagementPermissions.Resources.Resource.ManagePermissions,
             L("Permission:Resources.Resources.ManagePermissions"));
 
         // Books Permissions

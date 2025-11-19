@@ -20,7 +20,7 @@ namespace NouAssist.LearningDevelopment.Learning.Services
             {
                 // Calculate based on current phase
                 var phaseWeight = 100.0 / 6; // Each phase worth ~16.67%
-                var completedPhases = (int)session?.CurrentPhase - 1 ?? 0;
+                var completedPhases = session?.CurrentPhase == null ? 0 : (int)session.CurrentPhase - 1;
                 return (int)(completedPhases * phaseWeight);
             }
 

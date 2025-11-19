@@ -5,16 +5,17 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.TimeManagement.Calendar.Data;
+using NouAssist.TimeManagement.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Repositories
 {
     public class EfCoreCalendarRepository 
-        : EfCoreRepository<ICalendarDbContext, Aggregates.Calendar, Guid>, ICalendarRepository
+        : EfCoreRepository<ITimeManagementDbContext, Aggregates.Calendar, Guid>, ICalendarRepository
     {
         public EfCoreCalendarRepository(
-            IDbContextProvider<ICalendarDbContext> dbContextProvider)
+            IDbContextProvider<ITimeManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

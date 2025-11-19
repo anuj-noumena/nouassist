@@ -8,7 +8,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<CalendarEventException> builder)
         {
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "CalendarEventExceptions", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "CalendarEventExceptions", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

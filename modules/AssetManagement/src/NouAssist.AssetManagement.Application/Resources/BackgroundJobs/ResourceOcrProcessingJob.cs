@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NouAssist.AssetManagement.Resources.Data;
 using NouAssist.AssetManagement.Resources.Enums;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Uow;
 

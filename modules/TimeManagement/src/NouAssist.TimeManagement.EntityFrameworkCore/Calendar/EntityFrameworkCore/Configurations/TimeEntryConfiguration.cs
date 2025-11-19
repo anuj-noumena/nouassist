@@ -11,7 +11,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "TimeEntries", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "TimeEntries", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

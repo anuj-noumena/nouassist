@@ -8,7 +8,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<WeeklyAvailabilitySlot> builder)
         {
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "WeeklyAvailabilitySlots", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "WeeklyAvailabilitySlots", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

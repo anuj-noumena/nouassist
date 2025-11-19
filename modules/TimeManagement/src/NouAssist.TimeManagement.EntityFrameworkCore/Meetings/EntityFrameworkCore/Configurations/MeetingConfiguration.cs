@@ -2,21 +2,29 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NouAssist.TimeManagement.Meetings.Aggregates;
 using NouAssist.TimeManagement.Meetings.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
+using System.Text.Json;
 
 namespace NouAssist.TimeManagement.Meetings.EntityFrameworkCore.Configurations
 {
     public class MeetingConfiguration : IEntityTypeConfiguration<Meeting>
     {
+        private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = false
+        };
+
         public void Configure(EntityTypeBuilder<Meeting> builder)
         {
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                MeetingsDbProperties.DbTablePrefix + "Meetings",
-                MeetingsDbProperties.DbSchema
+                TimeManagementDbProperties.DbTablePrefix + "Meetings",
+                TimeManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);
@@ -80,49 +88,49 @@ namespace NouAssist.TimeManagement.Meetings.EntityFrameworkCore.Configurations
             builder.Property("_attendees")
                 .HasColumnName("Attendees")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<MeetingAttendee>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
+                .HasConversion(new ValueConverter<List<MeetingAttendee>, string>(
+                    v => JsonSerializer.Serialize(v, _jsonOptions),
+                    v => JsonSerializer.Deserialize<List<MeetingAttendee>>(v, _jsonOptions)
+                ));
 
             builder.Property("_agendaItems")
                 .HasColumnName("AgendaItems")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<MeetingAgendaItem>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
+                .HasConversion(new ValueConverter<List<MeetingAgendaItem>, string>(
+                    v => JsonSerializer.Serialize(v, _jsonOptions),
+                    v => JsonSerializer.Deserialize<List<MeetingAgendaItem>>(v, _jsonOptions)
+                ));
 
             builder.Property("_actionItems")
                 .HasColumnName("ActionItems")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<MeetingActionItem>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
+                .HasConversion(new ValueConverter<List<MeetingActionItem>, string>(
+                    v => JsonSerializer.Serialize(v, _jsonOptions),
+                    v => JsonSerializer.Deserialize<List<MeetingActionItem>>(v, _jsonOptions)
+                ));
 
             builder.Property("_attachmentIds")
                 .HasColumnName("AttachmentIds")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
+                .HasConversion(new ValueConverter<List<Guid>, string>(
+                    v => JsonSerializer.Serialize(v, _jsonOptions),
+                    v => JsonSerializer.Deserialize<List<Guid>>(v, _jsonOptions)
+                ));
 
             builder.Property("_relatedTaskIds")
                 .HasColumnName("RelatedTaskIds")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
+                .HasConversion(new ValueConverter<List<Guid>, string>(
+                    v => JsonSerializer.Serialize(v, _jsonOptions),
+                    v => JsonSerializer.Deserialize<List<Guid>>(v, _jsonOptions)
+                ));
 
             builder.Property(x => x.Metadata)
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null)
-                );
+                .HasConversion(new ValueConverter<Dictionary<string, object>, string>(
+                    v => JsonSerializer.Serialize(v, _jsonOptions),
+                    v => JsonSerializer.Deserialize<Dictionary<string, object>>(v, _jsonOptions)
+                ));
 
             // Indexes
             builder.HasIndex(x => x.OwnerId);

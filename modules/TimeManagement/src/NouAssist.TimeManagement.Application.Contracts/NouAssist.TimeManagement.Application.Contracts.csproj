@@ -3,15 +3,15 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>NouAssist.TimeManagement</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.Authorization" Version="9.3.6" />
-    <PackageReference Include="Volo.Abp.FluentValidation" Version="9.3.6" />
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="10.0.0" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="10.0.0" />
+    <PackageReference Include="Volo.Abp.FluentValidation" Version="10.0.0" />
     <ProjectReference Include="..\NouAssist.TimeManagement.Domain.Shared\NouAssist.TimeManagement.Domain.Shared.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageReference Update="Fody" Version="6.9.3">

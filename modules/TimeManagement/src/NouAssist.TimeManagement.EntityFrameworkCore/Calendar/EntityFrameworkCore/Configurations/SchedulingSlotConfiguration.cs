@@ -8,7 +8,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<SchedulingSlot> builder)
         {
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "SchedulingSlots", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "SchedulingSlots", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -37,11 +37,8 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
                 .IsRequired();
 
             // Collection: AvailableParticipants (stored as JSON array)
-            builder.OwnsMany(x => x.AvailableParticipants, apBuilder =>
-            {
-                apBuilder.ToJson();
-            });
-
+            builder.Property(x => x.AvailableParticipants)
+                .IsRequired();
             // Indexes
             builder.HasIndex(x => x.RequestId);
             builder.HasIndex(x => new { x.StartTime, x.EndTime });

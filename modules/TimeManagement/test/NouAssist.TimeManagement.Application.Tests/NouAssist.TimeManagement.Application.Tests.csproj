@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>NouAssist.TimeManagement</RootNamespace>
   </PropertyGroup>
@@ -11,7 +11,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NouAssist.TimeManagement.Application\NouAssist.TimeManagement.Application.csproj" />
     <ProjectReference Include="..\NouAssist.TimeManagement.Domain.Tests\NouAssist.TimeManagement.Domain.Tests.csproj" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
+    <PackageReference Update="Fody" Version="6.9.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

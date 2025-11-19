@@ -10,13 +10,17 @@ using NouAssist.AssetManagement.Resources.Data;
 using NouAssist.AssetManagement.Resources.Enums;
 using NouAssist.AssetManagement.Resources.Resources.Dtos;
 using NouAssist.AssetManagement.Resources.Services;
+using NouAssist.AssetManagement.Resources.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Specifications;
 
 namespace NouAssist.AssetManagement.Resources.Resources
 {
-    [Authorize(AssetManagementPermissions.Resources.Resources.Default)]
+    [Authorize(AssetManagementPermissions.Resources.Resource.Default)]
     public class ResourceAppService : ApplicationService, IResourceAppService
     {
         private readonly IResourceRepository _resourceRepository;
@@ -58,7 +62,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             );
         }
 
-        [Authorize(AssetManagementPermissions.Resources.Resources.Upload)]
+        [Authorize(AssetManagementPermissions.Resources.Resource.Upload)]
         public async Task<ResourceDto> UploadAsync(UploadResourceDto input)
         {
             if (input.File == null || input.File.Length == 0)
@@ -107,7 +111,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(AssetManagementPermissions.Resources.Resources.Update)]
+        [Authorize(AssetManagementPermissions.Resources.Resource.Update)]
         public async Task<ResourceDto> UpdateAsync(Guid id, UpdateResourceDto input)
         {
             var resource = await _resourceRepository.GetAsync(id);
@@ -138,7 +142,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(AssetManagementPermissions.Resources.Resources.Delete)]
+        [Authorize(AssetManagementPermissions.Resources.Resource.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var resource = await _resourceRepository.GetAsync(id);
@@ -153,7 +157,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             await _resourceRepository.UpdateAsync(resource);
         }
 
-        [Authorize(AssetManagementPermissions.Resources.Resources.Download)]
+        [Authorize(AssetManagementPermissions.Resources.Resource.Download)]
         public async Task<byte[]> DownloadAsync(Guid id)
         {
             var resource = await _resourceRepository.GetAsync(id);
@@ -170,7 +174,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             throw new NotImplementedException("File download not implemented. Integrate with storage service.");
         }
 
-        [Authorize(AssetManagementPermissions.Resources.Resources.ManageVersions)]
+        [Authorize(AssetManagementPermissions.Resources.Resource.ManageVersions)]
         public async Task<ResourceDto> UploadNewVersionAsync(Guid id, UploadResourceDto input)
         {
             var resource = await _resourceRepository.GetWithVersionsAsync(id);
@@ -212,7 +216,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(AssetManagementPermissions.Resources.Resources.ManagePermissions)]
+        [Authorize(AssetManagementPermissions.Resources.Resource.ManagePermissions)]
         public async Task<ResourceDto> GrantAccessAsync(Guid id, GrantAccessDto input)
         {
             var resource = await _resourceRepository.GetWithAclAsync(id);
@@ -230,7 +234,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             return MapToDto(resource);
         }
 
-        [Authorize(AssetManagementPermissions.Resources.Resources.ManagePermissions)]
+        [Authorize(AssetManagementPermissions.Resources.Resource.ManagePermissions)]
         public async Task RevokeAccessAsync(Guid id, Guid userId)
         {
             var resource = await _resourceRepository.GetWithAclAsync(id);
@@ -254,7 +258,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
         private ISpecification<Resource> CreateListSpecification(GetResourceListDto input)
         {
             // Start with current user's resources
-            var spec = new Specification<Resource>(r => r.OwnerId == CurrentUser.Id.Value);
+            ISpecification<Resource> spec = new BaseSpecification<Resource>(r => r.OwnerId == CurrentUser.Id.Value);
 
             if (input.Kind.HasValue)
             {
@@ -263,22 +267,22 @@ namespace NouAssist.AssetManagement.Resources.Resources
 
             if (!string.IsNullOrWhiteSpace(input.Visibility))
             {
-                spec = spec.And(new Specification<Resource>(r => r.Visibility == input.Visibility));
+                spec = spec.And(new BaseSpecification<Resource>(r => r.Visibility == input.Visibility));
             }
 
             if (input.FromDate.HasValue)
             {
-                spec = spec.And(new Specification<Resource>(r => r.CreationTime >= input.FromDate.Value));
+                spec = spec.And(new BaseSpecification<Resource>(r => r.CreationTime >= input.FromDate.Value));
             }
 
             if (input.ToDate.HasValue)
             {
-                spec = spec.And(new Specification<Resource>(r => r.CreationTime <= input.ToDate.Value));
+                spec = spec.And(new BaseSpecification<Resource>(r => r.CreationTime <= input.ToDate.Value));
             }
 
             if (!string.IsNullOrWhiteSpace(input.SearchTerm))
             {
-                spec = spec.And(new Specification<Resource>(r => 
+                spec = spec.And(new BaseSpecification<Resource>(r => 
                     r.Title.Contains(input.SearchTerm) || 
                     (r.Description != null && r.Description.Contains(input.SearchTerm))));
             }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.TimeManagement.Meetings.Aggregates;
 using NouAssist.TimeManagement.Meetings.Data;
 using NouAssist.TimeManagement.Meetings.Meetings.Dtos;
@@ -13,6 +15,7 @@ using NouAssist.TimeManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.TimeManagement.Meetings.Meetings
@@ -45,7 +48,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             var spec = CreateListSpecification(input);
 
             var meetings = await _meetingRepository.GetListAsync(spec);
-            var totalCount = await _meetingRepository.CountAsync(spec);
+            var totalCount = await _meetingRepository.CountAsync(spec.ToExpression());
 
             var dtos = new List<MeetingDto>();
             foreach (var meeting in meetings)
@@ -59,12 +62,12 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
         public async Task<PagedResultDto<MeetingDto>> GetMyMeetingsAsync(GetMeetingListDto input)
         {
             var spec = CreateListSpecification(input)
-                .And(new Specification<Meeting>(m => 
+                .And(new BaseSpecification<Meeting>(m => 
                     m.OwnerId == CurrentUser.Id.Value || 
                     m.OrganizerId == CurrentUser.Id.Value));
 
             var meetings = await _meetingRepository.GetListAsync(spec);
-            var totalCount = await _meetingRepository.CountAsync(spec);
+            var totalCount = await _meetingRepository.CountAsync(spec.ToExpression());
 
             var dtos = new List<MeetingDto>();
             foreach (var meeting in meetings)
@@ -321,7 +324,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
             return await MapToDto(meeting);
         }
 
-        [Authorize(MeetingsPermissions.Meetings.ManageAgenda)]
+        [Authorize(TimeManagementPermissions.Meeting.Meetings.ManageAgenda)]
         public async Task<MeetingDto> AddAgendaItemAsync(Guid id, CreateAgendaItemDto input)
         {
             var meeting = await _meetingRepository.GetAsync(id);
@@ -370,11 +373,11 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
 
         private ISpecification<Meeting> CreateListSpecification(GetMeetingListDto input)
         {
-            var spec = Specification.None<Meeting>();
+            ISpecification<Meeting> spec = new BaseSpecification<Meeting>();
 
             if (input.Status.HasValue)
             {
-                spec = spec.And(new Specification<Meeting>(m => m.Status == input.Status.Value));
+                spec = spec.And(new BaseSpecification<Meeting>(m => m.Status == input.Status.Value));
             }
 
             if (input.MeetingType.HasValue)
@@ -401,7 +404,7 @@ namespace NouAssist.TimeManagement.Meetings.Meetings
 
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
-                spec = spec.And(new Specification<Meeting>(
+                spec = spec.And(new BaseSpecification<Meeting>(
                     m => m.Title.Contains(input.Filter) || 
                          (m.Description != null && m.Description.Contains(input.Filter))));
             }

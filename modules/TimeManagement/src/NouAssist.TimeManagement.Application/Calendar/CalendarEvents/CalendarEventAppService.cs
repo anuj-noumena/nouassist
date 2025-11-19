@@ -17,6 +17,8 @@ using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 using Volo.Abp.Users;
+using System.Linq.Dynamic.Core;
+using System.Linq;
 
 namespace NouAssist.TimeManagement.Calendar.CalendarEvents
 {
@@ -48,11 +50,21 @@ namespace NouAssist.TimeManagement.Calendar.CalendarEvents
             var spec = CreateListSpecification(input);
 
             var totalCount = await _eventRepository.CountAsync(spec.ToExpression());
-            var events = await _eventRepository.GetListAsync(
-                spec,
-                input.MaxResultCount,
-                input.SkipCount,
-                input.Sorting ?? "StartAt");
+// 1. Get the Queryable (Use WithDetailsAsync to load related data like Attendees if needed)
+            var queryable = await _eventRepository.WithDetailsAsync();
+
+// 2. Apply Specification
+            queryable = queryable.Where(spec.ToExpression());
+
+// 3. Apply Sorting
+// Default to "StartAt" if input.Sorting is null
+            queryable = queryable.OrderBy(input.Sorting.IsNullOrWhiteSpace() ? "StartAt" : input.Sorting);
+
+// 4. Apply Paging
+            queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
+
+// 5. Execute
+            var events = await _eventRepository.AsyncExecuter.ToListAsync(queryable);
 
             return new PagedResultDto<CalendarEventDto>(
                 totalCount,

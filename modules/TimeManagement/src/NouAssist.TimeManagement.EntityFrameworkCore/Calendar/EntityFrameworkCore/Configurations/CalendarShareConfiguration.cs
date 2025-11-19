@@ -8,7 +8,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<CalendarShare> builder)
         {
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "CalendarShares", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "CalendarShares", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

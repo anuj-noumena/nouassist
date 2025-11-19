@@ -3,14 +3,14 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <RootNamespace>NouAssist.LearningDevelopment</RootNamespace>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.3.6"/>
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
     <ProjectReference Include="..\NouAssist.LearningDevelopment.Domain.Shared\NouAssist.LearningDevelopment.Domain.Shared.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageReference Update="Fody" Version="6.9.3">

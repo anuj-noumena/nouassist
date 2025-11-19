@@ -7,15 +7,18 @@ using NouAssist.SharedKernel.Specifications;
 using NouAssist.TimeManagement.Calendar.Calendars.Dtos;
 using NouAssist.TimeManagement.Calendar.Data;
 using NouAssist.TimeManagement.Calendar.Specifications;
+using NouAssist.TimeManagement.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 using Volo.Abp.Users;
+using System.Linq.Dynamic.Core;
 
 namespace NouAssist.TimeManagement.Calendar.Calendars
 {
-    [Authorize(CalendarPermissions.Calendars.Default)]
+    [Authorize(TimeManagementPermissions.Calendar.Calendars.Default)]
     public class CalendarAppService : ApplicationService, ICalendarAppService
     {
         private readonly ICalendarRepository _calendarRepository;
@@ -45,20 +48,33 @@ namespace NouAssist.TimeManagement.Calendar.Calendars
         {
             var spec = CreateListSpecification(input);
 
-            var totalCount = await _calendarRepository.GetCountAsync(spec);
-            var calendars = await _calendarRepository.GetListAsync(
-                spec,
-                input.MaxResultCount,
-                input.SkipCount,
-                input.Sorting);
+            var totalCount = await _calendarRepository.CountAsync(spec.ToExpression());
+            // 1. Get the queryable (use WithDetailsAsync if you need to include child collections)
+            var queryable = await _calendarRepository.GetQueryableAsync();
 
+            // 2. Apply the Specification
+            // We convert the specification object into a standard LINQ Expression
+                        queryable = queryable.Where(spec.ToExpression());
+
+            // 3. Apply Sorting
+            // We use Dynamic LINQ to handle the string input (e.g. "Title ASC")
+            // Always provide a default sort to ensure consistent pagination
+                        queryable = queryable.OrderBy(input.Sorting.IsNullOrWhiteSpace() ? nameof(Calendar.Aggregates.Calendar.CreationTime) : input.Sorting);
+
+            // 4. Apply Paging
+            // PageBy is an ABP extension method equivalent to .Skip().Take()
+                        queryable = queryable.PageBy(input.SkipCount, input.MaxResultCount);
+
+            // 5. Execute
+            // Use AsyncExecuter to ensure compatibility with ABP's unit of work and async providers
+                        var calendars = await _calendarRepository.AsyncExecuter.ToListAsync(queryable);
             return new PagedResultDto<CalendarDto>(
                 totalCount,
                 ObjectMapper.Map<List<Aggregates.Calendar>, List<CalendarDto>>(calendars)
             );
         }
 
-        [Authorize(CalendarPermissions.Calendars.Create)]
+        [Authorize(TimeManagementPermissions.Calendar.Calendars.Create)]
         public async Task<CalendarDto> CreateAsync(CreateCalendarDto input)
         {
             var calendar = new Aggregates.Calendar(
@@ -76,7 +92,7 @@ namespace NouAssist.TimeManagement.Calendar.Calendars
             return ObjectMapper.Map<Aggregates.Calendar, CalendarDto>(calendar);
         }
 
-        [Authorize(CalendarPermissions.Calendars.Edit)]
+        [Authorize(TimeManagementPermissions.Calendar.Calendars.Edit)]
         public async Task<CalendarDto> UpdateAsync(Guid id, UpdateCalendarDto input)
         {
             var calendar = await _calendarRepository.GetAsync(id);
@@ -91,13 +107,13 @@ namespace NouAssist.TimeManagement.Calendar.Calendars
             return ObjectMapper.Map<Aggregates.Calendar, CalendarDto>(calendar);
         }
 
-        [Authorize(CalendarPermissions.Calendars.Delete)]
+        [Authorize(TimeManagementPermissions.Calendar.Calendars.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _calendarRepository.DeleteAsync(id);
         }
 
-        [Authorize(CalendarPermissions.Calendars.Edit)]
+        [Authorize(TimeManagementPermissions.Calendar.Calendars.Edit)]
         public async Task<CalendarDto> SetAsDefaultAsync(Guid id)
         {
             // Remove default from all other calendars
@@ -116,7 +132,7 @@ namespace NouAssist.TimeManagement.Calendar.Calendars
             return ObjectMapper.Map<Aggregates.Calendar, CalendarDto>(calendar);
         }
 
-        [Authorize(CalendarPermissions.Calendars.Share)]
+        [Authorize(TimeManagementPermissions.Calendar.Calendars.Share)]
         public async Task<CalendarDto> ShareAsync(Guid id, ShareCalendarDto input)
         {
             var calendar = await _calendarRepository.GetWithSharesAsync(id);
@@ -129,7 +145,7 @@ namespace NouAssist.TimeManagement.Calendar.Calendars
             return ObjectMapper.Map<Aggregates.Calendar, CalendarDto>(calendar);
         }
 
-        [Authorize(CalendarPermissions.Calendars.Share)]
+        [Authorize(TimeManagementPermissions.Calendar.Calendars.Share)]
         public async Task RevokeShareAsync(Guid id, Guid sharedWithUserId)
         {
             var calendar = await _calendarRepository.GetWithSharesAsync(id);

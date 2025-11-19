@@ -7,9 +7,12 @@ using NouAssist.AssetManagement.Resources.Aggregates;
 using NouAssist.AssetManagement.Resources.Books.Dtos;
 using NouAssist.AssetManagement.Resources.Data;
 using NouAssist.AssetManagement.Resources.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Specifications;
 
 namespace NouAssist.AssetManagement.Resources.Books
 {
@@ -308,7 +311,7 @@ namespace NouAssist.AssetManagement.Resources.Books
 
         private ISpecification<Book> CreateListSpecification(GetBookListDto input)
         {
-            var spec = new Specification<Book>(b => b.OwnerId == CurrentUser.Id.Value);
+            ISpecification<Book> spec = new BaseSpecification<Book>(b => b.OwnerId == CurrentUser.Id.Value);
 
             if (input.ReadingStatus.HasValue)
             {
@@ -332,12 +335,12 @@ namespace NouAssist.AssetManagement.Resources.Books
 
             if (!string.IsNullOrWhiteSpace(input.CollectionName))
             {
-                spec = spec.And(new Specification<Book>(b => b.CollectionName == input.CollectionName));
+                spec = spec.And(new BaseSpecification<Book>(b => b.CollectionName == input.CollectionName));
             }
 
             if (!string.IsNullOrWhiteSpace(input.SearchTerm))
             {
-                spec = spec.And(new Specification<Book>(b => 
+                spec = spec.And(new BaseSpecification<Book>(b => 
                     b.Title.Contains(input.SearchTerm) || 
                     b.Authors.Any(a => a.Contains(input.SearchTerm))));
             }

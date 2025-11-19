@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using NouAssist.Learning.Enums;
 using NouAssist.LearningDevelopment.Learning.Aggregates;
 using NouAssist.LearningDevelopment.Learning.Entities;

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NouAssist.TimeManagement.Calendar.Aggregates;
+using NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
@@ -14,11 +16,16 @@ public class TimeManagementEntityFrameworkCoreModule : AbpModule
     {
         context.Services.AddAbpDbContext<TimeManagementDbContext>(options =>
         {
+            options.AddRepository<Calendar.Aggregates.Calendar, EfCoreCalendarRepository>();
+            options.AddRepository<CalendarEvent, EfCoreCalendarEventRepository>();
+            options.AddRepository<Timeblock, EfCoreTimeblockRepository>();
+            options.AddRepository<SchedulingRequest, EfCoreSchedulingRequestRepository>();
+            options.AddRepository<TimeEntry, EfCoreTimeEntryRepository>();
+            options.AddRepository<TimeblockTemplate, EfCoreTimeblockTemplateRepository>();
+            options.AddRepository<UserAvailability, EfCoreUserAvailabilityRepository>();
+            
             options.AddDefaultRepositories<ITimeManagementDbContext>(includeAllEntities: true);
             
-            /* Add custom repositories here. Example:
-            * options.AddRepository<Question, EfCoreQuestionRepository>();
-            */
         });
     }
 }

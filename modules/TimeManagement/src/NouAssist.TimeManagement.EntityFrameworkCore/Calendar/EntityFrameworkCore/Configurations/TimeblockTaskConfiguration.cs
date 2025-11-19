@@ -8,7 +8,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<TimeblockTask> builder)
         {
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "TimeblockTasks", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "TimeblockTasks", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

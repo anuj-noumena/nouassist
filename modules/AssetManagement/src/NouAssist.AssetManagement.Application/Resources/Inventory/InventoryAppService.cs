@@ -9,9 +9,12 @@ using NouAssist.AssetManagement.Resources.Data;
 using NouAssist.AssetManagement.Resources.Inventory.Dtos;
 using NouAssist.AssetManagement.Resources.Services;
 using NouAssist.AssetManagement.Resources.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Specifications;
 
 namespace NouAssist.AssetManagement.Resources.Inventory
 {
@@ -239,7 +242,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
 
         private ISpecification<InventoryItem> CreateListSpecification(GetInventoryListDto input)
         {
-            var spec = Specification.True<InventoryItem>();
+            ISpecification<InventoryItem> spec = new BaseSpecification<InventoryItem>();
 
             if (input.Kind.HasValue)
             {
@@ -248,7 +251,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
 
             if (input.Status.HasValue)
             {
-                spec = spec.And(new Specification<InventoryItem>(i => i.Status == input.Status.Value));
+                spec = spec.And(new BaseSpecification<InventoryItem>(i => i.Status == input.Status.Value));
             }
 
             if (!string.IsNullOrWhiteSpace(input.Location))
@@ -268,7 +271,7 @@ namespace NouAssist.AssetManagement.Resources.Inventory
 
             if (!string.IsNullOrWhiteSpace(input.SearchTerm))
             {
-                spec = spec.And(new Specification<InventoryItem>(i => 
+                spec = spec.And(new BaseSpecification<InventoryItem>(i => 
                     i.Name.Contains(input.SearchTerm) || 
                     (i.Description != null && i.Description.Contains(input.SearchTerm))));
             }

@@ -11,7 +11,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "SchedulingRequests", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "SchedulingRequests", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -46,10 +46,8 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
             builder.Property(x => x.CalendarEventId);
 
             // Collection: ParticipantIds (stored as JSON array)
-            builder.OwnsMany(x => x.ParticipantIds, pidBuilder =>
-            {
-                pidBuilder.ToJson();
-            });
+            builder.Property(x => x.ParticipantIds)
+                .IsRequired();
 
             // Relationship with SchedulingSlot
             builder.HasMany(x => x.Slots)

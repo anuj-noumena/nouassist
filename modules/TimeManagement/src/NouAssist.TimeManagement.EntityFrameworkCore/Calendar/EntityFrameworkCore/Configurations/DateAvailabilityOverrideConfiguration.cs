@@ -8,7 +8,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<DateAvailabilityOverride> builder)
         {
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "DateAvailabilityOverrides", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "DateAvailabilityOverrides", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

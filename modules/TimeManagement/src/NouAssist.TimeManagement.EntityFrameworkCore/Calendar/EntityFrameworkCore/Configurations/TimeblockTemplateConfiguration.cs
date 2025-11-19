@@ -11,7 +11,7 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(CalendarDbProperties.DbTablePrefix + "TimeblockTemplates", CalendarDbProperties.DbSchema);
+            builder.ToTable(TimeManagementDbProperties.DbTablePrefix + "TimeblockTemplates", TimeManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -43,11 +43,8 @@ namespace NouAssist.TimeManagement.Calendar.EntityFrameworkCore.Configurations
                 .IsRequired();
 
             // Collection: DaysOfWeek (stored as JSON array)
-            builder.OwnsMany(x => x.DaysOfWeek, dowBuilder =>
-            {
-                dowBuilder.ToJson();
-            });
-
+            builder.Property(x => x.DaysOfWeek)
+                .IsRequired();
             // Indexes
             builder.HasIndex(x => x.OwnerId);
             builder.HasIndex(x => new { x.OwnerId, x.IsActive });

@@ -46,33 +46,38 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                 }
 
                 var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
+                var taskInstanceWorkRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceWorkRepository>();
+
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
+                var taskWork = await taskInstanceWorkRepo.GetByTaskInstanceIdAsync(context.TaskInstanceId);
 
-                var oldImportance = taskInstance.Priority.Importance;
-                var oldUrgency = taskInstance.Priority.Urgency;
-                var oldQuadrant = taskInstance.Priority.Quadrant;
+                var oldImportance = taskWork?.Priority.Importance ?? 0;
+                var oldUrgency = taskWork?.Priority.Urgency ?? 0;
+                var oldQuadrant = taskWork?.Priority.Quadrant;
 
-                taskInstance.UpdatePriority(importance, urgency);
-
-                await taskInstanceRepo.UpdateAsync(taskInstance);
+                if (taskWork != null)
+                {
+                    taskWork.UpdatePriority(importance, urgency);
+                    await taskInstanceWorkRepo.UpdateAsync(taskWork);
+                }
 
                 Logger.LogInformation(
                     "Updated priority for task instance {TaskInstanceId} from I:{OldImportance}/U:{OldUrgency} ({OldQuadrant}) to I:{NewImportance}/U:{NewUrgency} ({NewQuadrant})",
-                    context.TaskInstanceId, oldImportance, oldUrgency, oldQuadrant, 
-                    importance, urgency, taskInstance.Priority.Quadrant);
+                    context.TaskInstanceId, oldImportance, oldUrgency, oldQuadrant,
+                    importance, urgency, taskWork?.Priority.Quadrant);
 
                 var resultData = new Dictionary<string, object>
                 {
                     ["oldImportance"] = oldImportance,
                     ["oldUrgency"] = oldUrgency,
-                    ["oldQuadrant"] = oldQuadrant.ToString(),
+                    ["oldQuadrant"] = oldQuadrant?.ToString() ?? "Unknown",
                     ["newImportance"] = importance,
                     ["newUrgency"] = urgency,
-                    ["newQuadrant"] = taskInstance.Priority.Quadrant.ToString(),
-                    ["isHighPriority"] = taskInstance.Priority.IsHighPriority,
-                    ["shouldSchedule"] = taskInstance.Priority.ShouldSchedule,
-                    ["shouldDelegate"] = taskInstance.Priority.ShouldDelegate,
-                    ["shouldEliminate"] = taskInstance.Priority.ShouldEliminate,
+                    ["newQuadrant"] = taskWork?.Priority.Quadrant.ToString() ?? "Unknown",
+                    ["isHighPriority"] = taskWork?.Priority.IsHighPriority ?? false,
+                    ["shouldSchedule"] = taskWork?.Priority.ShouldSchedule ?? false,
+                    ["shouldDelegate"] = taskWork?.Priority.ShouldDelegate ?? false,
+                    ["shouldEliminate"] = taskWork?.Priority.ShouldEliminate ?? false,
                     ["updatedAt"] = Clock.Now
                 };
 

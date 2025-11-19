@@ -106,44 +106,65 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                     return ActionExecutionResult.Failure("Urgency must be between 0.0 and 1.0");
                 }
 
-                // Determine GTD organization (inherit from parent or task blueprint)
-                Guid? projectId = parentTaskInstance.ProjectId;
-                Guid? areaId = parentTaskInstance.AreaId ?? taskBlueprint.GetEffectiveAreaForInstance();
-                Guid? contextId = parentTaskInstance.ContextId ?? taskBlueprint.GetEffectiveContextForInstance();
+                // Load parent's organization aggregate to inherit settings
+                var taskOrgRepo = LazyServiceProvider.LazyGetRequiredService<ITaskOrganizationRepository>();
+                var parentOrg = await taskOrgRepo.GetByTaskInstanceIdAsync(context.TaskInstanceId);
 
-                // Create the subtask instance
+                // Determine GTD organization (inherit from parent or task blueprint)
+                Guid? projectId = parentOrg?.ProjectId;
+                Guid? areaId = parentOrg?.AreaId ?? taskBlueprint.GetEffectiveAreaForInstance();
+                Guid? contextId = parentOrg?.ContextId ?? taskBlueprint.GetEffectiveContextForInstance();
+
+                // Create the core subtask instance
                 var guidGenerator = LazyServiceProvider.LazyGetRequiredService<IGuidGenerator>();
+                var subtaskId = guidGenerator.Create();
                 var subtaskInstance = new TaskInstance(
-                    id: guidGenerator.Create(),
+                    id: subtaskId,
                     taskId: taskId,
                     workflowId: workflowId,
                     workflowStatusId: initialStatus.Id,
                     ownerId: parentTaskInstance.OwnerId,
-                    projectId: projectId,
-                    areaId: areaId,
-                    contextId: contextId,
-                    importance: importance,
-                    urgency: urgency,
                     tenantId: CurrentTenant.Id,
                     reporterId: context.ExecutedBy,
                     assigneeId: assigneeId
                 );
 
-                // Set hierarchy - this subtask is a child of the parent
-                // Note: You'll need to implement hierarchy management on TaskInstance
-                // For now, we'll track this in metadata or create a method
-                
+                await taskInstanceRepo.InsertAsync(subtaskInstance);
+
+                // Create organization aggregate for GTD properties
+                var taskOrgAgg = new TaskOrganizationAggregate(guidGenerator.Create(), subtaskId);
+                if (projectId.HasValue)
+                {
+                    taskOrgAgg.MoveToProject(projectId.Value);
+                }
+                else if (areaId.HasValue)
+                {
+                    taskOrgAgg.MoveToArea(areaId.Value);
+                }
+                if (contextId.HasValue)
+                {
+                    taskOrgAgg.AssignToContext(contextId.Value);
+                }
+                await taskOrgRepo.InsertAsync(taskOrgAgg);
+
+                // Create work aggregate with priority settings
+                var taskWorkRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceWorkRepository>();
+                var taskWorkAgg = new TaskInstanceWorkAggregate(guidGenerator.Create(), subtaskId);
+                taskWorkAgg.UpdatePriority(importance, urgency);
+                await taskWorkRepo.InsertAsync(taskWorkAgg);
+
                 // Initialize checklist from task blueprint if it has one
                 if (taskBlueprint.HasChecklist)
                 {
+                    var taskChecklistRepo = LazyServiceProvider.LazyGetRequiredService<ITaskChecklistRepository>();
                     var checklistItemIds = taskBlueprint.ChecklistItems
                         .OrderBy(ci => ci.OrderIndex)
                         .Select(ci => ci.Id)
                         .ToList();
-                    subtaskInstance.InitializeChecklist(checklistItemIds);
+                    var checklistAgg = new TaskChecklistAggregate(guidGenerator.Create(), subtaskId);
+                    checklistAgg.InitializeChecklist(checklistItemIds);
+                    await taskChecklistRepo.InsertAsync(checklistAgg);
                 }
-
-                await taskInstanceRepo.InsertAsync(subtaskInstance);
 
                 Logger.LogInformation(
                     "Created subtask {SubtaskId} from blueprint {TaskId} for parent task instance {ParentTaskInstanceId}",
@@ -159,7 +180,7 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                     ["assigneeId"] = subtaskInstance.AssigneeId,
                     ["importance"] = importance,
                     ["urgency"] = urgency,
-                    ["quadrant"] = subtaskInstance.Priority.Quadrant.ToString(),
+                    ["quadrant"] = taskWorkAgg.Priority.Quadrant.ToString(),
                     ["projectId"] = projectId,
                     ["areaId"] = areaId,
                     ["contextId"] = contextId,

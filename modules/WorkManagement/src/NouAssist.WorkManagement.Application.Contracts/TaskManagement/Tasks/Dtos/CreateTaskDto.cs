@@ -13,6 +13,10 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks.Dtos
 
         public Guid? ProjectId { get; set; }
         
+        public Guid TaskType { get; set; }
+        public Guid? ParentId { get; set; }
+        public int? HierarchyLevel { get; set; }
+
         // GTD Organization
         public Guid? AreaId { get; set; }
         public Guid? ContextId { get; set; }

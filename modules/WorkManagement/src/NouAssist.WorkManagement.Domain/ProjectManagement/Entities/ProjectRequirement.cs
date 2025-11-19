@@ -10,7 +10,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
     public class ProjectRequirement : FullAuditedEntity<Guid>, IHasConcurrencyStamp, IHasExtraProperties
     {
         public Guid ProjectId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string Description { get; set; }
         public ProjectRequirementType RequirementType { get; private set; }
         public ProjectRequirementStatus Status { get; private set; }

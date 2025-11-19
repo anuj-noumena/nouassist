@@ -33,7 +33,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Aggregates
         // === ORGANIZATION ===
         // Project can belong to an Area (GTD: Projects support Areas)
         public Guid? AreaId { get; set; } // Which area of responsibility
-        public Guid? GoalId { get; private set; } // Aligned to which strategic goal
+        public Guid? GoalId { get; internal set; } // Aligned to which strategic goal
         
         // === WORKFLOW ===
         public Guid? WorkflowSchemeId { get; set; }

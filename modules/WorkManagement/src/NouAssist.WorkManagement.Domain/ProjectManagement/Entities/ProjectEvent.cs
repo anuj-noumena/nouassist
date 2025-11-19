@@ -10,10 +10,10 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
     public class ProjectEvent : FullAuditedEntity<Guid>
     {
         public Guid ProjectId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string Description { get; set; }
         public ProjectEventType EventType { get; private set; }
-        public DateTime EventDate { get; private set; }
+        public DateTime EventDate { get; internal set; }
         public DateTime? EndDate { get; set; }
         public bool IsAllDay { get; set; }
         public string Location { get; set; }

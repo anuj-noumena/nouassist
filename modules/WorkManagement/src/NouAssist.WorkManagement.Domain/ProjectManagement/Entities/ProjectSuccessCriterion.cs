@@ -10,7 +10,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Entities
     public class ProjectSuccessCriterion : FullAuditedEntity<Guid>
     {
         public Guid ProjectId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string Description { get; set; }
         public SuccessCriterionType CriterionType { get; private set; }
         public CriterionCriticality Criticality { get; private set; }

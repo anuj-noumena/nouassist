@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Entities;

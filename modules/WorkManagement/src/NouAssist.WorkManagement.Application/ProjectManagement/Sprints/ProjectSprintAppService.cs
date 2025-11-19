@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.ProjectManagement.Aggregates;
 using NouAssist.WorkManagement.ProjectManagement.Data;
+using NouAssist.WorkManagement.ProjectManagement.Projects.Dtos;
 using NouAssist.WorkManagement.ProjectManagement.Sprints.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
@@ -64,7 +65,7 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints
         }
 
         [Authorize(WorkManagementPermissions.ProjectManagement.Sprints.Update)]
-        public async Task<ProjectDto> UpdateAsync(Guid id, UpdateSprintDto input)
+        public async Task<ProjectSprintDto> UpdateAsync(Guid id, UpdateSprintDto input)
         {
             var sprint = await _sprintRepository.GetAsync(id);
             

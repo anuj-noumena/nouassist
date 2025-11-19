@@ -10,6 +10,9 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
         public Guid WorkflowStatusId { get; set; }
         
         [StringLength(500)]
+        public string Comment { get; set; }
+        
+        [StringLength(500)]
         public string Note { get; set; }
     }
 

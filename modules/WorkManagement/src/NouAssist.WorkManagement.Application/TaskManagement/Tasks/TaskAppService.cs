@@ -17,6 +17,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
+using Volo.Abp.Users;
 using Task = System.Threading.Tasks.Task;
 
 namespace NouAssist.WorkManagement.TaskManagement.Tasks
@@ -27,12 +28,15 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
         private readonly ITaskRepository _taskRepository;
         private readonly ITaskInstanceRepository _taskInstanceRepository;
         private readonly TaskManager _taskManager;
+        private readonly ICurrentUser _currentUser;
 
         public TaskAppService(
+            ICurrentUser currentUser,
             ITaskRepository taskRepository,
             ITaskInstanceRepository taskInstanceRepository,
             TaskManager taskManager)
         {
+            _currentUser = currentUser;
             _taskRepository = taskRepository;
             _taskInstanceRepository = taskInstanceRepository;
             _taskManager = taskManager;
@@ -76,13 +80,28 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
         [Authorize(WorkManagementPermissions.TaskManagement.Tasks.Create)]
         public async Task<TaskDto> CreateAsync(CreateTaskDto input)
         {
+            // Create task hierarchy
+            TaskHierarchy? hirearchy;
+            if (input.ParentId == null || !input.ParentId.HasValue)
+            {
+                hirearchy = TaskHierarchy.Root();
+            }
+            else
+            {
+                Guid parentTaskId = input.ParentId.Value;
+                var parentTask = await _taskRepository.GetAsync(parentTaskId);
+                hirearchy = TaskHierarchy.Child(parentTask.Id, parentTask.Hierarchy.Level, parentTask.Hierarchy.Path);
+            }
+            // Create task blueprint
             var task = await _taskManager.CreateAsync(
-                CurrentUser.Id.Value,
+                _currentUser.GetId(),
                 input.Title,
-                CurrentTenant.Id,
+                input.TaskType,
                 input.ProjectId,
                 input.AreaId,
                 input.ContextId,
+                hirearchy,
+                input.Description,
                 input.DefaultImportance,
                 input.DefaultUrgency
             );
@@ -90,13 +109,25 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             task.Description = input.Description;
             task.ExpectedResult = input.ExpectedResult;
             task.Notes = input.Notes;
-            task.DefaultContextId = input.DefaultContextId;
-            task.DefaultAreaId = input.DefaultAreaId;
-            task.TaskTypeId = input.TaskTypeId;
-            task.DefaultEstimateMinutes = input.DefaultEstimateMinutes;
-            task.DefaultDueDate = input.DefaultDueDate;
-            task.DefaultWorkflowId = input.DefaultWorkflowId;
-            task.DefaultAssigneeId = input.DefaultAssigneeId;
+            if (input.DefaultContextId.HasValue || input.DefaultAreaId.HasValue)
+            {
+                task.SetDefaultOrganization(input.DefaultAreaId, input.DefaultContextId);
+            }
+
+            if (input.DefaultDueDate.HasValue || input.DefaultEstimateMinutes.HasValue)
+            {
+                task.UpdateDefaultSchedule(input.DefaultDueDate, input.DefaultEstimateMinutes);
+            }
+
+            if (input.DefaultWorkflowId.HasValue)
+            {
+                task.UpdateDefaultWorkflow(input.DefaultWorkflowId);
+            }
+
+            if (input.DefaultAssigneeId.HasValue)
+            {
+                task.UpdateDefaultAssignee(input.DefaultAssigneeId);
+            }
 
             if (input.DefaultComplexityEstimation != null)
             {
@@ -154,55 +185,30 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
         public async Task<TaskDto> UpdateAsync(Guid id, UpdateTaskDto input)
         {
             var task = await _taskRepository.GetAsync(id);
-
-            if (!string.IsNullOrWhiteSpace(input.Title))
-            {
-                task.UpdateTitle(input.Title);
-            }
-
-            if (input.Description != null)
-            {
-                task.Description = input.Description;
-            }
-
-            if (input.ExpectedResult != null)
-            {
-                task.ExpectedResult = input.ExpectedResult;
-            }
-
-            if (input.Notes != null)
-            {
-                task.Notes = input.Notes;
-            }
+            task.UpdateContent(input.Title, input.Description, input.ExpectedResult, input.Notes);
 
             if (input.DefaultImportance.HasValue && input.DefaultUrgency.HasValue)
             {
                 task.SetDefaults(input.DefaultImportance.Value, input.DefaultUrgency.Value);
             }
 
-            if (input.DefaultContextId.HasValue)
+            if (input.DefaultContextId.HasValue || input.DefaultAreaId.HasValue)
             {
-                task.DefaultContextId = input.DefaultContextId;
-            }
-
-            if (input.DefaultAreaId.HasValue)
-            {
-                task.DefaultAreaId = input.DefaultAreaId;
+                var newContextId = input.DefaultContextId ?? task.DefaultContextId;
+                var newAreaId = input.DefaultAreaId ?? task.DefaultAreaId;
+                task.SetDefaultOrganization(newAreaId, newContextId);
             }
 
             if (input.TaskTypeId.HasValue)
             {
-                task.TaskTypeId = input.TaskTypeId;
+                task.UpdateTaskType(input.TaskTypeId);
             }
 
-            if (input.DefaultEstimateMinutes.HasValue)
+            if (input.DefaultEstimateMinutes.HasValue || input.DefaultDueDate.HasValue)
             {
-                task.DefaultEstimateMinutes = input.DefaultEstimateMinutes;
-            }
-
-            if (input.DefaultDueDate.HasValue)
-            {
-                task.DefaultDueDate = input.DefaultDueDate;
+                var newEstimate = input.DefaultEstimateMinutes ?? task.DefaultEstimateMinutes;
+                var newDueDate = input.DefaultDueDate ?? task.DefaultDueDate;
+                task.UpdateDefaultSchedule(newDueDate, newEstimate);
             }
 
             if (input.DefaultComplexityEstimation != null)
@@ -391,14 +397,11 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
         {
             var task = await _taskRepository.GetAsync(id);
 
-            // This would need a workflow status - needs more context
-            // For now, just update the ProjectId
-            task.ProjectId = projectId;
             if (task.AreaId.HasValue)
             {
                 task.RemoveFromArea();
             }
-
+            task.MoveToProject(projectId, Guid.Empty);
             await _taskRepository.UpdateAsync(task);
 
             return ObjectMapper.Map<Aggregates.Task, TaskDto>(task);
@@ -448,21 +451,26 @@ namespace NouAssist.WorkManagement.TaskManagement.Tasks
             var clonedTask = await _taskManager.CreateAsync(
                 CurrentUser.Id.Value,
                 input.NewTitle,
-                CurrentTenant.Id,
+                originalTask.TaskTypeId.Value,
                 input.NewProjectId ?? originalTask.ProjectId,
                 input.NewAreaId ?? originalTask.AreaId,
                 originalTask.ContextId,
+                originalTask.Hierarchy,
+                originalTask.Description,
                 originalTask.DefaultImportance,
                 originalTask.DefaultUrgency
             );
+            
+            if (originalTask.DefaultContextId.HasValue || originalTask.DefaultAreaId.HasValue)
+            {
+                clonedTask.SetDefaultOrganization(originalTask.DefaultAreaId, originalTask.DefaultContextId);
+            }
 
-            clonedTask.Description = originalTask.Description;
-            clonedTask.ExpectedResult = originalTask.ExpectedResult;
-            clonedTask.DefaultContextId = originalTask.DefaultContextId;
-            clonedTask.DefaultAreaId = originalTask.DefaultAreaId;
-            clonedTask.TaskTypeId = originalTask.TaskTypeId;
-            clonedTask.DefaultEstimateMinutes = originalTask.DefaultEstimateMinutes;
-
+            if (originalTask.DefaultDueDate.HasValue || originalTask.DefaultEstimateMinutes.HasValue)
+            {
+                clonedTask.UpdateDefaultSchedule(originalTask.DefaultDueDate, originalTask.DefaultEstimateMinutes);
+            }
+            
             // Clone checklist items if requested
             if (input.IncludeChecklistItems)
             {

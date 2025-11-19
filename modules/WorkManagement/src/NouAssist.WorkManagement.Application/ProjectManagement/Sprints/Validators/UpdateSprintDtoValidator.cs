@@ -16,9 +16,9 @@ namespace NouAssist.WorkManagement.ProjectManagement.Sprints.Validators
                 .NotEmpty()
                 .MaximumLength(1000);
 
-            RuleFor(x => x.ReleaseTheme)
-                .MaximumLength(500)
-                .When(x => !string.IsNullOrWhiteSpace(x.ReleaseTheme));
+            // RuleFor(x => x.ReleaseTheme)
+            //     .MaximumLength(500)
+            //     .When(x => !string.IsNullOrWhiteSpace(x.ReleaseTheme));
 
             RuleFor(x => x.EndDate)
                 .GreaterThan(x => x.StartDate)

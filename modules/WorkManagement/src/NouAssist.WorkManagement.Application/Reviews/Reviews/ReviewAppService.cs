@@ -81,7 +81,6 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
                 GuidGenerator.Create(),
                 ownerId,
                 input.ReviewType,
-                null, // horizonLevels - can be extended
                 input.PeriodStart,
                 input.PeriodEnd,
                 CurrentTenant.Id
@@ -208,7 +207,7 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
                 throw new BusinessException("Reviews:NotOwner", "You don't have permission to edit this review");
             }
 
-            review.AddActionItem(input.Description, input.AssignedTo, input.DueBy);
+            review.AddActionItem(GuidGenerator.Create(), input.Description, input.AssignedTo, input.DueBy);
 
             await _reviewRepository.UpdateAsync(review);
 

@@ -156,7 +156,7 @@ namespace NouAssist.WorkManagement.Approval.Requests
                 input.EntityId,
                 CurrentUser.Id.Value,
                 CurrentTenant.Id,
-                customFields
+                customFields.GetValues()
             );
 
             if (input.Priority > 0)

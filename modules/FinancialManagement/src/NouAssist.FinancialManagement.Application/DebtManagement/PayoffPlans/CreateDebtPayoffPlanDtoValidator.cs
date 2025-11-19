@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.DebtManagement.PayoffPlans.Dtos;
 
 namespace NouAssist.FinancialManagement.DebtManagement.PayoffPlans

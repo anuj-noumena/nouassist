@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
@@ -8,15 +7,16 @@ using NouAssist.FinancialManagement.InvestmentManagement.Data;
 using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using System.Linq;
 
-namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.InvestmentManagement.Repositories
 {
     public class EfCorePortfolioRepository 
-        : EfCoreRepository<IInvestmentManagementDbContext, Portfolio, Guid>, 
+        : EfCoreRepository<IFinancialManagementDbContext, Portfolio, Guid>, 
           IPortfolioRepository
     {
         public EfCorePortfolioRepository(
-            IDbContextProvider<IInvestmentManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

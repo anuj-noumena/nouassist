@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
@@ -9,6 +10,7 @@ using NouAssist.FinancialManagement.DebtManagement.DebtAccounts.Dtos;
 using NouAssist.FinancialManagement.DebtManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.FinancialManagement.DebtManagement.DebtAccounts
 {

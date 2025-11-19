@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
@@ -9,15 +7,16 @@ using NouAssist.FinancialManagement.DebtManagement.Data;
 using NouAssist.FinancialManagement.DebtManagement.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using System.Linq;
 
-namespace NouAssist.DebtManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.DebtManagement.Repositories
 {
     public class EfCoreDebtAccountRepository 
-        : EfCoreRepository<IDebtManagementDbContext, DebtAccount, Guid>, 
+        : EfCoreRepository<IFinancialManagementDbContext, DebtAccount, Guid>, 
           IDebtAccountRepository
     {
         public EfCoreDebtAccountRepository(
-            IDbContextProvider<IDebtManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

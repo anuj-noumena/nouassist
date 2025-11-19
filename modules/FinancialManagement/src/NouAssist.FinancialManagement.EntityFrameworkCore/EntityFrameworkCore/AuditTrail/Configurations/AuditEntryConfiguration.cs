@@ -1,10 +1,9 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.AuditTrail.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.AuditTrail.Configurations
 {
     public class AuditEntryConfiguration : IEntityTypeConfiguration<AuditEntry>
     {
@@ -13,8 +12,8 @@ namespace NouAssist.AuditTrail.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                AuditTrailDbProperties.DbTablePrefix + "Entries",
-                AuditTrailDbProperties.DbSchema);
+                FinancialManagementDbProperties.DbTablePrefix + "Entries",
+                FinancialManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

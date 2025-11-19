@@ -11,6 +11,7 @@ using NouAssist.FinancialManagement.InvestmentManagement.Portfolios.Dtos;
 using NouAssist.FinancialManagement.InvestmentManagement.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.FinancialManagement.InvestmentManagement.Portfolios
 {

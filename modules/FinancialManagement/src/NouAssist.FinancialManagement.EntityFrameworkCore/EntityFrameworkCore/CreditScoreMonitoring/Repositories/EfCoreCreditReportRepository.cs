@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
@@ -8,15 +7,16 @@ using NouAssist.FinancialManagement.CreditScoreMonitoring.Data;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using System.Linq;
 
-namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.CreditScoreMonitoring.Repositories
 {
     public class EfCoreCreditReportRepository 
-        : EfCoreRepository<ICreditScoreMonitoringDbContext, CreditReport, Guid>, 
+        : EfCoreRepository<IFinancialManagementDbContext, CreditReport, Guid>, 
           ICreditReportRepository
     {
         public EfCoreCreditReportRepository(
-            IDbContextProvider<ICreditScoreMonitoringDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

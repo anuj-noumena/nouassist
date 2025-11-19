@@ -1,10 +1,11 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.CreditScoreMonitoring.Configurations
 {
     public class CreditReportConfiguration : IEntityTypeConfiguration<CreditReport>
     {
@@ -13,8 +14,8 @@ namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                CreditScoreMonitoringDbProperties.DbTablePrefix + "CreditReports",
-                CreditScoreMonitoringDbProperties.DbSchema
+                FinancialManagementDbProperties.DbTablePrefix + "CreditReports",
+                FinancialManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);
@@ -45,8 +46,8 @@ namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.Accounts, account =>
             {
                 account.ToTable(
-                    CreditScoreMonitoringDbProperties.DbTablePrefix + "CreditAccounts",
-                    CreditScoreMonitoringDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "CreditAccounts",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 account.WithOwner().HasForeignKey("CreditReportId");
@@ -72,7 +73,7 @@ namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
                 account.Property(a => a.CreditLimit).HasPrecision(18, 2);
                 account.Property(a => a.CurrentBalance).HasPrecision(18, 2);
                 account.Property(a => a.UtilizationPercentage).HasPrecision(5, 2);
-                account.Property(a => a.MarketValue).HasPrecision(18, 2);
+                //account.Property(a => a.MarketValue).HasPrecision(18, 2);
 
                 account.HasKey("CreditReportId", nameof(CreditAccount.AccountNumber));
             });
@@ -81,8 +82,8 @@ namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.Inquiries, inquiry =>
             {
                 inquiry.ToTable(
-                    CreditScoreMonitoringDbProperties.DbTablePrefix + "CreditInquiries",
-                    CreditScoreMonitoringDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "CreditInquiries",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 inquiry.WithOwner().HasForeignKey("CreditReportId");
@@ -109,8 +110,8 @@ namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.Alerts, alert =>
             {
                 alert.ToTable(
-                    CreditScoreMonitoringDbProperties.DbTablePrefix + "CreditAlerts",
-                    CreditScoreMonitoringDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "CreditAlerts",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 alert.WithOwner().HasForeignKey("CreditReportId");

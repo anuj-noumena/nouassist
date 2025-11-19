@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.CreditScoreMonitoring.Configurations
 {
     public class CreditDisputeConfiguration : IEntityTypeConfiguration<CreditDispute>
     {
@@ -12,8 +12,8 @@ namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                CreditScoreMonitoringDbProperties.DbTablePrefix + "CreditDisputes",
-                CreditScoreMonitoringDbProperties.DbSchema
+                FinancialManagementDbProperties.DbTablePrefix + "CreditDisputes",
+                FinancialManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);

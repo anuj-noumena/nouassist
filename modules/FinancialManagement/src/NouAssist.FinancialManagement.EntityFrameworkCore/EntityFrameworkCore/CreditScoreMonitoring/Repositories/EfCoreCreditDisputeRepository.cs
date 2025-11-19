@@ -1,22 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Data;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
-namespace NouAssist.CreditScoreMonitoring.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.CreditScoreMonitoring.Repositories
 {
     public class EfCoreCreditDisputeRepository 
-        : EfCoreRepository<ICreditScoreMonitoringDbContext, CreditDispute, Guid>, 
+        : EfCoreRepository<IFinancialManagementDbContext, CreditDispute, Guid>, 
           ICreditDisputeRepository
     {
         public EfCoreCreditDisputeRepository(
-            IDbContextProvider<ICreditScoreMonitoringDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

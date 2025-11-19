@@ -10,14 +10,14 @@ using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.CurrencyManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.CurrencyManagement.Repositories
 {
     public class EfCoreCurrencyExchangeRateRepository
-        : EfCoreRepository<ICurrencyManagementDbContext, CurrencyExchangeRate, Guid>,
+        : EfCoreRepository<IFinancialManagementDbContext, CurrencyExchangeRate, Guid>,
           ICurrencyExchangeRateRepository
     {
         public EfCoreCurrencyExchangeRateRepository(
-            IDbContextProvider<ICurrencyManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
@@ -90,6 +90,27 @@ namespace NouAssist.CurrencyManagement.EntityFrameworkCore.Repositories
                            r.ValidFrom <= endDate)
                 .OrderBy(r => r.ValidFrom)
                 .ToListAsync(cancellationToken);
+        }
+
+        public Task<CurrencyExchangeRate> GetRateAsync(CurrencyCode baseCurrency, CurrencyCode targetCurrency, DateTime effectiveDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CurrencyExchangeRate>> GetRatesForCurrencyAsync(CurrencyCode currency, DateTime effectiveDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CurrencyExchangeRate>> GetActiveRatesBeforeDateAsync(DateTime cutoffDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<CurrencyExchangeRate>> GetHistoricalRatesAsync(CurrencyCode baseCurrency, CurrencyCode targetCurrency, DateTime startDate,
+            DateTime endDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

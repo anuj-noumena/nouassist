@@ -11,13 +11,13 @@ using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.CurrencyManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.CurrencyManagement.Repositories
 {
     public class EfCoreCurrencyRepository
-        : EfCoreRepository<ICurrencyManagementDbContext, Currency, Guid>, ICurrencyRepository
+        : EfCoreRepository<IFinancialManagementDbContext, Currency, Guid>, ICurrencyRepository
     {
         public EfCoreCurrencyRepository(
-            IDbContextProvider<ICurrencyManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
@@ -64,6 +64,26 @@ namespace NouAssist.CurrencyManagement.EntityFrameworkCore.Repositories
             return await query.AnyAsync(
                 c => c.Code.Code == code.Code,
                 cancellationToken);
+        }
+
+        public Task<Currency> GetByCodeAsync(CurrencyCode code)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Currency>> GetActiveCurrenciesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Currency> GetBaseCurrencyAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CurrencyExistsAsync(CurrencyCode code)
+        {
+            throw new NotImplementedException();
         }
     }
 }

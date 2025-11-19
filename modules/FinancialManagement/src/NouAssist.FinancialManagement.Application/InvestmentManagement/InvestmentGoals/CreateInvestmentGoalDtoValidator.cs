@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals.Dtos;
 
 namespace NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals

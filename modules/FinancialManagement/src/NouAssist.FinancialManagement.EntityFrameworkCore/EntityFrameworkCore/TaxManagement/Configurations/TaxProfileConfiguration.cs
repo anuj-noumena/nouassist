@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.TaxManagement.Configurations
 {
     public class TaxProfileConfiguration : IEntityTypeConfiguration<TaxProfile>
     {
@@ -12,8 +12,8 @@ namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                TaxManagementDbProperties.DbTablePrefix + "TaxProfiles",
-                TaxManagementDbProperties.DbSchema
+                FinancialManagementDbProperties.DbTablePrefix + "TaxProfiles",
+                FinancialManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);

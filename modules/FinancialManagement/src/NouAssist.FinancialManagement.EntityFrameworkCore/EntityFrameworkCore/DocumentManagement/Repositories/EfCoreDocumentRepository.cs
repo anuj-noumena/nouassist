@@ -10,13 +10,13 @@ using NouAssist.FinancialManagement.DocumentManagement.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.DocumentManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.Repositories
 {
     public class EfCoreDocumentRepository
-        : EfCoreRepository<IDocumentManagementDbContext, Document, Guid>, IDocumentRepository
+        : EfCoreRepository<IFinancialManagementDbContext, Document, Guid>, IDocumentRepository
     {
         public EfCoreDocumentRepository(
-            IDbContextProvider<IDocumentManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
@@ -141,6 +141,37 @@ namespace NouAssist.DocumentManagement.EntityFrameworkCore.Repositories
                 .OrderByDescending(d => d.CreationTime)
                 .Take(maxResults)
                 .ToListAsync(cancellationToken);
+        }
+
+        public Task<Document> FindByHashAsync(string fileHash)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Document>> GetByEntityReferenceAsync(string entityType, string entityId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Document>> GetDocumentsPendingOCRAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> HasReferencesAsync(Guid documentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Document>> GetByFolderAsync(Guid folderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Document>> SearchAsync(string searchTerm, DocumentType? documentType = null, DateTime? uploadedAfter = null,
+            DateTime? uploadedBefore = null, int maxResults = 100)
+        {
+            throw new NotImplementedException();
         }
     }
 }

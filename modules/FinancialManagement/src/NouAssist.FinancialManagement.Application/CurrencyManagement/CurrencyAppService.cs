@@ -105,5 +105,10 @@ namespace NouAssist.FinancialManagement.CurrencyManagement
             currency.Deactivate();
             await _currencyRepository.UpdateAsync(currency);
         }
+
+        public Task<PagedResultDto<CurrencyDto>> GetListAsync(GetCurrencyListDto input)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -9,6 +9,7 @@ using NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals.Dtos;
 using NouAssist.FinancialManagement.InvestmentManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals
 {

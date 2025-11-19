@@ -6,14 +6,14 @@ using NouAssist.FinancialManagement.TaxManagement.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.TaxManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.TaxManagement.Repositories
 {
     public class EfCoreTaxProfileRepository 
-        : EfCoreRepository<ITaxManagementDbContext, TaxProfile, Guid>, 
+        : EfCoreRepository<IFinancialManagementDbContext, TaxProfile, Guid>, 
           ITaxProfileRepository
     {
         public EfCoreTaxProfileRepository(
-            IDbContextProvider<ITaxManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

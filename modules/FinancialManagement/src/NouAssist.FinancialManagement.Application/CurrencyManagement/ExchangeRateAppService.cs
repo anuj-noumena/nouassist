@@ -10,6 +10,7 @@ using NouAssist.FinancialManagement.CurrencyManagement.Enums;
 using NouAssist.FinancialManagement.CurrencyManagement.Permissions;
 using NouAssist.FinancialManagement.CurrencyManagement.Services;
 using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

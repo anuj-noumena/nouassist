@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.CurrencyManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.CurrencyManagement.Configurations
 {
     public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
     {
@@ -12,8 +12,8 @@ namespace NouAssist.CurrencyManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                CurrencyManagementDbProperties.DbTablePrefix + "Currencies",
-                CurrencyManagementDbProperties.DbSchema);
+                FinancialManagementDbProperties.DbTablePrefix + "Currencies",
+                FinancialManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

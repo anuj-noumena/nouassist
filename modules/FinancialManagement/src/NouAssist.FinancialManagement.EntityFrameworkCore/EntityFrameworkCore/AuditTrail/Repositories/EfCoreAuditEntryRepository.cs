@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic.Core;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -10,13 +9,13 @@ using NouAssist.FinancialManagement.AuditTrail.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.AuditTrail.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.AuditTrail.Repositories
 {
     public class EfCoreAuditEntryRepository
-        : EfCoreRepository<IAuditTrailDbContext, AuditEntry, Guid>, IAuditEntryRepository
+        : EfCoreRepository<IFinancialManagementDbContext, AuditEntry, Guid>, IAuditEntryRepository
     {
         public EfCoreAuditEntryRepository(
-            IDbContextProvider<IAuditTrailDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
@@ -188,6 +187,36 @@ namespace NouAssist.AuditTrail.EntityFrameworkCore.Repositories
                            e.Timestamp <= endDate)
                 .OrderByDescending(e => e.Timestamp)
                 .ToListAsync(cancellationToken);
+        }
+
+        public Task<List<AuditEntry>> SearchAsync(AuditSearchCriteria criteria)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<long> GetCountAsync(AuditSearchCriteria criteria)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AuditEntry>> GetEntriesForArchivalAsync(DateTime currentDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AuditEntry>> GetExpiredEntriesAsync(DateTime currentDate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AuditEntry>> GetByEntityAsync(string entityType, string entityId, DateTime? since = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<AuditEntry>> GetByUserAsync(Guid userId, DateTime startDate, DateTime endDate)
+        {
+            throw new NotImplementedException();
         }
     }
 }

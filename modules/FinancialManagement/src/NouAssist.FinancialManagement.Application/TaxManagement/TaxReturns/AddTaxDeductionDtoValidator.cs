@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.TaxManagement.TaxReturns.Dtos;
 
 namespace NouAssist.FinancialManagement.TaxManagement.TaxReturns

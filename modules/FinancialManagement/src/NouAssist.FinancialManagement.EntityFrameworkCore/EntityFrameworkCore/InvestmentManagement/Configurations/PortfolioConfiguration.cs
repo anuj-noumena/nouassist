@@ -1,10 +1,11 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.FinancialManagement.InvestmentManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.InvestmentManagement.Configurations
 {
     public class PortfolioConfiguration : IEntityTypeConfiguration<Portfolio>
     {
@@ -13,8 +14,8 @@ namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                InvestmentManagementDbProperties.DbTablePrefix + "Portfolios",
-                InvestmentManagementDbProperties.DbSchema
+                FinancialManagementDbProperties.DbTablePrefix + "Portfolios",
+                FinancialManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);
@@ -87,8 +88,8 @@ namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.Transactions, transaction =>
             {
                 transaction.ToTable(
-                    InvestmentManagementDbProperties.DbTablePrefix + "InvestmentTransactions",
-                    InvestmentManagementDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "InvestmentTransactions",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 transaction.WithOwner().HasForeignKey("PortfolioId");

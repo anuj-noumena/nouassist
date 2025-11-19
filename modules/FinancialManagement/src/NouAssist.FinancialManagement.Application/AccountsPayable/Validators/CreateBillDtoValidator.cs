@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.AccountsPayable.Dtos;
 
 namespace NouAssist.FinancialManagement.AccountsPayable.Validators

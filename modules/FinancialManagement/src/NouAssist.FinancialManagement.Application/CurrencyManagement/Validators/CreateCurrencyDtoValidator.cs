@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.CurrencyManagement.Dtos;
 
 namespace NouAssist.FinancialManagement.CurrencyManagement.Validators

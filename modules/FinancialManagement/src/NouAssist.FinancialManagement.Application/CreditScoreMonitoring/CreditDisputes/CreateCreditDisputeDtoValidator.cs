@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes.Dtos;
 
 namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes

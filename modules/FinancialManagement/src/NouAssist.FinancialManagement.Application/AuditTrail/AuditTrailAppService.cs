@@ -108,5 +108,10 @@ namespace NouAssist.FinancialManagement.AuditTrail
         {
             return await _auditArchiveService.ArchiveOldEntriesAsync("azure-archive-storage");
         }
+
+        public Task<AuditStatisticsDto> GetStatisticsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

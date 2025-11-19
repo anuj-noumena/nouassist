@@ -1,9 +1,16 @@
 using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.FinancialManagement.Shared;
+using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -13,6 +20,33 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore
     public class FinancialManagementDbContext 
         : AbpDbContext<FinancialManagementDbContext>, IFinancialManagementDbContext
     {
+        // Audit
+        public DbSet<AuditEntry> AuditEntries { get; set; }
+        
+        // Credit
+        public DbSet<CreditReport> CreditReports { get; set; }
+        public DbSet<CreditDispute> CreditDisputes { get; set; }
+        
+        // Currency
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<CurrencyExchangeRate> ExchangeRates { get; set; }
+        
+        // Debt
+        public DbSet<DebtAccount> DebtAccounts { get; set; }
+        public DbSet<DebtPayoffPlan> DebtPayoffPlans { get; set; }
+        
+        // Document Management
+        public DbSet<Document> Documents { get; set; }
+        public DbSet<DocumentFolder> DocumentFolders { get; set; }
+        
+        // Investment
+        public DbSet<Portfolio> Portfolios { get; set; }
+        public DbSet<InvestmentGoal> InvestmentGoals { get; set; }
+        
+        // Tax Management
+        public DbSet<TaxReturn> TaxReturns { get; set; }
+        public DbSet<TaxProfile> TaxProfiles { get; set; }
+        
         // General Ledger
         public DbSet<LedgerAccount> LedgerAccounts { get; set; }
         public DbSet<JournalEntryBatch> JournalEntryBatches { get; set; }

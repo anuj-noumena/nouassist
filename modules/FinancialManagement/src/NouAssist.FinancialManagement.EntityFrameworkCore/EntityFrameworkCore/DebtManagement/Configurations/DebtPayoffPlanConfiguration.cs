@@ -1,10 +1,11 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using NouAssist.FinancialManagement.DebtManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.DebtManagement.Configurations
 {
     public class DebtPayoffPlanConfiguration : IEntityTypeConfiguration<DebtPayoffPlan>
     {
@@ -13,8 +14,8 @@ namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                DebtManagementDbProperties.DbTablePrefix + "DebtPayoffPlans",
-                DebtManagementDbProperties.DbSchema
+                FinancialManagementDbProperties.DbTablePrefix + "DebtPayoffPlans",
+                FinancialManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);
@@ -43,8 +44,8 @@ namespace NouAssist.DebtManagement.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.Debts, debt =>
             {
                 debt.ToTable(
-                    DebtManagementDbProperties.DbTablePrefix + "PayoffPlanDebts",
-                    DebtManagementDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "PayoffPlanDebts",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 debt.WithOwner().HasForeignKey(nameof(DebtPayoffPlan) + "Id");

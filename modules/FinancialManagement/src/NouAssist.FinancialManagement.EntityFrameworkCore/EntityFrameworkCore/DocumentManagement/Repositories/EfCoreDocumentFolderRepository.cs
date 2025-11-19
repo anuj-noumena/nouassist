@@ -9,14 +9,14 @@ using NouAssist.FinancialManagement.DocumentManagement.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
-namespace NouAssist.DocumentManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.Repositories
 {
     public class EfCoreDocumentFolderRepository
-        : EfCoreRepository<IDocumentManagementDbContext, DocumentFolder, Guid>,
+        : EfCoreRepository<IFinancialManagementDbContext, DocumentFolder, Guid>,
           IDocumentFolderRepository
     {
         public EfCoreDocumentFolderRepository(
-            IDbContextProvider<IDocumentManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
@@ -76,6 +76,26 @@ namespace NouAssist.DocumentManagement.EntityFrameworkCore.Repositories
                 .ThenBy(f => f.Name)
                 .Take(100)
                 .ToListAsync(cancellationToken);
+        }
+
+        public Task<List<DocumentFolder>> GetChildFoldersAsync(Guid parentFolderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<DocumentFolder>> GetRootFoldersAsync(Guid? tenantId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DocumentFolder> FindByPathAsync(string path)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<DocumentFolder>> SearchAsync(string searchTerm)
+        {
+            throw new NotImplementedException();
         }
     }
 }

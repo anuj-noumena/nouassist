@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.DebtManagement.DebtAccounts.Dtos;
 
 namespace NouAssist.FinancialManagement.DebtManagement.DebtAccounts

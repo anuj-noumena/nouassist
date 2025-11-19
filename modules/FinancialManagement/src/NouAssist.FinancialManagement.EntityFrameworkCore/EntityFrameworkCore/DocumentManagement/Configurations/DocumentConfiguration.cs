@@ -1,10 +1,9 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.DocumentManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.Configurations
 {
     public class DocumentConfiguration : IEntityTypeConfiguration<Document>
     {
@@ -13,8 +12,8 @@ namespace NouAssist.DocumentManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                DocumentManagementDbProperties.DbTablePrefix + "Documents",
-                DocumentManagementDbProperties.DbSchema);
+                FinancialManagementDbProperties.DbTablePrefix + "Documents",
+                FinancialManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

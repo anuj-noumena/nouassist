@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.FinancialManagement.DocumentManagement.Dtos;
 
 namespace NouAssist.FinancialManagement.DocumentManagement.Validators

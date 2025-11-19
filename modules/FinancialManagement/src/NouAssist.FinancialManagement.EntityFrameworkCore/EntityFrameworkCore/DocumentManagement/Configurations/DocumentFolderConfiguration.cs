@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.DocumentManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.Configurations
 {
     public class DocumentFolderConfiguration : IEntityTypeConfiguration<DocumentFolder>
     {
@@ -12,8 +12,8 @@ namespace NouAssist.DocumentManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                DocumentManagementDbProperties.DbTablePrefix + "Folders",
-                DocumentManagementDbProperties.DbSchema);
+                FinancialManagementDbProperties.DbTablePrefix + "Folders",
+                FinancialManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

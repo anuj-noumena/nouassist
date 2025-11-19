@@ -9,8 +9,10 @@ using NouAssist.FinancialManagement.CreditScoreMonitoring.Data;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Permissions;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Services;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditReports
 {

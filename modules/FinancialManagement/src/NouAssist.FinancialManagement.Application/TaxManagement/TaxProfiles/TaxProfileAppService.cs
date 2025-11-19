@@ -6,6 +6,7 @@ using NouAssist.FinancialManagement.TaxManagement.Enums;
 using NouAssist.FinancialManagement.TaxManagement.Permissions;
 using NouAssist.FinancialManagement.TaxManagement.TaxProfiles.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.FinancialManagement.TaxManagement.TaxProfiles
 {

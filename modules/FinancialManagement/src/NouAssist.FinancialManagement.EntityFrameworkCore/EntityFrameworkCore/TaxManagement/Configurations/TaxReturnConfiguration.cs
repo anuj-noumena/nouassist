@@ -1,10 +1,11 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using NouAssist.FinancialManagement.TaxManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.TaxManagement.Configurations
 {
     public class TaxReturnConfiguration : IEntityTypeConfiguration<TaxReturn>
     {
@@ -13,8 +14,8 @@ namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                TaxManagementDbProperties.DbTablePrefix + "TaxReturns",
-                TaxManagementDbProperties.DbSchema
+                FinancialManagementDbProperties.DbTablePrefix + "TaxReturns",
+                FinancialManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);
@@ -58,8 +59,8 @@ namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.Deductions, deduction =>
             {
                 deduction.ToTable(
-                    TaxManagementDbProperties.DbTablePrefix + "TaxDeductions",
-                    TaxManagementDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "TaxDeductions",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 deduction.WithOwner().HasForeignKey("TaxReturnId");
@@ -85,8 +86,8 @@ namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.Documents, document =>
             {
                 document.ToTable(
-                    TaxManagementDbProperties.DbTablePrefix + "TaxDocuments",
-                    TaxManagementDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "TaxDocuments",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 document.WithOwner().HasForeignKey("TaxReturnId");
@@ -115,8 +116,8 @@ namespace NouAssist.TaxManagement.EntityFrameworkCore.Configurations
             builder.OwnsMany(x => x.EstimatedPayments, payment =>
             {
                 payment.ToTable(
-                    TaxManagementDbProperties.DbTablePrefix + "EstimatedTaxPayments",
-                    TaxManagementDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "EstimatedTaxPayments",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 payment.WithOwner().HasForeignKey("TaxReturnId");

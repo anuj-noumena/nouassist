@@ -193,6 +193,11 @@ namespace NouAssist.FinancialManagement.DocumentManagement
             return documents.Count;
         }
 
+        public Task<DocumentStatisticsDto> GetStatisticsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<bool> IsAdminAsync()
         {
             return await AuthorizationService.IsGrantedAsync("Admin");

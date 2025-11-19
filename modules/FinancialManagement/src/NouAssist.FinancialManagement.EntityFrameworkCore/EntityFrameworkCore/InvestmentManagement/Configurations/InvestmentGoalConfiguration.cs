@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
-namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.InvestmentManagement.Configurations
 {
     public class InvestmentGoalConfiguration : IEntityTypeConfiguration<InvestmentGoal>
     {
@@ -12,8 +12,8 @@ namespace NouAssist.InvestmentManagement.EntityFrameworkCore.Configurations
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                InvestmentManagementDbProperties.DbTablePrefix + "InvestmentGoals",
-                InvestmentManagementDbProperties.DbSchema
+                FinancialManagementDbProperties.DbTablePrefix + "InvestmentGoals",
+                FinancialManagementDbProperties.DbSchema
             );
 
             builder.HasKey(x => x.Id);

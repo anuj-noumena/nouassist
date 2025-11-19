@@ -1,21 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using NouAssist.FinancialManagement.TaxManagement.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
+using System.Linq;
 
-namespace NouAssist.TaxManagement.EntityFrameworkCore.Repositories
+namespace NouAssist.FinancialManagement.EntityFrameworkCore.TaxManagement.Repositories
 {
     public class EfCoreTaxReturnRepository 
-        : EfCoreRepository<ITaxManagementDbContext, TaxReturn, Guid>, 
+        : EfCoreRepository<IFinancialManagementDbContext, TaxReturn, Guid>, 
           ITaxReturnRepository
     {
         public EfCoreTaxReturnRepository(
-            IDbContextProvider<ITaxManagementDbContext> dbContextProvider)
+            IDbContextProvider<IFinancialManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

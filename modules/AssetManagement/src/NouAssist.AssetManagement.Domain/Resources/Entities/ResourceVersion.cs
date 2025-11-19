@@ -91,7 +91,7 @@ namespace NouAssist.AssetManagement.Resources.Entities
 
         public void SetOcrProcessing()
         {
-            OcrStatus = OcrStatus.Processing;
+            OcrStatus = OcrStatus.Running;
         }
 
         public void SetOcrCompleted(string ocrText)

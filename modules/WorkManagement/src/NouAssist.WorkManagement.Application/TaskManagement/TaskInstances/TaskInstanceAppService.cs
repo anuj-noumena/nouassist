@@ -80,10 +80,21 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
 
         public async Task<PagedResultDto<TaskInstanceDto>> GetListAsync(GetTaskInstanceListDto input)
         {
-            var spec = CreateListSpecification(input);
+            var taskInstances = await _taskInstanceRepository.GetFilteredListAsync(
+                projectId: input.ProjectId,
+                areaId: input.AreaId,
+                contextId: input.ContextId,
+                assigneeId: input.AssigneeId,
+                ownerId: input.OwnerId,
+                workflowStatusId: input.WorkflowStatusId,
+                isBlocked: input.IsBlocked,
+                isNextAction: input.IsNextAction,
+                isOverdue: input.IsOverdue,
+                quadrant: input.Quadrant,
+                dueDateFrom: input.DueDateFrom,
+                dueDateTo: input.DueDateTo);
 
-            var taskInstances = await _taskInstanceRepository.GetListAsync(spec, includeDetails: false);
-            var totalCount = await _taskInstanceRepository.CountAsync(spec.ToExpression());
+            var totalCount = taskInstances.Count;
 
             // Apply sorting and paging
             var query = taskInstances.AsQueryable();
@@ -1339,156 +1350,27 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         // GTD-SPECIFIC QUERIES
         public async Task<List<TaskInstanceDto>> GetTasksByAreaAsync(Guid areaId)
         {
-            var spec = new BaseSpecification<TaskInstance>(ti =>
-                ti.AreaId == areaId && !ti.IsDeleted);
-
-            var tasks = await _taskInstanceRepository.GetListAsync(spec);
-
+            var tasks = await _taskInstanceRepository.GetTasksByAreaAsync(areaId);
             return ObjectMapper.Map<List<TaskInstance>, List<TaskInstanceDto>>(tasks);
         }
 
         public async Task<List<TaskInstanceDto>> GetTasksByContextAsync(Guid contextId)
         {
-            var spec = new BaseSpecification<TaskInstance>(ti =>
-                ti.ContextId == contextId && !ti.IsDeleted);
-
-            var tasks = await _taskInstanceRepository.GetListAsync(spec);
-
+            var tasks = await _taskInstanceRepository.GetTasksByContextAsync(contextId);
             return ObjectMapper.Map<List<TaskInstance>, List<TaskInstanceDto>>(tasks);
         }
 
         public async Task<List<TaskInstanceDto>> GetOverdueTasksAsync(Guid? projectId = null, Guid? areaId = null)
         {
-            ISpecification<TaskInstance> spec = new BaseSpecification<TaskInstance>(ti =>
-                ti.Schedule.ActualDueDate.HasValue &&
-                ti.Schedule.ActualDueDate.Value < DateTime.UtcNow &&
-                !ti.Schedule.IsCompleted &&
-                !ti.IsDeleted
-            );
-
-            if (projectId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.ProjectId == projectId.Value));
-            }
-
-            if (areaId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.AreaId == areaId.Value));
-            }
-
-            var overdueTasks = await _taskInstanceRepository.GetListAsync(spec);
-
+            var overdueTasks = await _taskInstanceRepository.GetOverdueTasksFilteredAsync(projectId, areaId);
             return ObjectMapper.Map<List<TaskInstance>, List<TaskInstanceDto>>(overdueTasks);
         }
 
         public async Task<List<TaskInstanceDto>> GetNextActionsAsync(Guid? projectId = null, Guid? areaId = null,
             Guid? contextId = null)
         {
-            ISpecification<TaskInstance> spec = new BaseSpecification<TaskInstance>(ti =>
-                ti.WorkTracking.IsNextAction &&
-                !ti.WorkTracking.IsCompleted &&
-                !ti.IsDeleted
-            );
-
-            if (projectId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.ProjectId == projectId.Value));
-            }
-
-            if (areaId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.AreaId == areaId.Value));
-            }
-
-            if (contextId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.ContextId == contextId.Value));
-            }
-
-            var nextActions = await _taskInstanceRepository.GetListAsync(spec);
-
+            var nextActions = await _taskInstanceRepository.GetNextActionsAsync(projectId, areaId, contextId);
             return ObjectMapper.Map<List<TaskInstance>, List<TaskInstanceDto>>(nextActions);
-        }
-
-        private ISpecification<TaskInstance> CreateListSpecification(GetTaskInstanceListDto input)
-        {
-            ISpecification<TaskInstance> spec = new BaseSpecification<TaskInstance>(ti => true);
-
-            if (input.ProjectId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.ProjectId == input.ProjectId.Value));
-            }
-
-            // GTD Filters
-            if (input.AreaId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.AreaId == input.AreaId.Value));
-            }
-
-            if (input.ContextId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.ContextId == input.ContextId.Value));
-            }
-
-            if (input.AssigneeId.HasValue)
-            {
-                spec = spec.And(new TaskInstancesByAssigneeSpecification(input.AssigneeId.Value));
-            }
-
-            if (input.OwnerId.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.OwnerId == input.OwnerId.Value));
-            }
-
-            if (input.WorkflowStatusId.HasValue)
-            {
-                spec = spec.And(
-                    new BaseSpecification<TaskInstance>(ti => ti.WorkflowStatusId == input.WorkflowStatusId.Value));
-            }
-
-            if (input.IsBlocked.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti => ti.IsBlocked == input.IsBlocked.Value));
-            }
-
-            if (input.IsNextAction.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti =>
-                    ti.WorkTracking.IsNextAction == input.IsNextAction.Value));
-            }
-
-            if (input.IsOverdue.HasValue && input.IsOverdue.Value)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti =>
-                    ti.Schedule.ActualDueDate.HasValue &&
-                    ti.Schedule.ActualDueDate.Value < DateTime.UtcNow &&
-                    !ti.Schedule.IsCompleted
-                ));
-            }
-
-            if (input.Quadrant.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti =>
-                    ti.Priority.Quadrant == input.Quadrant.Value));
-            }
-
-            if (input.DueDateFrom.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti =>
-                    ti.Schedule.ActualDueDate.HasValue &&
-                    ti.Schedule.ActualDueDate.Value >= input.DueDateFrom.Value));
-            }
-
-            if (input.DueDateTo.HasValue)
-            {
-                spec = spec.And(new BaseSpecification<TaskInstance>(ti =>
-                    ti.Schedule.ActualDueDate.HasValue &&
-                    ti.Schedule.ActualDueDate.Value <= input.DueDateTo.Value));
-            }
-
-            spec = spec.And(new BaseSpecification<TaskInstance>(ti => !ti.IsDeleted));
-
-            return spec;
         }
     }
 }

@@ -80,22 +80,22 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.R
 
         public Task<List<DocumentFolder>> GetChildFoldersAsync(Guid parentFolderId)
         {
-            throw new NotImplementedException();
+            return GetChildFoldersAsync(parentFolderId, default);
         }
 
         public Task<List<DocumentFolder>> GetRootFoldersAsync(Guid? tenantId)
         {
-            throw new NotImplementedException();
+            return GetRootFoldersAsync(tenantId, default);
         }
 
         public Task<DocumentFolder> FindByPathAsync(string path)
         {
-            throw new NotImplementedException();
+            return FindByPathAsync(path, default);
         }
 
         public Task<List<DocumentFolder>> SearchAsync(string searchTerm)
         {
-            throw new NotImplementedException();
+            return SearchAsync(searchTerm, default);
         }
     }
 }

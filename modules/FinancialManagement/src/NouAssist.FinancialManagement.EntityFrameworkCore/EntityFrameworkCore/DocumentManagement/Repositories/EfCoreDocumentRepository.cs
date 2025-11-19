@@ -145,33 +145,33 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.R
 
         public Task<Document> FindByHashAsync(string fileHash)
         {
-            throw new NotImplementedException();
+            return FindByHashAsync(fileHash, default);
         }
 
         public Task<List<Document>> GetByEntityReferenceAsync(string entityType, string entityId)
         {
-            throw new NotImplementedException();
+            return GetByEntityReferenceAsync(entityType, entityId, default);
         }
 
         public Task<List<Document>> GetDocumentsPendingOCRAsync()
         {
-            throw new NotImplementedException();
+            return GetDocumentsPendingOCRAsync(default);
         }
 
         public Task<bool> HasReferencesAsync(Guid documentId)
         {
-            throw new NotImplementedException();
+            return HasReferencesAsync(documentId, default);
         }
 
         public Task<List<Document>> GetByFolderAsync(Guid folderId)
         {
-            throw new NotImplementedException();
+            return GetByFolderAsync(folderId, default);
         }
 
         public Task<List<Document>> SearchAsync(string searchTerm, DocumentType? documentType = null, DateTime? uploadedAfter = null,
             DateTime? uploadedBefore = null, int maxResults = 100)
         {
-            throw new NotImplementedException();
+            return SearchAsync(searchTerm, documentType, uploadedAfter, uploadedBefore, maxResults, default);
         }
     }
 }

@@ -94,23 +94,23 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.CurrencyManagement.R
 
         public Task<CurrencyExchangeRate> GetRateAsync(CurrencyCode baseCurrency, CurrencyCode targetCurrency, DateTime effectiveDate)
         {
-            throw new NotImplementedException();
+            return GetRateAsync(baseCurrency, targetCurrency, effectiveDate, default);
         }
 
         public Task<List<CurrencyExchangeRate>> GetRatesForCurrencyAsync(CurrencyCode currency, DateTime effectiveDate)
         {
-            throw new NotImplementedException();
+            return GetRatesForCurrencyAsync(currency, effectiveDate, default);
         }
 
         public Task<List<CurrencyExchangeRate>> GetActiveRatesBeforeDateAsync(DateTime cutoffDate)
         {
-            throw new NotImplementedException();
+            return GetActiveRatesBeforeDateAsync(cutoffDate, default);
         }
 
         public Task<List<CurrencyExchangeRate>> GetHistoricalRatesAsync(CurrencyCode baseCurrency, CurrencyCode targetCurrency, DateTime startDate,
             DateTime endDate)
         {
-            throw new NotImplementedException();
+            return GetHistoricalRatesAsync(baseCurrency, targetCurrency, startDate, endDate, default);
         }
     }
 }

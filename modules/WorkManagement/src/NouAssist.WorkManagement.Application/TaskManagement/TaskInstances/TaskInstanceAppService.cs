@@ -527,10 +527,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> BlockAsync(Guid id, BlockTaskDto input)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.Block(input.Reason);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskFlow != null)
+            {
+                taskFlow.Block(input.Reason);
+                await _taskFlowControlRepository.UpdateAsync(taskFlow);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -539,10 +542,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> UnblockAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.Unblock();
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskFlow != null)
+            {
+                taskFlow.Unblock();
+                await _taskFlowControlRepository.UpdateAsync(taskFlow);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -554,10 +560,14 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             string additionalContext = null)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.BlockWaitingForUser(userName, additionalContext);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskFlow != null)
+            {
+                var reason = $"Waiting for {userName}" + (string.IsNullOrEmpty(additionalContext) ? "" : $": {additionalContext}");
+                taskFlow.Block(reason);
+                await _taskFlowControlRepository.UpdateAsync(taskFlow);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -779,19 +789,22 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         [Authorize(WorkManagementPermissions.TaskManagement.TaskInstances.Create)]
         public async Task<TaskInstanceDto> AddDependencyAsync(Guid id, AddDependencyDto input)
         {
-            var taskInstance = await _taskInstanceRepository.GetWithDetailsAsync(id);
+            var taskInstance = await _taskInstanceRepository.GetAsync(id);
 
             // Validate dependent task exists
             var dependentTask = await _taskInstanceRepository.GetAsync(input.DependsOnTaskInstanceId);
 
-            taskInstance.AddDependency(
-                input.DependsOnTaskInstanceId,
-                input.DependencyType,
-                input.LagMinutes,
-                input.IsBlocking
-            );
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
+            if (taskFlow != null)
+            {
+                taskFlow.AddDependency(
+                    input.DependsOnTaskInstanceId,
+                    input.DependencyType,
+                    input.LagMinutes,
+                    input.IsBlocking
+                );
+                await _taskFlowControlRepository.UpdateAsync(taskFlow);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -799,20 +812,28 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         [Authorize(WorkManagementPermissions.TaskManagement.TaskInstances.Delete)]
         public async Task<TaskInstanceDto> RemoveDependencyAsync(Guid id, RemoveDependencyDto input)
         {
-            var taskInstance = await _taskInstanceRepository.GetWithDetailsAsync(id);
+            var taskInstance = await _taskInstanceRepository.GetAsync(id);
 
-            taskInstance.RemoveDependency(input.DependsOnTaskInstanceId);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
+            if (taskFlow != null)
+            {
+                taskFlow.RemoveDependency(input.DependsOnTaskInstanceId);
+                await _taskFlowControlRepository.UpdateAsync(taskFlow);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
 
         public async Task<List<TaskInstanceDto>> GetDependentTasksAsync(Guid id)
         {
-            var taskInstance = await _taskInstanceRepository.GetWithDetailsAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            var dependencyIds = taskInstance.Dependencies
+            if (taskFlow == null || !taskFlow.Dependencies.Any())
+            {
+                return new List<TaskInstanceDto>();
+            }
+
+            var dependencyIds = taskFlow.Dependencies
                 .Where(d => d.DependsOnTaskInstanceId.HasValue)
                 .Select(d => d.DependsOnTaskInstanceId.Value)
                 .ToList();
@@ -831,9 +852,14 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
 
         public async Task<List<TaskInstanceDto>> GetBlockingTasksAsync(Guid id)
         {
-            var taskInstance = await _taskInstanceRepository.GetWithDetailsAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            var blockingDependencyIds = taskInstance.Dependencies
+            if (taskFlow == null || !taskFlow.Dependencies.Any())
+            {
+                return new List<TaskInstanceDto>();
+            }
+
+            var blockingDependencyIds = taskFlow.Dependencies
                 .Where(d => d.IsBlocking && d.DependsOnTaskInstanceId.HasValue)
                 .Select(d => d.DependsOnTaskInstanceId.Value)
                 .ToList();
@@ -852,9 +878,15 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
 
         public async Task<bool> CanStartAsync(Guid id)
         {
-            var taskInstance = await _taskInstanceRepository.GetWithDetailsAsync(id);
+            var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            var dependentInstanceIds = taskInstance.Dependencies
+            if (taskFlow == null || !taskFlow.Dependencies.Any())
+            {
+                return true; // No dependencies means can start
+            }
+
+            var dependentInstanceIds = taskFlow.Dependencies
                 .Where(d => d.DependsOnTaskInstanceId.HasValue)
                 .Select(d => d.DependsOnTaskInstanceId.Value)
                 .ToList();
@@ -866,7 +898,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             return _dependencyService.CanStartTask(
                 taskInstance,
                 dependentInstances,
-                taskInstance.Dependencies.ToList()
+                taskFlow.Dependencies.ToList()
             );
         }
 

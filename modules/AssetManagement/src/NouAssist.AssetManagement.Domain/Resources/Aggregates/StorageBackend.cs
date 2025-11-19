@@ -91,5 +91,34 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
             return AllowedMimeTypes.Contains(mimeType);
         }
+
+        public void SetFileSizeLimit(long? maxFileSizeBytes)
+        {
+            if (maxFileSizeBytes.HasValue && maxFileSizeBytes.Value > 0)
+            {
+                MaxFileSizeMB = (int)(maxFileSizeBytes.Value / (1024 * 1024));
+            }
+            else
+            {
+                MaxFileSizeMB = null;
+            }
+        }
+
+        public void SetAsDefault()
+        {
+            IsDefault = true;
+        }
+
+        public void UnsetAsDefault()
+        {
+            IsDefault = false;
+        }
+
+        public void Delete(string deletedBy)
+        {
+            IsDeleted = true;
+            DeleterId = Guid.TryParse(deletedBy, out var id) ? id : null;
+            DeletionTime = DateTime.UtcNow;
+        }
     }
 }

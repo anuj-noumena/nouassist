@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.AssetManagement.Resources.Enums;
 
 namespace NouAssist.AssetManagement.Resources.Storage.Dtos
 {
@@ -10,7 +11,7 @@ namespace NouAssist.AssetManagement.Resources.Storage.Dtos
         public string Name { get; set; }
 
         [Required]
-        public StorageBackendType BackendType { get; set; }
+        public StorageProvider BackendType { get; set; }
 
         [Required]
         public Dictionary<string, object> Config { get; set; }

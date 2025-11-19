@@ -178,5 +178,17 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
                 _ => false
             };
         }
+
+        public ResourceVersion GetVersion(Guid versionId)
+        {
+            return _versions.Find(v => v.Id == versionId);
+        }
+
+        public void Delete(string deletedBy)
+        {
+            IsDeleted = true;
+            DeleterId = Guid.TryParse(deletedBy, out var id) ? id : null;
+            DeletionTime = DateTime.UtcNow;
+        }
     }
 }

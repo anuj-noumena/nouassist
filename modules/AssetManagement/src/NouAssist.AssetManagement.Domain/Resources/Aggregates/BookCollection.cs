@@ -15,6 +15,7 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
         public string Description { get; private set; }
         public Guid? CoverImageResourceId { get; private set; }
         public List<string> Tags { get; private set; }
+        public List<Guid> BookIds { get; private set; }
         public bool IsPrivate { get; private set; }
         public int? SortOrder { get; private set; }
         public Guid? TenantId { get; private set; }
@@ -34,6 +35,7 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
             Description = description;
             IsPrivate = false;
             Tags = new List<string>();
+            BookIds = new List<Guid>();
         }
 
         public void UpdateName(string name)
@@ -42,6 +44,11 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
         }
 
         public void SetDescription(string description)
+        {
+            Description = description;
+        }
+
+        public void UpdateDescription(string description)
         {
             Description = description;
         }
@@ -79,7 +86,41 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
             Tags.Remove(tag);
         }
 
+        public void SetTags(List<string> tags)
+        {
+            Tags = tags ?? new List<string>();
+        }
+
+        public void AddBook(Guid bookId)
+        {
+            if (bookId == Guid.Empty)
+            {
+                throw new BusinessException("Collections:InvalidBookId", "Book ID cannot be empty.");
+            }
+
+            if (BookIds.Contains(bookId))
+            {
+                return; // Already in collection
+            }
+
+            BookIds.Add(bookId);
+        }
+
+        public void RemoveBook(Guid bookId)
+        {
+            BookIds.Remove(bookId);
+        }
+
+        public void Delete(string deletedBy)
+        {
+            IsDeleted = true;
+            DeleterId = Guid.TryParse(deletedBy, out var id) ? id : null;
+            DeletionTime = DateTime.UtcNow;
+        }
+
         public bool HasCoverImage => CoverImageResourceId.HasValue;
         public bool HasTags => Tags != null && Tags.Count > 0;
+        public bool IsPublic => !IsPrivate;
+        public int BookCount => BookIds?.Count ?? 0;
     }
 }

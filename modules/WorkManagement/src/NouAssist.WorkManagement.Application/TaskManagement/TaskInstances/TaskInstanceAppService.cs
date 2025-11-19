@@ -319,11 +319,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> CancelAsync(Guid id, string reason)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
-
-            // TODO: Core TaskInstance doesn't have Cancel method - needs to be added
-            // or handled through workflow transition
-            // taskInstance.Cancel(reason);
-
+            taskInstance.Cancel(reason);
             await _taskInstanceRepository.UpdateAsync(taskInstance);
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
@@ -344,16 +340,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> ReopenAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
-
-            // TODO: Core TaskInstance doesn't have IsCompleted, IsCancelled properties or ResetStatus method
-            // These need to be added or handled through workflow/status transitions
-            // if (!taskInstance.IsCompleted && !taskInstance.IsCancelled)
-            // {
-            //     throw new BusinessException("Tasks:CanOnlyReopenCompletedOrCancelledTasks");
-            // }
-
-            // Reset to in-progress state
-            // taskInstance.ResetStatus();
+            taskInstance.Reopen();
             await _taskInstanceRepository.UpdateAsync(taskInstance);
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
@@ -380,9 +367,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> UnassignAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
-            // TODO: Core TaskInstance doesn't have Unassign method - need to add it or handle differently
-            // For now, assign to null equivalent
-            // taskInstance.Unassign();
+            taskInstance.Unassign();
             await _taskInstanceRepository.UpdateAsync(taskInstance);
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);

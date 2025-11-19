@@ -36,6 +36,18 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance
         public string Resolution => _resolution;
         public string ResolutionNote => _resolutionNote;
 
+        // Cancellation State
+        private bool _isCancelled;
+        private string _cancellationReason;
+        private DateTime? _cancelledAt;
+        public bool IsCancelled => _isCancelled;
+        public string CancellationReason => _cancellationReason;
+        public DateTime? CancelledAt => _cancelledAt;
+
+        // Computed Properties
+        public bool IsCompleted => IsResolved;
+        public bool IsActive => !IsResolved && !IsCancelled;
+
         protected TaskInstance() { }
 
         public TaskInstance(
@@ -79,7 +91,17 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance
                 AddDistributedEvent(new TaskAssignedEto { TaskInstanceId = Id, AssignedTo = assigneeId, PreviousAssignee = oldAssignee });
             }
         }
-        
+
+        public void Unassign()
+        {
+            if (AssigneeId.HasValue)
+            {
+                var oldAssignee = AssigneeId;
+                AssigneeId = null;
+                AddDistributedEvent(new TaskUnassignedEto { TaskInstanceId = Id, PreviousAssignee = oldAssignee });
+            }
+        }
+
         public void UpdateOwner(Guid newOwnerId)
         {
             OwnerId = newOwnerId;
@@ -101,6 +123,7 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance
         public void Complete(string resolution, string resolutionNote = null)
         {
             if (IsResolved) throw new BusinessException("TaskManagement:TaskAlreadyCompleted");
+            if (IsCancelled) throw new BusinessException("TaskManagement:CannotCompleteACancelledTask");
 
             _resolution = Check.NotNullOrWhiteSpace(resolution, nameof(resolution));
             _resolutionNote = resolutionNote;
@@ -111,6 +134,48 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance
                 Resolution = resolution,
                 ResolutionNote = resolutionNote,
                 CompletedBy = AssigneeId
+            });
+        }
+
+        // === Cancellation Methods ===
+        public void Cancel(string reason)
+        {
+            if (IsResolved) throw new BusinessException("TaskManagement:CannotCancelACompletedTask");
+            if (IsCancelled) throw new BusinessException("TaskManagement:TaskAlreadyCancelled");
+
+            _isCancelled = true;
+            _cancellationReason = Check.NotNullOrWhiteSpace(reason, nameof(reason));
+            _cancelledAt = DateTime.UtcNow;
+
+            AddDistributedEvent(new TaskCancelledEto
+            {
+                TaskInstanceId = Id,
+                CancellationReason = reason,
+                CancelledAt = _cancelledAt.Value,
+                CancelledBy = AssigneeId
+            });
+        }
+
+        public void Reopen()
+        {
+            if (!IsResolved && !IsCancelled)
+            {
+                throw new BusinessException("TaskManagement:TaskIsNotCompletedOrCancelled");
+            }
+
+            // Clear completion state
+            _resolution = null;
+            _resolutionNote = null;
+
+            // Clear cancellation state
+            _isCancelled = false;
+            _cancellationReason = null;
+            _cancelledAt = null;
+
+            AddDistributedEvent(new TaskReopenedEto
+            {
+                TaskInstanceId = Id,
+                ReopenedAt = DateTime.UtcNow
             });
         }
     }

@@ -61,6 +61,19 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
                 .HasColumnName("ResolutionNote")
                 .HasMaxLength(TasksDbConsts.MaxResolutionNoteLength);
 
+            // Cancellation - stored as private fields
+            builder.Property<bool>("_isCancelled")
+                .HasColumnName("IsCancelled")
+                .IsRequired()
+                .HasDefaultValue(false);
+
+            builder.Property<string>("_cancellationReason")
+                .HasColumnName("CancellationReason")
+                .HasMaxLength(TasksDbConsts.MaxCancellationReasonLength);
+
+            builder.Property<DateTime?>("_cancelledAt")
+                .HasColumnName("CancelledAt");
+
             // Indexes
             builder.HasIndex(x => x.TaskId);
             builder.HasIndex(x => x.WorkflowId);

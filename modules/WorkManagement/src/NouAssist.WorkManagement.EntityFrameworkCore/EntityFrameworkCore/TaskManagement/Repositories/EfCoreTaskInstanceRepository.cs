@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
@@ -13,13 +12,16 @@ using Volo.Abp.Specifications;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositories
 {
-    public class EfCoreTaskInstanceRepository 
+    public class EfCoreTaskInstanceRepository
         : EfCoreRepository<IWorkManagementDbContext, TaskInstance, Guid>, ITaskInstanceRepository
     {
+        private readonly IDbContextProvider<IWorkManagementDbContext> _dbContextProvider;
+
         public EfCoreTaskInstanceRepository(
             IDbContextProvider<IWorkManagementDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
+            _dbContextProvider = dbContextProvider;
         }
 
         public async Task<TaskInstance> GetWithDetailsAsync(
@@ -27,11 +29,10 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
             CancellationToken cancellationToken = default)
         {
             var query = await GetQueryableAsync();
-            
+
+            // TaskInstance no longer has navigation properties for details
+            // Those are in separate aggregates (TaskChecklistAggregate, TaskFlowControlAggregate, etc.)
             return await query
-                .Include(ti => ti.ChecklistItems)
-                .Include(ti => ti.CriterionCompletions)
-                .Include(ti => ti.Dependencies)
                 .FirstOrDefaultAsync(ti => ti.Id == id, cancellationToken);
         }
 
@@ -42,13 +43,8 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
         {
             var query = await GetQueryableAsync();
 
-            if (includeDetails)
-            {
-                query = query
-                    .Include(ti => ti.ChecklistItems)
-                    .Include(ti => ti.CriterionCompletions)
-                    .Include(ti => ti.Dependencies);
-            }
+            // includeDetails parameter is now ignored since TaskInstance has no navigation properties
+            // Application layer should query separate aggregates if it needs details
 
             return await query
                 .Where(spec.ToExpression())
@@ -59,50 +55,58 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Repositori
             DateTime asOfDate,
             CancellationToken cancellationToken = default)
         {
-            var query = await GetQueryableAsync();
-            
-            return await query
-                .Where(ti => ti.Schedule.ActualDueDate.HasValue &&
-                           ti.Schedule.ActualDueDate.Value < asOfDate &&
-                           !ti.Schedule.IsCompleted &&
-                           !ti.IsDeleted)
-                .OrderBy(ti => ti.Schedule.ActualDueDate)
-                .ToListAsync(cancellationToken);
+            // Schedule is now in TaskInstanceWorkAggregate, so we need to join
+            var dbContext = await _dbContextProvider.GetDbContextAsync();
+            var taskInstanceQuery = await GetQueryableAsync();
+
+            return await (from ti in taskInstanceQuery
+                         join work in dbContext.TaskInstanceWork on ti.Id equals work.TaskInstanceId
+                         where EF.Property<DateTime?>(work, "Schedule_ActualDueDate") != null &&
+                               EF.Property<DateTime?>(work, "Schedule_ActualDueDate") < asOfDate &&
+                               EF.Property<DateTime?>(work, "Schedule_CompletedAt") == null
+                         orderby EF.Property<DateTime?>(work, "Schedule_ActualDueDate")
+                         select ti)
+                         .ToListAsync(cancellationToken);
         }
 
         public async Task<List<TaskInstance>> GetTaskInstancesByProjectAsync(
             Guid projectId,
             CancellationToken cancellationToken = default)
         {
-            var query = await GetQueryableAsync();
-            
-            return await query
-                .Where(ti => ti.ProjectId == projectId && !ti.IsDeleted)
-                .OrderByDescending(ti => ti.CreationTime)
-                .ToListAsync(cancellationToken);
+            // ProjectId is now in TaskOrganizationAggregate, so we need to join
+            var dbContext = await _dbContextProvider.GetDbContextAsync();
+            var taskInstanceQuery = await GetQueryableAsync();
+
+            return await (from ti in taskInstanceQuery
+                         join org in dbContext.TaskOrganizations on ti.Id equals org.TaskInstanceId
+                         where org.ProjectId == projectId
+                         orderby ti.CreationTime descending
+                         select ti)
+                         .ToListAsync(cancellationToken);
         }
 
         public async Task<Dictionary<Guid, int>> GetTaskInstanceCountByStatusAsync(
             Guid projectId,
             CancellationToken cancellationToken = default)
         {
-            var query = await GetQueryableAsync();
-            
-            var result = await query
-                .Where(ti => ti.ProjectId == projectId && !ti.IsDeleted)
-                .GroupBy(ti => ti.WorkflowStatusId)
-                .Select(g => new { StatusId = g.Key, Count = g.Count() })
-                .ToListAsync(cancellationToken);
+            // ProjectId is now in TaskOrganizationAggregate, so we need to join
+            var dbContext = await _dbContextProvider.GetDbContextAsync();
+            var taskInstanceQuery = await GetQueryableAsync();
+
+            var result = await (from ti in taskInstanceQuery
+                               join org in dbContext.TaskOrganizations on ti.Id equals org.TaskInstanceId
+                               where org.ProjectId == projectId
+                               group ti by ti.WorkflowStatusId into g
+                               select new { StatusId = g.Key, Count = g.Count() })
+                               .ToListAsync(cancellationToken);
 
             return result.ToDictionary(x => x.StatusId, x => x.Count);
         }
 
         public override async Task<IQueryable<TaskInstance>> WithDetailsAsync()
         {
-            return (await GetQueryableAsync())
-                .Include(ti => ti.ChecklistItems)
-                .Include(ti => ti.CriterionCompletions)
-                .Include(ti => ti.Dependencies);
+            // No navigation properties to include anymore
+            return await GetQueryableAsync();
         }
     }
 }

@@ -6,7 +6,7 @@ using NouAssist.WorkManagement.ProjectManagement.Aggregates;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.Reviews.Aggregates;
 using NouAssist.WorkManagement.Reviews.Entities;
-using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.Task;
 using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Entities;
 using NouAssist.WorkManagement.Workflow.Aggregates;
@@ -19,10 +19,22 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore;
 [ConnectionStringName(WorkManagementDbProperties.ConnectionStringName)]
 public interface IWorkManagementDbContext : IEfCoreDbContext
 {
-    DbSet<Task> Tasks { get; }
-    DbSet<TaskInstance> TaskInstances { get; }
+    // Task Aggregate Roots
+    DbSet<TaskAggregate> Tasks { get; }
+    DbSet<TaskDefinitionAggregate> TaskDefinitions { get; }
+    DbSet<TaskDefaultsAggregate> TaskDefaults { get; }
+    DbSet<TaskRecurrenceAggregate> TaskRecurrences { get; }
+    DbSet<TaskHierarchyAggregate> TaskHierarchies { get; }
     DbSet<TaskType> TaskTypes { get; }
-        
+
+    // TaskInstance Aggregate Roots
+    DbSet<TaskInstance> TaskInstances { get; }
+    DbSet<TaskChecklistAggregate> TaskChecklists { get; }
+    DbSet<TaskOrganizationAggregate> TaskOrganizations { get; }
+    DbSet<TaskInstanceWorkAggregate> TaskInstanceWork { get; }
+    DbSet<TaskCollaborationAggregate> TaskCollaborations { get; }
+    DbSet<TaskFlowControlAggregate> TaskFlowControls { get; }
+
     // Child entities
     DbSet<ChecklistItem> ChecklistItems { get; }
     DbSet<TaskChecklistItem> TaskChecklistItems { get; }
@@ -30,6 +42,8 @@ public interface IWorkManagementDbContext : IEfCoreDbContext
     DbSet<AcceptanceCriterionCompletion> AcceptanceCriterionCompletions { get; }
     DbSet<TaskDependency> TaskDependencies { get; }
     DbSet<TaskTypeCustomField> TaskTypeCustomFields { get; }
+    DbSet<TaskActionStep> TaskActionSteps { get; }
+    DbSet<TaskActionStepCompletion> TaskActionStepCompletions { get; }
     
     // Project Aggregate Roots
     DbSet<Project> Projects { get; }

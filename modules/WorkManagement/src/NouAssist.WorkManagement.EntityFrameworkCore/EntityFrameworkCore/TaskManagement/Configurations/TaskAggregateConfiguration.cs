@@ -1,24 +1,22 @@
-using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.Task;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurations
 {
-    public class TaskAggregateConfiguration : IEntityTypeConfiguration<Task>
+    public class TaskAggregateConfiguration : IEntityTypeConfiguration<TaskAggregate>
     {
-        public void Configure(EntityTypeBuilder<Task> builder)
+        public void Configure(EntityTypeBuilder<TaskAggregate> builder)
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "Tasks", 
+            builder.ToTable(WorkManagementDbProperties.DbTablePrefix + "Tasks",
                           WorkManagementDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
-            // Properties
+            // Core Properties
             builder.Property(x => x.Title)
                 .IsRequired()
                 .HasMaxLength(TasksDbConsts.MaxTitleLength);
@@ -29,57 +27,20 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
             builder.Property(x => x.ExpectedResult)
                 .HasMaxLength(TasksDbConsts.MaxExpectedResultLength);
 
+            builder.Property(x => x.Notes)
+                .HasMaxLength(TasksDbConsts.MaxNotesLength);
+
             builder.Property(x => x.OwnerId)
                 .IsRequired();
 
             // GTD Organization
             builder.Property(x => x.AreaId);
-            
+
             builder.Property(x => x.ContextId);
 
             builder.Property(x => x.ProjectId);
 
             builder.Property(x => x.TaskTypeId);
-
-            // Default values for instances
-            builder.Property(x => x.DefaultImportance)
-                .IsRequired()
-                .HasColumnType("double precision")
-                .HasDefaultValue(0.5);
-
-            builder.Property(x => x.DefaultUrgency)
-                .IsRequired()
-                .HasColumnType("double precision")
-                .HasDefaultValue(0.5);
-
-            builder.Property(x => x.DefaultDueDate);
-
-            builder.Property(x => x.DefaultEstimateMinutes);
-
-            builder.Property(x => x.DefaultWorkflowId);
-
-            builder.Property(x => x.DefaultAssigneeId);
-
-            builder.Property(x => x.DefaultAreaId);
-
-            builder.Property(x => x.DefaultContextId);
-
-            builder.Property(x => x.DefaultCognitiveLoad)
-                .HasConversion<byte?>()
-                .HasColumnName("DefaultCognitiveLoad");
-
-            // Value Object: DefaultComplexityEstimation (owned entity)
-            builder.OwnsOne(x => x.DefaultComplexityEstimation, complexityBuilder =>
-            {
-                complexityBuilder.Property(c => c.Value)
-                    .HasColumnName("DefaultComplexityValue")
-                    .IsRequired();
-
-                complexityBuilder.Property(c => c.Scale)
-                    .HasColumnName("DefaultComplexityScale")
-                    .IsRequired()
-                    .HasConversion<byte>();
-            });
 
             // State
             builder.Property(x => x.IsActive)
@@ -90,47 +51,11 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
                 .IsRequired()
                 .IsConcurrencyToken();
 
-            // Value Object: RecurrenceRule (owned entity)
-            builder.OwnsOne(x => x.RecurrenceRule, recurrenceBuilder =>
-            {
-                recurrenceBuilder.Property(r => r.Frequency)
-                    .HasColumnName("RecurrenceFrequency")
-                    .IsRequired()
-                    .HasConversion<string>()
-                    .HasMaxLength(50);
-
-                recurrenceBuilder.Property(r => r.Interval)
-                    .HasColumnName("RecurrenceInterval")
-                    .IsRequired();
-
-                recurrenceBuilder.Property(r => r.EndDate)
-                    .HasColumnName("RecurrenceEndDate");
-
-                recurrenceBuilder.Property(r => r.Count)
-                    .HasColumnName("RecurrenceCount");
-
-                recurrenceBuilder.Property(r => r.DaysOfWeek)
-                    .HasColumnName("RecurrenceDaysOfWeek")
-                    .HasConversion(
-                        v => string.Join(',', v.Select(d => (int)d)),
-                        v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
-                              .Select(s => (DayOfWeek)int.Parse(s))
-                              .ToList()
-                    );
-            });
-
-            // Relationships
-            builder.HasMany(x => x.ChecklistItems)
-                .WithOne()
-                .HasForeignKey("TaskId")
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(x => x.AcceptanceCriteria)
-                .WithOne()
-                .HasForeignKey("TaskId")
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+            // References to other aggregates
+            builder.Property(x => x.DefinitionId);
+            builder.Property(x => x.DefaultsId);
+            builder.Property(x => x.RecurrenceId);
+            builder.Property(x => x.HierarchyId);
 
             // Indexes
             builder.HasIndex(x => x.Title);
@@ -142,6 +67,10 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore.TaskManagement.Configurat
             builder.HasIndex(x => new { x.TenantId, x.IsDeleted });
             builder.HasIndex(x => new { x.AreaId, x.IsActive });
             builder.HasIndex(x => new { x.ProjectId, x.IsActive });
+            builder.HasIndex(x => x.DefinitionId);
+            builder.HasIndex(x => x.DefaultsId);
+            builder.HasIndex(x => x.RecurrenceId);
+            builder.HasIndex(x => x.HierarchyId);
 
             // Multi-tenancy
             builder.HasIndex(x => x.TenantId);

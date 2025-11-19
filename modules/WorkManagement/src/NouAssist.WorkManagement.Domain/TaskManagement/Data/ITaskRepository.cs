@@ -2,22 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.Task;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.WorkManagement.TaskManagement.Data
 {
-    public interface ITaskRepository : IRepository<Aggregates.Task, Guid>
+    public interface ITaskRepository : IRepository<TaskAggregate, Guid>
     {
-        Task<Aggregates.Task> GetWithDetailsAsync(
+        Task<TaskAggregate> GetWithDetailsAsync(
             Guid id,
             CancellationToken cancellationToken = default);
 
-        Task<List<Aggregates.Task>> GetListAsync(
-            ISpecification<Aggregates.Task> spec,
+        Task<List<TaskAggregate>> GetListAsync(
+            ISpecification<TaskAggregate> spec,
             CancellationToken cancellationToken = default);
 
-        Task<List<Aggregates.Task>> GetRecurringTasksDueForProcessingAsync(
+        Task<List<TaskAggregate>> GetRecurringTasksDueForProcessingAsync(
             DateTime currentDate,
             CancellationToken cancellationToken = default);
     }

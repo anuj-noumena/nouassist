@@ -8,7 +8,7 @@ using NouAssist.WorkManagement.ProjectManagement.Aggregates;
 using NouAssist.WorkManagement.ProjectManagement.Entities;
 using NouAssist.WorkManagement.Reviews.Aggregates;
 using NouAssist.WorkManagement.Reviews.Entities;
-using NouAssist.WorkManagement.TaskManagement.Aggregates;
+using NouAssist.WorkManagement.TaskManagement.Aggregates.Task;
 using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Entities;
 using NouAssist.WorkManagement.Workflow.Aggregates;
@@ -21,9 +21,21 @@ namespace NouAssist.WorkManagement.EntityFrameworkCore;
 [ConnectionStringName(WorkManagementDbProperties.ConnectionStringName)]
 public class WorkManagementDbContext : AbpDbContext<WorkManagementDbContext>, IWorkManagementDbContext
 {
-    public DbSet<Task> Tasks { get; set; }
-    public DbSet<TaskInstance> TaskInstances { get; set; }
+    // Task Aggregate Roots
+    public DbSet<TaskAggregate> Tasks { get; set; }
+    public DbSet<TaskDefinitionAggregate> TaskDefinitions { get; set; }
+    public DbSet<TaskDefaultsAggregate> TaskDefaults { get; set; }
+    public DbSet<TaskRecurrenceAggregate> TaskRecurrences { get; set; }
+    public DbSet<TaskHierarchyAggregate> TaskHierarchies { get; set; }
     public DbSet<TaskType> TaskTypes { get; set; }
+
+    // TaskInstance Aggregate Roots
+    public DbSet<TaskInstance> TaskInstances { get; set; }
+    public DbSet<TaskChecklistAggregate> TaskChecklists { get; set; }
+    public DbSet<TaskOrganizationAggregate> TaskOrganizations { get; set; }
+    public DbSet<TaskInstanceWorkAggregate> TaskInstanceWork { get; set; }
+    public DbSet<TaskCollaborationAggregate> TaskCollaborations { get; set; }
+    public DbSet<TaskFlowControlAggregate> TaskFlowControls { get; set; }
 
     // Child entities
     public DbSet<ChecklistItem> ChecklistItems { get; set; }
@@ -32,6 +44,8 @@ public class WorkManagementDbContext : AbpDbContext<WorkManagementDbContext>, IW
     public DbSet<AcceptanceCriterionCompletion> AcceptanceCriterionCompletions { get; set; }
     public DbSet<TaskDependency> TaskDependencies { get; set; }
     public DbSet<TaskTypeCustomField> TaskTypeCustomFields { get; set; }
+    public DbSet<TaskActionStep> TaskActionSteps { get; set; }
+    public DbSet<TaskActionStepCompletion> TaskActionStepCompletions { get; set; }
 
     // Project Aggregate Roots
     public DbSet<Project> Projects { get; set; }
@@ -84,10 +98,23 @@ public class WorkManagementDbContext : AbpDbContext<WorkManagementDbContext>, IW
 
         builder.ConfigureWorkManagement();
 
-        // Apply all configurations
+        // Apply Task aggregate configurations
         builder.ApplyConfiguration(new TaskAggregateConfiguration());
-        builder.ApplyConfiguration(new TaskInstanceAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskDefinitionAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskDefaultsAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskRecurrenceAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskHierarchyAggregateConfiguration());
         builder.ApplyConfiguration(new TaskTypeAggregateConfiguration());
+
+        // Apply TaskInstance aggregate configurations
+        builder.ApplyConfiguration(new TaskInstanceAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskChecklistAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskOrganizationAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskInstanceWorkAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskCollaborationAggregateConfiguration());
+        builder.ApplyConfiguration(new TaskFlowControlAggregateConfiguration());
+
+        // Apply entity configurations
         builder.ApplyConfiguration(new ChecklistItemConfiguration());
         builder.ApplyConfiguration(new TaskChecklistItemConfiguration());
         builder.ApplyConfiguration(new AcceptanceCriterionConfiguration());

@@ -33,6 +33,11 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
     {
         private readonly ITaskInstanceRepository _taskInstanceRepository;
         private readonly ITaskRepository _taskRepository;
+        private readonly ITaskChecklistRepository _taskChecklistRepository;
+        private readonly ITaskOrganizationRepository _taskOrganizationRepository;
+        private readonly ITaskInstanceWorkRepository _taskInstanceWorkRepository;
+        private readonly ITaskCollaborationRepository _taskCollaborationRepository;
+        private readonly ITaskFlowControlRepository _taskFlowControlRepository;
         private readonly TaskInstanceManager _taskInstanceManager;
         private readonly TaskDependencyService _dependencyService;
         private readonly ICurrentUser _currentUser;
@@ -40,11 +45,22 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public TaskInstanceAppService(
             ITaskInstanceRepository taskInstanceRepository,
             ITaskRepository taskRepository,
+            ITaskChecklistRepository taskChecklistRepository,
+            ITaskOrganizationRepository taskOrganizationRepository,
+            ITaskInstanceWorkRepository taskInstanceWorkRepository,
+            ITaskCollaborationRepository taskCollaborationRepository,
+            ITaskFlowControlRepository taskFlowControlRepository,
             TaskInstanceManager taskInstanceManager,
-            TaskDependencyService dependencyService, ICurrentUser currentUser)
+            TaskDependencyService dependencyService,
+            ICurrentUser currentUser)
         {
             _taskInstanceRepository = taskInstanceRepository;
             _taskRepository = taskRepository;
+            _taskChecklistRepository = taskChecklistRepository;
+            _taskOrganizationRepository = taskOrganizationRepository;
+            _taskInstanceWorkRepository = taskInstanceWorkRepository;
+            _taskCollaborationRepository = taskCollaborationRepository;
+            _taskFlowControlRepository = taskFlowControlRepository;
             _taskInstanceManager = taskInstanceManager;
             _dependencyService = dependencyService;
             _currentUser = currentUser;
@@ -95,9 +111,6 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         [Authorize(WorkManagementPermissions.TaskManagement.TaskInstances.Create)]
         public async Task<TaskInstanceDto> CreateAsync(CreateTaskInstanceDto input)
         {
-            // Load the task blueprint
-            var taskBlueprint = await _taskRepository.GetWithDetailsAsync(input.TaskId);
-
             // Use domain manager to create instance from blueprint
             var taskInstance = await _taskInstanceManager.CreateAsync(
                 input.TaskId,
@@ -114,16 +127,27 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
                 _currentUser.TenantId
             );
 
+            // Set notes if provided
+            if (!string.IsNullOrEmpty(input.Notes))
+            {
+                taskInstance.UpdateNotes(input.Notes);
+            }
+
+            await _taskInstanceRepository.InsertAsync(taskInstance);
+
+            // Create TaskInstanceWorkAggregate for schedule, priority, and complexity
+            var taskWork = new TaskInstanceWorkAggregate(GuidGenerator.Create(), taskInstance.Id);
+
             // Override priority if provided
             if (input.Importance.HasValue && input.Urgency.HasValue)
             {
-                taskInstance.UpdatePriority(input.Importance.Value, input.Urgency.Value);
+                taskWork.UpdatePriority(input.Importance.Value, input.Urgency.Value);
             }
 
             // Set planned start date if provided
             if (input.PlannedStartDate.HasValue)
             {
-                taskInstance.PlannedStartDate = input.PlannedStartDate.Value;
+                taskWork.SetPlannedDates(input.PlannedStartDate, input.PlannedDueDate);
             }
 
             // Set complexity estimation if provided
@@ -133,22 +157,44 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
                     input.ComplexityEstimation.Value,
                     input.ComplexityEstimation.Scale
                 );
-                taskInstance.SetComplexityEstimation(complexityEstimation);
+                taskWork.UpdateComplexity(complexityEstimation);
             }
 
             // Set cognitive load if provided
             if (input.CognitiveLoad.HasValue)
             {
-                taskInstance.SetCognitiveLoad(input.CognitiveLoad.Value);
+                taskWork.SetCognitiveLoad(input.CognitiveLoad.Value);
             }
 
-            // Set notes if provided
-            if (!string.IsNullOrEmpty(input.Notes))
+            await _taskInstanceWorkRepository.InsertAsync(taskWork);
+
+            // Create TaskOrganizationAggregate
+            var taskOrg = new TaskOrganizationAggregate(GuidGenerator.Create(), taskInstance.Id);
+            if (input.ProjectId.HasValue)
             {
-                taskInstance.Notes = input.Notes;
+                taskOrg.MoveToProject(input.ProjectId.Value);
             }
+            else if (input.AreaId.HasValue)
+            {
+                taskOrg.MoveToArea(input.AreaId.Value);
+            }
+            if (input.ContextId.HasValue)
+            {
+                taskOrg.AssignToContext(input.ContextId.Value);
+            }
+            await _taskOrganizationRepository.InsertAsync(taskOrg);
 
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            // Create TaskChecklistAggregate
+            var taskChecklist = new TaskChecklistAggregate(GuidGenerator.Create(), taskInstance.Id);
+            await _taskChecklistRepository.InsertAsync(taskChecklist);
+
+            // Create TaskCollaborationAggregate
+            var taskCollab = new TaskCollaborationAggregate(GuidGenerator.Create(), taskInstance.Id);
+            await _taskCollaborationRepository.InsertAsync(taskCollab);
+
+            // Create TaskFlowControlAggregate
+            var taskFlow = new TaskFlowControlAggregate(GuidGenerator.Create(), taskInstance.Id);
+            await _taskFlowControlRepository.InsertAsync(taskFlow);
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -158,69 +204,76 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
 
-            // if (input.AssigneeId.HasValue)
-            //     taskInstance.AssigneeId = input.AssigneeId;
-
-            if (input.PlannedStartDate.HasValue)
-            {
-                taskInstance.PlannedStartDate = input.PlannedStartDate;
-            }
-
-            if (input.PlannedDueDate.HasValue)
-            {
-                taskInstance.PlannedDueDate = input.PlannedDueDate;
-            }
-
-            if (input.ActualDueDate.HasValue)
-            {
-                taskInstance.ActualDueDate = input.ActualDueDate;
-            }
-
-            if (input.Importance.HasValue && input.Urgency.HasValue)
-            {
-                taskInstance.UpdatePriority(input.Importance.Value, input.Urgency.Value);
-            }
-
-            if (input.IsNextAction.HasValue)
-            {
-                if (input.IsNextAction.Value)
-                {
-                    taskInstance.MarkAsNextAction();
-                }
-                else
-                {
-                    taskInstance.UnmarkAsNextAction();
-                }
-            }
-
-            if (input.IsFlagged.HasValue)
-            {
-                taskInstance.UpdateFlag(input.IsFlagged.Value, input.FlaggedReason);
-            }
-
-            // Update complexity estimation if provided
-            if (input.ComplexityEstimation != null)
-            {
-                var complexityEstimation = new ComplexityEstimation(
-                    input.ComplexityEstimation.Value,
-                    input.ComplexityEstimation.Scale
-                );
-                taskInstance.SetComplexityEstimation(complexityEstimation);
-            }
-
-            // Update cognitive load if provided
-            if (input.CognitiveLoad.HasValue)
-            {
-                taskInstance.SetCognitiveLoad(input.CognitiveLoad.Value);
-            }
-
             // Update notes if provided
             if (input.Notes != null)
             {
-                taskInstance.Notes = input.Notes;
+                taskInstance.UpdateNotes(input.Notes);
             }
 
             await _taskInstanceRepository.UpdateAsync(taskInstance);
+
+            // Load and update TaskInstanceWorkAggregate for schedule, priority, and complexity
+            var taskWork = await _taskInstanceWorkRepository.GetByTaskInstanceIdAsync(id);
+            if (taskWork != null)
+            {
+                // Update scheduled dates
+                if (input.PlannedStartDate.HasValue || input.PlannedDueDate.HasValue || input.ActualDueDate.HasValue)
+                {
+                    // Get current schedule values
+                    var plannedStart = input.PlannedStartDate ?? taskWork.Schedule.PlannedStartDate;
+                    var plannedDue = input.PlannedDueDate ?? taskWork.Schedule.PlannedDueDate;
+
+                    taskWork.SetPlannedDates(plannedStart, plannedDue);
+
+                    if (input.ActualDueDate.HasValue)
+                    {
+                        taskWork.Schedule = taskWork.Schedule.WithActualDueDate(input.ActualDueDate.Value);
+                    }
+                }
+
+                // Update priority
+                if (input.Importance.HasValue && input.Urgency.HasValue)
+                {
+                    taskWork.UpdatePriority(input.Importance.Value, input.Urgency.Value);
+                }
+
+                // Update IsNextAction flag
+                if (input.IsNextAction.HasValue)
+                {
+                    if (input.IsNextAction.Value)
+                    {
+                        taskWork.WorkTracking = taskWork.WorkTracking.MarkAsNextAction();
+                    }
+                    else
+                    {
+                        taskWork.WorkTracking = taskWork.WorkTracking.UnmarkAsNextAction();
+                    }
+                }
+
+                // Update IsFlagged
+                if (input.IsFlagged.HasValue)
+                {
+                    taskWork.WorkTracking = taskWork.WorkTracking.UpdateFlag(input.IsFlagged.Value, input.FlaggedReason);
+                }
+
+                // Update complexity estimation
+                if (input.ComplexityEstimation != null)
+                {
+                    var complexityEstimation = new ComplexityEstimation(
+                        input.ComplexityEstimation.Value,
+                        input.ComplexityEstimation.Scale
+                    );
+                    taskWork.UpdateComplexity(complexityEstimation);
+                }
+
+                // Update cognitive load
+                if (input.CognitiveLoad.HasValue)
+                {
+                    taskWork.SetCognitiveLoad(input.CognitiveLoad.Value);
+                }
+
+                await _taskInstanceWorkRepository.UpdateAsync(taskWork);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -581,10 +634,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> AddWatcherAsync(Guid id, Guid userId)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskCollab = await _taskCollaborationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.AddWatcher(userId);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskCollab != null)
+            {
+                taskCollab.AddWatcher(userId);
+                await _taskCollaborationRepository.UpdateAsync(taskCollab);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -593,10 +649,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> RemoveWatcherAsync(Guid id, Guid userId)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskCollab = await _taskCollaborationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.RemoveWatcher(userId);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskCollab != null)
+            {
+                taskCollab.RemoveWatcher(userId);
+                await _taskCollaborationRepository.UpdateAsync(taskCollab);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -817,8 +876,17 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
 
-            taskInstance.MoveToProject(input.NewProjectId, input.NewWorkflowStatusId);
+            // Update workflow status on task instance
+            taskInstance.TransitionTo(input.NewWorkflowStatusId);
             await _taskInstanceRepository.UpdateAsync(taskInstance);
+
+            // Update project on organization aggregate
+            var taskOrg = await _taskOrganizationRepository.GetByTaskInstanceIdAsync(id);
+            if (taskOrg != null)
+            {
+                taskOrg.MoveToProject(input.NewProjectId);
+                await _taskOrganizationRepository.UpdateAsync(taskOrg);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -1063,10 +1131,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> AssignToAreaAsync(Guid id, Guid areaId)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskOrg = await _taskOrganizationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.AssignToArea(areaId);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskOrg != null)
+            {
+                taskOrg.MoveToArea(areaId);
+                await _taskOrganizationRepository.UpdateAsync(taskOrg);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -1075,10 +1146,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> RemoveFromAreaAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskOrg = await _taskOrganizationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.RemoveFromArea();
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskOrg != null)
+            {
+                taskOrg.RemoveFromArea();
+                await _taskOrganizationRepository.UpdateAsync(taskOrg);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -1087,10 +1161,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> AssignToContextAsync(Guid id, Guid contextId)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskOrg = await _taskOrganizationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.AssignToContext(contextId);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskOrg != null)
+            {
+                taskOrg.AssignToContext(contextId);
+                await _taskOrganizationRepository.UpdateAsync(taskOrg);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -1099,10 +1176,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> RemoveFromContextAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskOrg = await _taskOrganizationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.RemoveFromContext();
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskOrg != null)
+            {
+                taskOrg.RemoveFromContext();
+                await _taskOrganizationRepository.UpdateAsync(taskOrg);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -1111,10 +1191,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> MoveToAreaAsync(Guid id, Guid areaId)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskOrg = await _taskOrganizationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.MoveToArea(areaId);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskOrg != null)
+            {
+                taskOrg.MoveToArea(areaId);
+                await _taskOrganizationRepository.UpdateAsync(taskOrg);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -1149,10 +1232,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> IncrementCommentsAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskCollab = await _taskCollaborationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.IncrementComments();
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskCollab != null)
+            {
+                taskCollab.IncrementComments();
+                await _taskCollaborationRepository.UpdateAsync(taskCollab);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -1161,10 +1247,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> IncrementAttachmentsAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskCollab = await _taskCollaborationRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.IncrementAttachments();
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskCollab != null)
+            {
+                taskCollab.IncrementAttachments();
+                await _taskCollaborationRepository.UpdateAsync(taskCollab);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }

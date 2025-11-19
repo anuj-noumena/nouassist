@@ -69,7 +69,12 @@ namespace NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance
         {
             ComplexityEstimation = complexity;
         }
-        
+
+        public void SetCognitiveLoad(CognitiveLoad cognitiveLoad)
+        {
+            CognitiveLoad = cognitiveLoad;
+        }
+
         // === Event Handlers (called by Application Service after events from TaskAggregate) ===
         public void HandleTaskCompleted()
         {

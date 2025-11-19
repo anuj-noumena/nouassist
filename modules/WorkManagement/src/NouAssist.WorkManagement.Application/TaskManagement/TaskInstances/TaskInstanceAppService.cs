@@ -399,17 +399,25 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> DelegateViaWorkflowAsync(Guid id, DelegateTaskViaWorkflowDto input)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskOrg = await _taskOrganizationRepository.GetByTaskInstanceIdAsync(id);
 
             // Get workflow for this task's project
             var workflowSchemeRepo = LazyServiceProvider.LazyGetRequiredService<IWorkflowSchemeRepository>();
             var workflowRepo = LazyServiceProvider.LazyGetRequiredService<IWorkflowRepository>();
             var workflowTransitionService = LazyServiceProvider.LazyGetRequiredService<WorkflowTransitionService>();
 
-            var workflowScheme = await workflowSchemeRepo.GetActiveSchemeForProjectAsync(taskInstance.ProjectId);
+            var projectId = taskOrg?.ProjectId;
+            if (!projectId.HasValue)
+            {
+                throw new BusinessException("Tasks:TaskNotAssignedToProject",
+                    "Task must be assigned to a project to use workflow delegation");
+            }
+
+            var workflowScheme = await workflowSchemeRepo.GetActiveSchemeForProjectAsync(projectId.Value);
             if (workflowScheme == null)
             {
                 throw new BusinessException("Tasks:NoWorkflowSchemeForProject",
-                    $"No active workflow scheme found for project {taskInstance.ProjectId}");
+                    $"No active workflow scheme found for project {projectId}");
             }
 
             // Check if quick delegation is allowed
@@ -434,7 +442,7 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
             else
             {
                 // Find delegation transition by purpose
-                var delegationTransitions = workflow.GetAvailableTransitions(taskInstance.Progress.WorkflowStatusId);
+                var delegationTransitions = workflow.GetAvailableTransitions(taskInstance.WorkflowStatusId);
                 delegationTransition = delegationTransitions.FirstOrDefault(t =>
                     t.Purpose == TransitionPurpose.Delegation);
 

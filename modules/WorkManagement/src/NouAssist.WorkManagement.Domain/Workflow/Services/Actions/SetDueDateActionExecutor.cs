@@ -29,12 +29,15 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
             try
             {
                 var taskInstanceRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceRepository>();
+                var taskInstanceWorkRepo = LazyServiceProvider.LazyGetRequiredService<ITaskInstanceWorkRepository>();
+
                 var taskInstance = await taskInstanceRepo.GetAsync(context.TaskInstanceId);
+                var taskWork = await taskInstanceWorkRepo.GetByTaskInstanceIdAsync(context.TaskInstanceId);
 
                 DateTime? newDueDate = null;
                 DateTime? newStartDate = null;
-                var oldDueDate = taskInstance.Schedule.PlannedDueDate;
-                var oldStartDate = taskInstance.Schedule.PlannedStartDate;
+                var oldDueDate = taskWork?.Schedule.PlannedDueDate;
+                var oldStartDate = taskWork?.Schedule.PlannedStartDate;
 
                 // Check if a specific due date is provided
                 var dueDateObj = action.Configuration.GetValueOrDefault("dueDate");
@@ -106,16 +109,18 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
 
                 // Update the schedule with the new dates
                 // SetPlannedDates method signature: SetPlannedDates(DateTime? start, DateTime? due)
-                taskInstance.SetPlannedDates(newStartDate, newDueDate);
-
-                await taskInstanceRepo.UpdateAsync(taskInstance);
+                if (taskWork != null)
+                {
+                    taskWork.SetPlannedDates(newStartDate, newDueDate);
+                    await taskInstanceWorkRepo.UpdateAsync(taskWork);
+                }
 
                 Logger.LogInformation(
                     "Updated schedule for task instance {TaskInstanceId}. Start: {OldStart} -> {NewStart}, Due: {OldDue} -> {NewDue}",
-                    context.TaskInstanceId, 
+                    context.TaskInstanceId,
                     oldStartDate?.ToString("yyyy-MM-dd HH:mm") ?? "null",
                     newStartDate?.ToString("yyyy-MM-dd HH:mm") ?? "null",
-                    oldDueDate?.ToString("yyyy-MM-dd HH:mm") ?? "null", 
+                    oldDueDate?.ToString("yyyy-MM-dd HH:mm") ?? "null",
                     newDueDate?.ToString("yyyy-MM-dd HH:mm") ?? "null");
 
                 var resultData = new Dictionary<string, object>
@@ -124,8 +129,8 @@ namespace NouAssist.WorkManagement.Workflow.Services.Actions
                     ["newStartDate"] = newStartDate,
                     ["oldDueDate"] = oldDueDate,
                     ["newDueDate"] = newDueDate,
-                    ["isOverdue"] = taskInstance.Schedule.IsOverdue,
-                    ["timeRemaining"] = taskInstance.Schedule.TimeRemaining,
+                    ["isOverdue"] = taskWork?.Schedule.IsOverdue ?? false,
+                    ["timeRemaining"] = taskWork?.Schedule.TimeRemaining,
                     ["updatedAt"] = Clock.Now
                 };
 

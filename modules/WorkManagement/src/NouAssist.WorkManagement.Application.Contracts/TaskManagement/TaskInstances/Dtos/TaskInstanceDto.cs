@@ -72,6 +72,11 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances.Dtos
         public string ResolutionNote { get; set; }
         public bool IsResolved { get; set; }
 
+        // Cancellation
+        public bool IsCancelled { get; set; }
+        public string CancellationReason { get; set; }
+        public DateTime? CancelledAt { get; set; }
+
         // Approval
         public bool RequiresApproval { get; set; }
         public Guid? ApprovalRequestId { get; set; }

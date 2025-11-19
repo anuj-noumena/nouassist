@@ -24,6 +24,9 @@ public class WorkManagementApplicationAutoMapperProfile : Profile
             .ForMember(dest => dest.Resolution, opt => opt.MapFrom(src => src.Resolution))
             .ForMember(dest => dest.ResolutionNote, opt => opt.MapFrom(src => src.ResolutionNote))
             .ForMember(dest => dest.IsResolved, opt => opt.MapFrom(src => src.IsResolved))
+            .ForMember(dest => dest.IsCancelled, opt => opt.MapFrom(src => src.IsCancelled))
+            .ForMember(dest => dest.CancellationReason, opt => opt.MapFrom(src => src.CancellationReason))
+            .ForMember(dest => dest.CancelledAt, opt => opt.MapFrom(src => src.CancelledAt))
             // Properties from TaskOrganizationAggregate - ignore for now
             .ForMember(dest => dest.ProjectId, opt => opt.Ignore())
             .ForMember(dest => dest.AreaId, opt => opt.Ignore())
@@ -60,9 +63,9 @@ public class WorkManagementApplicationAutoMapperProfile : Profile
             .ForMember(dest => dest.RequiresApproval, opt => opt.Ignore())
             .ForMember(dest => dest.ApprovalRequestId, opt => opt.Ignore())
             .ForMember(dest => dest.DelegationInfo, opt => opt.Ignore())
-            // Computed properties - ignore for now, should be set by application service
+            // Computed properties - map what's available on core aggregate, ignore others
             .ForMember(dest => dest.IsOverdue, opt => opt.Ignore())
-            .ForMember(dest => dest.IsCompleted, opt => opt.Ignore())
+            .ForMember(dest => dest.IsCompleted, opt => opt.MapFrom(src => src.IsCompleted))
             .ForMember(dest => dest.HasStarted, opt => opt.Ignore())
             .ForMember(dest => dest.IsDelegated, opt => opt.Ignore())
             .ForMember(dest => dest.HasBlockingDependencies, opt => opt.Ignore())

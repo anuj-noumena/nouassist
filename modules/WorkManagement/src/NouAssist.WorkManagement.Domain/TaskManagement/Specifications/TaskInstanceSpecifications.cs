@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using NouAssist.SharedKernel.Enums;
 using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
-using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 
 namespace NouAssist.WorkManagement.TaskManagement.Specifications
 {

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
-using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.TaskManagement.Managers;
 using NouAssist.WorkManagement.TaskManagement.Specifications;

@@ -1,6 +1,5 @@
 using System.Linq;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
-using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
 
 namespace NouAssist.WorkManagement.TaskManagement.Policies.impl;
 

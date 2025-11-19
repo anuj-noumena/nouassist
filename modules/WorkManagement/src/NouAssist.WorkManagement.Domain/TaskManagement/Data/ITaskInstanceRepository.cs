@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.WorkManagement.TaskManagement.Aggregates.TaskInstance;
+using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.Workflow.Data;
 using NouAssist.WorkManagement.Workflow.Entities;

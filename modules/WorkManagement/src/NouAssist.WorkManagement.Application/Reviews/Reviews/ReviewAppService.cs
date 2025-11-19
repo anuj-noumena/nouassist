@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.WorkManagement.Permissions;
 using NouAssist.WorkManagement.Reviews.Aggregates;
 using NouAssist.WorkManagement.Reviews.Data;
@@ -339,9 +340,9 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
         // Private helper methods
         private ISpecification<Review> CreateListSpecification(GetReviewListDto input, Guid ownerId)
         {
-            var spec = Specification<Review>.True;
+            ISpecification<Review> spec = new BaseSpecification<Review>();
 
-            spec = spec.And(new Specification<Review>(r => r.OwnerId == ownerId));
+            spec = spec.And(new BaseSpecification<Review>(r => r.OwnerId == ownerId));
 
             if (input.ReviewType.HasValue)
             {
@@ -362,12 +363,12 @@ namespace NouAssist.WorkManagement.Reviews.Reviews
 
             if (input.FromDate.HasValue)
             {
-                spec = spec.And(new Specification<Review>(r => r.CreationTime >= input.FromDate.Value));
+                spec = spec.And(new BaseSpecification<Review>(r => r.CreationTime >= input.FromDate.Value));
             }
 
             if (input.ToDate.HasValue)
             {
-                spec = spec.And(new Specification<Review>(r => r.CreationTime <= input.ToDate.Value));
+                spec = spec.And(new BaseSpecification<Review>(r => r.CreationTime <= input.ToDate.Value));
             }
 
             return spec;

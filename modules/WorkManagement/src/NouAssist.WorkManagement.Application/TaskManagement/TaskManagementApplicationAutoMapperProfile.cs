@@ -54,9 +54,9 @@ namespace NouAssist.WorkManagement.TaskManagement
                 .ForMember(dest => dest.Urgency, opt => opt.MapFrom(src => src.Priority.Urgency))
                 .ForMember(dest => dest.EisenhowerQuadrant, opt => opt.MapFrom(src => src.Priority.Quadrant.ToString()))
                 
-                // Hierarchy
-                .ForMember(dest => dest.ParentInstanceId, opt => opt.MapFrom(src => src.Hierarchy.ParentId))
-                .ForMember(dest => dest.HierarchyLevel, opt => opt.MapFrom(src => src.Hierarchy.Level))
+                // Hierarchy - Not yet implemented in TaskInstance
+                .ForMember(dest => dest.ParentInstanceId, opt => opt.MapFrom<Guid?>(src => null))
+                .ForMember(dest => dest.HierarchyLevel, opt => opt.MapFrom<int>(src => 0))
                 
                 // Collaboration
                 .ForMember(dest => dest.CommentsCount, opt => opt.MapFrom(src => src.Collaboration.CommentCount))
@@ -67,7 +67,8 @@ namespace NouAssist.WorkManagement.TaskManagement
                 .ForMember(dest => dest.IsOverdue, opt => opt.MapFrom(src => src.IsOverdue))
                 .ForMember(dest => dest.IsCompleted, opt => opt.MapFrom(src => src.WorkTracking.IsCompleted))
                 .ForMember(dest => dest.HasStarted, opt => opt.MapFrom(src => src.WorkTracking.HasStarted))
-                .ForMember(dest => dest.IsDelegated, opt => opt.MapFrom(src => src.DelegationInfo != null))
+                .ForMember(dest => dest.IsDelegated, opt => opt.MapFrom<bool>(src => false)) // DelegationInfo not yet implemented
+                .ForMember(dest => dest.DelegationInfo, opt => opt.MapFrom<DelegationInfoDto>(src => null)) // DelegationInfo not yet implemented
                 .ForMember(dest => dest.HasBlockingDependencies, opt => opt.MapFrom(src => src.HasBlockingDependencies))
                 .ForMember(dest => dest.TimeRemaining, opt => opt.MapFrom(src => src.Schedule.TimeRemaining))
                 .ForMember(dest => dest.IsResolved, opt => opt.MapFrom(src => src.IsResolved))

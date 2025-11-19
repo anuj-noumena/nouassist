@@ -76,6 +76,10 @@ namespace NouAssist.FinancialManagement
                 .ForMember(d => d.CurrentBalance, opt => opt.MapFrom(s => s.CurrentBalance.Amount))
                 .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.CreditLimit.Currency));
 
+            CreateMap<CustomerPayment, CustomerPaymentDto>()
+                .ForMember(d => d.Amount, opt => opt.MapFrom(s => s.Amount.Amount))
+                .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.Amount.Currency));
+
             // Financial Planning Mappings
             CreateMap<Expense, ExpenseDto>()
                 .ForMember(d => d.Amount, opt => opt.MapFrom(s => s.Amount.Amount))
@@ -94,6 +98,22 @@ namespace NouAssist.FinancialManagement
                 .ForMember(d => d.Variance, opt => opt.MapFrom(s => s.Variance.Amount))
                 .ForMember(d => d.PercentageUsed, opt => opt.MapFrom(s => s.PercentageUsed))
                 .ForMember(d => d.IsOverBudget, opt => opt.MapFrom(s => s.IsOverBudget()));
+
+            CreateMap<ExpenseReport, ExpenseReportDto>()
+                .ForMember(d => d.TotalAmount, opt => opt.MapFrom(s => s.TotalAmount.Amount))
+                .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.TotalAmount.Currency))
+                .ForMember(d => d.ExpenseIds, opt => opt.MapFrom(s => s.ExpenseIds.ToList()));
+
+            CreateMap<FinancialGoal, FinancialGoalDto>()
+                .ForMember(d => d.TargetAmount, opt => opt.MapFrom(s => s.TargetAmount.Amount))
+                .ForMember(d => d.CurrentAmount, opt => opt.MapFrom(s => s.CurrentAmount.Amount))
+                .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.TargetAmount.Currency))
+                .ForMember(d => d.ProgressPercentage, opt => opt.MapFrom(s => s.GetProgressPercentage()));
+
+            CreateMap<LinkedBankAccount, LinkedBankAccountDto>()
+                .ForMember(d => d.CurrentBalance, opt => opt.MapFrom(s => s.CurrentBalance.Amount))
+                .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.CurrentBalance.Currency))
+                .ForMember(d => d.AccountName, opt => opt.MapFrom(s => s.AccountName));
         }
     }
 }

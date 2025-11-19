@@ -37,6 +37,18 @@ namespace NouAssist.FinancialManagement
 
             CreateMap<AccountingPeriod, AccountingPeriodDto>();
 
+            CreateMap<BankStatement, BankStatementDto>()
+                .ForMember(d => d.OpeningBalance, opt => opt.MapFrom(s => s.OpeningBalance.Amount))
+                .ForMember(d => d.ClosingBalance, opt => opt.MapFrom(s => s.ClosingBalance.Amount))
+                .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.OpeningBalance.Currency))
+                .ForMember(d => d.Lines, opt => opt.MapFrom(s => s.Lines.ToList()))
+                .ForMember(d => d.TotalLines, opt => opt.MapFrom(s => s.Lines.Count))
+                .ForMember(d => d.ReconciledLines, opt => opt.MapFrom(s => s.Lines.Count(l => l.IsMatched)))
+                .ForMember(d => d.ReconciliationPercentage, opt => opt.MapFrom(s =>
+                    s.Lines.Any() ? (s.Lines.Count(l => l.IsMatched) * 100.0m / s.Lines.Count) : 0m));
+
+            CreateMap<BankStatementLine, BankStatementLineDto>();
+
             // Accounts Payable Mappings
             CreateMap<Bill, BillDto>()
                 .ForMember(d => d.Amount, opt => opt.MapFrom(s => s.Amount.Amount))

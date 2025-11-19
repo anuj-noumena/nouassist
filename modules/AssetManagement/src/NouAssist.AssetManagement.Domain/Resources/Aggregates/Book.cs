@@ -203,6 +203,7 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
         public void UpdateMetadata(
             string title = null,
             List<string> authors = null,
+            string subtitle = null,
             string description = null,
             string publisher = null,
             List<string> categories = null,
@@ -218,6 +219,7 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
                 Authors = new List<string>(authors);
             }
 
+            Subtitle = subtitle ?? Subtitle;
             Description = description ?? Description;
             Publisher = publisher ?? Publisher;
 
@@ -347,6 +349,13 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
             }
 
             return "0%";
+        }
+
+        public void Delete(string deletedBy)
+        {
+            IsDeleted = true;
+            DeleterId = Guid.TryParse(deletedBy, out var id) ? id : null;
+            DeletionTime = DateTime.UtcNow;
         }
     }
 }

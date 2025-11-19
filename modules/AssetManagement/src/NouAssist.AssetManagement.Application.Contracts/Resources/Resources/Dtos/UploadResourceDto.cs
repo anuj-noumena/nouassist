@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 using NouAssist.AssetManagement.Resources.Enums;
 
 namespace NouAssist.AssetManagement.Resources.Resources.Dtos

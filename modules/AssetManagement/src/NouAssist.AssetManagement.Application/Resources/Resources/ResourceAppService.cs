@@ -82,7 +82,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             var checksum = CalculateChecksum(fileBytes);
 
             // Generate storage key (in real app, upload to storage service)
-            var storageKey = $"{CurrentUser.Id}/{Guid.NewGuid()}/{input.File.FileName}";
+            var storageKey = $"{CurrentUser.Id.Value.ToString()}/{Guid.NewGuid().ToString()}/{input.File.FileName}";
 
             // Use domain service to create resource with version
             var resource = await _versioningService.CreateResourceWithVersionAsync(
@@ -199,7 +199,7 @@ namespace NouAssist.AssetManagement.Resources.Resources
             }
 
             var checksum = CalculateChecksum(fileBytes);
-            var storageKey = $"{CurrentUser.Id}/{Guid.NewGuid()}/{input.File.FileName}";
+            var storageKey = $"{CurrentUser.Id.Value.ToString()}/{Guid.NewGuid().ToString()}/{input.File.FileName}";
 
             // Use domain service to add new version
             _versioningService.AddNewVersion(

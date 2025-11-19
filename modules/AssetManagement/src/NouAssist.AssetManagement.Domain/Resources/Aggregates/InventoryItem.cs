@@ -206,5 +206,12 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
             if (!string.IsNullOrWhiteSpace(Location)) parts.Add(Location);
             return parts.Count == 0 ? "No location" : string.Join(" > ", parts);
         }
+
+        public void Delete(string deletedBy)
+        {
+            IsDeleted = true;
+            DeleterId = Guid.TryParse(deletedBy, out var id) ? id : null;
+            DeletionTime = DateTime.UtcNow;
+        }
     }
 }

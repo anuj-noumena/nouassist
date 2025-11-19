@@ -59,8 +59,9 @@ namespace NouAssist.AssetManagement.Resources.Storage
                 GuidGenerator.Create(),
                 input.Name,
                 input.BackendType,
+                CurrentTenant.Id,
                 input.Config,
-                CurrentTenant.Id
+                input.IsDefault
             );
 
             backend.SetFileSizeLimit(input.MaxFileSizeBytes);

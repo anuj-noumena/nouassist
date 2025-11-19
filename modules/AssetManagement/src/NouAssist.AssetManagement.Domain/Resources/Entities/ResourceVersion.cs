@@ -6,7 +6,7 @@ using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.AssetManagement.Resources.Entities
 {
-    public class ResourceVersion : Entity
+    public class ResourceVersion : Entity<Guid>
     {
         public Guid ResourceId { get; private set; }
         public int VersionNumber { get; private set; }
@@ -32,7 +32,7 @@ namespace NouAssist.AssetManagement.Resources.Entities
             string mimeType,
             long sizeBytes,
             Guid? uploadedBy = null,
-            string checksum = null)
+            string checksum = null) : base(Guid.NewGuid())
         {
             ResourceId = resourceId;
             StorageKey = Check.NotNullOrWhiteSpace(storageKey, nameof(storageKey));
@@ -41,7 +41,7 @@ namespace NouAssist.AssetManagement.Resources.Entities
             SizeBytes = sizeBytes;
             UploadedBy = uploadedBy;
             Checksum = checksum;
-            
+
             UploadedAt = DateTime.UtcNow;
             IsCurrent = false;
             OcrStatus = OcrStatus.NotApplicable;
@@ -89,6 +89,25 @@ namespace NouAssist.AssetManagement.Resources.Entities
         public bool NeedsOcr => OcrStatus == OcrStatus.Pending;
         public bool OcrFailed => OcrStatus == OcrStatus.Failed;
 
-        public override object[] GetKeys() => new object[] { ResourceId, VersionNumber };
+        public void SetOcrProcessing()
+        {
+            OcrStatus = OcrStatus.Processing;
+        }
+
+        public void SetOcrCompleted(string ocrText)
+        {
+            OcrStatus = OcrStatus.Done;
+            OcrText = ocrText;
+        }
+
+        public void SetOcrFailed(string errorMessage = null)
+        {
+            OcrStatus = OcrStatus.Failed;
+            if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                AddMetadata("OcrError", errorMessage);
+            }
+        }
+
     }
 }

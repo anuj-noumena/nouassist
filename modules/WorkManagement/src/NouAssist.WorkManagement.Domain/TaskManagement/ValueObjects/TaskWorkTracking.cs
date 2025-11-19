@@ -113,6 +113,26 @@ namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
             };
         }
 
+        public TaskWorkTracking UnmarkAsNextAction()
+        {
+            return new TaskWorkTracking
+            {
+                ProgressPercent = this.ProgressPercent,
+                StartedAt = this.StartedAt,
+                CompletedAt = this.CompletedAt,
+                ActualMinutes = this.ActualMinutes,
+                EstimatedMinutes = this.EstimatedMinutes,
+                IsNextAction = false
+            };
+        }
+
+        public TaskWorkTracking UpdateFlag(bool isFlagged, string flagReason = null)
+        {
+            // Note: Flag reason is stored in TaskFlowControlAggregate, not in WorkTracking
+            // This method is here for backwards compatibility but doesn't actually handle the flag
+            return this;
+        }
+
         // Computed properties
         public bool HasStarted => StartedAt.HasValue;
         public bool IsCompleted => CompletedAt.HasValue;

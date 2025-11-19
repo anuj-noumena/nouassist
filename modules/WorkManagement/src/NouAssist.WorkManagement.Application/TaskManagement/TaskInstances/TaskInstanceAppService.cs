@@ -956,10 +956,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> MarkAsNextActionAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskWork = await _taskInstanceWorkRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.MarkAsNextAction();
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskWork != null)
+            {
+                taskWork.WorkTracking = taskWork.WorkTracking.MarkAsNextAction();
+                await _taskInstanceWorkRepository.UpdateAsync(taskWork);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -968,10 +971,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> UnmarkAsNextActionAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskWork = await _taskInstanceWorkRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.UnmarkAsNextAction();
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskWork != null)
+            {
+                taskWork.WorkTracking = taskWork.WorkTracking.UnmarkAsNextAction();
+                await _taskInstanceWorkRepository.UpdateAsync(taskWork);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -980,10 +986,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> FlagTaskAsync(Guid id, string reason)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.UpdateFlag(true, reason);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskFlow != null)
+            {
+                taskFlow.Flag(reason);
+                await _taskFlowControlRepository.UpdateAsync(taskFlow);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }
@@ -992,10 +1001,13 @@ namespace NouAssist.WorkManagement.TaskManagement.TaskInstances
         public async Task<TaskInstanceDto> UnflagTaskAsync(Guid id)
         {
             var taskInstance = await _taskInstanceRepository.GetAsync(id);
+            var taskFlow = await _taskFlowControlRepository.GetByTaskInstanceIdAsync(id);
 
-            taskInstance.UpdateFlag(false, String.Empty);
-
-            await _taskInstanceRepository.UpdateAsync(taskInstance);
+            if (taskFlow != null)
+            {
+                taskFlow.Unflag();
+                await _taskFlowControlRepository.UpdateAsync(taskFlow);
+            }
 
             return ObjectMapper.Map<TaskInstance, TaskInstanceDto>(taskInstance);
         }

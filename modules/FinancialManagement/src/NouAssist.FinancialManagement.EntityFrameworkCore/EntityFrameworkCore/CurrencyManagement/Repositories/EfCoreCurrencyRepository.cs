@@ -68,22 +68,22 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.CurrencyManagement.R
 
         public Task<Currency> GetByCodeAsync(CurrencyCode code)
         {
-            throw new NotImplementedException();
+            return GetByCodeAsync(code, default);
         }
 
         public Task<List<Currency>> GetActiveCurrenciesAsync()
         {
-            throw new NotImplementedException();
+            return GetActiveCurrenciesAsync(default);
         }
 
         public Task<Currency> GetBaseCurrencyAsync()
         {
-            throw new NotImplementedException();
+            return GetBaseCurrencyAsync(default);
         }
 
         public Task<bool> CurrencyExistsAsync(CurrencyCode code)
         {
-            throw new NotImplementedException();
+            return CurrencyExistsAsync(code, default);
         }
     }
 }

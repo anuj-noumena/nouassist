@@ -191,32 +191,32 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AuditTrail.Repositor
 
         public Task<List<AuditEntry>> SearchAsync(AuditSearchCriteria criteria)
         {
-            throw new NotImplementedException();
+            return SearchAsync(criteria, default);
         }
 
         public Task<long> GetCountAsync(AuditSearchCriteria criteria)
         {
-            throw new NotImplementedException();
+            return GetCountAsync(criteria, default);
         }
 
         public Task<List<AuditEntry>> GetEntriesForArchivalAsync(DateTime currentDate)
         {
-            throw new NotImplementedException();
+            return GetEntriesForArchivalAsync(currentDate, default);
         }
 
         public Task<List<AuditEntry>> GetExpiredEntriesAsync(DateTime currentDate)
         {
-            throw new NotImplementedException();
+            return GetExpiredEntriesAsync(currentDate, default);
         }
 
         public Task<List<AuditEntry>> GetByEntityAsync(string entityType, string entityId, DateTime? since = null)
         {
-            throw new NotImplementedException();
+            return GetByEntityAsync(entityType, entityId, since, default);
         }
 
         public Task<List<AuditEntry>> GetByUserAsync(Guid userId, DateTime startDate, DateTime endDate)
         {
-            throw new NotImplementedException();
+            return GetByUserAsync(userId, startDate, endDate, default);
         }
     }
 }

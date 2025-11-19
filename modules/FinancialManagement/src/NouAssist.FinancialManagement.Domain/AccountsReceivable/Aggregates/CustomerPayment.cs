@@ -1,4 +1,5 @@
 using System;
+using NouAssist.FinancialManagement.AccountsReceivable.Enums;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -36,13 +37,5 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
             Reference = Check.NotNullOrWhiteSpace(reference, nameof(reference));
             PaymentSource = source;
         }
-    }
-
-    public enum PaymentSource : byte
-    {
-        Manual = 1,
-        OnlinePortal = 2,
-        PaymentGateway = 3,
-        BankTransfer = 4
     }
 }

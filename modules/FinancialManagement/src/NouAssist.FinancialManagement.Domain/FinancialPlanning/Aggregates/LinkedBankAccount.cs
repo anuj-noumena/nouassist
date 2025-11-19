@@ -1,4 +1,5 @@
 using System;
+using NouAssist.FinancialManagement.FinancialPlanning.Enums;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -12,7 +13,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public Guid UserId { get; private set; }
         public string BankName { get; private set; }
         public string AccountNumber { get; private set; }
-        public AccountType AccountType { get; private set; }
+        public BankAccountType AccountType { get; private set; }
         public MonetaryValue CurrentBalance { get; private set; }
         public DateTime LastSyncDate { get; private set; }
         public bool IsActive { get; private set; }
@@ -26,7 +27,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             Guid userId,
             string bankName,
             string accountNumber,
-            AccountType accountType,
+            BankAccountType accountType,
             string currency) : base(id)
         {
             TenantId = tenantId;
@@ -57,21 +58,5 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             IsActive = true;
             ConnectionStatus = ConnectionStatus.Active;
         }
-    }
-
-    public enum AccountType : byte
-    {
-        Checking = 1,
-        Savings = 2,
-        CreditCard = 3,
-        Investment = 4
-    }
-
-    public enum ConnectionStatus : byte
-    {
-        Active = 1,
-        Error = 2,
-        Disconnected = 3,
-        Expired = 4
     }
 }

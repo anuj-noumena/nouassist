@@ -25,18 +25,22 @@ namespace NouAssist.FinancialManagement.Shared.ValueObjects
         public MonetaryValue Add(MonetaryValue other)
         {
             if (Currency != other.Currency)
+            {
                 throw new BusinessException("Financial:CurrencyMismatch", 
                     $"Cannot add different currencies: {Currency} and {other.Currency}");
-            
+            }
+
             return new MonetaryValue(Amount + other.Amount, Currency);
         }
 
         public MonetaryValue Subtract(MonetaryValue other)
         {
             if (Currency != other.Currency)
+            {
                 throw new BusinessException("Financial:CurrencyMismatch", 
                     $"Cannot subtract different currencies: {Currency} and {other.Currency}");
-            
+            }
+
             return new MonetaryValue(Amount - other.Amount, Currency);
         }
 
@@ -48,9 +52,11 @@ namespace NouAssist.FinancialManagement.Shared.ValueObjects
         public MonetaryValue Divide(decimal divisor)
         {
             if (divisor == 0)
+            {
                 throw new BusinessException("Financial:DivisionByZero", 
                     "Cannot divide monetary value by zero");
-            
+            }
+
             return new MonetaryValue(Amount / divisor, Currency);
         }
 
@@ -77,8 +83,10 @@ namespace NouAssist.FinancialManagement.Shared.ValueObjects
         {
             var validCurrencies = new[] { "USD", "EUR", "GBP", "JPY", "CAD", "AUD", "CHF", "CNY", "BTC", "ETH" };
             if (Array.IndexOf(validCurrencies, currency) == -1)
+            {
                 throw new BusinessException("Financial:InvalidCurrency", 
                     $"Currency '{currency}' is not supported");
+            }
         }
 
         protected override IEnumerable<object> GetAtomicValues()
@@ -87,8 +95,7 @@ namespace NouAssist.FinancialManagement.Shared.ValueObjects
             yield return Currency;
         }
 
-        public override string ToString() => $"{Amount:F{DecimalPlaces}} {Currency}";
-
+        public override string ToString() => $"{Amount.ToString($"F{DecimalPlaces}")} {Currency}";
         public static MonetaryValue Zero(string currency) => new MonetaryValue(0, currency);
     }
 }

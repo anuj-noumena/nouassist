@@ -1,5 +1,6 @@
 using System;
-using NouAssist.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
+using NouAssist.SharedKernel.Extension;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
@@ -38,23 +39,23 @@ namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Entities
             CreditorName = Check.NotNullOrWhiteSpace(creditorName, nameof(creditorName));
             AccountType = Check.NotNullOrWhiteSpace(accountType, nameof(accountType));
             Status = status;
-            CreditLimit = Check.Positive(creditLimit, nameof(creditLimit));
-            CurrentBalance = Check.Positive(currentBalance, nameof(currentBalance));
+            CreditLimit = Ensure.NotNegative(creditLimit, nameof(creditLimit));
+            CurrentBalance = Ensure.NotNegative(currentBalance, nameof(currentBalance));
             OpenedDate = openedDate;
             CalculateUtilization();
         }
 
         public void UpdateBalance(decimal newBalance)
         {
-            CurrentBalance = Check.Positive(newBalance, nameof(newBalance));
+            CurrentBalance = Ensure.NotNegative(newBalance, nameof(newBalance));
             CalculateUtilization();
         }
 
         public void UpdatePaymentHistory(int days30, int days60, int days90)
         {
-            PaymentHistory30Days = Check.Positive(days30, nameof(days30));
-            PaymentHistory60Days = Check.Positive(days60, nameof(days60));
-            PaymentHistory90Days = Check.Positive(days90, nameof(days90));
+            PaymentHistory30Days = Ensure.NotNegative(days30, nameof(days30));
+            PaymentHistory60Days = Ensure.NotNegative(days60, nameof(days60));
+            PaymentHistory90Days = Ensure.NotNegative(days90, nameof(days90));
         }
 
         public void Close(DateTime closedDate)

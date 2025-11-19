@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.CurrencyManagement.Dtos
+namespace NouAssist.FinancialManagement.CurrencyManagement.Dtos
 {
     public class CreateCurrencyDto
     {

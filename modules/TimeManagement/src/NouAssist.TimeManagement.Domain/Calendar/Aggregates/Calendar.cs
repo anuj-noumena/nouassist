@@ -74,11 +74,15 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void ShareWith(Guid sharedWithUserId, CalendarPermissionLevel permissionLevel)
         {
             if (sharedWithUserId == OwnerId)
+            {
                 throw new BusinessException("Calendar:CannotShareWithSelf");
+            }
 
             var existingShare = _shares.Find(s => s.SharedWithUserId == sharedWithUserId && !s.IsRevoked);
             if (existingShare != null)
+            {
                 return; // Already shared
+            }
 
             var share = new Entities.CalendarShare(
                 Guid.NewGuid(),
@@ -97,7 +101,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
             share?.Revoke(revokedBy);
 
             if (_shares.TrueForAll(s => s.IsRevoked))
+            {
                 IsShared = false;
+            }
         }
     }
 }

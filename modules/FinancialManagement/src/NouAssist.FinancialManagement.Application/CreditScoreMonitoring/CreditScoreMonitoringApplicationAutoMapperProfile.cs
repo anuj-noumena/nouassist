@@ -1,10 +1,10 @@
 using AutoMapper;
-using NouAssist.CreditScoreMonitoring.CreditDisputes.Dtos;
-using NouAssist.CreditScoreMonitoring.CreditReports.Dtos;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes.Dtos;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditReports.Dtos;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Entities;
 
-namespace NouAssist.CreditScoreMonitoring
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring
 {
     public class CreditScoreMonitoringApplicationAutoMapperProfile : Profile
     {

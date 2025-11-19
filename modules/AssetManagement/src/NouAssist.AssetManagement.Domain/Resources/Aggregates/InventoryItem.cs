@@ -170,8 +170,15 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public void AddTag(string tag)
         {
-            if (string.IsNullOrWhiteSpace(tag)) return;
-            if (Tags.Contains(tag)) return;
+            if (string.IsNullOrWhiteSpace(tag))
+            {
+                return;
+            }
+
+            if (Tags.Contains(tag))
+            {
+                return;
+            }
 
             Tags.Add(tag);
         }
@@ -201,9 +208,21 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
         public string GetDisplayLocation()
         {
             var parts = new List<string>();
-            if (!string.IsNullOrWhiteSpace(Building)) parts.Add(Building);
-            if (!string.IsNullOrWhiteSpace(Zone)) parts.Add(Zone);
-            if (!string.IsNullOrWhiteSpace(Location)) parts.Add(Location);
+            if (!string.IsNullOrWhiteSpace(Building))
+            {
+                parts.Add(Building);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Zone))
+            {
+                parts.Add(Zone);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Location))
+            {
+                parts.Add(Location);
+            }
+
             return parts.Count == 0 ? "No location" : string.Join(" > ", parts);
         }
 

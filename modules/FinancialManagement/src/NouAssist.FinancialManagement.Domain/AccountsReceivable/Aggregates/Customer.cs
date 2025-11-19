@@ -48,8 +48,10 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public void UpdateCreditLimit(MonetaryValue newLimit, string justification)
         {
             if (newLimit.IsNegative)
+            {
                 throw new BusinessException("AR:InvalidCreditLimit", 
                     "Credit limit cannot be negative");
+            }
 
             CreditLimit = newLimit;
         }
@@ -74,7 +76,9 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public bool CanExtendCredit(MonetaryValue requestedAmount)
         {
             if (CreditOnHold)
+            {
                 return false;
+            }
 
             var proposedBalance = CurrentBalance.Add(requestedAmount);
             return proposedBalance.Amount <= CreditLimit.Amount;
@@ -83,8 +87,10 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public void Deactivate()
         {
             if (CurrentBalance.Amount > 0)
+            {
                 throw new BusinessException("AR:CannotDeactivateWithBalance", 
                     "Cannot deactivate customer with outstanding balance");
+            }
 
             IsActive = false;
         }

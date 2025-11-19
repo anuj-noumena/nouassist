@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace NouAssist.DocumentManagement.Dtos
+namespace NouAssist.FinancialManagement.DocumentManagement.Dtos
 {
     public class CreateDocumentFolderDto
     {

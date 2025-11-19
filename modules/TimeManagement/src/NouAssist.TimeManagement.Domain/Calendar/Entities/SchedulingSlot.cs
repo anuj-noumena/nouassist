@@ -32,7 +32,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
             : base(id)
         {
             if (startTime >= endTime)
+            {
                 throw new BusinessException("Calendar:InvalidTimeRange");
+            }
 
             RequestId = requestId;
             StartTime = startTime;
@@ -44,7 +46,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
             UpdatedAt = DateTime.UtcNow;
 
             if (availableParticipants != null && availableParticipants.Any())
+            {
                 _availableParticipants.AddRange(availableParticipants);
+            }
         }
 
         public void AddVote()

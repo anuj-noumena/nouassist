@@ -44,16 +44,22 @@ namespace NouAssist.PersonalDevelopment.Goals.Aggregates
             get
             {
                 if (TotalRelatedProjects == 0 && TotalRelatedTasks == 0)
+                {
                     return Goal.Progress;
+                }
 
                 const double projectWeight = 0.7;
                 const double taskWeight = 0.3;
 
                 if (TotalRelatedProjects == 0)
+                {
                     return TaskCompletionRate * 100;
+                }
 
                 if (TotalRelatedTasks == 0)
+                {
                     return ProjectCompletionRate * 100;
+                }
 
                 return (ProjectCompletionRate * projectWeight + 
                         TaskCompletionRate * taskWeight) * 100;

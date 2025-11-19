@@ -61,7 +61,9 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (input.AlignmentStrength.HasValue)
+            {
                 alignment.UpdateStrength(input.AlignmentStrength.Value);
+            }
 
             await _alignmentRepository.InsertAsync(alignment);
             return ObjectMapper.Map<GtdHorizonAlignment, GtdHorizonAlignmentDto>(alignment);
@@ -82,7 +84,9 @@ namespace NouAssist.WorkManagement.GTD.GTD
             alignment.Validate(input.IsAligned);
             
             if (!string.IsNullOrWhiteSpace(input.ValidationNotes))
+            {
                 alignment.ValidationNotes = input.ValidationNotes;
+            }
 
             await _alignmentRepository.UpdateAsync(alignment);
             return ObjectMapper.Map<GtdHorizonAlignment, GtdHorizonAlignmentDto>(alignment);

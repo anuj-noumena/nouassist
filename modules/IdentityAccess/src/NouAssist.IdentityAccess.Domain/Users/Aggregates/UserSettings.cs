@@ -50,24 +50,33 @@ namespace NouAssist.IdentityAccess.Users.Aggregates
             if (pomodoro.HasValue)
             {
                 if (pomodoro.Value < 1 || pomodoro.Value > 60)
+                {
                     throw new BusinessException("Users:InvalidPomodoroTime", 
                         "Pomodoro time must be between 1 and 60 minutes.");
+                }
+
                 DefaultPomodoroMinutes = pomodoro.Value;
             }
 
             if (shortBreak.HasValue)
             {
                 if (shortBreak.Value < 1 || shortBreak.Value > 30)
+                {
                     throw new BusinessException("Users:InvalidBreakTime", 
                         "Short break must be between 1 and 30 minutes.");
+                }
+
                 DefaultShortBreakMinutes = shortBreak.Value;
             }
 
             if (longBreak.HasValue)
             {
                 if (longBreak.Value < 1 || longBreak.Value > 60)
+                {
                     throw new BusinessException("Users:InvalidBreakTime", 
                         "Long break must be between 1 and 60 minutes.");
+                }
+
                 DefaultLongBreakMinutes = longBreak.Value;
             }
         }

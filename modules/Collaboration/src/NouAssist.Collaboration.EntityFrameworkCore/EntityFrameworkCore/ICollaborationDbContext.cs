@@ -1,4 +1,6 @@
-﻿using Volo.Abp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NouAssist.Collaboration.Comments.Aggregates;
+using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace NouAssist.Collaboration.EntityFrameworkCore;
@@ -6,7 +8,5 @@ namespace NouAssist.Collaboration.EntityFrameworkCore;
 [ConnectionStringName(CollaborationDbProperties.ConnectionStringName)]
 public interface ICollaborationDbContext : IEfCoreDbContext
 {
-    /* Add DbSet for each Aggregate Root here. Example:
-     * DbSet<Question> Questions { get; }
-     */
+    DbSet<Comment> Comments { get; }
 }

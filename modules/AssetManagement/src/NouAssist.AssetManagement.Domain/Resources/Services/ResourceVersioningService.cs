@@ -6,16 +6,19 @@ using NouAssist.AssetManagement.Resources.Data;
 using NouAssist.AssetManagement.Resources.Enums;
 using NouAssist.AssetManagement.Resources.Events;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.EventBus.Distributed;
 
 namespace NouAssist.AssetManagement.Resources.Services
 {
     public class ResourceVersioningService : DomainService
     {
         private readonly IResourceRepository _resourceRepository;
+        private readonly IDistributedEventBus _distributedEventBus;
 
-        public ResourceVersioningService(IResourceRepository resourceRepository)
+        public ResourceVersioningService(IResourceRepository resourceRepository, IDistributedEventBus distributedEventBus)
         {
             _resourceRepository = resourceRepository;
+            _distributedEventBus = distributedEventBus;
         }
 
         public async Task<Resource> CreateResourceWithVersionAsync(
@@ -51,7 +54,7 @@ namespace NouAssist.AssetManagement.Resources.Services
             resource.SetCurrentVersion(version.ResourceId);
 
             // Publish event
-            resource.AddDistributedEvent(new ResourceUploadedEto
+            _distributedEventBus.PublishAsync(new ResourceUploadedEto
             {
                 ResourceId = resource.Id,
                 OwnerId = resource.OwnerId,
@@ -107,31 +110,49 @@ namespace NouAssist.AssetManagement.Resources.Services
         private ResourceKind DetermineResourceKind(string mimeType)
         {
             if (string.IsNullOrWhiteSpace(mimeType))
+            {
                 return ResourceKind.File;
+            }
 
             if (mimeType.StartsWith("image/"))
+            {
                 return ResourceKind.Image;
+            }
 
             if (mimeType.StartsWith("video/"))
+            {
                 return ResourceKind.Video;
+            }
 
             if (mimeType.StartsWith("audio/"))
+            {
                 return ResourceKind.Audio;
+            }
 
             if (mimeType.Contains("pdf") || mimeType.Contains("document") || mimeType.Contains("word"))
+            {
                 return ResourceKind.Document;
+            }
 
             if (mimeType.Contains("spreadsheet") || mimeType.Contains("excel"))
+            {
                 return ResourceKind.Spreadsheet;
+            }
 
             if (mimeType.Contains("json"))
+            {
                 return ResourceKind.Json;
+            }
 
             if (mimeType.Contains("markdown") || mimeType.EndsWith("md"))
+            {
                 return ResourceKind.Markdown;
+            }
 
             if (mimeType.Contains("zip") || mimeType.Contains("tar") || mimeType.Contains("gz"))
+            {
                 return ResourceKind.Archive;
+            }
 
             return ResourceKind.File;
         }

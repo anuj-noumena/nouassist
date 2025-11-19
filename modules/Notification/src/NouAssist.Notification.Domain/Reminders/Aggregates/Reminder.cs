@@ -116,7 +116,10 @@ namespace NouAssist.Notification.Reminders.Aggregates
 
         public void MarkAsSent()
         {
-            if (IsSent) return;
+            if (IsSent)
+            {
+                return;
+            }
 
             IsSent = true;
             SentAt = DateTime.UtcNow;
@@ -183,8 +186,11 @@ namespace NouAssist.Notification.Reminders.Aggregates
 
         public TimeSpan? GetTimeUntilReminder()
         {
-            if (IsSent || IsCancelled) return null;
-            
+            if (IsSent || IsCancelled)
+            {
+                return null;
+            }
+
             var timeUntil = RemindAt - DateTime.UtcNow;
             return timeUntil.TotalSeconds > 0 ? timeUntil : TimeSpan.Zero;
         }

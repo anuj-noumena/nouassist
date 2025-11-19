@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DebtManagement.Enums;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.Enums;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.FinancialManagement.DebtManagement.Services

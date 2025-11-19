@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.TaxManagement.TaxReturns.Dtos;
+using NouAssist.FinancialManagement.TaxManagement.TaxReturns.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.TaxManagement.TaxReturns
+namespace NouAssist.FinancialManagement.TaxManagement.TaxReturns
 {
     public interface ITaxReturnAppService : IApplicationService
     {

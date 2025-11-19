@@ -26,8 +26,11 @@ namespace NouAssist.PersonalDevelopment.Goals.Entities
 
         public void Complete()
         {
-            if (IsCompleted) return;
-            
+            if (IsCompleted)
+            {
+                return;
+            }
+
             IsCompleted = true;
             CompletedAt = DateTime.UtcNow;
         }
@@ -51,7 +54,10 @@ namespace NouAssist.PersonalDevelopment.Goals.Entities
         public TimeSpan? GetTimeRemaining()
         {
             if (IsCompleted || !TargetDate.HasValue)
+            {
                 return null;
+            }
+
             return TargetDate.Value - DateTime.UtcNow;
         }
     }

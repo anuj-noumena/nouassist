@@ -15,7 +15,9 @@ namespace NouAssist.TimeManagement.Calendar.ValueObjects
         public TimeRange(DateTime startAt, DateTime endAt)
         {
             if (startAt >= endAt)
+            {
                 throw new BusinessException("Calendar:InvalidTimeRange");
+            }
 
             StartAt = startAt;
             EndAt = endAt;

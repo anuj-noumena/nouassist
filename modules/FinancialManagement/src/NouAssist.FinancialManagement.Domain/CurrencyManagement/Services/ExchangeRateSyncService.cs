@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CurrencyManagement.Enums;
 using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using NouAssist.FinancialManagement.CurrencyManagement.Data;
+using NouAssist.FinancialManagement.CurrencyManagement.Enums;
 using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Domain.Services;
 

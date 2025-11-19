@@ -55,9 +55,11 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
             Amount = Check.NotNull(amount, nameof(amount));
             
             if (dueDate < issueDate)
+            {
                 throw new BusinessException("AP:InvalidDueDate", 
                     "Due date cannot be before issue date");
-            
+            }
+
             IssueDate = issueDate;
             DueDate = dueDate;
             CategoryId = categoryId;
@@ -86,8 +88,10 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public void AddLineItem(BillLineItem lineItem)
         {
             if (Status != BillStatus.Draft)
+            {
                 throw new BusinessException("AP:CannotModifyBill", 
                     "Cannot add line items to non-draft bills");
+            }
 
             _lineItems.Add(lineItem);
         }
@@ -95,8 +99,10 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public void Approve(Guid approverId, ApprovalLevel level, string comments = null)
         {
             if (Status != BillStatus.PendingApproval && Status != BillStatus.Draft)
+            {
                 throw new BusinessException("AP:InvalidStatus", 
                     "Bill cannot be approved in current status");
+            }
 
             var approval = new BillApproval(Id, approverId, level, comments);
             _approvals.Add(approval);
@@ -114,8 +120,10 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public void MarkAsPaid(Guid paymentId, DateTime paymentDate, string confirmationNumber)
         {
             if (Status != BillStatus.Approved && Status != BillStatus.Scheduled)
+            {
                 throw new BusinessException("AP:CannotPay", 
                     "Only approved or scheduled bills can be paid");
+            }
 
             Status = BillStatus.Paid;
 
@@ -139,8 +147,10 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public void Cancel(string reason)
         {
             if (Status == BillStatus.Paid)
+            {
                 throw new BusinessException("AP:CannotCancelPaid", 
                     "Cannot cancel paid bills");
+            }
 
             Status = BillStatus.Cancelled;
         }

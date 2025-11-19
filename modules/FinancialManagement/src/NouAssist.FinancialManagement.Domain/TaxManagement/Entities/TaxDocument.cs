@@ -1,5 +1,5 @@
 using System;
-using NouAssist.TaxManagement.Enums;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 

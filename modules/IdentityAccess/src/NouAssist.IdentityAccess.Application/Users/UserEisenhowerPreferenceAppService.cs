@@ -53,9 +53,13 @@ namespace NouAssist.IdentityAccess.Users
             if (input.UseAutoClassification.HasValue)
             {
                 if (input.UseAutoClassification.Value)
+                {
                     preference.EnableAutoClassification();
+                }
                 else
+                {
                     preference.DisableAutoClassification();
+                }
             }
 
             await _preferenceRepository.UpdateAsync(preference);

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using NouAssist.CurrencyManagement.Enums;
+using NouAssist.FinancialManagement.CurrencyManagement.Enums;
 
-namespace NouAssist.CurrencyManagement.Dtos
+namespace NouAssist.FinancialManagement.CurrencyManagement.Dtos
 {
     public class UpdateCurrencyDto
     {

@@ -79,7 +79,10 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public bool IsFileSizeAllowed(long sizeBytes)
         {
-            if (!HasFileSizeLimit) return true;
+            if (!HasFileSizeLimit)
+            {
+                return true;
+            }
 
             var sizeMB = sizeBytes / (1024.0 * 1024.0);
             return sizeMB <= MaxFileSizeMB.Value;
@@ -87,7 +90,10 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public bool IsMimeTypeAllowed(string mimeType)
         {
-            if (!HasAllowedMimeTypes) return true;
+            if (!HasAllowedMimeTypes)
+            {
+                return true;
+            }
 
             return AllowedMimeTypes.Contains(mimeType);
         }

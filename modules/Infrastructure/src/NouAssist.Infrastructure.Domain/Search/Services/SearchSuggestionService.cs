@@ -84,7 +84,9 @@ namespace NouAssist.Infrastructure.Search.Services
         public List<string> GetQueryCompletions(string partialQuery, List<string> allQueries, int maxResults = 5)
         {
             if (string.IsNullOrWhiteSpace(partialQuery))
+            {
                 return new List<string>();
+            }
 
             return allQueries
                 .Where(q => q.StartsWith(partialQuery, StringComparison.OrdinalIgnoreCase))
@@ -95,7 +97,9 @@ namespace NouAssist.Infrastructure.Search.Services
         public List<string> GetRelatedQueries(string query, List<string> allQueries, int maxResults = 5)
         {
             if (string.IsNullOrWhiteSpace(query))
+            {
                 return new List<string>();
+            }
 
             var queryTerms = query.ToLowerInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 

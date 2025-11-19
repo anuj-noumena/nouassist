@@ -77,7 +77,9 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (!string.IsNullOrWhiteSpace(input.Description))
+            {
                 horizon.Description = input.Description;
+            }
 
             await _horizonRepository.InsertAsync(horizon);
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);
@@ -89,19 +91,29 @@ namespace NouAssist.WorkManagement.GTD.GTD
             var horizon = await _horizonRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Title))
+            {
                 horizon.Title = input.Title;
+            }
 
             if (input.Description != null)
+            {
                 horizon.Description = input.Description;
+            }
 
             if (input.Content != null)
+            {
                 horizon.Content = input.Content;
+            }
 
             if (input.LifePurpose != null)
+            {
                 horizon.LifePurpose = input.LifePurpose;
+            }
 
             if (input.VisionStatement != null)
+            {
                 horizon.VisionStatement = input.VisionStatement;
+            }
 
             await _horizonRepository.UpdateAsync(horizon);
             return ObjectMapper.Map<GtdHorizon, GtdHorizonDto>(horizon);

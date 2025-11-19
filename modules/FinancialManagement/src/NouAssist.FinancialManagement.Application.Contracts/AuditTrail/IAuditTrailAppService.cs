@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.AuditTrail.Dtos;
+using NouAssist.FinancialManagement.AuditTrail.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.AuditTrail
+namespace NouAssist.FinancialManagement.AuditTrail
 {
     public interface IAuditTrailAppService : IApplicationService
     {

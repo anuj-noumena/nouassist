@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.TaxManagement.TaxReturns.Dtos;
+using NouAssist.FinancialManagement.TaxManagement.TaxReturns.Dtos;
 
-namespace NouAssist.TaxManagement.TaxReturns
+namespace NouAssist.FinancialManagement.TaxManagement.TaxReturns
 {
     public class AddTaxDeductionDtoValidator : AbstractValidator<AddTaxDeductionDto>
     {

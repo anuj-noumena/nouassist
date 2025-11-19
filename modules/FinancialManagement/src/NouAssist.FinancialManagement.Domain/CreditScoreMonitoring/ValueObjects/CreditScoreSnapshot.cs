@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Domain.Values;
 
 namespace NouAssist.FinancialManagement.CreditScoreMonitoring.ValueObjects

@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger.Dtos;
+using NouAssist.FinancialManagement.GeneralLedger.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.GeneralLedger.Validators
+namespace NouAssist.FinancialManagement.GeneralLedger.Validators
 {
     public class CreateJournalEntryBatchDtoValidator : AbstractValidator<CreateJournalEntryBatchDto>
     {

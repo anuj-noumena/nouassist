@@ -17,7 +17,9 @@ namespace NouAssist.TimeManagement.Calendar.Services
             List<CalendarEventException> exceptions = null)
         {
             if (!recurringEvent.IsRecurring || recurringEvent.RecurrenceRule == null)
+            {
                 return new List<EventOccurrence>();
+            }
 
             exceptions ??= new List<CalendarEventException>();
             var occurrences = new List<EventOccurrence>();
@@ -30,7 +32,9 @@ namespace NouAssist.TimeManagement.Calendar.Services
             {
                 if (recurringEvent.RecurrenceRule.Until.HasValue && 
                     currentDate > recurringEvent.RecurrenceRule.Until.Value)
+                {
                     break;
+                }
 
                 if (ShouldGenerateOccurrence(currentDate, recurringEvent.RecurrenceRule))
                 {
@@ -59,17 +63,26 @@ namespace NouAssist.TimeManagement.Calendar.Services
 
                 case "WEEKLY":
                     if (rule.ByDay != null && rule.ByDay.Any())
+                    {
                         return rule.ByDay.Contains((int)date.DayOfWeek);
+                    }
+
                     return true;
 
                 case "MONTHLY":
                     if (rule.ByMonthDay != null && rule.ByMonthDay.Any())
+                    {
                         return rule.ByMonthDay.Contains(date.Day);
+                    }
+
                     return true;
 
                 case "YEARLY":
                     if (rule.ByMonth != null && rule.ByMonth.Any())
+                    {
                         return rule.ByMonth.Contains(date.Month);
+                    }
+
                     return true;
 
                 default:

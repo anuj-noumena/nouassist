@@ -45,10 +45,14 @@ namespace NouAssist.WorkManagement.GTD.GTD
             var query = queryable.Where(s => s.OwnerId == userId);
 
             if (input.Status.HasValue)
+            {
                 query = query.Where(s => s.Status == input.Status.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Category))
+            {
                 query = query.Where(s => s.Category == input.Category);
+            }
 
             if (input.NeedsReview == true)
             {
@@ -91,13 +95,19 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (!string.IsNullOrWhiteSpace(input.Description))
+            {
                 item.Description = input.Description;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Motivation))
+            {
                 item.Motivation = input.Motivation;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Category))
+            {
                 item.Category = input.Category;
+            }
 
             await _somedayMaybeRepository.InsertAsync(item);
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
@@ -109,16 +119,24 @@ namespace NouAssist.WorkManagement.GTD.GTD
             var item = await _somedayMaybeRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Title))
+            {
                 item.Title = input.Title;
+            }
 
             if (input.Description != null)
+            {
                 item.Description = input.Description;
+            }
 
             if (input.Notes != null)
+            {
                 item.Notes = input.Notes;
+            }
 
             if (input.WhyNotNow != null)
+            {
                 item.UpdateWhyNotNow(input.WhyNotNow);
+            }
 
             await _somedayMaybeRepository.UpdateAsync(item);
             return ObjectMapper.Map<SomedayMaybeItem, SomedayMaybeItemDto>(item);
@@ -182,16 +200,24 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (!string.IsNullOrWhiteSpace(input.Decision))
+            {
                 review.Decision = input.Decision;
+            }
 
             if (input.InterestLevel.HasValue)
+            {
                 review.SetInterestLevel(input.InterestLevel.Value);
+            }
 
             if (input.ShouldPromote == true)
+            {
                 review.RecommendPromotion();
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Notes))
+            {
                 review.Notes = input.Notes;
+            }
 
             await _reviewRepository.InsertAsync(review);
             await _somedayMaybeRepository.UpdateAsync(item);

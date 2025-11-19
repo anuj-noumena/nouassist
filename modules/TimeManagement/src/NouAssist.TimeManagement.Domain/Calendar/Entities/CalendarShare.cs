@@ -27,7 +27,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
             : base(id)
         {
             if (ownerId == sharedWithUserId)
+            {
                 throw new BusinessException("Calendar:CannotShareWithSelf");
+            }
 
             CalendarId = calendarId;
             OwnerId = ownerId;
@@ -39,7 +41,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         public void Accept()
         {
             if (AcceptedAt.HasValue)
+            {
                 return;
+            }
 
             AcceptedAt = DateTime.UtcNow;
         }
@@ -47,7 +51,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         public void Revoke(string revokedBy)
         {
             if (RevokedAt.HasValue)
+            {
                 return;
+            }
 
             RevokedAt = DateTime.UtcNow;
             RevokedBy = Check.NotNullOrWhiteSpace(revokedBy, nameof(revokedBy));

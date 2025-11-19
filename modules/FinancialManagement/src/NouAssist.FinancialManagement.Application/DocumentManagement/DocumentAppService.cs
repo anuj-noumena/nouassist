@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.DocumentManagement.Dtos;
-using NouAssist.DocumentManagement.Permissions;
 using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using NouAssist.FinancialManagement.DocumentManagement.Data;
+using NouAssist.FinancialManagement.DocumentManagement.Dtos;
+using NouAssist.FinancialManagement.DocumentManagement.Permissions;
 using NouAssist.FinancialManagement.DocumentManagement.Services;
 using NouAssist.FinancialManagement.DocumentManagement.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.DocumentManagement
+namespace NouAssist.FinancialManagement.DocumentManagement
 {
     [Authorize(DocumentManagementPermissions.Documents.View)]
     public class DocumentAppService : ApplicationService, IDocumentAppService

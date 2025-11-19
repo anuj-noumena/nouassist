@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.DebtManagement.Enums;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using NouAssist.FinancialManagement.DebtManagement.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;

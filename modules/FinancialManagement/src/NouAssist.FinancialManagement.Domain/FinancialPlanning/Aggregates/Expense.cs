@@ -43,9 +43,11 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             Amount = Check.NotNull(amount, nameof(amount));
             
             if (expenseDate > DateTime.UtcNow.AddDays(1))
+            {
                 throw new BusinessException("FPA:InvalidExpenseDate", 
                     "Expense date cannot be in the future");
-            
+            }
+
             ExpenseDate = expenseDate;
             CategoryId = categoryId;
             PayeeId = payeeId;
@@ -60,8 +62,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Submit()
         {
             if (Status != ExpenseStatus.Draft)
+            {
                 throw new BusinessException("FPA:ExpenseAlreadySubmitted", 
                     "Expense has already been submitted");
+            }
 
             ValidateForSubmission();
             Status = ExpenseStatus.Submitted;
@@ -70,8 +74,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Approve(Guid approvedBy)
         {
             if (Status != ExpenseStatus.Submitted)
+            {
                 throw new BusinessException("FPA:InvalidStatus", 
                     "Only submitted expenses can be approved");
+            }
 
             Status = ExpenseStatus.Approved;
         }
@@ -79,8 +85,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Reject(Guid rejectedBy, string reason)
         {
             if (Status != ExpenseStatus.Submitted)
+            {
                 throw new BusinessException("FPA:InvalidStatus", 
                     "Only submitted expenses can be rejected");
+            }
 
             Status = ExpenseStatus.Rejected;
         }
@@ -88,12 +96,16 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void MarkAsReimbursed()
         {
             if (Status != ExpenseStatus.Approved)
+            {
                 throw new BusinessException("FPA:NotApproved", 
                     "Only approved expenses can be reimbursed");
+            }
 
             if (!IsReimbursable)
+            {
                 throw new BusinessException("FPA:NotReimbursable", 
                     "Expense is not marked as reimbursable");
+            }
 
             Status = ExpenseStatus.Reimbursed;
         }

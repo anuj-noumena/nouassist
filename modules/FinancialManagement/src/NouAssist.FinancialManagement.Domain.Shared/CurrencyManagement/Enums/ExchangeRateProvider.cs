@@ -1,4 +1,4 @@
-namespace NouAssist.CurrencyManagement.Enums
+namespace NouAssist.FinancialManagement.CurrencyManagement.Enums
 {
     public enum ExchangeRateProvider : byte
     {

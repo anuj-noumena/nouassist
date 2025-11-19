@@ -39,7 +39,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
 
             var dayOfWeek = (int)date.DayOfWeek;
             // Convert Sunday (0) to 7 for consistency
-            if (dayOfWeek == 0) dayOfWeek = 7;
+            if (dayOfWeek == 0)
+            {
+                dayOfWeek = 7;
+            }
 
             return routine.ScheduledDays.Contains(dayOfWeek);
         }

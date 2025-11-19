@@ -1,4 +1,4 @@
-namespace NouAssist.AuditTrail.Permissions
+namespace NouAssist.FinancialManagement.AuditTrail.Permissions
 {
     public static class AuditTrailPermissions
     {

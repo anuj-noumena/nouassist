@@ -1,4 +1,4 @@
-namespace NouAssist.TaxManagement.Enums
+namespace NouAssist.FinancialManagement.TaxManagement.Enums
 {
     public enum TaxDocumentStatus : byte
     {

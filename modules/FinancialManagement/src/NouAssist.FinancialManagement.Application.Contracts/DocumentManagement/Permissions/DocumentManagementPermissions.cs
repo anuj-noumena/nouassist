@@ -1,4 +1,4 @@
-namespace NouAssist.DocumentManagement.Permissions
+namespace NouAssist.FinancialManagement.DocumentManagement.Permissions
 {
     public static class DocumentManagementPermissions
     {

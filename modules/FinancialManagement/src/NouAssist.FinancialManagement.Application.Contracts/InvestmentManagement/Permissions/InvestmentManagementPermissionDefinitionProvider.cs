@@ -1,8 +1,8 @@
-using NouAssist.InvestmentManagement.Localization;
+using NouAssist.FinancialManagement.InvestmentManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.InvestmentManagement.Permissions
+namespace NouAssist.FinancialManagement.InvestmentManagement.Permissions
 {
     public class InvestmentManagementPermissionDefinitionProvider : PermissionDefinitionProvider
     {

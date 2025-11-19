@@ -1,9 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AutoMapper;
-using Volo.Abp.FluentValidation;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.CreditScoreMonitoring
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring
 {
     [DependsOn(
         typeof(CreditScoreMonitoringDomainModule),

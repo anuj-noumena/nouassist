@@ -57,7 +57,10 @@ namespace NouAssist.WorkManagement.Workflow.Entities
 
         public bool IsVisibleInStatus(Guid statusId)
         {
-            if (string.IsNullOrEmpty(VisibilityRules)) return true;
+            if (string.IsNullOrEmpty(VisibilityRules))
+            {
+                return true;
+            }
 
             var rules = JsonSerializer.Deserialize<FieldVisibilityRules>(VisibilityRules);
             return rules.IsVisibleInStatus(statusId);
@@ -75,8 +78,16 @@ namespace NouAssist.WorkManagement.Workflow.Entities
 
         public bool IsVisibleInStatus(Guid statusId)
         {
-            if (HiddenInStatusIds.Contains(statusId)) return false;
-            if (VisibleInStatusIds.Any() && !VisibleInStatusIds.Contains(statusId)) return false;
+            if (HiddenInStatusIds.Contains(statusId))
+            {
+                return false;
+            }
+
+            if (VisibleInStatusIds.Any() && !VisibleInStatusIds.Contains(statusId))
+            {
+                return false;
+            }
+
             return true;
         }
     }
@@ -302,10 +313,20 @@ namespace NouAssist.WorkManagement.Workflow.Entities
         /// </summary>
         public bool IsRequiredInStatus(Guid? statusId)
         {
-            if (!statusId.HasValue) return false;
+            if (!statusId.HasValue)
+            {
+                return false;
+            }
 
-            if (OptionalInStatusIds.Contains(statusId.Value)) return false;
-            if (RequiredInStatusIds.Contains(statusId.Value)) return true;
+            if (OptionalInStatusIds.Contains(statusId.Value))
+            {
+                return false;
+            }
+
+            if (RequiredInStatusIds.Contains(statusId.Value))
+            {
+                return true;
+            }
 
             return false;
         }

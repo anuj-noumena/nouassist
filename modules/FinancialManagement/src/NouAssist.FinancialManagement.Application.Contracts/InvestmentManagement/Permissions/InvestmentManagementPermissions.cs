@@ -1,4 +1,4 @@
-namespace NouAssist.InvestmentManagement.Permissions
+namespace NouAssist.FinancialManagement.InvestmentManagement.Permissions
 {
     public static class InvestmentManagementPermissions
     {

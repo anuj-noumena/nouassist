@@ -104,13 +104,21 @@ namespace NouAssist.PersonalDevelopment.Habits.Aggregates
 
         public void Activate()
         {
-            if (IsActive) return;
+            if (IsActive)
+            {
+                return;
+            }
+
             IsActive = true;
         }
 
         public void Deactivate()
         {
-            if (!IsActive) return;
+            if (!IsActive)
+            {
+                return;
+            }
+
             IsActive = false;
         }
 

@@ -28,7 +28,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Entities
             FileName = Check.NotNullOrWhiteSpace(fileName, nameof(fileName));
             FileType = Check.NotNullOrWhiteSpace(fileType, nameof(fileType));
             FileSize = fileSize;
-            UploadedAt = Clock.Now;
+            UploadedAt = DateTime.UtcNow;
         }
     }
 }

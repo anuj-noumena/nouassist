@@ -38,10 +38,14 @@ namespace NouAssist.Notification.Reminders.ValueObjects
         public DateTime? CalculateNextOccurrence(DateTime afterDate)
         {
             if (RecurrencePattern == RecurrencePattern.None)
+            {
                 return null;
+            }
 
             if (RecurrenceEndDate.HasValue && afterDate >= RecurrenceEndDate.Value)
+            {
                 return null;
+            }
 
             var interval = RecurrenceInterval ?? 1;
             var nextDate = afterDate;
@@ -66,7 +70,9 @@ namespace NouAssist.Notification.Reminders.ValueObjects
             }
 
             if (RecurrenceEndDate.HasValue && nextDate > RecurrenceEndDate.Value)
+            {
                 return null;
+            }
 
             return nextDate;
         }
@@ -74,7 +80,9 @@ namespace NouAssist.Notification.Reminders.ValueObjects
         private DateTime CalculateNextWeeklyOccurrence(DateTime afterDate, int interval)
         {
             if (RecurrenceDaysOfWeek == null || RecurrenceDaysOfWeek.Count == 0)
+            {
                 return afterDate.AddDays(7 * interval);
+            }
 
             var currentDate = afterDate.AddDays(1);
             var weeksChecked = 0;
@@ -82,12 +90,16 @@ namespace NouAssist.Notification.Reminders.ValueObjects
             while (weeksChecked < 52) // Safety limit
             {
                 if (RecurrenceDaysOfWeek.Contains(currentDate.DayOfWeek))
+                {
                     return currentDate;
+                }
 
                 currentDate = currentDate.AddDays(1);
                 
                 if (currentDate.DayOfWeek == afterDate.DayOfWeek)
+                {
                     weeksChecked++;
+                }
             }
 
             return afterDate.AddDays(7 * interval);

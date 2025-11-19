@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CreditScoreMonitoring.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Events
 {
     [EventName("NouAssist.CreditScoreMonitoring.CreditDisputeSubmitted")]
     public class CreditDisputeSubmittedEto : IMultiTenant

@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DebtManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.DebtManagement.Events
 {
     [EventName("NouAssist.DebtManagement.DebtAccountCreated")]
     public class DebtAccountCreatedEto : IMultiTenant

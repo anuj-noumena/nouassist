@@ -1,8 +1,8 @@
 using AutoMapper;
-using NouAssist.CurrencyManagement.Dtos;
 using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.Dtos;
 
-namespace NouAssist.CurrencyManagement
+namespace NouAssist.FinancialManagement.CurrencyManagement
 {
     public class CurrencyManagementApplicationAutoMapperProfile : Profile
     {

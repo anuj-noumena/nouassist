@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.TaxManagement.Enums;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.TaxManagement.TaxReturns.Dtos
+namespace NouAssist.FinancialManagement.TaxManagement.TaxReturns.Dtos
 {
     public class TaxReturnDto : FullAuditedEntityDto<Guid>
     {

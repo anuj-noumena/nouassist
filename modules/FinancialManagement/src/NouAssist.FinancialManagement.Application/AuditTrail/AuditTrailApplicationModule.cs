@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.AuditTrail
+namespace NouAssist.FinancialManagement.AuditTrail
 {
     [DependsOn(
         typeof(AuditTrailDomainModule),

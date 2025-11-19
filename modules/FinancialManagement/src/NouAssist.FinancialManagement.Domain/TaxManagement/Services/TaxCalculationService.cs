@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
 using NouAssist.FinancialManagement.TaxManagement.ValueObjects;
-using NouAssist.TaxManagement.Enums;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.FinancialManagement.TaxManagement.Services

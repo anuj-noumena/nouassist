@@ -171,7 +171,10 @@ namespace NouAssist.PersonalDevelopment.Goals.Aggregates
         public TimeSpan? GetTimeRemaining()
         {
             if (!TargetDate.HasValue || IsCompleted)
+            {
                 return null;
+            }
+
             return TargetDate.Value - DateTime.UtcNow;
         }
 
@@ -179,11 +182,31 @@ namespace NouAssist.PersonalDevelopment.Goals.Aggregates
 
         public GoalProgressLevel GetProgressLevel()
         {
-            if (Progress == 0) return GoalProgressLevel.NotStarted;
-            if (Progress < 25) return GoalProgressLevel.JustStarted;
-            if (Progress < 50) return GoalProgressLevel.Progressing;
-            if (Progress < 75) return GoalProgressLevel.WellUnderway;
-            if (Progress < 100) return GoalProgressLevel.NearlyComplete;
+            if (Progress == 0)
+            {
+                return GoalProgressLevel.NotStarted;
+            }
+
+            if (Progress < 25)
+            {
+                return GoalProgressLevel.JustStarted;
+            }
+
+            if (Progress < 50)
+            {
+                return GoalProgressLevel.Progressing;
+            }
+
+            if (Progress < 75)
+            {
+                return GoalProgressLevel.WellUnderway;
+            }
+
+            if (Progress < 100)
+            {
+                return GoalProgressLevel.NearlyComplete;
+            }
+
             return GoalProgressLevel.Completed;
         }
 
@@ -192,7 +215,11 @@ namespace NouAssist.PersonalDevelopment.Goals.Aggregates
 
         public double GetMilestoneCompletionRate()
         {
-            if (_milestones.Count == 0) return 0;
+            if (_milestones.Count == 0)
+            {
+                return 0;
+            }
+
             return (double)GetCompletedMilestonesCount() / _milestones.Count;
         }
     }

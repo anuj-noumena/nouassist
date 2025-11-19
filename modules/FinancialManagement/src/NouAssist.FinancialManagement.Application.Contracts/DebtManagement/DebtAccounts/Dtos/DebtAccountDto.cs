@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.DebtManagement.Enums;
+using NouAssist.FinancialManagement.DebtManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.DebtManagement.DebtAccounts.Dtos
+namespace NouAssist.FinancialManagement.DebtManagement.DebtAccounts.Dtos
 {
     public class DebtAccountDto : FullAuditedEntityDto<Guid>
     {

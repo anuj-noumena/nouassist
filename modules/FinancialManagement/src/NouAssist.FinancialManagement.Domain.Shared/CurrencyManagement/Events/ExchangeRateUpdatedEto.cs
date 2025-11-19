@@ -1,9 +1,9 @@
 using System;
-using NouAssist.CurrencyManagement.Enums;
+using NouAssist.FinancialManagement.CurrencyManagement.Enums;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CurrencyManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.CurrencyManagement.Events
 {
     [EventName("NouAssist.CurrencyManagement.ExchangeRateUpdated")]
     public class ExchangeRateUpdatedEto : IMultiTenant

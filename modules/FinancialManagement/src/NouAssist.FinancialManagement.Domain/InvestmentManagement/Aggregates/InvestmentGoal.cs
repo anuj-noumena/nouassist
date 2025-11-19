@@ -1,5 +1,6 @@
 using System;
-using NouAssist.InvestmentManagement.Enums;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
+using NouAssist.SharedKernel.Extension;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -39,7 +40,7 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
             Description = description;
             TargetAmount = Check.Positive(targetAmount, nameof(targetAmount));
             
-            if (targetDate <= Clock.Now)
+            if (targetDate <= DateTime.UtcNow)
             {
                 throw new BusinessException("InvestmentManagement:TargetDateMustBeFuture");
             }
@@ -58,7 +59,7 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
 
         public void UpdateProgress(decimal currentAmount)
         {
-            CurrentAmount = Check.NotNegative(currentAmount, nameof(currentAmount));
+            CurrentAmount = Ensure.NotNegative(currentAmount, nameof(currentAmount));
             ProgressPercentage = (CurrentAmount / TargetAmount) * 100;
 
             if (CurrentAmount >= TargetAmount && !IsAchieved)
@@ -74,8 +75,8 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
 
         public int GetMonthsRemaining()
         {
-            var months = ((TargetDate.Year - Clock.Now.Year) * 12) + 
-                         (TargetDate.Month - Clock.Now.Month);
+            var months = ((TargetDate.Year - DateTime.UtcNow.Year) * 12) + 
+                         (TargetDate.Month - DateTime.UtcNow.Month);
             return Math.Max(0, months);
         }
 

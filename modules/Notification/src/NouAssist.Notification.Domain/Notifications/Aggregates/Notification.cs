@@ -101,8 +101,11 @@ namespace NouAssist.Notification.Notifications.Aggregates
 
         public void MarkAsRead()
         {
-            if (IsRead) return;
-            
+            if (IsRead)
+            {
+                return;
+            }
+
             IsRead = true;
             ReadAt = DateTime.UtcNow;
             

@@ -46,7 +46,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         public void Reschedule(DateTime newStart, DateTime newEnd, string modifiedBy)
         {
             if (newStart >= newEnd)
+            {
                 throw new BusinessException("Calendar:InvalidTimeRange");
+            }
 
             ModifiedStart = newStart;
             ModifiedEnd = newEnd;
@@ -57,18 +59,40 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         public void UpdateContent(string title = null, string description = null, 
             string location = null, string notes = null, string modifiedBy = null)
         {
-            if (title != null) ModifiedTitle = title;
-            if (description != null) ModifiedDescription = description;
-            if (location != null) ModifiedLocation = location;
-            if (notes != null) ModifiedNotes = notes;
-            if (modifiedBy != null) ModifiedBy = modifiedBy;
+            if (title != null)
+            {
+                ModifiedTitle = title;
+            }
+
+            if (description != null)
+            {
+                ModifiedDescription = description;
+            }
+
+            if (location != null)
+            {
+                ModifiedLocation = location;
+            }
+
+            if (notes != null)
+            {
+                ModifiedNotes = notes;
+            }
+
+            if (modifiedBy != null)
+            {
+                ModifiedBy = modifiedBy;
+            }
+
             UpdatedAt = DateTime.UtcNow;
         }
 
         public void Cancel(string cancelledBy, string cancellationReason = null)
         {
             if (IsCancelled)
+            {
                 return;
+            }
 
             IsCancelled = true;
             CancelledAt = DateTime.UtcNow;
@@ -80,7 +104,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         public void Restore()
         {
             if (!IsCancelled)
+            {
                 return;
+            }
 
             IsCancelled = false;
             CancelledAt = null;
@@ -102,8 +128,16 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         {
             get
             {
-                if (IsCancelled) return InstanceStatus.Cancelled;
-                if (IsModified) return InstanceStatus.Modified;
+                if (IsCancelled)
+                {
+                    return InstanceStatus.Cancelled;
+                }
+
+                if (IsModified)
+                {
+                    return InstanceStatus.Modified;
+                }
+
                 return InstanceStatus.Normal;
             }
         }

@@ -57,16 +57,24 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (input.TaskInstanceId.HasValue)
+            {
                 item.TaskInstanceId = input.TaskInstanceId;
+            }
 
             if (input.ForUserId.HasValue)
+            {
                 item.ForUserId = input.ForUserId;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Reason))
+            {
                 item.Reason = input.Reason;
+            }
 
             if (input.FollowUpDate.HasValue)
+            {
                 item.SetFollowUp(input.FollowUpDate.Value);
+            }
 
             await _waitingForRepository.InsertAsync(item);
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);
@@ -78,13 +86,19 @@ namespace NouAssist.WorkManagement.GTD.GTD
             var item = await _waitingForRepository.GetAsync(id);
 
             if (input.Reason != null)
+            {
                 item.Reason = input.Reason;
+            }
 
             if (input.Note != null)
+            {
                 item.AddNote(input.Note);
+            }
 
             if (input.FollowUpDate.HasValue)
+            {
                 item.SetFollowUp(input.FollowUpDate.Value);
+            }
 
             await _waitingForRepository.UpdateAsync(item);
             return ObjectMapper.Map<WaitingFor, WaitingForDto>(item);

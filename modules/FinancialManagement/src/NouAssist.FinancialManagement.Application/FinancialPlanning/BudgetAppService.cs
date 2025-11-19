@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning;
-using NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning.Dtos;
 using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
+using NouAssist.FinancialManagement.FinancialPlanning.Dtos;
 using NouAssist.FinancialManagement.FinancialPlanning.Entities;
 using NouAssist.FinancialManagement.Permissions;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
@@ -13,7 +12,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.Application.FinancialPlanning
+namespace NouAssist.FinancialManagement.FinancialPlanning
 {
     [Authorize(FinancialManagementPermissions.FinancialPlanning.Default)]
     public class BudgetAppService : ApplicationService, IBudgetAppService

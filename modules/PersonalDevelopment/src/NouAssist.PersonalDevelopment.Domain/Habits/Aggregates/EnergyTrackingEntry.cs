@@ -34,8 +34,16 @@ namespace NouAssist.PersonalDevelopment.Habits.Aggregates
         {
             get
             {
-                if (EnergyLevel >= 8) return Enums.EnergyLevel.High;
-                if (EnergyLevel >= 5) return Enums.EnergyLevel.Medium;
+                if (EnergyLevel >= 8)
+                {
+                    return Enums.EnergyLevel.High;
+                }
+
+                if (EnergyLevel >= 5)
+                {
+                    return Enums.EnergyLevel.Medium;
+                }
+
                 return Enums.EnergyLevel.Low;
             }
         }

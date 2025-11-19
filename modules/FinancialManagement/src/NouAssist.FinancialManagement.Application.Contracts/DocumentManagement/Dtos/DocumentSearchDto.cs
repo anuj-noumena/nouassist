@@ -1,8 +1,8 @@
 using System;
-using NouAssist.DocumentManagement.Enums;
+using NouAssist.FinancialManagement.DocumentManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.DocumentManagement.Dtos
+namespace NouAssist.FinancialManagement.DocumentManagement.Dtos
 {
     public class DocumentSearchDto : PagedAndSortedResultRequestDto
     {

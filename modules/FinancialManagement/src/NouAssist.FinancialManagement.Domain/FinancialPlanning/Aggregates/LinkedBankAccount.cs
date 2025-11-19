@@ -35,7 +35,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             AccountNumber = Check.NotNullOrWhiteSpace(accountNumber, nameof(accountNumber));
             AccountType = accountType;
             CurrentBalance = MonetaryValue.Zero(currency);
-            LastSyncDate = Clock.Now;
+            LastSyncDate = DateTime.UtcNow;
             IsActive = true;
             ConnectionStatus = ConnectionStatus.Active;
         }
@@ -43,7 +43,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void UpdateBalance(MonetaryValue newBalance)
         {
             CurrentBalance = newBalance;
-            LastSyncDate = Clock.Now;
+            LastSyncDate = DateTime.UtcNow;
         }
 
         public void Disconnect()

@@ -348,11 +348,17 @@ namespace NouAssist.FinancialManagement.Reports
 
                 string status;
                 if (Math.Abs(variancePercentage) <= 10)
+                {
                     status = "On Track";
+                }
                 else if (variancePercentage > 10)
+                {
                     status = "Over Budget";
+                }
                 else
+                {
                     status = "Under Budget";
+                }
 
                 report.LineItems.Add(new BudgetVarianceLineItem
                 {

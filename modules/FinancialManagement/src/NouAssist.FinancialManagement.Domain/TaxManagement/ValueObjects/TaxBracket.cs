@@ -29,7 +29,11 @@ namespace NouAssist.FinancialManagement.TaxManagement.ValueObjects
 
         public decimal CalculateTax(decimal income)
         {
-            if (!IsInBracket(income)) return 0;
+            if (!IsInBracket(income))
+            {
+                return 0;
+            }
+
             return BaseTax + ((income - MinIncome) * TaxRate);
         }
 

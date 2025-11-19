@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.DebtManagement.DebtAccounts.Dtos;
-using NouAssist.DebtManagement.Enums;
-using NouAssist.DebtManagement.Permissions;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using NouAssist.FinancialManagement.DebtManagement.Data;
+using NouAssist.FinancialManagement.DebtManagement.DebtAccounts.Dtos;
+using NouAssist.FinancialManagement.DebtManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.DebtManagement.DebtAccounts
+namespace NouAssist.FinancialManagement.DebtManagement.DebtAccounts
 {
     [Authorize(DebtManagementPermissions.DebtAccounts.Default)]
     public class DebtAccountAppService : ApplicationService, IDebtAccountAppService

@@ -75,15 +75,31 @@ namespace NouAssist.AssetManagement.Resources.ValueObjects
 
         public string GetDisplayAuthors()
         {
-            if (ApiAuthors == null || ApiAuthors.Count == 0) return "Unknown Author";
-            if (ApiAuthors.Count == 1) return ApiAuthors[0];
-            if (ApiAuthors.Count == 2) return string.Join(" and ", ApiAuthors);
+            if (ApiAuthors == null || ApiAuthors.Count == 0)
+            {
+                return "Unknown Author";
+            }
+
+            if (ApiAuthors.Count == 1)
+            {
+                return ApiAuthors[0];
+            }
+
+            if (ApiAuthors.Count == 2)
+            {
+                return string.Join(" and ", ApiAuthors);
+            }
+
             return $"{ApiAuthors[0]} et al.";
         }
 
         public string GetDisplayCategories()
         {
-            if (ApiCategories == null || ApiCategories.Count == 0) return "Uncategorized";
+            if (ApiCategories == null || ApiCategories.Count == 0)
+            {
+                return "Uncategorized";
+            }
+
             return string.Join(", ", ApiCategories.GetRange(0, Math.Min(3, ApiCategories.Count)));
         }
 

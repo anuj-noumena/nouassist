@@ -45,31 +45,49 @@ namespace NouAssist.IdentityAccess.Users
             }
 
             if (!string.IsNullOrWhiteSpace(input.Theme))
+            {
                 settings.UpdateTheme(input.Theme);
+            }
 
             if (input.EnableNotifications.HasValue)
+            {
                 settings.EnableNotifications = input.EnableNotifications.Value;
+            }
 
             if (input.EnableSounds.HasValue)
+            {
                 settings.EnableSounds = input.EnableSounds.Value;
+            }
 
             if (input.EnableDarkMode.HasValue)
+            {
                 settings.EnableDarkMode = input.EnableDarkMode.Value;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Language))
+            {
                 settings.Language = input.Language;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Timezone))
+            {
                 settings.Timezone = input.Timezone;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.DateFormat))
+            {
                 settings.DateFormat = input.DateFormat;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.TimeFormat))
+            {
                 settings.TimeFormat = input.TimeFormat;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.WeekStartDay))
+            {
                 settings.WeekStartDay = input.WeekStartDay;
+            }
 
             await _settingsRepository.UpdateAsync(settings);
             return ObjectMapper.Map<UserSettings, UserSettingsDto>(settings);

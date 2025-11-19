@@ -1,5 +1,5 @@
 using System;
-using NouAssist.DebtManagement.Enums;
+using NouAssist.FinancialManagement.DebtManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 

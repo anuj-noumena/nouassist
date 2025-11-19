@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.DebtManagement.DebtAccounts.Dtos;
+using NouAssist.FinancialManagement.DebtManagement.DebtAccounts.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.DebtManagement.DebtAccounts
+namespace NouAssist.FinancialManagement.DebtManagement.DebtAccounts
 {
     public interface IDebtAccountAppService : IApplicationService
     {

@@ -38,9 +38,11 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             TargetAmount = Check.NotNull(targetAmount, nameof(targetAmount));
             
             if (targetDate <= DateTime.UtcNow)
+            {
                 throw new BusinessException("FPA:InvalidTargetDate",
                     "Target date must be in the future");
-            
+            }
+
             TargetDate = targetDate;
             CurrentAmount = MonetaryValue.Zero(targetAmount.Currency);
             Status = GoalStatus.Active;
@@ -50,8 +52,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void UpdateProgress(MonetaryValue amount)
         {
             if (Status == GoalStatus.Achieved || Status == GoalStatus.Abandoned)
+            {
                 throw new BusinessException("FPA:GoalNotActive",
                     "Cannot update progress on completed goal");
+            }
 
             CurrentAmount = CurrentAmount.Add(amount);
 
@@ -73,7 +77,9 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public decimal GetProgressPercentage()
         {
             if (TargetAmount.Amount == 0)
+            {
                 return 0;
+            }
 
             return (CurrentAmount.Amount / TargetAmount.Amount) * 100;
         }

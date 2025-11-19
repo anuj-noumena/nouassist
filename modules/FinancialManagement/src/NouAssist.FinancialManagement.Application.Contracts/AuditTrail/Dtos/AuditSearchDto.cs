@@ -1,8 +1,8 @@
 using System;
-using NouAssist.AuditTrail.Enums;
+using NouAssist.FinancialManagement.AuditTrail.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.AuditTrail.Dtos
+namespace NouAssist.FinancialManagement.AuditTrail.Dtos
 {
     public class AuditSearchDto : PagedAndSortedResultRequestDto
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
 using NouAssist.FinancialManagement.TaxManagement.ValueObjects;
-using NouAssist.TaxManagement.Enums;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.FinancialManagement.TaxManagement.Services
@@ -92,7 +92,10 @@ namespace NouAssist.FinancialManagement.TaxManagement.Services
             decimal amount)
         {
             // Basic deductibility check
-            if (amount <= 0) return false;
+            if (amount <= 0)
+            {
+                return false;
+            }
 
             // Category-specific checks
             return category switch

@@ -53,8 +53,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             Check.NotNull(line, nameof(line));
 
             if (Status != BatchStatus.Draft)
+            {
                 throw new BusinessException("GL:CannotModifyPostedBatch", 
                     "Cannot add lines to a posted or reversed batch");
+            }
 
             _lines.Add(line);
         }
@@ -62,8 +64,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void Post(Guid postedBy)
         {
             if (Status != BatchStatus.Draft)
+            {
                 throw new BusinessException("GL:BatchAlreadyPosted", 
                     "Batch has already been posted");
+            }
 
             ValidateForPosting();
 
@@ -88,15 +92,17 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
                 }).ToList(),
                 TotalAmount = totalAmount,
                 PostedBy = postedBy,
-                PostedAt = Clock.Now
+                PostedAt = DateTime.UtcNow
             });
         }
 
         public JournalEntryBatch Reverse(string reversalReason, TransactionDate reversalDate, Guid reversedBy)
         {
             if (Status != BatchStatus.Posted)
+            {
                 throw new BusinessException("GL:CannotReverseUnpostedBatch", 
                     "Only posted batches can be reversed");
+            }
 
             Status = BatchStatus.Reversed;
 
@@ -145,22 +151,30 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         private void ValidateForPosting()
         {
             if (_lines.Count < 2)
+            {
                 throw new BusinessException("GL:InsufficientLines", 
                     "Journal entry must have at least 2 lines");
+            }
 
             if (!IsBalanced())
+            {
                 throw new BusinessException("GL:BatchNotBalanced", 
                     "Journal entry batch is not balanced");
+            }
 
             foreach (var line in _lines)
             {
                 if (line.DebitAmount == null && line.CreditAmount == null)
+                {
                     throw new BusinessException("GL:LineHasNoAmount", 
                         "Journal entry line must have either debit or credit amount");
+                }
 
                 if (line.DebitAmount != null && line.CreditAmount != null)
+                {
                     throw new BusinessException("GL:LineBothDebitCredit", 
                         "Journal entry line cannot have both debit and credit amounts");
+                }
             }
         }
 
@@ -168,7 +182,9 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         {
             var firstLine = _lines.FirstOrDefault();
             if (firstLine == null)
+            {
                 return null;
+            }
 
             var currency = firstLine.DebitAmount?.Currency ?? firstLine.CreditAmount?.Currency;
             var totalDebits = _lines

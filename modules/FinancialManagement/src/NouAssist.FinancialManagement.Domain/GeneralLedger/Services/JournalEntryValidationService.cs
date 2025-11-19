@@ -1,13 +1,21 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
+using NouAssist.FinancialManagement.Localization;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.FinancialManagement.GeneralLedger.Services
 {
     public class JournalEntryValidationService : DomainService
     {
+        private readonly IStringLocalizer<FinancialManagementResource> _localizer;
+        
+        public JournalEntryValidationService(IStringLocalizer<FinancialManagementResource> localizer)
+        {
+            _localizer = localizer;
+        }
+        
         public ValidationResult ValidateForPosting(JournalEntryBatch batch)
         {
             var errors = new List<string>();
@@ -15,13 +23,13 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Services
             // Basic structure validation
             if (batch.Lines.Count < 2)
             {
-                errors.Add(L["GL:MinimumTwoLines"]);
+                errors.Add(_localizer["GL:MinimumTwoLines"]);
             }
 
             // Balance validation
             if (!batch.IsBalanced())
             {
-                errors.Add(L["GL:BatchNotBalanced"]);
+                errors.Add(_localizer["GL:BatchNotBalanced"]);
             }
 
             // Line validation
@@ -29,12 +37,12 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Services
             {
                 if (line.DebitAmount == null && line.CreditAmount == null)
                 {
-                    errors.Add(L["GL:LineNeedsAmount"]);
+                    errors.Add(_localizer["GL:LineNeedsAmount"]);
                 }
 
                 if (line.DebitAmount != null && line.CreditAmount != null)
                 {
-                    errors.Add(L["GL:LineBothAmounts"]);
+                    errors.Add(_localizer["GL:LineBothAmounts"]);
                 }
             }
 
@@ -52,7 +60,7 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Services
                 // Parent must be same account type or allow children
                 if (parentAccount.Type != account.Type)
                 {
-                    errors.Add(L["GL:ParentTypeMismatch"]);
+                    errors.Add(_localizer["GL:ParentTypeMismatch"]);
                 }
 
                 // Check for circular references (would be done via repository in real scenario)

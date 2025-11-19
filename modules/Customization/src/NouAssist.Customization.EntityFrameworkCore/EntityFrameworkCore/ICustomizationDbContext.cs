@@ -1,4 +1,7 @@
-﻿using Volo.Abp.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using NouAssist.Customization.CustomFields.Aggregates;
+using NouAssist.Customization.CustomFields.Entities;
+using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 
 namespace NouAssist.Customization.EntityFrameworkCore;
@@ -6,7 +9,6 @@ namespace NouAssist.Customization.EntityFrameworkCore;
 [ConnectionStringName(CustomizationDbProperties.ConnectionStringName)]
 public interface ICustomizationDbContext : IEfCoreDbContext
 {
-    /* Add DbSet for each Aggregate Root here. Example:
-     * DbSet<Question> Questions { get; }
-     */
+    DbSet<CustomFieldDefinition> CustomFieldDefinitions { get; }
+    DbSet<CustomFieldValue> CustomFieldValues { get; }
 }

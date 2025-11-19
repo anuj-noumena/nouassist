@@ -88,7 +88,10 @@ namespace NouAssist.Customization.CustomFields.Services
 
         public object CoerceValueToType(object value, CustomFieldType fieldType)
         {
-            if (value == null) return null;
+            if (value == null)
+            {
+                return null;
+            }
 
             try
             {

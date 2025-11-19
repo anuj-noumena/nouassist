@@ -1,4 +1,4 @@
-namespace NouAssist.AuditTrail.Enums
+namespace NouAssist.FinancialManagement.AuditTrail.Enums
 {
     public enum AuditEventType : byte
     {

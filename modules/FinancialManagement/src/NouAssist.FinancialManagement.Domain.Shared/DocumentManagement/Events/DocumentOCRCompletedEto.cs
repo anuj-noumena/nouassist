@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DocumentManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.DocumentManagement.Events
 {
     [EventName("NouAssist.DocumentManagement.DocumentOCRCompleted")]
     public class DocumentOCRCompletedEto : IMultiTenant

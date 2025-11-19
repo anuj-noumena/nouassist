@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.DocumentManagement.Dtos;
+using NouAssist.FinancialManagement.DocumentManagement.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.DocumentManagement
+namespace NouAssist.FinancialManagement.DocumentManagement
 {
     public interface IDocumentAppService : IApplicationService
     {

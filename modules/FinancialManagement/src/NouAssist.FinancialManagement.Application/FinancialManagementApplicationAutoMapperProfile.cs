@@ -1,18 +1,18 @@
 using AutoMapper;
 using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
+using NouAssist.FinancialManagement.AccountsPayable.Dtos;
 using NouAssist.FinancialManagement.AccountsPayable.Entities;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
+using NouAssist.FinancialManagement.AccountsReceivable.Dtos;
 using NouAssist.FinancialManagement.AccountsReceivable.Entities;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsPayable.Dtos;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable.Dtos;
-using NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning.Dtos;
-using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger.Dtos;
 using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
+using NouAssist.FinancialManagement.FinancialPlanning.Dtos;
 using NouAssist.FinancialManagement.FinancialPlanning.Entities;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
+using NouAssist.FinancialManagement.GeneralLedger.Dtos;
 using NouAssist.FinancialManagement.GeneralLedger.Entities;
 
-namespace NouAssist.FinancialManagement.Application
+namespace NouAssist.FinancialManagement
 {
     public class FinancialManagementApplicationAutoMapperProfile : Profile
     {

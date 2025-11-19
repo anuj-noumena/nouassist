@@ -60,8 +60,11 @@ namespace NouAssist.Infrastructure.Activity.Aggregates
 
         public void MarkAsRead()
         {
-            if (IsRead) return;
-            
+            if (IsRead)
+            {
+                return;
+            }
+
             IsRead = true;
             ReadAt = DateTime.UtcNow;
         }
@@ -85,8 +88,11 @@ namespace NouAssist.Infrastructure.Activity.Aggregates
 
         public void RecordChanges(Dictionary<string, object> changes)
         {
-            if (changes == null || changes.Count == 0) return;
-            
+            if (changes == null || changes.Count == 0)
+            {
+                return;
+            }
+
             foreach (var change in changes)
             {
                 Changes[change.Key] = change.Value;

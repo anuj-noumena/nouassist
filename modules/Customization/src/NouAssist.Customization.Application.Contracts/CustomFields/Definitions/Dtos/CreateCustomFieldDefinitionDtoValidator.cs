@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace NouAssist.Customization.CustomFields.Definitions.Dtos
 {
     public class CreateCustomFieldDefinitionDtoValidator : AbstractValidator<CreateCustomFieldDefinitionDto>

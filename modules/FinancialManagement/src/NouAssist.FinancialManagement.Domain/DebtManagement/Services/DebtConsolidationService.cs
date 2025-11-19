@@ -33,8 +33,7 @@ namespace NouAssist.FinancialManagement.DebtManagement.Services
 
             // Calculate consolidated loan payment
             var monthlyRate = consolidationLoanInterestRate / 12 / 100;
-            var consolidatedPayment = totalCurrentBalance * 
-                (decimal)(monthlyRate / (1 - Math.Pow(1 + (double)monthlyRate, -consolidationLoanTermMonths)));
+            var consolidatedPayment = totalCurrentBalance * (monthlyRate / (decimal)(1 - Math.Pow(1 + (double)monthlyRate, -consolidationLoanTermMonths)));
 
             // Calculate total interest on consolidated loan
             var consolidatedTotalInterest = 
@@ -62,7 +61,10 @@ namespace NouAssist.FinancialManagement.DebtManagement.Services
         private decimal CalculateWeightedAverageRate(List<DebtAccount> debts)
         {
             var totalBalance = debts.Sum(d => d.CurrentBalance);
-            if (totalBalance == 0) return 0;
+            if (totalBalance == 0)
+            {
+                return 0;
+            }
 
             return debts.Sum(d => d.InterestRate * (d.CurrentBalance / totalBalance));
         }

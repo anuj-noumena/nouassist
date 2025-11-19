@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.AuditTrail.Dtos;
-using NouAssist.AuditTrail.Permissions;
 using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 using NouAssist.FinancialManagement.AuditTrail.Data;
+using NouAssist.FinancialManagement.AuditTrail.Dtos;
+using NouAssist.FinancialManagement.AuditTrail.Enums;
+using NouAssist.FinancialManagement.AuditTrail.Permissions;
 using NouAssist.FinancialManagement.AuditTrail.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.AuditTrail
+namespace NouAssist.FinancialManagement.AuditTrail
 {
     [Authorize(AuditTrailPermissions.AuditEntries.View)]
     public class AuditTrailAppService : ApplicationService, IAuditTrailAppService
@@ -88,8 +89,8 @@ namespace NouAssist.AuditTrail
                 TotalEntries = auditEntries.Count,
                 UniqueUsers = auditEntries.Select(e => e.UserContext.UserId).Distinct().Count(),
                 EntitiesModified = auditEntries.Select(e => e.EntityReference.EntityId).Distinct().Count(),
-                HighRiskOperations = auditEntries.Count(e => e.ComplianceFlags.HasFlag(Enums.ComplianceFlag.HighRisk)),
-                SuspiciousActivity = auditEntries.Count(e => e.ComplianceFlags.HasFlag(Enums.ComplianceFlag.Suspicious))
+                HighRiskOperations = auditEntries.Count(e => e.ComplianceFlags.HasFlag(ComplianceFlag.HighRisk)),
+                SuspiciousActivity = auditEntries.Count(e => e.ComplianceFlags.HasFlag(ComplianceFlag.Suspicious))
             };
 
             return new AuditTrailReportDto

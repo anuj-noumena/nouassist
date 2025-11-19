@@ -90,15 +90,21 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void SetTimeRange(DateTime startAt, DateTime endAt, bool isAllDay)
         {
             if (startAt >= endAt)
+            {
                 throw new BusinessException("Calendar:InvalidTimeRange");
+            }
 
             var duration = endAt - startAt;
 
             if (isAllDay && duration.TotalDays < 1)
+            {
                 throw new BusinessException("Calendar:AllDayEventMinDuration");
+            }
 
             if (!isAllDay && duration.TotalMinutes < 1)
+            {
                 throw new BusinessException("Calendar:InvalidEventDuration");
+            }
 
             StartAt = startAt;
             EndAt = endAt;
@@ -108,7 +114,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void Reschedule(DateTime newStartAt, DateTime newEndAt)
         {
             if (IsCancelled)
+            {
                 throw new BusinessException("Calendar:CannotEditCancelledEvent");
+            }
 
             SetTimeRange(newStartAt, newEndAt, IsAllDay);
         }
@@ -116,7 +124,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void Cancel(string cancelledBy, string cancellationReason = null)
         {
             if (IsCancelled)
+            {
                 throw new BusinessException("Calendar:EventAlreadyCancelled");
+            }
 
             IsCancelled = true;
             CancelledAt = DateTime.UtcNow;
@@ -138,7 +148,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
             var entity = new LinkedEntity(entityId, entityType);
             
             if (_linkedEntities.Any(e => e.EntityId == entityId && e.EntityType == entityType))
+            {
                 throw new BusinessException("Calendar:DuplicateLinkedEntity");
+            }
 
             _linkedEntities.Add(entity);
         }
@@ -161,11 +173,27 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         {
             get
             {
-                if (IsCancelled) return EventStatus.Cancelled;
+                if (IsCancelled)
+                {
+                    return EventStatus.Cancelled;
+                }
+
                 var now = DateTime.UtcNow;
-                if (now < StartAt) return EventStatus.Upcoming;
-                if (now > EndAt) return EventStatus.Past;
-                if (now >= StartAt && now <= EndAt) return EventStatus.Ongoing;
+                if (now < StartAt)
+                {
+                    return EventStatus.Upcoming;
+                }
+
+                if (now > EndAt)
+                {
+                    return EventStatus.Past;
+                }
+
+                if (now >= StartAt && now <= EndAt)
+                {
+                    return EventStatus.Ongoing;
+                }
+
                 return EventStatus.Scheduled;
             }
         }

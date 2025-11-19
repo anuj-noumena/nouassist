@@ -1,10 +1,10 @@
 using AutoMapper;
-using NouAssist.DebtManagement.DebtAccounts.Dtos;
-using NouAssist.DebtManagement.PayoffPlans.Dtos;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
+using NouAssist.FinancialManagement.DebtManagement.DebtAccounts.Dtos;
 using NouAssist.FinancialManagement.DebtManagement.Entities;
+using NouAssist.FinancialManagement.DebtManagement.PayoffPlans.Dtos;
 
-namespace NouAssist.DebtManagement
+namespace NouAssist.FinancialManagement.DebtManagement
 {
     public class DebtManagementApplicationAutoMapperProfile : Profile
     {

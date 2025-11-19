@@ -58,8 +58,15 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 
         private bool Equals(object actual, object expected)
         {
-            if (actual == null && expected == null) return true;
-            if (actual == null || expected == null) return false;
+            if (actual == null && expected == null)
+            {
+                return true;
+            }
+
+            if (actual == null || expected == null)
+            {
+                return false;
+            }
 
             // Try numeric comparison first
             if (TryConvertToDouble(actual, out var actualNum) &&
@@ -119,33 +126,60 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
 
         private bool Contains(object actual, object expected)
         {
-            if (actual == null || expected == null) return false;
+            if (actual == null || expected == null)
+            {
+                return false;
+            }
+
             return actual.ToString().Contains(expected.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         private bool StartsWith(object actual, object expected)
         {
-            if (actual == null || expected == null) return false;
+            if (actual == null || expected == null)
+            {
+                return false;
+            }
+
             return actual.ToString().StartsWith(expected.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         private bool EndsWith(object actual, object expected)
         {
-            if (actual == null || expected == null) return false;
+            if (actual == null || expected == null)
+            {
+                return false;
+            }
+
             return actual.ToString().EndsWith(expected.ToString(), StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsEmpty(object value)
         {
-            if (value == null) return true;
-            if (value is string str) return string.IsNullOrWhiteSpace(str);
-            if (value is IEnumerable<object> enumerable) return !enumerable.Any();
+            if (value == null)
+            {
+                return true;
+            }
+
+            if (value is string str)
+            {
+                return string.IsNullOrWhiteSpace(str);
+            }
+
+            if (value is IEnumerable<object> enumerable)
+            {
+                return !enumerable.Any();
+            }
+
             return false;
         }
 
         private bool In(object actual, object expected)
         {
-            if (actual == null || expected == null) return false;
+            if (actual == null || expected == null)
+            {
+                return false;
+            }
 
             // Expected should be a collection
             if (expected is IEnumerable<object> collection)
@@ -166,14 +200,22 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions
         private bool TryConvertToDouble(object value, out double result)
         {
             result = 0;
-            if (value == null) return false;
+            if (value == null)
+            {
+                return false;
+            }
+
             return double.TryParse(value.ToString(), out result);
         }
 
         private bool TryConvertToDateTime(object value, out DateTime result)
         {
             result = DateTime.MinValue;
-            if (value == null) return false;
+            if (value == null)
+            {
+                return false;
+            }
+
             if (value is DateTime dt)
             {
                 result = dt;

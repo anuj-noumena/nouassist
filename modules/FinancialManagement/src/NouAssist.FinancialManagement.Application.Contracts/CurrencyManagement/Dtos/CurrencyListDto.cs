@@ -1,6 +1,7 @@
+using NouAssist.FinancialManagement.CurrencyManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CurrencyManagement.Dtos
+namespace NouAssist.FinancialManagement.CurrencyManagement.Dtos
 {
     public class GetCurrencyListDto : PagedAndSortedResultRequestDto
     {

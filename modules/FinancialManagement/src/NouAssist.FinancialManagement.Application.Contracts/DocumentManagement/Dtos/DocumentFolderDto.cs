@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.DocumentManagement.Dtos
+namespace NouAssist.FinancialManagement.DocumentManagement.Dtos
 {
     public class DocumentFolderDto : FullAuditedEntityDto<Guid>
     {

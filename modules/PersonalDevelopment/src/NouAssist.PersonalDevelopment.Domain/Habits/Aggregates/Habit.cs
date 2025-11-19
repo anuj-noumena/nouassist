@@ -83,8 +83,11 @@ namespace NouAssist.PersonalDevelopment.Habits.Aggregates
 
         public bool IsScheduledForDay(DateTime date)
         {
-            if (!HasSchedule) return true; // No schedule means everyday
-            
+            if (!HasSchedule)
+            {
+                return true; // No schedule means everyday
+            }
+
             var dayOfWeek = (DayOfWeek)((int)date.DayOfWeek == 0 ? 7 : (int)date.DayOfWeek);
             return _scheduledDays.Contains(dayOfWeek);
         }
@@ -94,13 +97,21 @@ namespace NouAssist.PersonalDevelopment.Habits.Aggregates
         // State Management
         public void Activate()
         {
-            if (IsActive) return;
+            if (IsActive)
+            {
+                return;
+            }
+
             IsActive = true;
         }
 
         public void Deactivate()
         {
-            if (!IsActive) return;
+            if (!IsActive)
+            {
+                return;
+            }
+
             IsActive = false;
         }
 

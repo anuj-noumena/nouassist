@@ -163,10 +163,26 @@ namespace NouAssist.IdentityAccess.Contacts.Services
 
         private int CalculateRecencyScore(int daysSinceContact)
         {
-            if (daysSinceContact <= 7) return 100;
-            if (daysSinceContact <= 30) return 80;
-            if (daysSinceContact <= 90) return 50;
-            if (daysSinceContact <= 180) return 30;
+            if (daysSinceContact <= 7)
+            {
+                return 100;
+            }
+
+            if (daysSinceContact <= 30)
+            {
+                return 80;
+            }
+
+            if (daysSinceContact <= 90)
+            {
+                return 50;
+            }
+
+            if (daysSinceContact <= 180)
+            {
+                return 30;
+            }
+
             return 10;
         }
     }

@@ -29,12 +29,16 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             DateTime endDate) : base(id)
         {
             if (periodNumber < 1 || periodNumber > 12)
+            {
                 throw new BusinessException("GL:InvalidPeriodNumber", 
                     "Period number must be between 1 and 12");
+            }
 
             if (endDate <= startDate)
+            {
                 throw new BusinessException("GL:InvalidPeriodDates", 
                     "End date must be after start date");
+            }
 
             TenantId = tenantId;
             FiscalYear = fiscalYear;
@@ -47,11 +51,13 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void Close(Guid closedBy)
         {
             if (Status != PeriodStatus.Open)
+            {
                 throw new BusinessException("GL:PeriodNotOpen", 
                     "Only open periods can be closed");
+            }
 
             Status = PeriodStatus.Closed;
-            ClosedDate = Clock.Now;
+            ClosedDate = DateTime.UtcNow;
             ClosedBy = closedBy;
 
             AddDistributedEvent(new AccountingPeriodClosedEto
@@ -70,12 +76,16 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void Reopen(string reopenReason)
         {
             if (Status != PeriodStatus.Closed)
+            {
                 throw new BusinessException("GL:PeriodNotClosed", 
                     "Only closed periods can be reopened");
+            }
 
             if (Status == PeriodStatus.PermanentlyClosed)
+            {
                 throw new BusinessException("GL:PeriodPermanentlyClosed", 
                     "Permanently closed periods cannot be reopened");
+            }
 
             Status = PeriodStatus.Open;
             ClosedDate = null;
@@ -85,8 +95,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void PermanentlyClose()
         {
             if (Status != PeriodStatus.Closed)
+            {
                 throw new BusinessException("GL:MustBeClosedFirst", 
                     "Period must be closed before permanent closure");
+            }
 
             Status = PeriodStatus.PermanentlyClosed;
         }

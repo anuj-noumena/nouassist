@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NouAssist.AssetManagement.EntityFrameworkCore.Resources.EntityFrameworkCore.Repositories;
+using NouAssist.AssetManagement.Resources.Aggregates;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
@@ -16,9 +18,14 @@ public class AssetManagementEntityFrameworkCoreModule : AbpModule
         {
             options.AddDefaultRepositories<IAssetManagementDbContext>(includeAllEntities: true);
             
-            /* Add custom repositories here. Example:
-            * options.AddRepository<Question, EfCoreQuestionRepository>();
-            */
+              context.Services.AddAbpDbContext<AssetManagementDbContext>(options =>
+               {
+                   options.AddRepository<Resource, EfCoreResourceRepository>();
+                   options.AddRepository<Book, EfCoreBookRepository>();
+                   options.AddRepository<InventoryItem, EfCoreInventoryItemRepository>();
+                   options.AddRepository<StorageBackend, EfCoreStorageBackendRepository>();
+                   options.AddRepository<BookCollection, EfCoreBookCollectionRepository>();
+               });
         });
     }
 }

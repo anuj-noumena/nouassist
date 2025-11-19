@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.InvestmentManagement.InvestmentGoals.Dtos;
+using NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals.Dtos;
 
-namespace NouAssist.InvestmentManagement.InvestmentGoals
+namespace NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals
 {
     public class CreateInvestmentGoalDtoValidator : AbstractValidator<CreateInvestmentGoalDto>
     {

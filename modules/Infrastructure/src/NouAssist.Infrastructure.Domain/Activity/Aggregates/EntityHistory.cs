@@ -89,7 +89,11 @@ namespace NouAssist.Infrastructure.Activity.Aggregates
 
         public List<string> GetChangedFields()
         {
-            if (Changes == null) return new List<string>();
+            if (Changes == null)
+            {
+                return new List<string>();
+            }
+
             return new List<string>(Changes.Keys);
         }
     }

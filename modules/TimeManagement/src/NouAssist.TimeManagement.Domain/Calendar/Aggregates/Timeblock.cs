@@ -59,15 +59,21 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void SetTimeRange(DateTime startAt, DateTime endAt)
         {
             if (startAt >= endAt)
+            {
                 throw new BusinessException("Calendar:InvalidTimeRange");
+            }
 
             var duration = endAt - startAt;
             
             if (duration.TotalMinutes < 15)
+            {
                 throw new BusinessException("Calendar:TimeblockMinDuration");
+            }
 
             if (duration.TotalHours > 8)
+            {
                 throw new BusinessException("Calendar:TimeblockMaxDuration");
+            }
 
             StartAt = startAt;
             EndAt = endAt;
@@ -76,7 +82,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void Start()
         {
             if (Status != TimeblockStatus.Planned)
+            {
                 throw new BusinessException("Calendar:CanOnlyStartPlanned");
+            }
 
             Status = TimeblockStatus.InProgress;
         }
@@ -84,7 +92,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void Complete(string completionNotes = null)
         {
             if (Status == TimeblockStatus.Completed)
+            {
                 throw new BusinessException("Calendar:TimeblockAlreadyCompleted");
+            }
 
             Status = TimeblockStatus.Completed;
             CompletionNotes = completionNotes;

@@ -1,8 +1,8 @@
 using AutoMapper;
-using NouAssist.AuditTrail.Dtos;
 using NouAssist.FinancialManagement.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Dtos;
 
-namespace NouAssist.AuditTrail
+namespace NouAssist.FinancialManagement.AuditTrail
 {
     public class AuditTrailApplicationAutoMapperProfile : Profile
     {

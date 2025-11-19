@@ -1,9 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AutoMapper;
-using Volo.Abp.FluentValidation;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.CurrencyManagement
+namespace NouAssist.FinancialManagement.CurrencyManagement
 {
     [DependsOn(
         typeof(CurrencyManagementDomainModule),

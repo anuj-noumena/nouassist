@@ -51,7 +51,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
             Status = SchedulingRequestStatus.Pending;
 
             if (participantIds == null || !participantIds.Any())
+            {
                 throw new BusinessException("Calendar:MinimumParticipants");
+            }
 
             _participantIds.AddRange(participantIds);
         }
@@ -64,7 +66,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void SetDuration(int durationMinutes)
         {
             if (durationMinutes < 15 || durationMinutes > 480)
+            {
                 throw new ArgumentException("Duration must be between 15 and 480 minutes", nameof(durationMinutes));
+            }
 
             DurationMinutes = durationMinutes;
         }
@@ -85,11 +89,15 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void Schedule(Guid slotId, Guid calendarEventId)
         {
             if (Status != SchedulingRequestStatus.Pending)
+            {
                 throw new BusinessException("Calendar:SchedulingRequestNotPending");
+            }
 
             var slot = _slots.FirstOrDefault(s => s.Id == slotId);
             if (slot == null)
+            {
                 throw new EntityNotFoundException(typeof(Entities.SchedulingSlot), slotId);
+            }
 
             slot.Select();
             Status = SchedulingRequestStatus.Scheduled;

@@ -1,9 +1,9 @@
 using System;
-using NouAssist.DocumentManagement.Enums;
+using NouAssist.FinancialManagement.DocumentManagement.Enums;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DocumentManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.DocumentManagement.Events
 {
     [EventName("NouAssist.DocumentManagement.DocumentUploaded")]
     public class DocumentUploadedEto : IMultiTenant

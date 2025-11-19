@@ -1,4 +1,4 @@
-namespace NouAssist.DebtManagement.Enums
+namespace NouAssist.FinancialManagement.DebtManagement.Enums
 {
     public enum DebtStatus : byte
     {

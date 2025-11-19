@@ -1,4 +1,4 @@
-namespace NouAssist.InvestmentManagement.Enums
+namespace NouAssist.FinancialManagement.InvestmentManagement.Enums
 {
     public enum TransactionType : byte
     {

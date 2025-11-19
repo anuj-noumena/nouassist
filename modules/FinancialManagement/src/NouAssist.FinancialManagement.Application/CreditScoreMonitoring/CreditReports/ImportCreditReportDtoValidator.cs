@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.CreditScoreMonitoring.CreditReports.Dtos;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditReports.Dtos;
 
-namespace NouAssist.CreditScoreMonitoring.CreditReports
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditReports
 {
     public class ImportCreditReportDtoValidator : AbstractValidator<ImportCreditReportDto>
     {

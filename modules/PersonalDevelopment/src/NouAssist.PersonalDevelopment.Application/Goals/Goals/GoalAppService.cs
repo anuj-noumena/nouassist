@@ -76,19 +76,29 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             );
 
             if (!string.IsNullOrWhiteSpace(input.Description))
+            {
                 goal.Description = input.Description;
+            }
 
             if (input.AreaId.HasValue)
+            {
                 goal.AreaId = input.AreaId;
+            }
 
             if (input.ParentGoalId.HasValue)
+            {
                 goal.ParentGoalId = input.ParentGoalId;
+            }
 
             if (input.TargetDate.HasValue)
+            {
                 goal.TargetDate = input.TargetDate;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.SmartDescription))
+            {
                 goal.SmartDescription = input.SmartDescription;
+            }
 
             await _goalRepository.InsertAsync(goal);
             return ObjectMapper.Map<Goal, GoalDto>(goal);
@@ -100,25 +110,39 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             var goal = await _goalRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Title))
+            {
                 goal.Title = input.Title;
+            }
 
             if (input.Description != null)
+            {
                 goal.Description = input.Description;
+            }
 
             if (input.AreaId.HasValue)
+            {
                 goal.AreaId = input.AreaId;
+            }
 
             if (input.TargetDate.HasValue)
+            {
                 goal.TargetDate = input.TargetDate;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.SmartDescription))
+            {
                 goal.SmartDescription = input.SmartDescription;
+            }
 
             if (input.ImportanceScore.HasValue)
+            {
                 goal.UpdateImportance(new ImportanceScore(input.ImportanceScore.Value));
+            }
 
             if (input.UrgencyScore.HasValue)
+            {
                 goal.UpdateUrgency(new UrgencyScore(input.UrgencyScore.Value));
+            }
 
             await _goalRepository.UpdateAsync(goal);
             return ObjectMapper.Map<Goal, GoalDto>(goal);
@@ -187,10 +211,14 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             );
 
             if (!string.IsNullOrWhiteSpace(input.Description))
+            {
                 milestone.Description = input.Description;
+            }
 
             if (input.TargetDate.HasValue)
+            {
                 milestone.TargetDate = input.TargetDate;
+            }
 
             milestone.OrderIndex = goal.Milestones.Count;
 

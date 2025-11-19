@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsPayable.Dtos;
+using NouAssist.FinancialManagement.AccountsPayable.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.AccountsPayable.Validators
+namespace NouAssist.FinancialManagement.AccountsPayable.Validators
 {
     public class CreateBillDtoValidator : AbstractValidator<CreateBillDto>
     {

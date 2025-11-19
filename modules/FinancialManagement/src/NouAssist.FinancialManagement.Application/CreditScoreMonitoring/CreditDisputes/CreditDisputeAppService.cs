@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CreditScoreMonitoring.CreditDisputes.Dtos;
-using NouAssist.CreditScoreMonitoring.Enums;
-using NouAssist.CreditScoreMonitoring.Permissions;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes.Dtos;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Data;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CreditScoreMonitoring.CreditDisputes
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes
 {
     [Authorize(CreditScoreMonitoringPermissions.CreditDisputes.Default)]
     public class CreditDisputeAppService : ApplicationService, ICreditDisputeAppService

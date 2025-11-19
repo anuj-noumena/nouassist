@@ -14,9 +14,11 @@ namespace NouAssist.FinancialManagement.Shared.ValueObjects
         public TransactionDate(DateTime date)
         {
             if (date > DateTime.UtcNow.AddDays(1))
+            {
                 throw new BusinessException("Financial:InvalidTransactionDate", 
                     "Transaction date cannot be more than 1 day in the future");
-            
+            }
+
             Date = date.Date; // Normalize to date only
         }
 

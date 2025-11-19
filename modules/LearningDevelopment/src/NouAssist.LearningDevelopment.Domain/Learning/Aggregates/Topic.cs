@@ -237,8 +237,16 @@ namespace NouAssist.LearningDevelopment.Learning.Aggregates
 
         private bool IsDescendantOf(Guid potentialAncestorId)
         {
-            if (!ParentId.HasValue) return false;
-            if (ParentId == potentialAncestorId) return true;
+            if (!ParentId.HasValue)
+            {
+                return false;
+            }
+
+            if (ParentId == potentialAncestorId)
+            {
+                return true;
+            }
+
             // Note: This would require fetching parent from repository in real scenario
             return false;
         }

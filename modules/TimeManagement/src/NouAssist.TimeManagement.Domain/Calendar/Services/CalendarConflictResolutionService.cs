@@ -62,7 +62,9 @@ namespace NouAssist.TimeManagement.Calendar.Services
             var options = new List<ConflictResolutionOption>();
 
             if (!conflictResult.HasConflicts)
+            {
                 return options;
+            }
 
             var proposedEvent = conflictResult.ProposedEvent;
 

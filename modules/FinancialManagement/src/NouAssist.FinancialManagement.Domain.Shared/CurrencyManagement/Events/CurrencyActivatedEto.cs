@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.CurrencyManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.CurrencyManagement.Events
 {
     [EventName("NouAssist.CurrencyManagement.CurrencyActivated")]
     public class CurrencyActivatedEto : IMultiTenant

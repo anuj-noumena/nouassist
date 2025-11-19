@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.TaxManagement.Enums;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
+using NouAssist.SharedKernel.Extension;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -43,7 +44,7 @@ namespace NouAssist.FinancialManagement.TaxManagement.Aggregates
 
         public void UpdateDependents(int numberOfDependents)
         {
-            NumberOfDependents = Check.NotNegative(numberOfDependents, nameof(numberOfDependents));
+            NumberOfDependents = Ensure.NotNegative(numberOfDependents, nameof(numberOfDependents));
         }
 
         public void UpdateSettings(bool isItemizer, bool isSelfEmployed)

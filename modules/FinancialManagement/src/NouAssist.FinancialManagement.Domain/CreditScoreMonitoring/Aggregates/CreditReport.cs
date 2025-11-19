@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CreditScoreMonitoring.Enums;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Entities;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;

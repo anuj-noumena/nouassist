@@ -32,7 +32,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
 
         public int CalculateCurrentStreak(List<HabitTrackingEntry> completedEntries)
         {
-            if (!completedEntries.Any()) return 0;
+            if (!completedEntries.Any())
+            {
+                return 0;
+            }
 
             var sorted = completedEntries.OrderByDescending(e => e.LogDate).ToList();
             int streak = 0;
@@ -60,7 +63,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
 
         public int CalculateLongestStreak(List<HabitTrackingEntry> completedEntries)
         {
-            if (!completedEntries.Any()) return 0;
+            if (!completedEntries.Any())
+            {
+                return 0;
+            }
 
             var sorted = completedEntries.OrderBy(e => e.LogDate).ToList();
             int maxStreak = 0;
@@ -94,7 +100,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
 
         public double CalculateCompletionRate(List<HabitTrackingEntry> trackingHistory)
         {
-            if (!trackingHistory.Any()) return 0.0;
+            if (!trackingHistory.Any())
+            {
+                return 0.0;
+            }
 
             var completed = trackingHistory.Count(e => e.Completed);
             return (double)completed / trackingHistory.Count;
@@ -105,7 +114,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
             var cutoffDate = Clock.Now.Date.AddDays(-days);
             var entries = trackingHistory.Where(e => e.LogDate >= cutoffDate).ToList();
 
-            if (!entries.Any()) return 0.0;
+            if (!entries.Any())
+            {
+                return 0.0;
+            }
 
             var completed = entries.Count(e => e.Completed);
             return (double)completed / entries.Count;
@@ -137,7 +149,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
                 byDay[day].Add(entry.Completed);
             }
 
-            if (!byDay.Any()) return null;
+            if (!byDay.Any())
+            {
+                return null;
+            }
 
             var rates = byDay.ToDictionary(
                 kvp => kvp.Key,

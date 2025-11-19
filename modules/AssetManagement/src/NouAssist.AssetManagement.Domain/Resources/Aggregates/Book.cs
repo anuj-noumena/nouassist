@@ -100,7 +100,10 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public void StartReading()
         {
-            if (ReadingStatus == ReadingStatus.Reading) return;
+            if (ReadingStatus == ReadingStatus.Reading)
+            {
+                return;
+            }
 
             ReadingStatus = ReadingStatus.Reading;
             StartedReadingAt ??= DateTime.UtcNow;
@@ -236,8 +239,15 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public void AddTag(string tag)
         {
-            if (string.IsNullOrWhiteSpace(tag)) return;
-            if (Tags.Contains(tag)) return;
+            if (string.IsNullOrWhiteSpace(tag))
+            {
+                return;
+            }
+
+            if (Tags.Contains(tag))
+            {
+                return;
+            }
 
             Tags.Add(tag);
         }
@@ -293,8 +303,16 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
         {
             if (HasAuthors)
             {
-                if (Authors.Count == 1) return Authors[0];
-                if (Authors.Count == 2) return string.Join(" and ", Authors);
+                if (Authors.Count == 1)
+                {
+                    return Authors[0];
+                }
+
+                if (Authors.Count == 2)
+                {
+                    return string.Join(" and ", Authors);
+                }
+
                 return $"{Authors[0]} et al.";
             }
 
@@ -308,15 +326,31 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public string GetPrimaryIsbn()
         {
-            if (!string.IsNullOrWhiteSpace(Isbn13)) return Isbn13;
-            if (!string.IsNullOrWhiteSpace(Isbn10)) return Isbn10;
-            if (HasGoogleBookData) return GoogleBookData.PrimaryIsbn;
+            if (!string.IsNullOrWhiteSpace(Isbn13))
+            {
+                return Isbn13;
+            }
+
+            if (!string.IsNullOrWhiteSpace(Isbn10))
+            {
+                return Isbn10;
+            }
+
+            if (HasGoogleBookData)
+            {
+                return GoogleBookData.PrimaryIsbn;
+            }
+
             return string.Empty;
         }
 
         public string GetDisplayPublisher()
         {
-            if (!string.IsNullOrWhiteSpace(Publisher)) return Publisher;
+            if (!string.IsNullOrWhiteSpace(Publisher))
+            {
+                return Publisher;
+            }
+
             if (HasGoogleBookData && !string.IsNullOrWhiteSpace(GoogleBookData.Publisher))
             {
                 return GoogleBookData.Publisher;
@@ -326,7 +360,11 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public int GetDisplayPageCount()
         {
-            if (PageCount.HasValue) return PageCount.Value;
+            if (PageCount.HasValue)
+            {
+                return PageCount.Value;
+            }
+
             if (HasGoogleBookData && GoogleBookData.PageCount.HasValue)
             {
                 return GoogleBookData.PageCount.Value;

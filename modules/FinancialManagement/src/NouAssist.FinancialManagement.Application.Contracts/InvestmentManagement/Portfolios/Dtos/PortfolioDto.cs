@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.InvestmentManagement.Enums;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.InvestmentManagement.Portfolios.Dtos
+namespace NouAssist.FinancialManagement.InvestmentManagement.Portfolios.Dtos
 {
     public class PortfolioDto : FullAuditedEntityDto<Guid>
     {

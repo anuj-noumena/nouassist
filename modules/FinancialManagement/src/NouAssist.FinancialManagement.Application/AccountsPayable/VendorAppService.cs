@@ -4,15 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsPayable;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsPayable.Dtos;
+using NouAssist.FinancialManagement.AccountsPayable.Dtos;
 using NouAssist.FinancialManagement.Permissions;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.Application.AccountsPayable
+namespace NouAssist.FinancialManagement.AccountsPayable
 {
     [Authorize(FinancialManagementPermissions.AccountsPayable.Default)]
     public class VendorAppService : ApplicationService, IVendorAppService

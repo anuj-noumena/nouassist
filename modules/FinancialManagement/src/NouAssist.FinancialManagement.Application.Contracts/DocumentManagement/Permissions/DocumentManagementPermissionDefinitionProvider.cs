@@ -1,8 +1,8 @@
-using NouAssist.DocumentManagement.Localization;
+using NouAssist.FinancialManagement.DocumentManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.DocumentManagement.Permissions
+namespace NouAssist.FinancialManagement.DocumentManagement.Permissions
 {
     public class DocumentManagementPermissionDefinitionProvider : PermissionDefinitionProvider
     {

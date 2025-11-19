@@ -51,7 +51,11 @@ namespace NouAssist.PersonalDevelopment.Habits.Aggregates
         {
             get
             {
-                if (!TotalSteps.HasValue || TotalSteps.Value == 0) return 0.0;
+                if (!TotalSteps.HasValue || TotalSteps.Value == 0)
+                {
+                    return 0.0;
+                }
+
                 return (double)Completed / TotalSteps.Value;
             }
         }

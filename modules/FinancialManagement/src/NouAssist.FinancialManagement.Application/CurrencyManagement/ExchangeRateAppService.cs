@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CurrencyManagement.Dtos;
-using NouAssist.CurrencyManagement.Enums;
-using NouAssist.CurrencyManagement.Permissions;
 using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using NouAssist.FinancialManagement.CurrencyManagement.Data;
+using NouAssist.FinancialManagement.CurrencyManagement.Dtos;
+using NouAssist.FinancialManagement.CurrencyManagement.Enums;
+using NouAssist.FinancialManagement.CurrencyManagement.Permissions;
 using NouAssist.FinancialManagement.CurrencyManagement.Services;
 using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CurrencyManagement
+namespace NouAssist.FinancialManagement.CurrencyManagement
 {
     [Authorize(CurrencyManagementPermissions.ExchangeRates.View)]
     public class ExchangeRateAppService : ApplicationService, IExchangeRateAppService

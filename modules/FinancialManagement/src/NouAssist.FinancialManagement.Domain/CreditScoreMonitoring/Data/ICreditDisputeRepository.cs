@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.CreditScoreMonitoring.Enums;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Data

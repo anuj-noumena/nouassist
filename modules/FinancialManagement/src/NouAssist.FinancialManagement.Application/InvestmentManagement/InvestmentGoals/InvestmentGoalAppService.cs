@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.FinancialManagement.InvestmentManagement.Data;
-using NouAssist.InvestmentManagement.InvestmentGoals.Dtos;
-using NouAssist.InvestmentManagement.Permissions;
+using NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals.Dtos;
+using NouAssist.FinancialManagement.InvestmentManagement.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.InvestmentManagement.InvestmentGoals
+namespace NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals
 {
     [Authorize(InvestmentManagementPermissions.InvestmentGoals.Default)]
     public class InvestmentGoalAppService : ApplicationService, IInvestmentGoalAppService

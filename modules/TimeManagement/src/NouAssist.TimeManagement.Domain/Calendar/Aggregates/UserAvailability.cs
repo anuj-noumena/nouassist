@@ -87,7 +87,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
             // Check date overrides first
             var dateOverride = _dateOverrides.FirstOrDefault(o => o.Date.Date == normalizedDate);
             if (dateOverride != null)
+            {
                 return dateOverride.IsAvailable;
+            }
 
             // Check weekly availability
             var dayOfWeek = (int)date.DayOfWeek;
@@ -99,17 +101,23 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         private void ValidateDayOfWeek(int dayOfWeek)
         {
             if (dayOfWeek < 0 || dayOfWeek > 6)
+            {
                 throw new ArgumentException("Day of week must be between 0 and 6", nameof(dayOfWeek));
+            }
         }
 
         private void ValidateTimeFormat(string time)
         {
             if (string.IsNullOrEmpty(time))
+            {
                 return;
+            }
 
             if (!System.Text.RegularExpressions.Regex.IsMatch(time, @"^([01]\d|2[0-3]):([0-5]\d)$"))
+            {
                 throw new BusinessException("Calendar:InvalidTimeFormat")
                     .WithData("format", "HH:mm");
+            }
         }
     }
 }

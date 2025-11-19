@@ -1,4 +1,4 @@
-namespace NouAssist.DebtManagement.Permissions
+namespace NouAssist.FinancialManagement.DebtManagement.Permissions
 {
     public static class DebtManagementPermissions
     {

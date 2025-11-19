@@ -51,8 +51,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void RecordAssessment(AssessmentResult assessment)
         {
             if (Step != DevelopmentStep.Assessment)
+            {
                 throw new InvalidOperationException("Assessment can only be recorded in Assessment step");
-            
+            }
+
             InitialAssessment = assessment;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -61,8 +63,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void AddPracticePlanItem(PracticePlanItem item)
         {
             if (Step != DevelopmentStep.Planning)
+            {
                 throw new InvalidOperationException("Practice plan can only be added in Planning step");
-            
+            }
+
             PracticePlan.Add(item);
             UpdatedAt = DateTime.UtcNow;
         }
@@ -71,8 +75,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void AddPracticeLog(PracticeLog log)
         {
             if (Step != DevelopmentStep.Practice)
+            {
                 throw new InvalidOperationException("Practice logs can only be added in Practice step");
-            
+            }
+
             _practiceLogs.Add(log);
             TimeTracking.AddTime(log.DurationMinutes);
             UpdatedAt = DateTime.UtcNow;
@@ -82,8 +88,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void AddReviewFeedback(string aspect, int score)
         {
             if (Step != DevelopmentStep.Review)
+            {
                 throw new InvalidOperationException("Review feedback can only be added in Review step");
-            
+            }
+
             ReviewFeedback[aspect] = score;
             UpdatedAt = DateTime.UtcNow;
         }
@@ -92,8 +100,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void AddApplication(ApplicationExample example)
         {
             if (Step != DevelopmentStep.Application)
+            {
                 throw new InvalidOperationException("Applications can only be added in Application step");
-            
+            }
+
             _applications.Add(example);
             UpdatedAt = DateTime.UtcNow;
         }
@@ -102,8 +112,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void RecordMasteryValidation(Dictionary<string, object> validation)
         {
             if (Step != DevelopmentStep.Mastery)
+            {
                 throw new InvalidOperationException("Mastery validation can only be recorded in Mastery step");
-            
+            }
+
             MasteryValidation = validation;
             UpdatedAt = DateTime.UtcNow;
         }

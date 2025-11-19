@@ -50,8 +50,10 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public void SetPaymentTerms(int days, string method)
         {
             if (days < 0)
+            {
                 throw new BusinessException("AP:InvalidPaymentTerms", 
                     "Payment terms cannot be negative");
+            }
 
             PaymentTermsDays = days;
             PreferredPaymentMethod = method;
@@ -60,8 +62,10 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public void SetCreditLimit(MonetaryValue limit)
         {
             if (limit.IsNegative)
+            {
                 throw new BusinessException("AP:InvalidCreditLimit", 
                     "Credit limit cannot be negative");
+            }
 
             CreditLimit = limit;
         }

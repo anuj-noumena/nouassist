@@ -1,13 +1,13 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using NouAssist.FinancialManagement.TaxManagement.Data;
-using NouAssist.TaxManagement.Permissions;
-using NouAssist.TaxManagement.TaxProfiles.Dtos;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
+using NouAssist.FinancialManagement.TaxManagement.Permissions;
+using NouAssist.FinancialManagement.TaxManagement.TaxProfiles.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.TaxManagement.TaxProfiles
+namespace NouAssist.FinancialManagement.TaxManagement.TaxProfiles
 {
     [Authorize(TaxManagementPermissions.TaxProfiles.Default)]
     public class TaxProfileAppService : ApplicationService, ITaxProfileAppService
@@ -31,7 +31,7 @@ namespace NouAssist.TaxManagement.TaxProfiles
                     GuidGenerator.Create(),
                     userId,
                     CurrentTenant.Id,
-                    Enums.TaxFilingStatus.Single
+                    TaxFilingStatus.Single
                 );
                 await _taxProfileRepository.InsertAsync(profile);
             }

@@ -1,11 +1,12 @@
 using System;
 using Volo.Abp;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace NouAssist.Customization.CustomFields.Entities
 {
-    public class CustomFieldValue : FullAuditedEntity<Guid>, IMultiTenant
+    public class CustomFieldValue : FullAuditedEntity<Guid>, IMultiTenant, IHasConcurrencyStamp
     {
         public Guid FieldDefinitionId { get; private set; }
         public string EntityType { get; private set; }
@@ -58,6 +59,8 @@ namespace NouAssist.Customization.CustomFields.Entities
         {
             ValueJson = System.Text.Json.JsonSerializer.Serialize(value);
         }
+
+        public string ConcurrencyStamp { get; set; }
     }
 }
 

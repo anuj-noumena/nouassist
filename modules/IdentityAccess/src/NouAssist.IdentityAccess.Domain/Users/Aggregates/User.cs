@@ -30,7 +30,10 @@ namespace NouAssist.IdentityAccess.Users.Aggregates
         public string GetFullName()
         {
             if (string.IsNullOrWhiteSpace(FirstName) && string.IsNullOrWhiteSpace(LastName))
+            {
                 return "Unknown User";
+            }
+
             return $"{FirstName} {LastName}".Trim();
         }
 

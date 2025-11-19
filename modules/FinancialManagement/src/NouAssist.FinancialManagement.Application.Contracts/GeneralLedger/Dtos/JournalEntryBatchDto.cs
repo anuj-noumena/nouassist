@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NouAssist.FinancialManagement.GeneralLedger.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.GeneralLedger.Dtos
+namespace NouAssist.FinancialManagement.GeneralLedger.Dtos
 {
     public class JournalEntryBatchDto : FullAuditedEntityDto<Guid>
     {

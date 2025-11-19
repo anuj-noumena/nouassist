@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.DocumentManagement.Dtos;
 using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.Dtos;
 using NouAssist.FinancialManagement.DocumentManagement.ValueObjects;
 
-namespace NouAssist.DocumentManagement
+namespace NouAssist.FinancialManagement.DocumentManagement
 {
     public class DocumentManagementApplicationAutoMapperProfile : Profile
     {

@@ -53,10 +53,14 @@ namespace NouAssist.Core.Tags
             );
 
             if (!string.IsNullOrWhiteSpace(input.Color))
+            {
                 tag.Color = input.Color;
+            }
 
             if (input.CategoryId.HasValue)
+            {
                 tag.AssignToCategory(input.CategoryId.Value);
+            }
 
             await _tagRepository.InsertAsync(tag);
             return ObjectMapper.Map<Tag, TagDto>(tag);
@@ -67,15 +71,23 @@ namespace NouAssist.Core.Tags
             var tag = await _tagRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Title))
+            {
                 tag.Title = input.Title;
+            }
 
             if (input.Color != null)
+            {
                 tag.Color = input.Color;
+            }
 
             if (input.CategoryId.HasValue)
+            {
                 tag.AssignToCategory(input.CategoryId.Value);
+            }
             else if (input.CategoryId == null)
+            {
                 tag.CategoryId = null;
+            }
 
             await _tagRepository.UpdateAsync(tag);
             return ObjectMapper.Map<Tag, TagDto>(tag);

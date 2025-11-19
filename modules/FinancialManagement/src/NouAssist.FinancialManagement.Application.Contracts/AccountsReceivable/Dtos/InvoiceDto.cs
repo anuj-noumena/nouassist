@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NouAssist.FinancialManagement.AccountsReceivable.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable.Dtos
+namespace NouAssist.FinancialManagement.AccountsReceivable.Dtos
 {
     public class InvoiceDto : FullAuditedEntityDto<Guid>
     {

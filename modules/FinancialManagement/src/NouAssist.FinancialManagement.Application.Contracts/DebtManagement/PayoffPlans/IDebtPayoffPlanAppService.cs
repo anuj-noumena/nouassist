@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.DebtManagement.PayoffPlans.Dtos;
+using NouAssist.FinancialManagement.DebtManagement.PayoffPlans.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.DebtManagement.PayoffPlans
+namespace NouAssist.FinancialManagement.DebtManagement.PayoffPlans
 {
     public interface IDebtPayoffPlanAppService : IApplicationService
     {

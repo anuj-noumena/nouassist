@@ -1,4 +1,4 @@
-namespace NouAssist.CreditScoreMonitoring.Permissions
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Permissions
 {
     public static class CreditScoreMonitoringPermissions
     {

@@ -49,7 +49,9 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Services
             var result = new ValidationResult();
             
             if (!skill.Prerequisites.Any())
+            {
                 return result; // No prerequisites
+            }
 
             var prerequisiteIds = skill.Prerequisites.ToList();
             var providedIds = prerequisiteSkills.Select(s => s.Id).ToList();
@@ -79,7 +81,9 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Services
         private int CalculateProficiencyGain(SkillDevelopmentSession session)
         {
             if (session.Completed)
+            {
                 return session.OverallProficiencyGain ?? 0;
+            }
 
             // Calculate based on current progress
             var completedSteps = session.Milestones.Count(m => m.Value.Completed);

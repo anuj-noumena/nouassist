@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.AccountsPayable.Dtos
+namespace NouAssist.FinancialManagement.AccountsPayable.Dtos
 {
     public class VendorDto : FullAuditedEntityDto<Guid>
     {

@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.CreditScoreMonitoring.CreditDisputes.Dtos;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes.Dtos;
 
-namespace NouAssist.CreditScoreMonitoring.CreditDisputes
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes
 {
     public class CreateCreditDisputeDtoValidator : AbstractValidator<CreateCreditDisputeDto>
     {

@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.CurrencyManagement.Dtos;
+using NouAssist.FinancialManagement.CurrencyManagement.Dtos;
 
-namespace NouAssist.CurrencyManagement.Validators
+namespace NouAssist.FinancialManagement.CurrencyManagement.Validators
 {
     public class CreateCurrencyDtoValidator : AbstractValidator<CreateCurrencyDto>
     {

@@ -118,8 +118,11 @@ namespace NouAssist.PersonalDevelopment.Goals.Aggregates
 
         public void MarkAsNotified()
         {
-            if (IsNotified) return;
-            
+            if (IsNotified)
+            {
+                return;
+            }
+
             IsNotified = true;
             NotifiedAt = DateTime.UtcNow;
         }

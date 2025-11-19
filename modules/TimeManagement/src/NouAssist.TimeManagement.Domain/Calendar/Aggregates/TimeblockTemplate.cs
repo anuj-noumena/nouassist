@@ -56,9 +56,11 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void SetDuration(int durationMinutes)
         {
             if (durationMinutes < 15 || durationMinutes > 480)
+            {
                 throw new BusinessException("Calendar:InvalidTimeblockDuration")
                     .WithData("min", 15)
                     .WithData("max", 480);
+            }
 
             DurationMinutes = durationMinutes;
         }
@@ -66,10 +68,14 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void AddDayOfWeek(int dayOfWeek)
         {
             if (dayOfWeek < 0 || dayOfWeek > 6)
+            {
                 throw new ArgumentException("Day of week must be between 0 (Monday) and 6 (Sunday)", nameof(dayOfWeek));
+            }
 
             if (!_daysOfWeek.Contains(dayOfWeek))
+            {
                 _daysOfWeek.Add(dayOfWeek);
+            }
         }
 
         public void RemoveDayOfWeek(int dayOfWeek)

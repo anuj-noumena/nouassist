@@ -1,4 +1,4 @@
-namespace NouAssist.CreditScoreMonitoring.Enums
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Enums
 {
     public enum DisputeStatus : byte
     {

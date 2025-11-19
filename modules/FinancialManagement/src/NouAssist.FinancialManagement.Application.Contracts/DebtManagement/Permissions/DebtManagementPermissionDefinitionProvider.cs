@@ -1,8 +1,8 @@
-using NouAssist.DebtManagement.Localization;
+using NouAssist.FinancialManagement.DebtManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.DebtManagement.Permissions
+namespace NouAssist.FinancialManagement.DebtManagement.Permissions
 {
     public class DebtManagementPermissionDefinitionProvider : PermissionDefinitionProvider
     {

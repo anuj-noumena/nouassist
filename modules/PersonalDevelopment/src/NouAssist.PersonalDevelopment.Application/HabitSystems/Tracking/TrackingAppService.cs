@@ -57,15 +57,29 @@ namespace NouAssist.PersonalDevelopment.HabitSystems.Tracking
                     CurrentTenant.Id
                 );
 
-                if (input.SleepHours.HasValue) entry.LogSleep(input.SleepHours.Value);
-                if (input.Notes != null) entry.Notes = input.Notes;
+                if (input.SleepHours.HasValue)
+                {
+                    entry.LogSleep(input.SleepHours.Value);
+                }
+
+                if (input.Notes != null)
+                {
+                    entry.Notes = input.Notes;
+                }
 
                 await _healthRepository.InsertAsync(entry);
             }
             else
             {
-                if (input.SleepHours.HasValue) entry.LogSleep(input.SleepHours.Value);
-                if (input.Notes != null) entry.Notes = input.Notes;
+                if (input.SleepHours.HasValue)
+                {
+                    entry.LogSleep(input.SleepHours.Value);
+                }
+
+                if (input.Notes != null)
+                {
+                    entry.Notes = input.Notes;
+                }
 
                 await _healthRepository.UpdateAsync(entry);
             }
@@ -150,14 +164,20 @@ namespace NouAssist.PersonalDevelopment.HabitSystems.Tracking
                     CurrentTenant.Id
                 );
 
-                if (input.Note != null) entry.AddNote(input.Note);
+                if (input.Note != null)
+                {
+                    entry.AddNote(input.Note);
+                }
 
                 await _energyRepository.InsertAsync(entry);
             }
             else
             {
                 entry.SetEnergyLevel(input.EnergyLevel);
-                if (input.Note != null) entry.AddNote(input.Note);
+                if (input.Note != null)
+                {
+                    entry.AddNote(input.Note);
+                }
 
                 await _energyRepository.UpdateAsync(entry);
             }
@@ -195,7 +215,11 @@ namespace NouAssist.PersonalDevelopment.HabitSystems.Tracking
                     CurrentTenant.Id
                 );
 
-                if (input.Note != null) entry.AddNote(input.Note);
+                if (input.Note != null)
+                {
+                    entry.AddNote(input.Note);
+                }
+
                 if (input.Tags != null)
                 {
                     foreach (var tag in input.Tags)
@@ -209,7 +233,10 @@ namespace NouAssist.PersonalDevelopment.HabitSystems.Tracking
             else
             {
                 entry.SetMoodRating(input.MoodRating);
-                if (input.Note != null) entry.AddNote(input.Note);
+                if (input.Note != null)
+                {
+                    entry.AddNote(input.Note);
+                }
 
                 await _moodRepository.UpdateAsync(entry);
             }
@@ -278,14 +305,24 @@ namespace NouAssist.PersonalDevelopment.HabitSystems.Tracking
                     CurrentTenant.Id
                 );
 
-                if (input.Notes != null) session.Notes = input.Notes;
+                if (input.Notes != null)
+                {
+                    session.Notes = input.Notes;
+                }
 
                 await _focusRepository.InsertAsync(session);
             }
             else
             {
-                if (input.TaskId.HasValue) session.LinkTask(input.TaskId.Value);
-                if (input.Notes != null) session.Notes = input.Notes;
+                if (input.TaskId.HasValue)
+                {
+                    session.LinkTask(input.TaskId.Value);
+                }
+
+                if (input.Notes != null)
+                {
+                    session.Notes = input.Notes;
+                }
 
                 await _focusRepository.UpdateAsync(session);
             }

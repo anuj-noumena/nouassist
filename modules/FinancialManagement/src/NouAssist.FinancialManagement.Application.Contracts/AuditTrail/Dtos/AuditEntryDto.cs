@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.AuditTrail.Enums;
+using NouAssist.FinancialManagement.AuditTrail.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.AuditTrail.Dtos
+namespace NouAssist.FinancialManagement.AuditTrail.Dtos
 {
     public class AuditEntryDto : EntityDto<Guid>
     {

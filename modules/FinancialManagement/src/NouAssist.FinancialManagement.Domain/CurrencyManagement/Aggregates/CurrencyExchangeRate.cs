@@ -1,6 +1,6 @@
 using System;
-using NouAssist.CurrencyManagement.Domain.Shared.Events;
-using NouAssist.CurrencyManagement.Enums;
+using NouAssist.FinancialManagement.CurrencyManagement.Enums;
+using NouAssist.FinancialManagement.CurrencyManagement.Events;
 using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;

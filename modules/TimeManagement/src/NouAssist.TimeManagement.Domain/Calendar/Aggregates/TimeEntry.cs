@@ -50,7 +50,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void Stop()
         {
             if (EndedAt.HasValue)
+            {
                 return;
+            }
 
             EndedAt = DateTime.UtcNow;
             DurationMinutes = (int)(EndedAt.Value - StartedAt).TotalMinutes;
@@ -74,7 +76,9 @@ namespace NouAssist.TimeManagement.Calendar.Aggregates
         public void AddTag(string tag)
         {
             if (!_tags.Contains(tag))
+            {
                 _tags.Add(tag);
+            }
         }
 
         public void RemoveTag(string tag)

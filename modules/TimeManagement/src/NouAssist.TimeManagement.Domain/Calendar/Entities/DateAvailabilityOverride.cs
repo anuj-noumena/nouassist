@@ -39,9 +39,21 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         public void Update(bool isAvailable, string reason = null, string startTime = null, string endTime = null)
         {
             IsAvailable = isAvailable;
-            if (reason != null) Reason = reason;
-            if (startTime != null) StartTime = startTime;
-            if (endTime != null) EndTime = endTime;
+            if (reason != null)
+            {
+                Reason = reason;
+            }
+
+            if (startTime != null)
+            {
+                StartTime = startTime;
+            }
+
+            if (endTime != null)
+            {
+                EndTime = endTime;
+            }
+
             UpdatedAt = DateTime.UtcNow;
         }
 

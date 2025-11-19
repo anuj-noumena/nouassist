@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsPayable.Dtos;
+using NouAssist.FinancialManagement.AccountsPayable.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.AccountsPayable
+namespace NouAssist.FinancialManagement.AccountsPayable
 {
     public interface IVendorAppService : IApplicationService
     {

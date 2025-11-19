@@ -1,4 +1,4 @@
-namespace NouAssist.CurrencyManagement.Permissions
+namespace NouAssist.FinancialManagement.CurrencyManagement.Permissions
 {
     public static class CurrencyManagementPermissions
     {

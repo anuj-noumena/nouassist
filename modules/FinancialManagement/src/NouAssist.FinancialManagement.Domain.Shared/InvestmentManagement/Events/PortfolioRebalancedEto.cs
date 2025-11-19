@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.InvestmentManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.InvestmentManagement.Events
 {
     [EventName("NouAssist.InvestmentManagement.PortfolioRebalanced")]
     public class PortfolioRebalancedEto : IMultiTenant

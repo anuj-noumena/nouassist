@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.DebtManagement.PayoffPlans.Dtos;
-using NouAssist.DebtManagement.Permissions;
 using NouAssist.FinancialManagement.DebtManagement.Aggregates;
 using NouAssist.FinancialManagement.DebtManagement.Data;
+using NouAssist.FinancialManagement.DebtManagement.PayoffPlans.Dtos;
+using NouAssist.FinancialManagement.DebtManagement.Permissions;
 using NouAssist.FinancialManagement.DebtManagement.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.DebtManagement.PayoffPlans
+namespace NouAssist.FinancialManagement.DebtManagement.PayoffPlans
 {
     [Authorize(DebtManagementPermissions.PayoffPlans.Default)]
     public class DebtPayoffPlanAppService : ApplicationService, IDebtPayoffPlanAppService

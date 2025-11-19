@@ -26,9 +26,16 @@ namespace NouAssist.Customization.CustomFields.ValueObjects
         
         public DateTime? AsDateTime()
         {
-            if (Value is DateTime dt) return dt;
+            if (Value is DateTime dt)
+            {
+                return dt;
+            }
+
             if (Value is string s && DateTime.TryParse(s, out var parsed))
+            {
                 return parsed;
+            }
+
             return null;
         }
 

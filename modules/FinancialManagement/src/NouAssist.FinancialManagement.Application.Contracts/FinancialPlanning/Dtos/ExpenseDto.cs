@@ -2,7 +2,7 @@ using System;
 using NouAssist.FinancialManagement.FinancialPlanning.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning.Dtos
+namespace NouAssist.FinancialManagement.FinancialPlanning.Dtos
 {
     public class ExpenseDto : FullAuditedEntityDto<Guid>
     {

@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.Collaboration.Comments.Aggregates;
 using NouAssist.Collaboration.Comments.Comments.Dtos;
 using NouAssist.Collaboration.Comments.Data;
-using NouAssist.Collaboration.Comments.Permissions;
+using NouAssist.Collaboration.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.Collaboration.Comments.Comments
 {
-    [Authorize(CommentsPermissions.Comments.Default)]
+    [Authorize(CollaborationPermissions.Comments.Comment.Default)]
     public class CommentAppService : ApplicationService, ICommentAppService
     {
         private readonly ICommentRepository _commentRepository;
@@ -86,7 +88,7 @@ namespace NouAssist.Collaboration.Comments.Comments
             return new PagedResultDto<CommentDto>(totalCount, commentDtos);
         }
 
-        [Authorize(CommentsPermissions.Comments.Create)]
+        [Authorize(CollaborationPermissions.Comments.Comment.Create)]
         public async Task<CommentDto> CreateAsync(CreateCommentDto input)
         {
             var authorId = CurrentUser.GetId();
@@ -115,7 +117,7 @@ namespace NouAssist.Collaboration.Comments.Comments
             return await MapToGetOutputDtoAsync(comment);
         }
 
-        [Authorize(CommentsPermissions.Comments.Edit)]
+        [Authorize(CollaborationPermissions.Comments.Comment.Edit)]
         public async Task<CommentDto> UpdateAsync(Guid id, UpdateCommentDto input)
         {
             var comment = await _commentRepository.GetAsync(id);
@@ -131,7 +133,7 @@ namespace NouAssist.Collaboration.Comments.Comments
             return await MapToGetOutputDtoAsync(comment);
         }
 
-        [Authorize(CommentsPermissions.Comments.Delete)]
+        [Authorize(CollaborationPermissions.Comments.Comment.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var comment = await _commentRepository.GetAsync(id);
@@ -145,7 +147,7 @@ namespace NouAssist.Collaboration.Comments.Comments
             await _commentRepository.UpdateAsync(comment);
         }
 
-        [Authorize(CommentsPermissions.Comments.Pin)]
+        [Authorize(CollaborationPermissions.Comments.Comment.Pin)]
         public async Task<CommentDto> PinAsync(Guid id)
         {
             var comment = await _commentRepository.GetAsync(id);
@@ -155,7 +157,7 @@ namespace NouAssist.Collaboration.Comments.Comments
             return await MapToGetOutputDtoAsync(comment);
         }
 
-        [Authorize(CommentsPermissions.Comments.Pin)]
+        [Authorize(CollaborationPermissions.Comments.Comment.Pin)]
         public async Task<CommentDto> UnpinAsync(Guid id)
         {
             var comment = await _commentRepository.GetAsync(id);
@@ -165,7 +167,7 @@ namespace NouAssist.Collaboration.Comments.Comments
             return await MapToGetOutputDtoAsync(comment);
         }
 
-        [Authorize(CommentsPermissions.Comments.React)]
+        [Authorize(CollaborationPermissions.Comments.Comment.React)]
         public async Task<CommentDto> AddReactionAsync(Guid id, AddReactionDto input)
         {
             var comment = await _commentRepository.GetAsync(id);
@@ -177,7 +179,7 @@ namespace NouAssist.Collaboration.Comments.Comments
             return await MapToGetOutputDtoAsync(comment);
         }
 
-        [Authorize(CommentsPermissions.Comments.React)]
+        [Authorize(CollaborationPermissions.Comments.Comment.React)]
         public async Task<CommentDto> RemoveReactionAsync(Guid id, string emoji)
         {
             var comment = await _commentRepository.GetAsync(id);

@@ -26,7 +26,9 @@ namespace NouAssist.PersonalDevelopment.Goals.Services
             int totalTasks)
         {
             if (totalProjects == 0 && totalTasks == 0)
+            {
                 return 0;
+            }
 
             const double projectWeight = 0.7;
             const double taskWeight = 0.3;
@@ -40,10 +42,14 @@ namespace NouAssist.PersonalDevelopment.Goals.Services
                 : 0;
 
             if (totalProjects == 0)
+            {
                 return (int)Math.Round(taskProgress * 100);
+            }
 
             if (totalTasks == 0)
+            {
                 return (int)Math.Round(projectProgress * 100);
+            }
 
             var weightedProgress = (projectProgress * projectWeight) + 
                                    (taskProgress * taskWeight);

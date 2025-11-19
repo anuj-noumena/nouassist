@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.FinancialManagement.InvestmentManagement.Data;
-using NouAssist.InvestmentManagement.Enums;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

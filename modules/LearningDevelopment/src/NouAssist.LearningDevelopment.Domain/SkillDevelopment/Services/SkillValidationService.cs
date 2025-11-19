@@ -89,7 +89,9 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Services
         {
             // Check skill status
             if (!skill.CanStartDevelopment())
+            {
                 return false;
+            }
 
             // Check prerequisites
             if (skill.Prerequisites.Any())
@@ -99,10 +101,14 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Services
 
                 // All prerequisites must be provided and sufficiently proficient
                 if (!prerequisiteIds.All(id => providedIds.Contains(id)))
+                {
                     return false;
+                }
 
                 if (prerequisiteSkills.Any(s => s.CurrentProficiency.Score < 70))
+                {
                     return false;
+                }
             }
 
             return true;

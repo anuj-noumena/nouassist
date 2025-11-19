@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using NouAssist.FinancialManagement.TaxManagement.Data;
+using NouAssist.FinancialManagement.TaxManagement.Permissions;
 using NouAssist.FinancialManagement.TaxManagement.Services;
-using NouAssist.TaxManagement.Permissions;
-using NouAssist.TaxManagement.TaxReturns.Dtos;
+using NouAssist.FinancialManagement.TaxManagement.TaxReturns.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.TaxManagement.TaxReturns
+namespace NouAssist.FinancialManagement.TaxManagement.TaxReturns
 {
     [Authorize(TaxManagementPermissions.TaxReturns.Default)]
     public class TaxReturnAppService : ApplicationService, ITaxReturnAppService

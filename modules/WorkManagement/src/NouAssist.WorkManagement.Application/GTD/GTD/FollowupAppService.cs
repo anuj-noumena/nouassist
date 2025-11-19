@@ -55,10 +55,14 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (input.TaskInstanceId.HasValue)
+            {
                 followup.TaskInstanceId = input.TaskInstanceId;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.Note))
+            {
                 followup.Note = input.Note;
+            }
 
             await _followupRepository.InsertAsync(followup);
             return ObjectMapper.Map<Followup, FollowupDto>(followup);

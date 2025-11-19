@@ -84,8 +84,11 @@ namespace NouAssist.Infrastructure.Activity.Aggregates
 
         public void RecordFieldChanges(Dictionary<string, object> changes)
         {
-            if (changes == null || changes.Count == 0) return;
-            
+            if (changes == null || changes.Count == 0)
+            {
+                return;
+            }
+
             foreach (var change in changes)
             {
                 ChangedFields[change.Key] = change.Value;

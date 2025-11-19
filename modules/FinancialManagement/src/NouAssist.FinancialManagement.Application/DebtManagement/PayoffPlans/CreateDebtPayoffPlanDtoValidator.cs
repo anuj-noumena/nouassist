@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.DebtManagement.PayoffPlans.Dtos;
+using NouAssist.FinancialManagement.DebtManagement.PayoffPlans.Dtos;
 
-namespace NouAssist.DebtManagement.PayoffPlans
+namespace NouAssist.FinancialManagement.DebtManagement.PayoffPlans
 {
     public class CreateDebtPayoffPlanDtoValidator : AbstractValidator<CreateDebtPayoffPlanDto>
     {

@@ -1,9 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AutoMapper;
-using Volo.Abp.FluentValidation;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.TaxManagement
+namespace NouAssist.FinancialManagement.TaxManagement
 {
     [DependsOn(
         typeof(TaxManagementDomainModule),

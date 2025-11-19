@@ -75,8 +75,15 @@ namespace NouAssist.AssetManagement.Resources.Aggregates
 
         public void AddTag(string tag)
         {
-            if (string.IsNullOrWhiteSpace(tag)) return;
-            if (Tags.Contains(tag)) return;
+            if (string.IsNullOrWhiteSpace(tag))
+            {
+                return;
+            }
+
+            if (Tags.Contains(tag))
+            {
+                return;
+            }
 
             Tags.Add(tag);
         }

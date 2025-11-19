@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.CurrencyManagement.Enums;
 using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
+using NouAssist.FinancialManagement.CurrencyManagement.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.FinancialManagement.CurrencyManagement.Specifications

@@ -48,9 +48,11 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void SetProficiencyScore(int score)
         {
             if (score < 0 || score > 100)
+            {
                 throw new BusinessException("SkillDevelopment:InvalidProficiencyScore")
                     .WithData("Score", score);
-            
+            }
+
             ProficiencyScore = score;
         }
 
@@ -62,7 +64,9 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void AddTag(string tag)
         {
             if (!string.IsNullOrWhiteSpace(tag) && !_tags.Contains(tag))
+            {
                 _tags.Add(tag);
+            }
         }
 
         public void RemoveTag(string tag)

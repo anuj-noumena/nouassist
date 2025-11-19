@@ -16,31 +16,31 @@ public class CollaborationPermissionDefinitionProvider : PermissionDefinitionPro
             L("Permission:Comments"));
 
         var commentsPermission = commentsGroup.AddPermission(
-            CollaborationPermissions.Comments.Comments.Default,
+            CollaborationPermissions.Comments.Comment.Default,
             L("Permission:Comments"));
 
         commentsPermission.AddChild(
-            CollaborationPermissions.Comments.Comments.Create,
+            CollaborationPermissions.Comments.Comment.Create,
             L("Permission:Comments.Create"));
 
         commentsPermission.AddChild(
-            CollaborationPermissions.Comments.Comments.Edit,
+            CollaborationPermissions.Comments.Comment.Edit,
             L("Permission:Comments.Edit"));
 
         commentsPermission.AddChild(
-            CollaborationPermissions.Comments.Comments.Delete,
+            CollaborationPermissions.Comments.Comment.Delete,
             L("Permission:Comments.Delete"));
 
         commentsPermission.AddChild(
-            CollaborationPermissions.Comments.Comments.Pin,
+            CollaborationPermissions.Comments.Comment.Pin,
             L("Permission:Comments.Pin"));
 
         commentsPermission.AddChild(
-            CollaborationPermissions.Comments.Comments.React,
+            CollaborationPermissions.Comments.Comment.React,
             L("Permission:Comments.React"));
 
         commentsPermission.AddChild(
-            CollaborationPermissions.Comments.Comments.Moderate,
+            CollaborationPermissions.Comments.Comment.Moderate,
             L("Permission:Comments.Moderate"));
     }
 

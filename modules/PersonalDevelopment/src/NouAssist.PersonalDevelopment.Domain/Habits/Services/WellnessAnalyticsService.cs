@@ -102,21 +102,35 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
 
         private string CalculateTrend(List<double> values)
         {
-            if (values.Count < 2) return "Stable";
+            if (values.Count < 2)
+            {
+                return "Stable";
+            }
 
             var firstHalf = values.Take(values.Count / 2).Average();
             var secondHalf = values.Skip(values.Count / 2).Average();
 
             var difference = secondHalf - firstHalf;
 
-            if (difference > 0.5) return "Improving";
-            if (difference < -0.5) return "Declining";
+            if (difference > 0.5)
+            {
+                return "Improving";
+            }
+
+            if (difference < -0.5)
+            {
+                return "Declining";
+            }
+
             return "Stable";
         }
 
         private DateTime? GetMostProductiveDay(List<FocusSession> sessions)
         {
-            if (!sessions.Any()) return null;
+            if (!sessions.Any())
+            {
+                return null;
+            }
 
             return sessions
                 .OrderByDescending(s => s.CompletedPomodoros)
@@ -202,7 +216,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
 
         private double CalculateSimpleCorrelation(List<double> x, List<double> y)
         {
-            if (x.Count != y.Count || x.Count == 0) return 0;
+            if (x.Count != y.Count || x.Count == 0)
+            {
+                return 0;
+            }
 
             var avgX = x.Average();
             var avgY = y.Average();

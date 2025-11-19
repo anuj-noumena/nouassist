@@ -28,4 +28,10 @@
     <Content Remove="Localization\FinancialManagement\*.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Volo.Abp.Ddd.Domain">
+      <HintPath>..\..\..\..\..\..\..\.nuget\packages\volo.abp.ddd.domain\10.0.0\lib\net10.0\Volo.Abp.Ddd.Domain.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

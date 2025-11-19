@@ -1,5 +1,6 @@
 using System;
-using NouAssist.InvestmentManagement.Enums;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
+using NouAssist.SharedKernel.Extension;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
@@ -35,14 +36,14 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Entities
             Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             Type = type;
             AssetClass = assetClass;
-            Quantity = Check.NotNegative(quantity, nameof(quantity));
-            AverageCostBasis = Check.NotNegative(averageCostBasis, nameof(averageCostBasis));
+            Quantity = Ensure.NotNegative(quantity, nameof(quantity));
+            AverageCostBasis = Ensure.NotNegative(averageCostBasis, nameof(averageCostBasis));
             UpdatePrice(currentPrice);
         }
 
         public void UpdatePrice(decimal newPrice)
         {
-            CurrentPrice = Check.NotNegative(newPrice, nameof(newPrice));
+            CurrentPrice = Ensure.NotNegative(newPrice, nameof(newPrice));
             MarketValue = Quantity * CurrentPrice;
             LastPriceUpdate = DateTime.UtcNow;
         }

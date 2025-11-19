@@ -32,16 +32,22 @@ namespace NouAssist.IdentityAccess.Users.Aggregates
             if (importance.HasValue)
             {
                 if (importance.Value < ImportanceScore.MinValue || importance.Value > ImportanceScore.MaxValue)
+                {
                     throw new BusinessException("Users:InvalidThreshold", 
                         "Importance threshold must be between 0 and 1.");
+                }
+
                 ImportanceThreshold = importance.Value;
             }
 
             if (urgency.HasValue)
             {
                 if (urgency.Value < UrgencyScore.MinValue || urgency.Value > UrgencyScore.MaxValue)
+                {
                     throw new BusinessException("Users:InvalidThreshold", 
                         "Urgency threshold must be between 0 and 1.");
+                }
+
                 UrgencyThreshold = urgency.Value;
             }
         }
@@ -59,12 +65,16 @@ namespace NouAssist.IdentityAccess.Users.Aggregates
         private void ValidateThresholds()
         {
             if (ImportanceThreshold < 0 || ImportanceThreshold > 1)
+            {
                 throw new BusinessException("Users:InvalidThreshold", 
                     "Importance threshold must be between 0 and 1.");
+            }
 
             if (UrgencyThreshold < 0 || UrgencyThreshold > 1)
+            {
                 throw new BusinessException("Users:InvalidThreshold", 
                     "Urgency threshold must be between 0 and 1.");
+            }
         }
     }
 }

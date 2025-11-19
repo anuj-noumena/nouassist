@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using NouAssist.Collaboration.Comments.Aggregates;
+using NouAssist.Collaboration.EntityFrameworkCore.Comments.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
@@ -15,10 +17,8 @@ public class CollaborationEntityFrameworkCoreModule : AbpModule
         context.Services.AddAbpDbContext<CollaborationDbContext>(options =>
         {
             options.AddDefaultRepositories<ICollaborationDbContext>(includeAllEntities: true);
-            
-            /* Add custom repositories here. Example:
-            * options.AddRepository<Question, EfCoreQuestionRepository>();
-            */
+            options.AddRepository<Comment, EfCoreCommentRepository>();
+            options.AddDefaultRepositories(includeAllEntities: true);
         });
     }
 }

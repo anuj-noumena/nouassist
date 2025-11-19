@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.InvestmentManagement.Portfolios.Dtos;
+using NouAssist.FinancialManagement.InvestmentManagement.Portfolios.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.InvestmentManagement.Portfolios
+namespace NouAssist.FinancialManagement.InvestmentManagement.Portfolios
 {
     public interface IPortfolioAppService : IApplicationService
     {

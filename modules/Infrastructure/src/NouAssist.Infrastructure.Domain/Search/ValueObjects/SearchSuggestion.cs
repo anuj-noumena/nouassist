@@ -81,19 +81,51 @@ namespace NouAssist.Infrastructure.Search.ValueObjects
         {
             var daysSinceUse = (DateTime.UtcNow - lastUsedAt).Days;
 
-            if (daysSinceUse < 1) return 1.0;
-            if (daysSinceUse < 7) return 0.8;
-            if (daysSinceUse < 30) return 0.5;
-            if (daysSinceUse < 90) return 0.3;
+            if (daysSinceUse < 1)
+            {
+                return 1.0;
+            }
+
+            if (daysSinceUse < 7)
+            {
+                return 0.8;
+            }
+
+            if (daysSinceUse < 30)
+            {
+                return 0.5;
+            }
+
+            if (daysSinceUse < 90)
+            {
+                return 0.3;
+            }
+
             return 0.1;
         }
 
         private static double CalculateFrequencyScore(int useCount)
         {
-            if (useCount >= 20) return 1.0;
-            if (useCount >= 10) return 0.8;
-            if (useCount >= 5) return 0.6;
-            if (useCount >= 2) return 0.4;
+            if (useCount >= 20)
+            {
+                return 1.0;
+            }
+
+            if (useCount >= 10)
+            {
+                return 0.8;
+            }
+
+            if (useCount >= 5)
+            {
+                return 0.6;
+            }
+
+            if (useCount >= 2)
+            {
+                return 0.4;
+            }
+
             return 0.2;
         }
 

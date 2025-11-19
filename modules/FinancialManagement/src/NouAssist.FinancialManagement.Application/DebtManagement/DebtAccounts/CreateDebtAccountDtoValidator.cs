@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.DebtManagement.DebtAccounts.Dtos;
+using NouAssist.FinancialManagement.DebtManagement.DebtAccounts.Dtos;
 
-namespace NouAssist.DebtManagement.DebtAccounts
+namespace NouAssist.FinancialManagement.DebtManagement.DebtAccounts
 {
     public class CreateDebtAccountDtoValidator : AbstractValidator<CreateDebtAccountDto>
     {

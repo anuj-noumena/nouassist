@@ -80,8 +80,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void AddPrerequisite(Guid skillId)
         {
             if (_prerequisites.Contains(skillId))
+            {
                 throw new BusinessException("SkillDevelopment:DuplicatePrerequisite");
-            
+            }
+
             _prerequisites.Add(skillId);
         }
 
@@ -93,29 +95,39 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void AddResource(string resource)
         {
             if (string.IsNullOrWhiteSpace(resource))
+            {
                 throw new ArgumentException("Resource cannot be empty", nameof(resource));
-            
+            }
+
             if (!_resources.Contains(resource))
+            {
                 _resources.Add(resource);
+            }
         }
 
         public void AddSubSkill(Guid subSkillId)
         {
             if (IsCategory == false)
+            {
                 throw new BusinessException("SkillDevelopment:OnlyCategoriesCanHaveSubSkills");
-            
+            }
+
             if (_subSkillIds.Contains(subSkillId))
+            {
                 throw new BusinessException("SkillDevelopment:DuplicateSubSkill");
-            
+            }
+
             _subSkillIds.Add(subSkillId);
         }
 
         public void StartDevelopment(Guid sessionId)
         {
             if (Status != SkillStatus.NotStarted && Status != SkillStatus.Archived)
+            {
                 throw new BusinessException("SkillDevelopment:CannotStartDevelopment")
                     .WithData("CurrentStatus", Status);
-            
+            }
+
             ActiveDevelopmentSessionId = sessionId;
             Status = SkillStatus.InProgress;
         }
@@ -154,10 +166,12 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void MarkAsMastered(Guid userId)
         {
             if (CurrentProficiency.Score < 90)
+            {
                 throw new BusinessException("SkillDevelopment:InsufficientProficiencyForMastery")
                     .WithData("RequiredScore", 90)
                     .WithData("CurrentScore", CurrentProficiency.Score);
-            
+            }
+
             Status = SkillStatus.Mastered;
             
             AddDistributedEvent(new SkillMasteredEto
@@ -175,8 +189,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void Archive()
         {
             if (Status == SkillStatus.Mastered)
+            {
                 throw new BusinessException("SkillDevelopment:CannotArchiveMasteredSkill");
-            
+            }
+
             Status = SkillStatus.Archived;
             ActiveDevelopmentSessionId = null;
         }

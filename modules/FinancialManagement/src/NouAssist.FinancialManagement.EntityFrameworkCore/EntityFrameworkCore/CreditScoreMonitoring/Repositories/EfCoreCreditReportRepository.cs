@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.CreditScoreMonitoring.Enums;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Data;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

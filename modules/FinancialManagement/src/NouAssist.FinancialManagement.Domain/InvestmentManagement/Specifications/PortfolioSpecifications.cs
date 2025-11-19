@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
-using NouAssist.InvestmentManagement.Enums;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.FinancialManagement.InvestmentManagement.Specifications

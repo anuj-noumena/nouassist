@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.DocumentManagement.Enums;
 using NouAssist.FinancialManagement.DocumentManagement.Data;
+using NouAssist.FinancialManagement.DocumentManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 

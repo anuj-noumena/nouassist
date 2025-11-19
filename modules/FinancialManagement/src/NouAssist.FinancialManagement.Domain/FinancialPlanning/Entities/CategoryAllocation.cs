@@ -33,9 +33,11 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Entities
             Check.NotNull(amount, nameof(amount));
             
             if (amount.Currency != ActualAmount.Currency)
+            {
                 throw new BusinessException("FPA:CurrencyMismatch", 
                     "Amount currency must match allocation currency");
-            
+            }
+
             ActualAmount = ActualAmount.Add(amount);
         }
 

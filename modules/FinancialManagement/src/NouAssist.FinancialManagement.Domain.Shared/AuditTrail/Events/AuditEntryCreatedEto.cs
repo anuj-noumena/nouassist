@@ -1,9 +1,9 @@
 using System;
-using NouAssist.AuditTrail.Enums;
+using NouAssist.FinancialManagement.AuditTrail.Enums;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.AuditTrail.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.AuditTrail.Events
 {
     [EventName("NouAssist.AuditTrail.EntryCreated")]
     public class AuditEntryCreatedEto : IMultiTenant

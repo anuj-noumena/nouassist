@@ -44,9 +44,11 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void UpdateProgress(int progress)
         {
             if (progress < 0 || progress > 100)
+            {
                 throw new BusinessException("SkillDevelopment:InvalidProgress")
                     .WithData("Progress", progress);
-            
+            }
+
             Progress = progress;
             AccessedAt = DateTime.UtcNow;
         }
@@ -59,7 +61,9 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void LinkToSkill(Guid skillId)
         {
             if (!_relatedSkillIds.Contains(skillId))
+            {
                 _relatedSkillIds.Add(skillId);
+            }
         }
 
         public void UnlinkFromSkill(Guid skillId)

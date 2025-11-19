@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using NouAssist.FinancialManagement.InvestmentManagement.ValueObjects;
-using NouAssist.InvestmentManagement.Enums;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.FinancialManagement.InvestmentManagement.Services
@@ -74,7 +74,10 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Services
 
         private decimal CalculateSimplifiedVolatility(List<Entities.InvestmentTransaction> transactions)
         {
-            if (transactions.Count < 2) return 0;
+            if (transactions.Count < 2)
+            {
+                return 0;
+            }
 
             // Simplified standard deviation calculation
             var returns = new List<decimal>();
@@ -94,7 +97,10 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Services
             List<Entities.InvestmentTransaction> transactions,
             decimal currentValue)
         {
-            if (!transactions.Any()) return 0;
+            if (!transactions.Any())
+            {
+                return 0;
+            }
 
             var peak = transactions.Max(t => t.TotalAmount);
             var trough = transactions.Min(t => t.TotalAmount);

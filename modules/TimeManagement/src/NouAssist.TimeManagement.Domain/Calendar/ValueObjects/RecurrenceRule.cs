@@ -29,12 +29,16 @@ namespace NouAssist.TimeManagement.Calendar.ValueObjects
             Frequency = Check.NotNullOrWhiteSpace(frequency, nameof(frequency));
             
             if (interval < 1)
+            {
                 throw new BusinessException("Calendar:InvalidRecurrenceRule")
                     .WithData("reason", "Interval must be at least 1");
+            }
 
             if (until.HasValue && count.HasValue)
+            {
                 throw new BusinessException("Calendar:InvalidRecurrenceRule")
                     .WithData("reason", "Cannot specify both Until and Count");
+            }
 
             Interval = interval;
             Until = until;

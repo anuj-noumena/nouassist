@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NouAssist.FinancialManagement.TaxManagement.Entities;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
 using NouAssist.FinancialManagement.TaxManagement.ValueObjects;
-using NouAssist.TaxManagement.Enums;
+using NouAssist.SharedKernel.Extension;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -81,10 +82,10 @@ namespace NouAssist.FinancialManagement.TaxManagement.Aggregates
                 throw new BusinessException("TaxManagement:CannotModifyFiledReturn");
             }
 
-            W2Income = Check.NotNegative(w2Income, nameof(w2Income));
-            SelfEmploymentIncome = Check.NotNegative(selfEmploymentIncome, nameof(selfEmploymentIncome));
-            InvestmentIncome = Check.NotNegative(investmentIncome, nameof(investmentIncome));
-            OtherIncome = Check.NotNegative(otherIncome, nameof(otherIncome));
+            W2Income = Ensure.NotNegative(w2Income, nameof(w2Income));
+            SelfEmploymentIncome = Ensure.NotNegative(selfEmploymentIncome, nameof(selfEmploymentIncome));
+            InvestmentIncome = Ensure.NotNegative(investmentIncome, nameof(investmentIncome));
+            OtherIncome = Ensure.NotNegative(otherIncome, nameof(otherIncome));
         }
 
         public void AddDeduction(
@@ -152,7 +153,7 @@ namespace NouAssist.FinancialManagement.TaxManagement.Aggregates
 
         public void RecordWithholdings(decimal amount)
         {
-            WithholdingsPaid = Check.NotNegative(amount, nameof(amount));
+            WithholdingsPaid = Ensure.NotNegative(amount, nameof(amount));
             CalculateRefundOrOwed();
         }
 
@@ -214,29 +215,40 @@ namespace NouAssist.FinancialManagement.TaxManagement.Aggregates
             }
 
             Status = TaxReturnStatus.Filed;
-            FiledDate = Clock.Now;
+            FiledDate = DateTime.UtcNow;
             ConfirmationNumber = Check.NotNullOrWhiteSpace(confirmationNumber, nameof(confirmationNumber));
         }
 
         private bool ValidateReadyToFile()
         {
             // Must have income
-            if (GrossIncome <= 0) return false;
+            if (GrossIncome <= 0)
+            {
+                return false;
+            }
 
             // Must have required documents for income types
             if (W2Income > 0 && !_documents.Any(d => d.FormType == TaxFormType.FormW2 && d.Status == TaxDocumentStatus.Verified))
+            {
                 return false;
+            }
 
             // All uploaded documents must be verified
             if (_documents.Any(d => d.Status == TaxDocumentStatus.Uploaded || d.Status == TaxDocumentStatus.Rejected))
+            {
                 return false;
+            }
 
             return true;
         }
 
         public decimal GetEffectiveTaxRate()
         {
-            if (GrossIncome == 0) return 0;
+            if (GrossIncome == 0)
+            {
+                return 0;
+            }
+
             return (TotalTaxLiability / GrossIncome) * 100;
         }
     }

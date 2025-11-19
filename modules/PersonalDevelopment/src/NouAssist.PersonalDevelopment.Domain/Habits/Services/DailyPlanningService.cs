@@ -89,10 +89,16 @@ namespace NouAssist.PersonalDevelopment.Habits.Services
 
         private bool IsScheduledForDate(Routine routine, DateTime date)
         {
-            if (!routine.HasSchedule) return true;
+            if (!routine.HasSchedule)
+            {
+                return true;
+            }
 
             var dayOfWeek = (int)date.DayOfWeek;
-            if (dayOfWeek == 0) dayOfWeek = 7;
+            if (dayOfWeek == 0)
+            {
+                dayOfWeek = 7;
+            }
 
             return routine.ScheduledDays.Contains(dayOfWeek);
         }

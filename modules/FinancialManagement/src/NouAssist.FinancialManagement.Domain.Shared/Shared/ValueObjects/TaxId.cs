@@ -26,8 +26,11 @@ namespace NouAssist.FinancialManagement.Shared.ValueObjects
             {
                 case "US": // EIN format: XX-XXXXXXX
                     if (!Regex.IsMatch(value, @"^\d{2}-?\d{7}$"))
+                    {
                         throw new BusinessException("Financial:InvalidTaxId", 
                             "US Tax ID must be in format XX-XXXXXXX");
+                    }
+
                     break;
                 // Add other country formats as needed
             }

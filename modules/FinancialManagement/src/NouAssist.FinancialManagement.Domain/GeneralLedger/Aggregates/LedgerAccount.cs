@@ -58,8 +58,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             Check.NotNull(amount, nameof(amount));
 
             if (amount.Currency != CurrentBalance.Currency)
+            {
                 throw new BusinessException("GL:CurrencyMismatch", 
                     $"Cannot update balance with different currency");
+            }
 
             var previousBalance = CurrentBalance;
 
@@ -81,8 +83,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void Deactivate()
         {
             if (!IsActive)
+            {
                 throw new BusinessException("GL:AccountAlreadyInactive", 
                     "Account is already inactive");
+            }
 
             IsActive = false;
         }
@@ -90,8 +94,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void Activate()
         {
             if (IsActive)
+            {
                 throw new BusinessException("GL:AccountAlreadyActive", 
                     "Account is already active");
+            }
 
             IsActive = true;
         }
@@ -119,8 +125,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         public void MoveTo(Guid? newParentAccountId)
         {
             if (newParentAccountId == Id)
+            {
                 throw new BusinessException("GL:CannotMoveToSelf", 
                     "Cannot move account to itself");
+            }
 
             ParentAccountId = newParentAccountId;
         }

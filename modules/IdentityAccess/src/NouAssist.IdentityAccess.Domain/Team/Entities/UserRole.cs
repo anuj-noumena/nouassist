@@ -69,9 +69,21 @@ namespace NouAssist.IdentityAccess.Team.Entities
 
         public bool IsValidAt(DateTime dateTime)
         {
-            if (!IsActive) return false;
-            if (dateTime < AssignedAt) return false;
-            if (ExpiresAt.HasValue && dateTime > ExpiresAt.Value) return false;
+            if (!IsActive)
+            {
+                return false;
+            }
+
+            if (dateTime < AssignedAt)
+            {
+                return false;
+            }
+
+            if (ExpiresAt.HasValue && dateTime > ExpiresAt.Value)
+            {
+                return false;
+            }
+
             return true;
         }
     }

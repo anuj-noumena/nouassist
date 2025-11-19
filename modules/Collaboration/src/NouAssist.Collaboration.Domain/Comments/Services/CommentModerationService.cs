@@ -101,12 +101,16 @@ namespace NouAssist.Collaboration.Comments.Services
         {
             // Check for repeated characters
             if (Regex.IsMatch(content, @"(.)\1{5,}"))
+            {
                 return true;
+            }
 
             // Check for excessive capitalization
             var upperCount = content.Count(char.IsUpper);
             if (upperCount > content.Length * 0.7 && content.Length > 20)
+            {
                 return true;
+            }
 
             return false;
         }

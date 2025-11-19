@@ -60,7 +60,9 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions;
         private bool IsWithinDays(DateTime date, DateTime reference, object daysValue)
         {
             if (!int.TryParse(daysValue?.ToString(), out var days))
+            {
                 return false;
+            }
 
             var difference = Math.Abs((date - reference).TotalDays);
             return difference <= days;
@@ -69,7 +71,9 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions;
         private bool IsWithinHours(DateTime date, DateTime reference, object hoursValue)
         {
             if (!int.TryParse(hoursValue?.ToString(), out var hours))
+            {
                 return false;
+            }
 
             var difference = Math.Abs((date - reference).TotalHours);
             return difference <= hours;
@@ -78,7 +82,11 @@ namespace NouAssist.WorkManagement.Workflow.Services.Conditions;
         private bool TryConvertToDateTime(object value, out DateTime result)
         {
             result = DateTime.MinValue;
-            if (value == null) return false;
+            if (value == null)
+            {
+                return false;
+            }
+
             if (value is DateTime dt)
             {
                 result = dt;

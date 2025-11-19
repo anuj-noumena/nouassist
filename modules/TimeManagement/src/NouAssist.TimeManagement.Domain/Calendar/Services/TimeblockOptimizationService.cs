@@ -188,7 +188,9 @@ namespace NouAssist.TimeManagement.Calendar.Services
 
             // Boost score for slots during peak productivity hours
             if (workingHours.PeakHours != null && workingHours.PeakHours.Contains(slotHour))
+            {
                 score += 20;
+            }
 
             return Math.Max(0, score);
         }

@@ -109,6 +109,7 @@ namespace NouAssist.AssetManagement.Resources.Books
             book.UpdateMetadata(
                 input.Title,
                 input.Authors,
+                input.Subtitle,
                 input.Description,
                 input.Publisher,
                 input.Categories,

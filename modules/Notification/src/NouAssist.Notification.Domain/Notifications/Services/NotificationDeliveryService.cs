@@ -32,13 +32,19 @@ namespace NouAssist.Notification.Notifications.Services
             var channels = new List<NotificationChannel>();
             
             if (preference.PushEnabled)
+            {
                 channels.Add(NotificationChannel.Push);
-            
+            }
+
             if (preference.EmailEnabled)
+            {
                 channels.Add(NotificationChannel.Email);
-            
+            }
+
             if (preference.SmsEnabled)
+            {
                 channels.Add(NotificationChannel.Sms);
+            }
 
             return channels;
         }
@@ -74,7 +80,9 @@ namespace NouAssist.Notification.Notifications.Services
         {
             // Don't delay urgent notifications
             if (notification.Priority == NotificationPriority.Urgent)
+            {
                 return false;
+            }
 
             // Could implement quiet hours logic here
             var now = Clock.Now;
@@ -82,7 +90,9 @@ namespace NouAssist.Notification.Notifications.Services
             
             // Delay non-urgent notifications during night hours (22:00 - 08:00)
             if (hour >= 22 || hour < 8)
+            {
                 return notification.Priority != NotificationPriority.High;
+            }
 
             return false;
         }

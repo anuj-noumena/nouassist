@@ -72,7 +72,9 @@ namespace NouAssist.WorkManagement.TaskManagement.ValueObjects
         public string GetTShirtSize()
         {
             if (Scale != ComplexityScale.TShirt)
+            {
                 return null;
+            }
 
             return Value switch
             {

@@ -39,15 +39,20 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void AddRating(int rating)
         {
             if (rating < 1 || rating > 10)
+            {
                 throw new BusinessException("SkillDevelopment:InvalidRating")
                     .WithData("Rating", rating);
+            }
+
             SelfRating = rating;
         }
 
         public void AddChallenge(string challenge)
         {
             if (!string.IsNullOrWhiteSpace(challenge))
+            {
                 ChallengesFaced.Add(challenge);
+            }
         }
 
         public void AddNotes(string notes)

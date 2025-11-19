@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.AuditTrail.Enums;
+using NouAssist.FinancialManagement.AuditTrail.Enums;
 using NouAssist.FinancialManagement.AuditTrail.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;

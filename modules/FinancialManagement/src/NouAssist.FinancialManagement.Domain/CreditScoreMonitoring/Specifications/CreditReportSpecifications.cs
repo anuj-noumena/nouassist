@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.CreditScoreMonitoring.Enums;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Specifications

@@ -46,16 +46,24 @@ namespace NouAssist.WorkManagement.GTD.GTD
             var query = queryable.Where(t => t.OwnerId == userId);
 
             if (input.Status.HasValue)
+            {
                 query = query.Where(t => t.Status == input.Status.Value);
+            }
 
             if (input.FromDate.HasValue)
+            {
                 query = query.Where(t => t.TickleDate >= input.FromDate.Value);
+            }
 
             if (input.ToDate.HasValue)
+            {
                 query = query.Where(t => t.TickleDate <= input.ToDate.Value);
+            }
 
             if (input.OnlyDue == true)
+            {
                 query = query.Where(t => t.TickleDate <= Clock.Now && t.Status == TicklerStatus.Scheduled);
+            }
 
             var totalCount = await AsyncExecuter.CountAsync(query);
             
@@ -106,22 +114,32 @@ namespace NouAssist.WorkManagement.GTD.GTD
             );
 
             if (!string.IsNullOrWhiteSpace(input.Description))
+            {
                 tickler.Description = input.Description;
+            }
 
             if (!string.IsNullOrWhiteSpace(input.TickleTime))
             {
                 if (TimeSpan.TryParse(input.TickleTime, out var time))
+                {
                     tickler.TickleTime = time;
+                }
             }
 
             if (input.ImportanceScore.HasValue)
+            {
                 tickler.Importance = new ImportanceScore(input.ImportanceScore.Value);
+            }
 
             if (input.UrgencyScore.HasValue)
+            {
                 tickler.Urgency = new UrgencyScore(input.UrgencyScore.Value);
+            }
 
             if (input.ContextId.HasValue)
+            {
                 tickler.ContextId = input.ContextId;
+            }
 
             await _ticklerRepository.InsertAsync(tickler);
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);
@@ -133,16 +151,24 @@ namespace NouAssist.WorkManagement.GTD.GTD
             var tickler = await _ticklerRepository.GetAsync(id);
 
             if (!string.IsNullOrWhiteSpace(input.Title))
+            {
                 tickler.Title = input.Title;
+            }
 
             if (input.Description != null)
+            {
                 tickler.Description = input.Description;
+            }
 
             if (input.TickleDate.HasValue)
+            {
                 tickler.Reschedule(input.TickleDate.Value);
+            }
 
             if (input.Notes != null)
+            {
                 tickler.Notes = input.Notes;
+            }
 
             await _ticklerRepository.UpdateAsync(tickler);
             return ObjectMapper.Map<TicklerItem, TicklerItemDto>(tickler);

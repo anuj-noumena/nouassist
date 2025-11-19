@@ -1,4 +1,5 @@
 using System;
+using NouAssist.FinancialManagement.Shared.Enums;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
@@ -44,12 +45,16 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Entities
         private void ValidateAmounts()
         {
             if (DebitAmount == null && CreditAmount == null)
+            {
                 throw new BusinessException("GL:NoAmount", 
                     "Line must have either debit or credit amount");
+            }
 
             if (DebitAmount != null && CreditAmount != null)
+            {
                 throw new BusinessException("GL:BothAmounts", 
                     "Line cannot have both debit and credit amounts");
+            }
         }
 
         public override object[] GetKeys()

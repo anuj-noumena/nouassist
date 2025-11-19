@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.DocumentManagement.Domain.Shared.Events;
-using NouAssist.DocumentManagement.Enums;
+using NouAssist.FinancialManagement.DocumentManagement.Enums;
+using NouAssist.FinancialManagement.DocumentManagement.Events;
 using NouAssist.FinancialManagement.DocumentManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
@@ -113,7 +113,7 @@ namespace NouAssist.FinancialManagement.DocumentManagement.Aggregates
         public void Archive()
         {
             Status = DocumentStatus.Archived;
-            ArchivedAt = Clock.Now;
+            ArchivedAt = DateTime.UtcNow;
         }
 
         public void Delete(Guid deletedBy, string reason = null)
@@ -126,7 +126,7 @@ namespace NouAssist.FinancialManagement.DocumentManagement.Aggregates
                 TenantId = TenantId,
                 FileName = Metadata.FileName,
                 DeletedBy = deletedBy,
-                DeletedAt = Clock.Now,
+                DeletedAt = DateTime.UtcNow,
                 Reason = reason
             });
         }
@@ -134,7 +134,7 @@ namespace NouAssist.FinancialManagement.DocumentManagement.Aggregates
         public void RecordAccess()
         {
             DownloadCount++;
-            LastAccessedAt = Clock.Now;
+            LastAccessedAt = DateTime.UtcNow;
         }
 
         public void ChangeAccessLevel(AccessLevel newAccessLevel)

@@ -1,8 +1,8 @@
 using System;
-using NouAssist.InvestmentManagement.Enums;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.InvestmentManagement.InvestmentGoals.Dtos
+namespace NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals.Dtos
 {
     public class InvestmentGoalDto : FullAuditedEntityDto<Guid>
     {

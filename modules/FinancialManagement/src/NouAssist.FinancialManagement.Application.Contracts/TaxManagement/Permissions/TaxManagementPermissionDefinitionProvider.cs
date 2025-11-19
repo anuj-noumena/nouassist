@@ -1,8 +1,8 @@
-using NouAssist.TaxManagement.Localization;
+using NouAssist.FinancialManagement.TaxManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.TaxManagement.Permissions
+namespace NouAssist.FinancialManagement.TaxManagement.Permissions
 {
     public class TaxManagementPermissionDefinitionProvider : PermissionDefinitionProvider
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NouAssist.DocumentManagement.Dtos
+namespace NouAssist.FinancialManagement.DocumentManagement.Dtos
 {
     public class DocumentStatisticsDto
     {

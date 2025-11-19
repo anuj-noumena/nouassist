@@ -37,7 +37,11 @@ namespace NouAssist.PersonalDevelopment.Habits.Aggregates
 
         public void MarkAsViewed()
         {
-            if (HasBeenViewed) return;
+            if (HasBeenViewed)
+            {
+                return;
+            }
+
             ViewedAt = DateTime.UtcNow;
         }
     }

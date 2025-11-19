@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 
-namespace NouAssist.AuditTrail.Dtos
+namespace NouAssist.FinancialManagement.AuditTrail.Dtos
 {
     public class AuditStatisticsDto
     {

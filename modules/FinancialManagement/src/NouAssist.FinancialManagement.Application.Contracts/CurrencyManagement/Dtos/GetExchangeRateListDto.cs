@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CurrencyManagement.Dtos
+namespace NouAssist.FinancialManagement.CurrencyManagement.Dtos
 {
     public class GetExchangeRateListDto : PagedAndSortedResultRequestDto
     {

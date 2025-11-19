@@ -20,14 +20,21 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects
 
         public void AddTime(int minutes)
         {
-            if (minutes < 0) throw new ArgumentException("Minutes cannot be negative", nameof(minutes));
+            if (minutes < 0)
+            {
+                throw new ArgumentException("Minutes cannot be negative", nameof(minutes));
+            }
+
             TotalMinutes += minutes;
         }
 
         public void Complete(DateTime completedAt)
         {
             if (completedAt < StartedAt)
+            {
                 throw new ArgumentException("Completion time cannot be before start time");
+            }
+
             CompletedAt = completedAt;
         }
 

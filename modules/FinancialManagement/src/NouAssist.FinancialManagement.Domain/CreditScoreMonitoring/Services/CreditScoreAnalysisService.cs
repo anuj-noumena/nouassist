@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.CreditScoreMonitoring.Enums;
 using NouAssist.FinancialManagement.CreditScoreMonitoring.Aggregates;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Services
@@ -223,10 +223,21 @@ namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Services
 
         private int CalculateUtilizationImpact(decimal current, decimal target)
         {
-            if (current <= 30) return 0;
-            
-            if (target <= 10) return 40;
-            if (target <= 30) return 25;
+            if (current <= 30)
+            {
+                return 0;
+            }
+
+            if (target <= 10)
+            {
+                return 40;
+            }
+
+            if (target <= 30)
+            {
+                return 25;
+            }
+
             return 10;
         }
 
@@ -235,10 +246,14 @@ namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Services
             var months = 0;
 
             if (plan.ReduceUtilizationTo.HasValue)
+            {
                 months = Math.Max(months, 3); // 3 months for utilization impact
+            }
 
             if (plan.PayOffDelinquentAccounts)
+            {
                 months = Math.Max(months, 6); // 6 months for payment history
+            }
 
             months += plan.MonthsToWait;
 

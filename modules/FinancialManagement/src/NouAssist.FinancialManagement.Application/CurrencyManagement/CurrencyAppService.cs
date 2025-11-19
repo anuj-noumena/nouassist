@@ -2,16 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.CurrencyManagement.Dtos;
-using NouAssist.CurrencyManagement.Permissions;
 using NouAssist.FinancialManagement.CurrencyManagement.Aggregates;
 using NouAssist.FinancialManagement.CurrencyManagement.Data;
+using NouAssist.FinancialManagement.CurrencyManagement.Dtos;
+using NouAssist.FinancialManagement.CurrencyManagement.Permissions;
 using NouAssist.FinancialManagement.CurrencyManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CurrencyManagement
+namespace NouAssist.FinancialManagement.CurrencyManagement
 {
     [Authorize(CurrencyManagementPermissions.Currencies.View)]
     public class CurrencyAppService : ApplicationService, ICurrencyAppService

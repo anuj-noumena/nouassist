@@ -1,4 +1,6 @@
-namespace NouAssist.AuditTrail.Enums
+using System;
+
+namespace NouAssist.FinancialManagement.AuditTrail.Enums
 {
     [Flags]
     public enum ComplianceFlag

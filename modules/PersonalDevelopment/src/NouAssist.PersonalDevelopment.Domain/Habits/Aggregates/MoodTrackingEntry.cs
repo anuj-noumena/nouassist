@@ -39,10 +39,26 @@ namespace NouAssist.PersonalDevelopment.Habits.Aggregates
         {
             get
             {
-                if (MoodRating >= 8) return MoodLevel.VeryGood;
-                if (MoodRating >= 6) return MoodLevel.Good;
-                if (MoodRating >= 4) return MoodLevel.Neutral;
-                if (MoodRating >= 2) return MoodLevel.Poor;
+                if (MoodRating >= 8)
+                {
+                    return MoodLevel.VeryGood;
+                }
+
+                if (MoodRating >= 6)
+                {
+                    return MoodLevel.Good;
+                }
+
+                if (MoodRating >= 4)
+                {
+                    return MoodLevel.Neutral;
+                }
+
+                if (MoodRating >= 2)
+                {
+                    return MoodLevel.Poor;
+                }
+
                 return MoodLevel.VeryPoor;
             }
         }

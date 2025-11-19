@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.FinancialManagement.InvestmentManagement.Data;
 using NouAssist.FinancialManagement.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.Permissions;
+using NouAssist.FinancialManagement.InvestmentManagement.Portfolios.Dtos;
 using NouAssist.FinancialManagement.InvestmentManagement.Services;
-using NouAssist.InvestmentManagement.Permissions;
-using NouAssist.InvestmentManagement.Portfolios.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.InvestmentManagement.Portfolios
+namespace NouAssist.FinancialManagement.InvestmentManagement.Portfolios
 {
     [Authorize(InvestmentManagementPermissions.Portfolios.Default)]
     public class PortfolioAppService : ApplicationService, IPortfolioAppService

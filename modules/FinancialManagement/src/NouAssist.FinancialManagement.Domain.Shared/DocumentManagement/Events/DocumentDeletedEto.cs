@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DocumentManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.DocumentManagement.Events
 {
     [EventName("NouAssist.DocumentManagement.DocumentDeleted")]
     public class DocumentDeletedEto : IMultiTenant

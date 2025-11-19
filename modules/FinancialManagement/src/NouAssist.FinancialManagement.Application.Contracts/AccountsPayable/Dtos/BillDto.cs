@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NouAssist.FinancialManagement.AccountsPayable.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.AccountsPayable.Dtos
+namespace NouAssist.FinancialManagement.AccountsPayable.Dtos
 {
     public class BillDto : FullAuditedEntityDto<Guid>
     {

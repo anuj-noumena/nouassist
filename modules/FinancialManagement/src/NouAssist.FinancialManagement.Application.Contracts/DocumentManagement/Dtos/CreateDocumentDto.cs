@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using NouAssist.DocumentManagement.Enums;
+using NouAssist.FinancialManagement.DocumentManagement.Enums;
 
-namespace NouAssist.DocumentManagement.Dtos
+namespace NouAssist.FinancialManagement.DocumentManagement.Dtos
 {
     public class CreateDocumentDto
     {

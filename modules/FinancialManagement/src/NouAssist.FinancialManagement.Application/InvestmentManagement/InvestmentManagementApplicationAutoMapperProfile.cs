@@ -1,11 +1,11 @@
 using AutoMapper;
 using NouAssist.FinancialManagement.InvestmentManagement.Aggregates;
 using NouAssist.FinancialManagement.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals.Dtos;
+using NouAssist.FinancialManagement.InvestmentManagement.Portfolios.Dtos;
 using NouAssist.FinancialManagement.InvestmentManagement.ValueObjects;
-using NouAssist.InvestmentManagement.InvestmentGoals.Dtos;
-using NouAssist.InvestmentManagement.Portfolios.Dtos;
 
-namespace NouAssist.InvestmentManagement
+namespace NouAssist.FinancialManagement.InvestmentManagement
 {
     public class InvestmentManagementApplicationAutoMapperProfile : Profile
     {

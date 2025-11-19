@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning.Dtos;
+using NouAssist.FinancialManagement.FinancialPlanning.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.FinancialPlanning
+namespace NouAssist.FinancialManagement.FinancialPlanning
 {
     public interface IExpenseAppService : IApplicationService
     {

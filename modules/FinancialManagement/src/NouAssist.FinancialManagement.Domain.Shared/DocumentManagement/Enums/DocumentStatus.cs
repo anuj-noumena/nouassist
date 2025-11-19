@@ -1,4 +1,4 @@
-namespace NouAssist.DocumentManagement.Enums
+namespace NouAssist.FinancialManagement.DocumentManagement.Enums
 {
     public enum DocumentStatus : byte
     {

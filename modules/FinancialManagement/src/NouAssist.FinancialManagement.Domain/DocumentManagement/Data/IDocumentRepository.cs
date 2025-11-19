@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.DocumentManagement.Enums;
 using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
+using NouAssist.FinancialManagement.DocumentManagement.Enums;
 using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.FinancialManagement.DocumentManagement.Data

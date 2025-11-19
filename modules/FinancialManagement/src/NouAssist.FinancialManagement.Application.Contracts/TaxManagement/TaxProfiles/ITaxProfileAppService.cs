@@ -1,9 +1,8 @@
-using System;
 using System.Threading.Tasks;
-using NouAssist.TaxManagement.TaxProfiles.Dtos;
+using NouAssist.FinancialManagement.TaxManagement.TaxProfiles.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.TaxManagement.TaxProfiles
+namespace NouAssist.FinancialManagement.TaxManagement.TaxProfiles
 {
     public interface ITaxProfileAppService : IApplicationService
     {

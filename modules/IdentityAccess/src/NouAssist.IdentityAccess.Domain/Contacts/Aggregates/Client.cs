@@ -84,7 +84,9 @@ namespace NouAssist.IdentityAccess.Contacts.Aggregates
         public void ConvertToPaying()
         {
             if (Status != ClientStatus.Potential)
+            {
                 throw new BusinessException("Clients:CanOnlyConvertPotential");
+            }
 
             Status = ClientStatus.Active;
             ClientSince = DateTime.UtcNow;
@@ -103,7 +105,9 @@ namespace NouAssist.IdentityAccess.Contacts.Aggregates
         public void AddTag(string tag)
         {
             if (!_tags.Contains(tag))
+            {
                 _tags.Add(tag);
+            }
         }
 
         public bool NeedsReview => NextReviewDate.HasValue && DateTime.UtcNow > NextReviewDate.Value;

@@ -47,9 +47,11 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
             CustomerName = Check.NotNullOrWhiteSpace(customerName, nameof(customerName));
             
             if (dueDate < issueDate)
+            {
                 throw new BusinessException("AR:InvalidDueDate", 
                     "Due date cannot be before issue date");
-            
+            }
+
             IssueDate = issueDate;
             DueDate = dueDate;
             ProjectId = projectId;
@@ -62,8 +64,10 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public void AddLineItem(InvoiceLineItem lineItem)
         {
             if (Status != InvoiceStatus.Draft)
+            {
                 throw new BusinessException("AR:CannotModifyInvoice", 
                     "Cannot add line items to non-draft invoices");
+            }
 
             _lineItems.Add(lineItem);
             RecalculateTotals();
@@ -72,12 +76,16 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public void Send()
         {
             if (Status != InvoiceStatus.Draft)
+            {
                 throw new BusinessException("AR:InvalidStatus", 
                     "Only draft invoices can be sent");
+            }
 
             if (!_lineItems.Any())
+            {
                 throw new BusinessException("AR:NoLineItems", 
                     "Invoice must have at least one line item");
+            }
 
             Status = InvoiceStatus.Sent;
 
@@ -100,13 +108,17 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public void ApplyPayment(MonetaryValue paymentAmount, DateTime paymentDate)
         {
             if (Status == InvoiceStatus.Cancelled)
+            {
                 throw new BusinessException("AR:CannotPayCancelled", 
                     "Cannot apply payment to cancelled invoice");
+            }
 
             var remainingBalance = TotalAmount.Subtract(PaidAmount);
             if (paymentAmount.Amount > remainingBalance.Amount)
+            {
                 throw new BusinessException("AR:PaymentExceedsBalance", 
                     "Payment amount exceeds invoice balance");
+            }
 
             PaidAmount = PaidAmount.Add(paymentAmount);
 
@@ -123,8 +135,10 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public void Cancel(string reason)
         {
             if (Status == InvoiceStatus.Paid || Status == InvoiceStatus.PartiallyPaid)
+            {
                 throw new BusinessException("AR:CannotCancelPaid", 
                     "Cannot cancel invoices with payments");
+            }
 
             Status = InvoiceStatus.Cancelled;
         }
@@ -137,8 +151,10 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         public void RemoveHold()
         {
             if (Status != InvoiceStatus.Hold)
+            {
                 throw new BusinessException("AR:NotOnHold", 
                     "Invoice is not on hold");
+            }
 
             Status = IsOverdue() ? InvoiceStatus.Overdue : InvoiceStatus.Sent;
         }

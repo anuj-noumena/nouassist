@@ -34,14 +34,19 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Entities
         public void AddOutcome(string outcome)
         {
             if (!string.IsNullOrWhiteSpace(outcome))
+            {
                 Outcomes.Add(outcome);
+            }
         }
 
         public void SetProficiencyImpact(int impact)
         {
             if (impact < 0 || impact > 100)
+            {
                 throw new BusinessException("SkillDevelopment:InvalidImpact")
                     .WithData("Impact", impact);
+            }
+
             ProficiencyImpact = impact;
         }
 

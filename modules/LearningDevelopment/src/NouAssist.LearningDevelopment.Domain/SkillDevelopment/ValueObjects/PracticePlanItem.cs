@@ -27,7 +27,9 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects
             yield return EstimatedMinutes;
             yield return Objective;
             foreach (var resource in Resources)
+            {
                 yield return resource;
+            }
         }
     }
 }

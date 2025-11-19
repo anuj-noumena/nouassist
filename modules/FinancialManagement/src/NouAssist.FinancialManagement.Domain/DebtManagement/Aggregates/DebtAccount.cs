@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DebtManagement.Enums;
 using NouAssist.FinancialManagement.DebtManagement.Entities;
+using NouAssist.FinancialManagement.DebtManagement.Enums;
 using NouAssist.FinancialManagement.DebtManagement.ValueObjects;
+using NouAssist.SharedKernel.Extension;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -55,8 +56,8 @@ namespace NouAssist.FinancialManagement.DebtManagement.Aggregates
             DebtName = Check.NotNullOrWhiteSpace(debtName, nameof(debtName));
             Type = type;
             OriginalAmount = Check.Positive(originalAmount, nameof(originalAmount));
-            CurrentBalance = Check.NotNegative(currentBalance, nameof(currentBalance));
-            InterestRate = Check.NotNegative(interestRate, nameof(interestRate));
+            CurrentBalance = Ensure.NotNegative(currentBalance, nameof(currentBalance));
+            InterestRate = Ensure.NotNegative(interestRate, nameof(interestRate));
             MinimumPayment = Check.Positive(minimumPayment, nameof(minimumPayment));
             PaymentFrequency = paymentFrequency;
             Status = DebtStatus.Active;
@@ -127,7 +128,7 @@ namespace NouAssist.FinancialManagement.DebtManagement.Aggregates
                 interestAmount,
                 paymentAmount,
                 remainingBalance,
-                Clock.Now,
+                DateTime.UtcNow,
                 daysSinceLastPayment
             );
         }
@@ -158,10 +159,13 @@ namespace NouAssist.FinancialManagement.DebtManagement.Aggregates
                 balance -= principalPayment;
                 months++;
 
-                if (balance < 0) balance = 0;
+                if (balance < 0)
+                {
+                    balance = 0;
+                }
             }
 
-            var projectedPayoffDate = Clock.Now.AddMonths(months);
+            var projectedPayoffDate = DateTime.UtcNow.AddMonths(months);
             var totalToPay = CurrentBalance + totalInterest;
 
             return new PayoffProjection(

@@ -60,14 +60,20 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void AdvanceToNextStep()
         {
             if (Completed)
+            {
                 throw new BusinessException("SkillDevelopment:SessionAlreadyCompleted");
-            
+            }
+
             if (Paused)
+            {
                 throw new BusinessException("SkillDevelopment:SessionIsPaused");
+            }
 
             var currentMilestone = GetCurrentMilestone();
             if (currentMilestone == null || !currentMilestone.Completed)
+            {
                 throw new BusinessException("SkillDevelopment:CurrentStepNotCompleted");
+            }
 
             // Track time for completed step
             _practiceTimeTracking[CurrentStep] = currentMilestone.TimeTracking.TotalMinutes;
@@ -101,8 +107,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         {
             var milestone = GetCurrentMilestone();
             if (milestone == null)
+            {
                 throw new BusinessException("SkillDevelopment:NoActiveMilestone");
-            
+            }
+
             milestone.MarkCompleted(DateTime.UtcNow);
             LastActivity = DateTime.UtcNow;
         }
@@ -110,11 +118,15 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void Pause()
         {
             if (Completed)
+            {
                 throw new BusinessException("SkillDevelopment:CannotPauseCompletedSession");
-            
+            }
+
             if (Paused)
+            {
                 throw new BusinessException("SkillDevelopment:SessionAlreadyPaused");
-            
+            }
+
             Paused = true;
             PausedAt = DateTime.UtcNow;
         }
@@ -122,8 +134,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void Resume()
         {
             if (!Paused)
+            {
                 throw new BusinessException("SkillDevelopment:SessionNotPaused");
-            
+            }
+
             Paused = false;
             ResumedAt = DateTime.UtcNow;
             LastActivity = DateTime.UtcNow;
@@ -132,8 +146,10 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         public void StartReviewCycle()
         {
             if (!Completed)
+            {
                 throw new BusinessException("SkillDevelopment:CannotReviewIncompleteSession");
-            
+            }
+
             ReviewCycle++;
             CurrentStep = DevelopmentStep.Review;
             _milestones[CurrentStep] = new SkillMilestone(Id, CurrentStep, DateTime.UtcNow);

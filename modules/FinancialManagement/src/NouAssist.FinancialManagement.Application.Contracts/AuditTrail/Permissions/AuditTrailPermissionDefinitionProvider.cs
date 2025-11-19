@@ -1,8 +1,8 @@
-using NouAssist.AuditTrail.Localization;
+using NouAssist.FinancialManagement.AuditTrail.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.AuditTrail.Permissions
+namespace NouAssist.FinancialManagement.AuditTrail.Permissions
 {
     public class AuditTrailPermissionDefinitionProvider : PermissionDefinitionProvider
     {

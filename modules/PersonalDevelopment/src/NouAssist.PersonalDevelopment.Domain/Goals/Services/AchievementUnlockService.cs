@@ -33,12 +33,16 @@ namespace NouAssist.PersonalDevelopment.Goals.Services
                 .FindByUserAndAchievementAsync(userId, achievementId);
 
             if (existing != null && existing.IsFullyUnlocked)
+            {
                 return null;
+            }
 
             var achievement = await _achievementRepository.GetAsync(achievementId);
             
             if (!achievement.IsActive)
+            {
                 return null;
+            }
 
             var userAchievement = existing ?? new UserAchievement(
                 GuidGenerator.Create(),

@@ -38,8 +38,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             string currency) : base(id)
         {
             if (periodEnd <= periodStart)
+            {
                 throw new BusinessException("FPA:InvalidPeriod", 
                     "Period end must be after period start");
+            }
 
             TenantId = tenantId;
             UserId = userId;
@@ -55,8 +57,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void AddAllocation(CategoryAllocation allocation)
         {
             if (Status != BudgetStatus.Draft)
+            {
                 throw new BusinessException("FPA:CannotModifyActiveBudget", 
                     "Cannot modify active budget");
+            }
 
             _allocations.Add(allocation);
             RecalculateTotalBudget();
@@ -66,8 +70,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         {
             var allocation = _allocations.FirstOrDefault(a => a.CategoryId == categoryId);
             if (allocation == null)
+            {
                 throw new BusinessException("FPA:CategoryNotFound", 
                     "Category not found in budget");
+            }
 
             allocation.AddActual(amount);
             ActualSpent = ActualSpent.Add(amount);
@@ -76,12 +82,16 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Activate()
         {
             if (Status != BudgetStatus.Draft)
+            {
                 throw new BusinessException("FPA:AlreadyActive", 
                     "Budget is already active");
+            }
 
             if (!_allocations.Any())
+            {
                 throw new BusinessException("FPA:NoAllocations", 
                     "Budget must have at least one allocation");
+            }
 
             Status = BudgetStatus.Active;
         }
@@ -89,8 +99,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Close()
         {
             if (Status != BudgetStatus.Active)
+            {
                 throw new BusinessException("FPA:NotActive", 
                     "Only active budgets can be closed");
+            }
 
             Status = BudgetStatus.Closed;
         }
@@ -98,7 +110,9 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public decimal GetVariancePercentage()
         {
             if (TotalBudget.Amount == 0)
+            {
                 return 0;
+            }
 
             return (ActualSpent.Amount / TotalBudget.Amount) * 100;
         }

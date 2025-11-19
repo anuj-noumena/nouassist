@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
+using NouAssist.FinancialManagement.GeneralLedger.Data;
 using NouAssist.FinancialManagement.GeneralLedger.Events;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Entities.Events;
@@ -23,7 +24,9 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Handlers
             var batch = eventData.Entity;
             
             if (batch.Status != Enums.BatchStatus.Posted)
+            {
                 return;
+            }
 
             foreach (var line in batch.Lines)
             {

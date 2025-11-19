@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.InvestmentManagement.InvestmentGoals.Dtos;
+using NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.InvestmentManagement.InvestmentGoals
+namespace NouAssist.FinancialManagement.InvestmentManagement.InvestmentGoals
 {
     public interface IInvestmentGoalAppService : IApplicationService
     {

@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable.Dtos;
+using NouAssist.FinancialManagement.AccountsReceivable.Dtos;
 
-namespace NouAssist.FinancialManagement.Application.AccountsReceivable.Validators
+namespace NouAssist.FinancialManagement.AccountsReceivable.Validators
 {
     public class CreateInvoiceDtoValidator : AbstractValidator<CreateInvoiceDto>
     {

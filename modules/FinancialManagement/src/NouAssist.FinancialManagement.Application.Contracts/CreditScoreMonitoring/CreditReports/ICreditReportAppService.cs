@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.CreditScoreMonitoring.CreditReports.Dtos;
-using NouAssist.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditReports.Dtos;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CreditScoreMonitoring.CreditReports
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditReports
 {
     public interface ICreditReportAppService : IApplicationService
     {

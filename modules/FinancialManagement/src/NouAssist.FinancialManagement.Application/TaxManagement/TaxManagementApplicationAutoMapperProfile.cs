@@ -1,10 +1,10 @@
 using AutoMapper;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
 using NouAssist.FinancialManagement.TaxManagement.Entities;
-using NouAssist.TaxManagement.TaxProfiles.Dtos;
-using NouAssist.TaxManagement.TaxReturns.Dtos;
+using NouAssist.FinancialManagement.TaxManagement.TaxProfiles.Dtos;
+using NouAssist.FinancialManagement.TaxManagement.TaxReturns.Dtos;
 
-namespace NouAssist.TaxManagement
+namespace NouAssist.FinancialManagement.TaxManagement
 {
     public class TaxManagementApplicationAutoMapperProfile : Profile
     {

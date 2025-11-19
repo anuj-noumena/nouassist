@@ -2,7 +2,7 @@ using System;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.TaxManagement.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.TaxManagement.Events
 {
     [EventName("NouAssist.TaxManagement.TaxEstimateCalculated")]
     public class TaxEstimateCalculatedEto : IMultiTenant

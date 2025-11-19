@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NouAssist.FinancialManagement.InvestmentManagement.Entities;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
 using NouAssist.FinancialManagement.InvestmentManagement.ValueObjects;
-using NouAssist.InvestmentManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -241,7 +241,7 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
 
         public void MarkAsRebalanced()
         {
-            LastRebalanceDate = Clock.Now;
+            LastRebalanceDate = DateTime.UtcNow;
         }
 
         public void RecalculatePortfolioMetrics()
@@ -258,7 +258,10 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
         {
             var allocations = new Dictionary<string, decimal>();
             
-            if (TotalValue == 0) return new PortfolioAllocation(allocations);
+            if (TotalValue == 0)
+            {
+                return new PortfolioAllocation(allocations);
+            }
 
             foreach (var assetClass in Enum.GetValues<AssetClass>())
             {
@@ -285,7 +288,10 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Aggregates
         {
             var weights = new Dictionary<string, decimal>();
             
-            if (TotalValue == 0) return weights;
+            if (TotalValue == 0)
+            {
+                return weights;
+            }
 
             foreach (var holding in _holdings)
             {

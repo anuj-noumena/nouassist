@@ -30,9 +30,11 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Entities
             Description = Check.NotNullOrWhiteSpace(description, nameof(description));
             
             if (quantity <= 0)
+            {
                 throw new BusinessException("AR:InvalidQuantity", 
                     "Quantity must be greater than zero");
-            
+            }
+
             Quantity = quantity;
             UnitPrice = Check.NotNull(unitPrice, nameof(unitPrice));
             SubTotal = unitPrice.Multiply(quantity);
@@ -44,9 +46,11 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Entities
         public void UpdateQuantity(decimal newQuantity)
         {
             if (newQuantity <= 0)
+            {
                 throw new BusinessException("AR:InvalidQuantity", 
                     "Quantity must be greater than zero");
-            
+            }
+
             Quantity = newQuantity;
             SubTotal = UnitPrice.Multiply(newQuantity);
         }

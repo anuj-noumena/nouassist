@@ -56,8 +56,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         {
             var line = _lines.FirstOrDefault(l => l.Id == lineId);
             if (line == null)
+            {
                 throw new BusinessException("GL:LineNotFound", 
                     "Statement line not found");
+            }
 
             line.Match(journalBatchId, matchedBy);
             UpdateReconciliationStatus();
@@ -67,8 +69,10 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
         {
             var line = _lines.FirstOrDefault(l => l.Id == lineId);
             if (line == null)
+            {
                 throw new BusinessException("GL:LineNotFound", 
                     "Statement line not found");
+            }
 
             line.Unmatch();
             UpdateReconciliationStatus();
@@ -89,11 +93,17 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             var totalCount = _lines.Count;
 
             if (matchedCount == 0)
+            {
                 Status = ReconciliationStatus.Unreconciled;
+            }
             else if (matchedCount == totalCount)
+            {
                 Status = ReconciliationStatus.FullyReconciled;
+            }
             else
+            {
                 Status = ReconciliationStatus.PartiallyReconciled;
+            }
         }
     }
 }

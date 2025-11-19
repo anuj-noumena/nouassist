@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.DocumentManagement.Dtos;
+using NouAssist.FinancialManagement.DocumentManagement.Dtos;
 
-namespace NouAssist.DocumentManagement.Validators
+namespace NouAssist.FinancialManagement.DocumentManagement.Validators
 {
     public class CreateDocumentDtoValidator : AbstractValidator<CreateDocumentDto>
     {

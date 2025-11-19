@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger;
-using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger.Dtos;
 using NouAssist.FinancialManagement.GeneralLedger.Aggregates;
 using NouAssist.FinancialManagement.GeneralLedger.Data;
+using NouAssist.FinancialManagement.GeneralLedger.Dtos;
 using NouAssist.FinancialManagement.GeneralLedger.Entities;
-using NouAssist.FinancialManagement.GeneralLedger.Enums;
 using NouAssist.FinancialManagement.Permissions;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.Application.GeneralLedger
+namespace NouAssist.FinancialManagement.GeneralLedger
 {
     [Authorize(FinancialManagementPermissions.GeneralLedger.Default)]
     public class JournalEntryBatchAppService : ApplicationService, IJournalEntryBatchAppService

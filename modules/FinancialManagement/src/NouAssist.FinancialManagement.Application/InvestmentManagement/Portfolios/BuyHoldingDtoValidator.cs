@@ -1,7 +1,6 @@
-using FluentValidation;
-using NouAssist.InvestmentManagement.Portfolios.Dtos;
+using NouAssist.FinancialManagement.InvestmentManagement.Portfolios.Dtos;
 
-namespace NouAssist.InvestmentManagement.Portfolios
+namespace NouAssist.FinancialManagement.InvestmentManagement.Portfolios
 {
     public class BuyHoldingDtoValidator : AbstractValidator<BuyHoldingDto>
     {

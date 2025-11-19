@@ -1,8 +1,8 @@
 using System;
-using NouAssist.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CreditScoreMonitoring.CreditDisputes.Dtos
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes.Dtos
 {
     public class CreditDisputeDto : FullAuditedEntityDto<Guid>
     {

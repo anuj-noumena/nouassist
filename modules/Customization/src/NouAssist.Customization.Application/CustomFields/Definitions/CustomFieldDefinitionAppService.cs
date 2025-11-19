@@ -7,16 +7,18 @@ using NouAssist.Customization.CustomFields.Aggregates;
 using NouAssist.Customization.CustomFields.Data;
 using NouAssist.Customization.CustomFields.Definitions.Dtos;
 using NouAssist.Customization.CustomFields.Enums;
-using NouAssist.Customization.CustomFields.Permissions;
 using NouAssist.Customization.CustomFields.Specifications;
 using NouAssist.Customization.CustomFields.ValueObjects;
+using NouAssist.Customization.Permissions;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.Customization.CustomFields.Definitions
 {
-    [Authorize(CustomFieldsPermissions.Definitions.Default)]
+    [Authorize(CustomizationPermissions.CustomFields.Definitions.Default)]
     public class CustomFieldDefinitionAppService 
         : ApplicationService, ICustomFieldDefinitionAppService
     {
@@ -40,7 +42,7 @@ namespace NouAssist.Customization.CustomFields.Definitions
             var spec = CreateListSpecification(input);
 
             var definitions = await _definitionRepository.GetListAsync(spec);
-            var totalCount = await _definitionRepository.CountAsync(spec);
+            var totalCount = await _definitionRepository.CountAsync(spec.ToExpression());
 
             return new PagedResultDto<CustomFieldDefinitionDto>(
                 totalCount,
@@ -62,7 +64,7 @@ namespace NouAssist.Customization.CustomFields.Definitions
             return ObjectMapper.Map<List<CustomFieldDefinition>, List<CustomFieldDefinitionDto>>(definitions);
         }
 
-        [Authorize(CustomFieldsPermissions.Definitions.Create)]
+        [Authorize(CustomizationPermissions.CustomFields.Definitions.Create)]
         public async Task<CustomFieldDefinitionDto> CreateAsync(CreateCustomFieldDefinitionDto input)
         {
             var definition = new CustomFieldDefinition(
@@ -103,7 +105,7 @@ namespace NouAssist.Customization.CustomFields.Definitions
             return ObjectMapper.Map<CustomFieldDefinition, CustomFieldDefinitionDto>(definition);
         }
 
-        [Authorize(CustomFieldsPermissions.Definitions.Update)]
+        [Authorize(CustomizationPermissions.CustomFields.Definitions.Update)]
         public async Task<CustomFieldDefinitionDto> UpdateAsync(
             Guid id, 
             UpdateCustomFieldDefinitionDto input)
@@ -158,13 +160,13 @@ namespace NouAssist.Customization.CustomFields.Definitions
             return ObjectMapper.Map<CustomFieldDefinition, CustomFieldDefinitionDto>(definition);
         }
 
-        [Authorize(CustomFieldsPermissions.Definitions.Delete)]
+        [Authorize(CustomizationPermissions.CustomFields.Definitions.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _definitionRepository.DeleteAsync(id);
         }
 
-        [Authorize(CustomFieldsPermissions.Definitions.Activate)]
+        [Authorize(CustomizationPermissions.CustomFields.Definitions.Activate)]
         public async Task<CustomFieldDefinitionDto> ActivateAsync(Guid id)
         {
             var definition = await _definitionRepository.GetAsync(id);
@@ -174,7 +176,7 @@ namespace NouAssist.Customization.CustomFields.Definitions
             return ObjectMapper.Map<CustomFieldDefinition, CustomFieldDefinitionDto>(definition);
         }
 
-        [Authorize(CustomFieldsPermissions.Definitions.Deactivate)]
+        [Authorize(CustomizationPermissions.CustomFields.Definitions.Deactivate)]
         public async Task<CustomFieldDefinitionDto> DeactivateAsync(Guid id)
         {
             var definition = await _definitionRepository.GetAsync(id);
@@ -184,7 +186,7 @@ namespace NouAssist.Customization.CustomFields.Definitions
             return ObjectMapper.Map<CustomFieldDefinition, CustomFieldDefinitionDto>(definition);
         }
 
-        [Authorize(CustomFieldsPermissions.Definitions.Update)]
+        [Authorize(CustomizationPermissions.CustomFields.Definitions.Update)]
         public async Task<CustomFieldOptionDto> AddOptionAsync(
             Guid id, 
             CreateCustomFieldOptionDto input)
@@ -204,7 +206,7 @@ namespace NouAssist.Customization.CustomFields.Definitions
             return ObjectMapper.Map<CustomFieldOption, CustomFieldOptionDto>(option);
         }
 
-        [Authorize(CustomFieldsPermissions.Definitions.Update)]
+        [Authorize(CustomizationPermissions.CustomFields.Definitions.Update)]
         public async Task RemoveOptionAsync(Guid id, Guid optionId)
         {
             var definition = await _definitionRepository.GetAsync(id);
@@ -215,7 +217,7 @@ namespace NouAssist.Customization.CustomFields.Definitions
         private ISpecification<CustomFieldDefinition> CreateListSpecification(
             GetCustomFieldDefinitionListDto input)
         {
-            var spec = Specification.None<CustomFieldDefinition>();
+            ISpecification<CustomFieldDefinition> spec = new BaseSpecification<CustomFieldDefinition>();
 
             if (input.EntityType.HasValue)
             {
@@ -230,13 +232,13 @@ namespace NouAssist.Customization.CustomFields.Definitions
                 }
                 else
                 {
-                    spec = spec.And(new Specification<CustomFieldDefinition>(f => !f.IsActive));
+                    spec = spec.And(new BaseSpecification<CustomFieldDefinition>(f => !f.IsActive));
                 }
             }
 
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
-                spec = spec.And(new Specification<CustomFieldDefinition>(
+                spec = spec.And(new BaseSpecification<CustomFieldDefinition>(
                     f => f.Name.Contains(input.Filter) || f.FieldKey.Contains(input.Filter)));
             }
 

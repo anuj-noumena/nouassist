@@ -1,8 +1,8 @@
-using NouAssist.CreditScoreMonitoring.Localization;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.CreditScoreMonitoring.Permissions
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.Permissions
 {
     public class CreditScoreMonitoringPermissionDefinitionProvider : PermissionDefinitionProvider
     {

@@ -4,15 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.FinancialManagement.AccountsReceivable.Aggregates;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable;
-using NouAssist.FinancialManagement.Application.Contracts.AccountsReceivable.Dtos;
+using NouAssist.FinancialManagement.AccountsReceivable.Dtos;
 using NouAssist.FinancialManagement.Permissions;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.FinancialManagement.Application.AccountsReceivable
+namespace NouAssist.FinancialManagement.AccountsReceivable
 {
     [Authorize(FinancialManagementPermissions.AccountsReceivable.Default)]
     public class CustomerAppService : ApplicationService, ICustomerAppService

@@ -109,12 +109,16 @@ namespace NouAssist.WorkManagement.Approval.Analytics
             foreach (var workflow in workflows)
             {
                 if (input.WorkflowId.HasValue && workflow.Id != input.WorkflowId.Value)
+                {
                     continue;
+                }
 
                 var workflowRequests = requests.Where(r => r.WorkflowId == workflow.Id).ToList();
                 
                 if (!workflowRequests.Any())
+                {
                     continue;
+                }
 
                 var completedRequests = workflowRequests.Where(r => r.CompletedAt.HasValue).ToList();
                 var processingTimes = completedRequests
@@ -212,7 +216,9 @@ namespace NouAssist.WorkManagement.Approval.Analytics
                 var userId = userGroup.Key;
                 
                 if (input.UserIds != null && input.UserIds.Any() && !input.UserIds.Contains(userId))
+                {
                     continue;
+                }
 
                 var decisions = userGroup.ToList();
                 var responseTimes = decisions
@@ -260,14 +266,18 @@ namespace NouAssist.WorkManagement.Approval.Analytics
             foreach (var workflow in workflows)
             {
                 if (input.WorkflowId.HasValue && workflow.Id != input.WorkflowId.Value)
+                {
                     continue;
+                }
 
                 var workflowRequests = requests.Where(r => r.WorkflowId == workflow.Id).ToList();
                 
                 foreach (var step in workflow.Steps)
                 {
                     if (input.StepId.HasValue && step.Id != input.StepId.Value)
+                    {
                         continue;
+                    }
 
                     var stepDecisions = workflowRequests
                         .SelectMany(r => r.Decisions)
@@ -275,7 +285,9 @@ namespace NouAssist.WorkManagement.Approval.Analytics
                         .ToList();
 
                     if (!stepDecisions.Any())
+                    {
                         continue;
+                    }
 
                     var processingTimes = stepDecisions
                         .Select(d =>
@@ -345,7 +357,9 @@ namespace NouAssist.WorkManagement.Approval.Analytics
                 var workflowRequestsWithSla = requestsWithSla.Where(r => r.WorkflowId == workflow.Id).ToList();
                 
                 if (!workflowRequestsWithSla.Any())
+                {
                     continue;
+                }
 
                 var workflowBreaches = workflowRequestsWithSla.Count(r => 
                     r.IsSlaBreached || (r.CompletedAt.HasValue && r.CompletedAt.Value > r.SlaDeadline.Value));

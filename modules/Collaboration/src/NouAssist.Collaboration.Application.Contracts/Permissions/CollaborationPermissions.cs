@@ -16,7 +16,7 @@ public class CollaborationPermissions
     {
         public const string GroupName = "Comments";
 
-        public static class Comments
+        public static class Comment
         {
             public const string Default = GroupName + ".Comments";
             public const string Create = Default + ".Create";

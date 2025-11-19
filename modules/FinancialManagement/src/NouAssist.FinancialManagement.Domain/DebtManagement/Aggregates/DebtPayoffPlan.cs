@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DebtManagement.Enums;
 using NouAssist.FinancialManagement.DebtManagement.Entities;
+using NouAssist.FinancialManagement.DebtManagement.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
@@ -38,7 +38,7 @@ namespace NouAssist.FinancialManagement.DebtManagement.Aggregates
             PlanName = Check.NotNullOrWhiteSpace(planName, nameof(planName));
             Strategy = strategy;
             MonthlyPaymentAmount = Check.Positive(monthlyPaymentAmount, nameof(monthlyPaymentAmount));
-            StartDate = Clock.Now;
+            StartDate = DateTime.UtcNow;
             IsActive = true;
         }
 

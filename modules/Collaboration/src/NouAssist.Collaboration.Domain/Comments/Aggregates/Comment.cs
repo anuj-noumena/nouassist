@@ -54,8 +54,10 @@ namespace NouAssist.Collaboration.Comments.Aggregates
             if (mentionedUserIds != null && mentionedUserIds.Any())
             {
                 if (mentionedUserIds.Count > 10) // DomainConstants.maxMentionsPerComment
+                {
                     throw new BusinessException("Comments:TooManyMentions")
                         .WithData("maxMentions", 10);
+                }
 
                 _mentionedUserIds.AddRange(mentionedUserIds);
             }
@@ -80,7 +82,9 @@ namespace NouAssist.Collaboration.Comments.Aggregates
         public void Edit(string newContent)
         {
             if (IsDeleted)
+            {
                 throw new BusinessException("Comments:CannotEditDeleted");
+            }
 
             SetContent(newContent);
             IsEdited = true;
@@ -90,7 +94,9 @@ namespace NouAssist.Collaboration.Comments.Aggregates
         public void Delete()
         {
             if (IsDeleted)
+            {
                 return;
+            }
 
             IsDeleted = true;
             DeletedAt = DateTime.UtcNow;
@@ -110,7 +116,9 @@ namespace NouAssist.Collaboration.Comments.Aggregates
         {
             var existingReaction = _reactions.FirstOrDefault(r => r.UserId == userId && r.Emoji == emoji);
             if (existingReaction != null)
+            {
                 return;
+            }
 
             var reaction = new Entities.CommentReaction(Guid.NewGuid(), Id, userId, emoji);
             _reactions.Add(reaction);
@@ -121,7 +129,9 @@ namespace NouAssist.Collaboration.Comments.Aggregates
         {
             var reaction = _reactions.FirstOrDefault(r => r.UserId == userId && r.Emoji == emoji);
             if (reaction == null)
+            {
                 return;
+            }
 
             _reactions.Remove(reaction);
             ReactionsCount = Math.Max(0, ReactionsCount - 1);

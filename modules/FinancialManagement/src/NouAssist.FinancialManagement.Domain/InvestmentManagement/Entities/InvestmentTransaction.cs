@@ -1,5 +1,6 @@
 using System;
-using NouAssist.InvestmentManagement.Enums;
+using NouAssist.FinancialManagement.InvestmentManagement.Enums;
+using NouAssist.SharedKernel.Extension;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -34,8 +35,8 @@ namespace NouAssist.FinancialManagement.InvestmentManagement.Entities
             Type = type;
             Symbol = Check.NotNullOrWhiteSpace(symbol, nameof(symbol));
             Quantity = quantity;
-            Price = Check.NotNegative(price, nameof(price));
-            Fees = Check.NotNegative(fees, nameof(fees));
+            Price = Ensure.NotNegative(price, nameof(price));
+            Fees = Ensure.NotNegative(fees, nameof(fees));
             TransactionDate = transactionDate;
             
             CalculateTotalAmount();

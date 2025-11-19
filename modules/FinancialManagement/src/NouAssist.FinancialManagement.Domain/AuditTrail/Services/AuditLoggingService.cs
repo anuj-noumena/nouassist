@@ -1,20 +1,23 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.AuditTrail.Domain.Shared.Events;
-using NouAssist.AuditTrail.Enums;
 using NouAssist.FinancialManagement.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Enums;
+using NouAssist.FinancialManagement.AuditTrail.Events;
 using NouAssist.FinancialManagement.AuditTrail.ValueObjects;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.EventBus.Distributed;
 
 namespace NouAssist.FinancialManagement.AuditTrail.Services
 {
     public class AuditLoggingService : DomainService
     {
         private readonly ComplianceFlagDeterminationService _complianceService;
+        private readonly IDistributedEventBus _distributedEventBus;
 
-        public AuditLoggingService(ComplianceFlagDeterminationService complianceService)
+        public AuditLoggingService(ComplianceFlagDeterminationService complianceService, IDistributedEventBus distributedEventBus)
         {
             _complianceService = complianceService;
+            _distributedEventBus = distributedEventBus;
         }
 
         public AuditEntry CreateAuditEntry(
@@ -61,7 +64,7 @@ namespace NouAssist.FinancialManagement.AuditTrail.Services
                 retentionDays);
 
             // Raise domain event
-            auditEntry.AddDistributedEvent(new AuditEntryCreatedEto
+            _distributedEventBus.PublishAsync(new AuditEntryCreatedEto
             {
                 AuditEntryId = auditEntry.Id,
                 TenantId = tenantId,
@@ -141,13 +144,17 @@ namespace NouAssist.FinancialManagement.AuditTrail.Services
 
         private string SerializeValue(object value)
         {
-            if (value == null) return null;
+            if (value == null)
+            {
+                return null;
+            }
+
             return System.Text.Json.JsonSerializer.Serialize(value);
         }
 
         private void RaiseSuspiciousActivityAlert(AuditEntry entry)
         {
-            entry.AddDistributedEvent(new SuspiciousActivityDetectedEto
+            _distributedEventBus.PublishAsync(new SuspiciousActivityDetectedEto
             {
                 AlertId = GuidGenerator.Create(),
                 TenantId = entry.TenantId,

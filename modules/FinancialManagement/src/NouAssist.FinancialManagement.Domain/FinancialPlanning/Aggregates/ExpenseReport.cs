@@ -47,12 +47,16 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void AddExpense(Guid expenseId)
         {
             if (Status != ReportStatus.Draft)
+            {
                 throw new BusinessException("FPA:CannotModifySubmittedReport",
                     "Cannot add expenses to submitted report");
+            }
 
             if (_expenseIds.Contains(expenseId))
+            {
                 throw new BusinessException("FPA:ExpenseAlreadyAdded",
                     "Expense already added to report");
+            }
 
             _expenseIds.Add(expenseId);
         }
@@ -60,22 +64,28 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Submit()
         {
             if (Status != ReportStatus.Draft)
+            {
                 throw new BusinessException("FPA:ReportAlreadySubmitted",
                     "Report has already been submitted");
+            }
 
             if (!_expenseIds.Any())
+            {
                 throw new BusinessException("FPA:NoExpenses",
                     "Report must contain at least one expense");
+            }
 
             Status = ReportStatus.Submitted;
-            SubmittedDate = Clock.Now;
+            SubmittedDate = DateTime.UtcNow;
         }
 
         public void Approve(Guid approvedBy)
         {
             if (Status != ReportStatus.Submitted)
+            {
                 throw new BusinessException("FPA:NotSubmitted",
                     "Only submitted reports can be approved");
+            }
 
             Status = ReportStatus.Approved;
             ApprovedBy = approvedBy;
@@ -84,8 +94,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Reject(string reason)
         {
             if (Status != ReportStatus.Submitted)
+            {
                 throw new BusinessException("FPA:NotSubmitted",
                     "Only submitted reports can be rejected");
+            }
 
             Status = ReportStatus.Rejected;
         }

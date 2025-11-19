@@ -35,9 +35,15 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.ValueObjects
                 yield return score.Value;
             }
             foreach (var area in StrengthAreas.OrderBy(x => x))
+            {
                 yield return area;
+            }
+
             foreach (var area in ImprovementAreas.OrderBy(x => x))
+            {
                 yield return area;
+            }
+
             yield return OverallNotes;
         }
     }

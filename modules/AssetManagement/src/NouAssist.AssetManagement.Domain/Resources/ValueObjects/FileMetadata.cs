@@ -30,9 +30,21 @@ namespace NouAssist.AssetManagement.Resources.ValueObjects
 
         public string GetReadableSize()
         {
-            if (SizeBytes < 1024) return $"{SizeBytes} B";
-            if (SizeBytes < 1024 * 1024) return $"{SizeBytes / 1024.0:F1} KB";
-            if (SizeBytes < 1024 * 1024 * 1024) return $"{SizeBytes / (1024.0 * 1024.0):F1} MB";
+            if (SizeBytes < 1024)
+            {
+                return $"{SizeBytes} B";
+            }
+
+            if (SizeBytes < 1024 * 1024)
+            {
+                return $"{SizeBytes / 1024.0:F1} KB";
+            }
+
+            if (SizeBytes < 1024 * 1024 * 1024)
+            {
+                return $"{SizeBytes / (1024.0 * 1024.0):F1} MB";
+            }
+
             return $"{SizeBytes / (1024.0 * 1024.0 * 1024.0):F1} GB";
         }
 

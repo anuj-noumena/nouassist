@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.FinancialManagement.Application.Contracts.GeneralLedger.Dtos;
+using NouAssist.FinancialManagement.GeneralLedger.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.FinancialManagement.Application.Contracts.GeneralLedger
+namespace NouAssist.FinancialManagement.GeneralLedger
 {
     public interface IJournalEntryBatchAppService : IApplicationService
     {

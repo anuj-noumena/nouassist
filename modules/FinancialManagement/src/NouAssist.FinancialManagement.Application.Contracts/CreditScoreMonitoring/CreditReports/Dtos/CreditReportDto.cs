@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.CreditScoreMonitoring.Enums;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.Enums;
 using Volo.Abp.Application.Dtos;
 
-namespace NouAssist.CreditScoreMonitoring.CreditReports.Dtos
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditReports.Dtos
 {
     public class CreditReportDto : FullAuditedEntityDto<Guid>
     {

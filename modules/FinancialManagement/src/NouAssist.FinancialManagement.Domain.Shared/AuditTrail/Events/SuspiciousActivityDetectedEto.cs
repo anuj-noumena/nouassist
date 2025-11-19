@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Volo.Abp.EventBus;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.AuditTrail.Domain.Shared.Events
+namespace NouAssist.FinancialManagement.AuditTrail.Events
 {
     [EventName("NouAssist.AuditTrail.SuspiciousActivityDetected")]
     public class SuspiciousActivityDetectedEto : IMultiTenant

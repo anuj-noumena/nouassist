@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.Customization.CustomFields.Data;
 using NouAssist.Customization.CustomFields.Entities;
-using NouAssist.Customization.CustomFields.Permissions;
 using NouAssist.Customization.CustomFields.Services;
 using NouAssist.Customization.CustomFields.Values.Dtos;
+using NouAssist.Customization.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.Customization.CustomFields.Values
 {
-    [Authorize(CustomFieldsPermissions.Values.Default)]
+    [Authorize(CustomizationPermissions.CustomFields.Values.Default)]
     public class CustomFieldValueAppService : ApplicationService, ICustomFieldValueAppService
     {
         private readonly ICustomFieldValueRepository _valueRepository;
@@ -59,7 +59,7 @@ namespace NouAssist.Customization.CustomFields.Values
             };
         }
 
-        [Authorize(CustomFieldsPermissions.Values.Manage)]
+        [Authorize(CustomizationPermissions.CustomFields.Values.Manage)]
         public async Task<CustomFieldValueDto> SetValueAsync(
             string entityType, 
             Guid entityId, 
@@ -109,7 +109,7 @@ namespace NouAssist.Customization.CustomFields.Values
             }
         }
 
-        [Authorize(CustomFieldsPermissions.Values.Manage)]
+        [Authorize(CustomizationPermissions.CustomFields.Values.Manage)]
         public async Task BulkSetValuesAsync(BulkSetCustomFieldValuesDto input)
         {
             // Load all definitions
@@ -144,7 +144,7 @@ namespace NouAssist.Customization.CustomFields.Values
             }
         }
 
-        [Authorize(CustomFieldsPermissions.Values.Manage)]
+        [Authorize(CustomizationPermissions.CustomFields.Values.Manage)]
         public async Task DeleteValueAsync(
             string entityType, 
             Guid entityId, 
@@ -162,7 +162,7 @@ namespace NouAssist.Customization.CustomFields.Values
             }
         }
 
-        [Authorize(CustomFieldsPermissions.Values.Manage)]
+        [Authorize(CustomizationPermissions.CustomFields.Values.Manage)]
         public async Task DeleteAllValuesAsync(string entityType, Guid entityId)
         {
             await _valueRepository.DeleteByEntityAsync(entityType, entityId);

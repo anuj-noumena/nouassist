@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.DocumentManagement.Enums;
 using NouAssist.FinancialManagement.DocumentManagement.Aggregates;
 using NouAssist.FinancialManagement.DocumentManagement.Data;
+using NouAssist.FinancialManagement.DocumentManagement.Enums;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

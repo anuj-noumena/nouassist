@@ -29,9 +29,11 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Entities
             Description = Check.NotNullOrWhiteSpace(description, nameof(description));
             
             if (quantity <= 0)
+            {
                 throw new BusinessException("AP:InvalidQuantity", 
                     "Quantity must be greater than zero");
-            
+            }
+
             Quantity = quantity;
             UnitPrice = Check.NotNull(unitPrice, nameof(unitPrice));
             LineTotal = unitPrice.Multiply(quantity);

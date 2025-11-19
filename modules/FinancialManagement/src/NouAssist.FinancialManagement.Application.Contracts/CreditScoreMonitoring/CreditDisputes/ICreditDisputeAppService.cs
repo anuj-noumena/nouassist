@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.CreditScoreMonitoring.CreditDisputes.Dtos;
+using NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CreditScoreMonitoring.CreditDisputes
+namespace NouAssist.FinancialManagement.CreditScoreMonitoring.CreditDisputes
 {
     public interface ICreditDisputeAppService : IApplicationService
     {

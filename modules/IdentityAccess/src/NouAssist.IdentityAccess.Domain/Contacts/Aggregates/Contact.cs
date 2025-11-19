@@ -79,8 +79,10 @@ namespace NouAssist.IdentityAccess.Contacts.Aggregates
             ContactType = string.IsNullOrEmpty(organizationName) ? ContactType.Person : ContactType.Organization;
 
             if (string.IsNullOrEmpty(firstName) && string.IsNullOrEmpty(lastName) && string.IsNullOrEmpty(organizationName))
+            {
                 throw new BusinessException("Contacts:NameRequired")
                     .WithData("message", "Contact must have a name or organization");
+            }
 
             if (!string.IsNullOrEmpty(email))
             {
@@ -111,13 +113,21 @@ namespace NouAssist.IdentityAccess.Contacts.Aggregates
         public void UpdateDisplayName()
         {
             if (!string.IsNullOrEmpty(FirstName) && !string.IsNullOrEmpty(LastName))
+            {
                 DisplayName = $"{FirstName} {LastName}";
+            }
             else if (!string.IsNullOrEmpty(FirstName))
+            {
                 DisplayName = FirstName;
+            }
             else if (!string.IsNullOrEmpty(OrganizationName))
+            {
                 DisplayName = OrganizationName;
+            }
             else
+            {
                 DisplayName = "Unknown";
+            }
         }
 
         public void RecordContact()
@@ -151,7 +161,9 @@ namespace NouAssist.IdentityAccess.Contacts.Aggregates
         public void AddTag(string tag)
         {
             if (!_tags.Contains(tag))
+            {
                 _tags.Add(tag);
+            }
         }
 
         public void RemoveTag(string tag)
@@ -172,7 +184,9 @@ namespace NouAssist.IdentityAccess.Contacts.Aggregates
         public void AddSocialProfile(ValueObjects.SocialProfile profile)
         {
             if (_socialProfiles.Any(p => p.Platform == profile.Platform && p.Username == profile.Username))
+            {
                 return; // Already exists
+            }
 
             _socialProfiles.Add(profile);
         }

@@ -261,7 +261,10 @@ namespace NouAssist.Customization.CustomFields.Aggregates
                     .WithData("FieldName", Name);
             }
 
-            if (value == null) return;
+            if (value == null)
+            {
+                return;
+            }
 
             // Type-specific validation
             switch (FieldType)

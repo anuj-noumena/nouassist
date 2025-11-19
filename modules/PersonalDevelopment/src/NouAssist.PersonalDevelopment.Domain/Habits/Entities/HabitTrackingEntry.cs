@@ -37,7 +37,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Entities
 
         public void MarkAsCompleted()
         {
-            if (Completed) return;
+            if (Completed)
+            {
+                return;
+            }
 
             Completed = true;
             CompletedAt = DateTime.UtcNow;
@@ -54,7 +57,10 @@ namespace NouAssist.PersonalDevelopment.Habits.Entities
 
         public void MarkAsIncomplete()
         {
-            if (!Completed) return;
+            if (!Completed)
+            {
+                return;
+            }
 
             Completed = false;
             CompletedAt = null;

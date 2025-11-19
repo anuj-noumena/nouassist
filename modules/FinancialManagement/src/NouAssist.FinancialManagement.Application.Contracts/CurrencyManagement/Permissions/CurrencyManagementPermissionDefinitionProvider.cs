@@ -1,8 +1,8 @@
-using NouAssist.CurrencyManagement.Localization;
+using NouAssist.FinancialManagement.CurrencyManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 
-namespace NouAssist.CurrencyManagement.Permissions
+namespace NouAssist.FinancialManagement.CurrencyManagement.Permissions
 {
     public class CurrencyManagementPermissionDefinitionProvider : PermissionDefinitionProvider
     {

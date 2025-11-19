@@ -33,7 +33,9 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         public void Complete()
         {
             if (IsCompleted)
+            {
                 return;
+            }
 
             IsCompleted = true;
             CompletedAt = DateTime.UtcNow;
@@ -56,7 +58,11 @@ namespace NouAssist.TimeManagement.Calendar.Entities
         {
             get
             {
-                if (EstimatedMinutes == 0) return 0.0;
+                if (EstimatedMinutes == 0)
+                {
+                    return 0.0;
+                }
+
                 return ((ActualMinutes - EstimatedMinutes) / (double)EstimatedMinutes) * 100;
             }
         }

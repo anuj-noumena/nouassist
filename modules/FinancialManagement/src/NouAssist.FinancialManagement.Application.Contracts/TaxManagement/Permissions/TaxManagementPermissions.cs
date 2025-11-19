@@ -1,4 +1,4 @@
-namespace NouAssist.TaxManagement.Permissions
+namespace NouAssist.FinancialManagement.TaxManagement.Permissions
 {
     public static class TaxManagementPermissions
     {

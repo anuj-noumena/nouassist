@@ -1,9 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AutoMapper;
-using Volo.Abp.FluentValidation;
 using Volo.Abp.Modularity;
 
-namespace NouAssist.DocumentManagement
+namespace NouAssist.FinancialManagement.DocumentManagement
 {
     [DependsOn(
         typeof(DocumentManagementDomainModule),

@@ -1,7 +1,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.AuditTrail.Enums;
 using NouAssist.FinancialManagement.AuditTrail.Aggregates;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 

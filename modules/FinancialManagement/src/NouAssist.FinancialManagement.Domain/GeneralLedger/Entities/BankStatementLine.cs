@@ -38,20 +38,24 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Entities
         public void Match(Guid journalBatchId, Guid matchedBy)
         {
             if (IsMatched)
+            {
                 throw new BusinessException("GL:AlreadyMatched", 
                     "Statement line is already matched");
+            }
 
             IsMatched = true;
             MatchedJournalBatchId = journalBatchId;
             MatchedBy = matchedBy;
-            MatchedDate = Clock.Now;
+            MatchedDate = DateTime.UtcNow;
         }
 
         public void Unmatch()
         {
             if (!IsMatched)
+            {
                 throw new BusinessException("GL:NotMatched", 
                     "Statement line is not matched");
+            }
 
             IsMatched = false;
             MatchedJournalBatchId = null;

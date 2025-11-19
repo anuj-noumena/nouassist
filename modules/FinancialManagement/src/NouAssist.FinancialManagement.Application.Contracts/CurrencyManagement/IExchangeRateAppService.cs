@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.CurrencyManagement.Dtos;
+using NouAssist.FinancialManagement.CurrencyManagement.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
-namespace NouAssist.CurrencyManagement
+namespace NouAssist.FinancialManagement.CurrencyManagement
 {
     public interface IExchangeRateAppService : IApplicationService
     {

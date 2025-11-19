@@ -1,7 +1,8 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using NouAssist.FinancialManagement.TaxManagement.Aggregates;
-using NouAssist.TaxManagement.Enums;
+using NouAssist.FinancialManagement.TaxManagement.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.FinancialManagement.TaxManagement.Specifications

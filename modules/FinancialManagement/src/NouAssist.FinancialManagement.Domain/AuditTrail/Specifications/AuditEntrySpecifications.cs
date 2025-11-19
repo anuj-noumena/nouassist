@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
-using NouAssist.AuditTrail.Enums;
 using NouAssist.FinancialManagement.AuditTrail.Aggregates;
+using NouAssist.FinancialManagement.AuditTrail.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.FinancialManagement.AuditTrail.Specifications

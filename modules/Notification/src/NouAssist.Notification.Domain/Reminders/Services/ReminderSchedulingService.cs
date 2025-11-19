@@ -97,10 +97,14 @@ namespace NouAssist.Notification.Reminders.Services
         public void ProcessDueReminder(Reminder reminder)
         {
             if (reminder.IsCancelled)
+            {
                 return;
+            }
 
             if (!reminder.IsDue && !reminder.IsOverdue)
+            {
                 return;
+            }
 
             reminder.MarkAsSent();
         }
@@ -108,7 +112,9 @@ namespace NouAssist.Notification.Reminders.Services
         public void SnoozeReminder(Reminder reminder, int minutes)
         {
             if (minutes <= 0)
+            {
                 minutes = GetDefaultSnoozeDuration(reminder.Priority);
+            }
 
             reminder.Snooze(minutes);
         }

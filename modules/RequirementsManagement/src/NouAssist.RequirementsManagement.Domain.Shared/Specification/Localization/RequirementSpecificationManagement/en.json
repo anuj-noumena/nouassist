@@ -1,0 +1,53 @@
+{
+  "culture": "en",
+  "texts": {
+    "RequirementSpecificationManagement:ErrorMessage:RequirementNotFound": "The requirement with ID {requirementId} was not found.",
+    "RequirementSpecificationManagement:ErrorMessage:RequirementNotFoundByIdentifier": "The requirement with identifier '{identifier}' was not found.",
+    "RequirementSpecificationManagement:ErrorMessage:DuplicateRequirementIdentifier": "A requirement with the identifier '{identifier}' already exists.",
+    "RequirementSpecificationManagement:ErrorMessage:InvalidStatusTransition": "Cannot transition from {fromStatus} to {toStatus}.",
+    "RequirementSpecificationManagement:ErrorMessage:RequirementCannotBeModified": "The requirement {requirementId} cannot be modified in {status} status.",
+    
+    "RequirementSpecificationManagement:Entity:Requirement": "Requirement",
+    "RequirementSpecificationManagement:Entity:AcceptanceCriterion": "Acceptance Criterion",
+    "RequirementSpecificationManagement:Entity:BusinessRule": "Business Rule",
+    "RequirementSpecificationManagement:Entity:Constraint": "Constraint",
+    "RequirementSpecificationManagement:Entity:DataRequirement": "Data Requirement",
+    "RequirementSpecificationManagement:Entity:ExternalInterface": "External Interface",
+    "RequirementSpecificationManagement:Entity:SpecificationStructure": "Specification Structure",
+    
+    "RequirementSpecificationManagement:Status:Draft": "Draft",
+    "RequirementSpecificationManagement:Status:UnderReview": "Under Review",
+    "RequirementSpecificationManagement:Status:Approved": "Approved",
+    "RequirementSpecificationManagement:Status:Rejected": "Rejected",
+    "RequirementSpecificationManagement:Status:Implemented": "Implemented",
+    "RequirementSpecificationManagement:Status:Tested": "Tested",
+    "RequirementSpecificationManagement:Status:Archived": "Archived",
+    
+    "RequirementSpecificationManagement:Type:Functional": "Functional",
+    "RequirementSpecificationManagement:Type:NonFunctional": "Non-Functional",
+    "RequirementSpecificationManagement:Type:BusinessRule": "Business Rule",
+    "RequirementSpecificationManagement:Type:Constraint": "Constraint",
+    "RequirementSpecificationManagement:Type:DataRequirement": "Data Requirement",
+    "RequirementSpecificationManagement:Type:InterfaceRequirement": "Interface Requirement",
+    
+    "RequirementSpecificationManagement:Priority:Low": "Low",
+    "RequirementSpecificationManagement:Priority:Medium": "Medium",
+    "RequirementSpecificationManagement:Priority:High": "High",
+    "RequirementSpecificationManagement:Priority:Critical": "Critical",
+    
+    "RequirementSpecificationManagement:Scope:InScope": "In Scope",
+    "RequirementSpecificationManagement:Scope:OutOfScope": "Out of Scope",
+    "RequirementSpecificationManagement:Scope:ToBeDetermined": "To Be Determined",
+    "RequirementSpecificationManagement:Scope:ConditionallyInScope": "Conditionally In Scope",
+    
+    "RequirementSpecificationManagement:Validation:Required": "{0} is required.",
+    "RequirementSpecificationManagement:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "RequirementSpecificationManagement:Validation:InvalidValue": "Invalid value for {0}.",
+    "RequirementSpecificationManagement:Validation:DuplicateIdentifier": "This identifier is already in use.",
+    
+    "RequirementSpecificationManagement:Notification:RequirementCreated": "Requirement created successfully.",
+    "RequirementSpecificationManagement:Notification:RequirementUpdated": "Requirement updated successfully.",
+    "RequirementSpecificationManagement:Notification:RequirementDeleted": "Requirement deleted successfully.",
+    "RequirementSpecificationManagement:Notification:StatusChanged": "Requirement status changed to {status}."
+  }
+}

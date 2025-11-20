@@ -1,0 +1,154 @@
+{
+  "culture": "en",
+  "texts": {
+    "StrategicPlanning:ErrorMessage:GoalNotFound": "The strategic goal was not found.",
+    "StrategicPlanning:ErrorMessage:InvalidStatusTransition": "Cannot transition from {currentStatus} to {targetStatus}.",
+    "StrategicPlanning:ErrorMessage:CrisisManagementPlanNotFound": "The crisis management plan was not found.",
+    "StrategicPlanning:ErrorMessage:DuplicateGoalTitle": "A strategic goal with the title '{title}' already exists.",
+    "StrategicPlanning:ErrorMessage:InvalidHorizonPeriod": "Planning horizon period must be between {min} and {max} months.",
+    "StrategicPlanning:ErrorMessage:InvalidTargetDate": "Target date must be in the future.",
+    "StrategicPlanning:ErrorMessage:InvalidTargetValue": "Target value must be greater than zero.",
+    "StrategicPlanning:ErrorMessage:CrisisAlreadyActive": "A crisis management plan is already active.",
+    "StrategicPlanning:ErrorMessage:UnauthorizedCrisisActivation": "Insufficient permissions to activate crisis management plan.",
+    
+    "StrategicPlanning:Entity:StrategicGoal": "Strategic Goal",
+    "StrategicPlanning:Entity:GoalTarget": "Goal Target",
+    "StrategicPlanning:Entity:CrisisManagementPlan": "Crisis Management Plan",
+    "StrategicPlanning:Entity:SustainableGrowthFramework": "Sustainable Growth Framework",
+    "StrategicPlanning:Entity:OpportunityManagementRecord": "Opportunity Management Record",
+    "StrategicPlanning:Entity:TransitionPlan": "Transition Plan",
+    
+    "StrategicPlanning:Status:Draft": "Draft",
+    "StrategicPlanning:Status:UnderReview": "Under Review",
+    "StrategicPlanning:Status:Approved": "Approved",
+    "StrategicPlanning:Status:Active": "Active",
+    "StrategicPlanning:Status:OnHold": "On Hold",
+    "StrategicPlanning:Status:Completed": "Completed",
+    "StrategicPlanning:Status:Cancelled": "Cancelled",
+    "StrategicPlanning:Status:Archived": "Archived",
+    
+    "StrategicPlanning:Priority:Low": "Low",
+    "StrategicPlanning:Priority:Medium": "Medium",
+    "StrategicPlanning:Priority:High": "High",
+    "StrategicPlanning:Priority:Critical": "Critical",
+    
+    "StrategicPlanning:Horizon:H1": "H1 (0-2 years)",
+    "StrategicPlanning:Horizon:H2": "H2 (2-5 years)",
+    "StrategicPlanning:Horizon:H3": "H3 (5+ years)",
+    
+    "StrategicPlanning:CrisisLevel:Low": "Low",
+    "StrategicPlanning:CrisisLevel:Medium": "Medium",
+    "StrategicPlanning:CrisisLevel:High": "High",
+    "StrategicPlanning:CrisisLevel:Critical": "Critical",
+    "StrategicPlanning:CrisisLevel:Emergency": "Emergency",
+    
+    "StrategicPlanning:Validation:Required": "{0} is required.",
+    "StrategicPlanning:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "StrategicPlanning:Validation:InvalidValue": "Invalid value for {0}.",
+    "StrategicPlanning:Validation:FutureDate": "{0} must be a future date.",
+    "StrategicPlanning:Validation:PositiveNumber": "{0} must be a positive number.",
+    
+    "StrategicPlanning:Notification:GoalCreated": "Strategic goal '{0}' created successfully.",
+    "StrategicPlanning:Notification:GoalUpdated": "Strategic goal '{0}' updated successfully.",
+    "StrategicPlanning:Notification:GoalActivated": "Strategic goal '{0}' activated successfully.",
+    "StrategicPlanning:Notification:CrisisPlanActivated": "Crisis management plan '{0}' activated.",
+    "StrategicPlanning:Notification:TargetAchieved": "Goal target '{0}' has been achieved."
+  }
+}
+{
+  "culture": "en",
+  "texts": {
+    // ... existing entries ...
+    
+    "StrategicPlanning:Entity:IntegratedHorizonPlan": "Integrated Horizon Plan",
+    "StrategicPlanning:Entity:OpportunityManagementRecord": "Opportunity Management Record",
+    "StrategicPlanning:Entity:TransitionPlan": "Transition Plan",
+    "StrategicPlanning:Entity:TimelineEventMarker": "Timeline Event",
+    "StrategicPlanning:Entity:CapabilityRoadmapItem": "Capability Roadmap Item",
+    
+    "StrategicPlanning:TransitionType:BusinessExit": "Business Exit",
+    "StrategicPlanning:TransitionType:PersonalEvolution": "Personal Evolution",
+    "StrategicPlanning:TransitionType:OrganizationalRestructure": "Organizational Restructure",
+    "StrategicPlanning:TransitionType:TechnologyTransition": "Technology Transition",
+    "StrategicPlanning:TransitionType:MarketPivot": "Market Pivot",
+    
+    "StrategicPlanning:FocusLevel:Low": "Low",
+    "StrategicPlanning:FocusLevel:Medium": "Medium", 
+    "StrategicPlanning:FocusLevel:High": "High",
+    "StrategicPlanning:FocusLevel:Exclusive": "Exclusive",
+    
+    "StrategicPlanning:CapabilityLevel:Beginner": "Beginner",
+    "StrategicPlanning:CapabilityLevel:Intermediate": "Intermediate",
+    "StrategicPlanning:CapabilityLevel:Advanced": "Advanced",
+    "StrategicPlanning:CapabilityLevel:Expert": "Expert",
+    "StrategicPlanning:CapabilityLevel:Master": "Master",
+    
+    "StrategicPlanning:ErrorMessage:CannotActivateGoalWithoutTargets": "Cannot activate a strategic goal without targets.",
+    "StrategicPlanning:ErrorMessage:TimelineEventNotFound": "The timeline event was not found.",
+    "StrategicPlanning:ErrorMessage:TransitionPlanNotFound": "The transition plan was not found.",
+    "StrategicPlanning:ErrorMessage:InvalidTransitionPeriod": "Transition completion date must be after start date.",
+    "StrategicPlanning:ErrorMessage:CapabilityTargetLevelTooLow": "Target capability level must be higher than current level.",
+    
+    "StrategicPlanning:Notification:IntegratedPlanCreated": "Integrated horizon plan '{0}' created successfully.",
+    "StrategicPlanning:Notification:TransitionPlanActivated": "Transition plan '{0}' activated successfully.",
+    "StrategicPlanning:Notification:OpportunityEvaluated": "Opportunity evaluated with score {0}%.",
+    "StrategicPlanning:Notification:CapabilityProgressUpdated": "Capability progress updated for '{0}'."
+  }
+}
+{
+  "culture": "en",
+  "texts": {
+    // ... existing entries ...
+    
+    // Permission Localization
+    "Permission:StrategicPlanning": "Strategic Planning",
+    "Permission:StrategicGoals": "Strategic Goals",
+    "Permission:StrategicGoals.Create": "Create Strategic Goals",
+    "Permission:StrategicGoals.Update": "Update Strategic Goals",
+    "Permission:StrategicGoals.Delete": "Delete Strategic Goals",
+    "Permission:StrategicGoals.View": "View Strategic Goals",
+    "Permission:StrategicGoals.Approve": "Approve Strategic Goals",
+    "Permission:StrategicGoals.Activate": "Activate Strategic Goals",
+    "Permission:StrategicGoals.ManageTargets": "Manage Goal Targets",
+    
+    "Permission:CrisisManagement": "Crisis Management",
+    "Permission:CrisisManagement.Create": "Create Crisis Plans",
+    "Permission:CrisisManagement.Update": "Update Crisis Plans",
+    "Permission:CrisisManagement.Delete": "Delete Crisis Plans",
+    "Permission:CrisisManagement.View": "View Crisis Plans",
+    "Permission:CrisisManagement.Activate": "Activate Crisis Plans",
+    "Permission:CrisisManagement.ManageProtocols": "Manage Crisis Protocols",
+    
+    "Permission:SustainableGrowth": "Sustainable Growth",
+    "Permission:SustainableGrowth.Create": "Create Growth Frameworks",
+    "Permission:SustainableGrowth.Update": "Update Growth Frameworks",
+    "Permission:SustainableGrowth.Delete": "Delete Growth Frameworks",
+    "Permission:SustainableGrowth.View": "View Growth Frameworks",
+    "Permission:SustainableGrowth.ManageEsgGoals": "Manage ESG Goals",
+    "Permission:SustainableGrowth.RecordMeasurements": "Record ESG Measurements",
+    
+    "Permission:IntegratedPlanning": "Integrated Planning",
+    "Permission:IntegratedPlanning.Create": "Create Integrated Plans",
+    "Permission:IntegratedPlanning.Update": "Update Integrated Plans",
+    "Permission:IntegratedPlanning.Delete": "Delete Integrated Plans",
+    "Permission:IntegratedPlanning.View": "View Integrated Plans",
+    "Permission:IntegratedPlanning.ManageTimeline": "Manage Timeline",
+    "Permission:IntegratedPlanning.BackwardPlanning": "Perform Backward Planning",
+    
+    "Permission:OpportunityManagement": "Opportunity Management",
+    "Permission:OpportunityManagement.Create": "Create Opportunity Records",
+    "Permission:OpportunityManagement.Update": "Update Opportunity Records",
+    "Permission:OpportunityManagement.Delete": "Delete Opportunity Records",
+    "Permission:OpportunityManagement.View": "View Opportunity Records",
+    "Permission:OpportunityManagement.ManageFilters": "Manage Opportunity Filters",
+    "Permission:OpportunityManagement.EvaluateOpportunities": "Evaluate Opportunities",
+    
+    "Permission:TransitionPlanning": "Transition Planning",
+    "Permission:TransitionPlanning.Create": "Create Transition Plans",
+    "Permission:TransitionPlanning.Update": "Update Transition Plans",
+    "Permission:TransitionPlanning.Delete": "Delete Transition Plans",
+    "Permission:TransitionPlanning.View": "View Transition Plans",
+    "Permission:TransitionPlanning.ManageCapabilities": "Manage Capabilities",
+    "Permission:TransitionPlanning.UpdateProgress": "Update Transition Progress"
+  }
+}

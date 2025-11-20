@@ -1,0 +1,34 @@
+namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants
+{
+    /// <summary>
+    /// Contains constants for the CRM module
+    /// </summary>
+    public static class CRMConsts
+    {
+        /// <summary>
+        /// Default schema for database tables
+        /// </summary>
+        public const string DbSchema = null;
+
+        /// <summary>
+        /// Default prefix for database tables
+        /// </summary>
+        public const string DbTablePrefix = "CRM_";
+
+        /// <summary>
+        /// Maximum lengths for string properties
+        /// </summary>
+        public static class MaxLengths
+        {
+            // Existing constants...
+        }
+        
+        /// <summary>
+        /// Default values for the module
+        /// </summary>
+        public static class Defaults
+        {
+            // Existing constants...
+        }
+    }
+}

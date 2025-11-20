@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.RequirementsManagement.Domain": {
+      "path": "src/NouAssist.RequirementsManagement.Domain/NouAssist.RequirementsManagement.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.RequirementsManagement.Application.Contracts": {
+      "path": "src/NouAssist.RequirementsManagement.Application.Contracts/NouAssist.RequirementsManagement.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.RequirementsManagement.Application": {
+      "path": "src/NouAssist.RequirementsManagement.Application/NouAssist.RequirementsManagement.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.RequirementsManagement.EntityFrameworkCore": {
+      "path": "src/NouAssist.RequirementsManagement.EntityFrameworkCore/NouAssist.RequirementsManagement.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.RequirementsManagement.HttpApi": {
+      "path": "src/NouAssist.RequirementsManagement.HttpApi/NouAssist.RequirementsManagement.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.RequirementsManagement.HttpApi.Client": {
+      "path": "src/NouAssist.RequirementsManagement.HttpApi.Client/NouAssist.RequirementsManagement.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.RequirementsManagement.TestBase": {
+      "path": "test/NouAssist.RequirementsManagement.TestBase/NouAssist.RequirementsManagement.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.RequirementsManagement.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.RequirementsManagement.EntityFrameworkCore.Tests/NouAssist.RequirementsManagement.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.RequirementsManagement.Domain.Tests": {
+      "path": "test/NouAssist.RequirementsManagement.Domain.Tests/NouAssist.RequirementsManagement.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.RequirementsManagement.Application.Tests": {
+      "path": "test/NouAssist.RequirementsManagement.Application.Tests/NouAssist.RequirementsManagement.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.RequirementsManagement.Domain.Shared": {
+      "path": "src/NouAssist.RequirementsManagement.Domain.Shared/NouAssist.RequirementsManagement.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.RequirementsManagement.Installer": {
+       "path": "src/NouAssist.RequirementsManagement.Installer/NouAssist.RequirementsManagement.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

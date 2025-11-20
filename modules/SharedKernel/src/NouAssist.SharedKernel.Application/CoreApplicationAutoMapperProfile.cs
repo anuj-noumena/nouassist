@@ -28,10 +28,10 @@ namespace NouAssist.SharedKernel
                 .IncludeBase<Area, AreaDto>();
 
             CreateMap<InboxItem, InboxItemDto>()
-                .ForMember(dest => dest.AgeInDays, opt => opt.MapFrom(src => src.AgeInDays))
-                .ForMember(dest => dest.IsStale, opt => opt.MapFrom(src => src.IsStale));
+                .ForMember(dest => dest.AgeInDays, opt => opt.MapFrom(src => src.GetAgeInDays()))
+                .ForMember(dest => dest.IsStale, opt => opt.MapFrom(src => src.IsStale()));
 
-            CreateMap<LogActivity, LogActivityDto>();
+            // CreateMap<LogActivity, LogActivityDto>();
         }
     }
 }

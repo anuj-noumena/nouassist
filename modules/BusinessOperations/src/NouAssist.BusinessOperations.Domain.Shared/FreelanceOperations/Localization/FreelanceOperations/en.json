@@ -1,0 +1,52 @@
+{
+  "culture": "en",
+  "texts": {
+    "FreelanceOperations:ErrorMessage:ProjectNotFound": "The requested project was not found.",
+    "FreelanceOperations:ErrorMessage:ClientNotFound": "The requested client was not found.",
+    "FreelanceOperations:ErrorMessage:ProposalNotFound": "The requested proposal was not found.",
+    "FreelanceOperations:ErrorMessage:DuplicateName": "A {0} with the same name already exists.",
+    "FreelanceOperations:ErrorMessage:InvalidStatusTransition": "Cannot change {0} from '{1}' to '{2}'.",
+    "FreelanceOperations:ErrorMessage:InvalidOperation": "Cannot perform this operation in the current state.",
+    "FreelanceOperations:ErrorMessage:ValidationFailed": "Validation failed for {0}.",
+    
+    "FreelanceOperations:Entity:Project": "Project",
+    "FreelanceOperations:Entity:Client": "Client",
+    "FreelanceOperations:Entity:Proposal": "Proposal",
+    "FreelanceOperations:Entity:TimeEntry": "Time Entry",
+    "FreelanceOperations:Entity:Milestone": "Milestone",
+    
+    "FreelanceOperations:BillingType:Hourly": "Hourly",
+    "FreelanceOperations:BillingType:FixedPrice": "Fixed Price",
+    "FreelanceOperations:BillingType:Milestone": "Milestone",
+    "FreelanceOperations:BillingType:Retainer": "Retainer",
+    
+    "FreelanceOperations:ProjectStatus:Draft": "Draft",
+    "FreelanceOperations:ProjectStatus:Proposed": "Proposed",
+    "FreelanceOperations:ProjectStatus:Active": "Active",
+    "FreelanceOperations:ProjectStatus:OnHold": "On Hold",
+    "FreelanceOperations:ProjectStatus:Completed": "Completed",
+    "FreelanceOperations:ProjectStatus:Canceled": "Canceled",
+    "FreelanceOperations:ProjectStatus:Archived": "Archived",
+    
+    "FreelanceOperations:ProposalStatus:Draft": "Draft",
+    "FreelanceOperations:ProposalStatus:Sent": "Sent",
+    "FreelanceOperations:ProposalStatus:Viewed": "Viewed",
+    "FreelanceOperations:ProposalStatus:Accepted": "Accepted",
+    "FreelanceOperations:ProposalStatus:Rejected": "Rejected",
+    "FreelanceOperations:ProposalStatus:Expired": "Expired",
+    "FreelanceOperations:ProposalStatus:NeedsRevision": "Needs Revision",
+    
+    "FreelanceOperations:ClientStatus:Active": "Active",
+    "FreelanceOperations:ClientStatus:Inactive": "Inactive",
+    "FreelanceOperations:ClientStatus:Lead": "Lead",
+    "FreelanceOperations:ClientStatus:Archived": "Archived",
+    
+    "FreelanceOperations:Validation:Required": "{0} is required.",
+    "FreelanceOperations:Validation:InvalidValue": "Invalid value for {0}.",
+    
+    "FreelanceOperations:Notification:ProjectCreated": "Project created successfully.",
+    "FreelanceOperations:Notification:ClientCreated": "Client created successfully.",
+    "FreelanceOperations:Notification:ProposalCreated": "Proposal created successfully.",
+    "FreelanceOperations:Notification:ProposalSent": "Proposal sent successfully."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "culture": "en",
+  "texts": {
+    "VersionControl": "Version Control",
+    
+    "VersionControl:ErrorMessage:RequirementVersionNotFound": "Requirement version with ID {requirementId} and version {version} was not found.",
+    "VersionControl:ErrorMessage:BaselineNotFound": "Baseline with ID {baselineId} was not found.",
+    "VersionControl:ErrorMessage:InvalidBaselineStatusTransition": "Cannot transition baseline from {currentStatus} to {targetStatus}.",
+    "VersionControl:ErrorMessage:BranchNotFound": "Branch with ID {branchId} was not found.",
+    "VersionControl:ErrorMessage:BranchNameAlreadyExists": "A branch with the name '{branchName}' already exists.",
+    "VersionControl:ErrorMessage:MergeConflict": "Merge operation encountered {conflictCount} conflicts that require resolution.",
+    "VersionControl:ErrorMessage:InvalidBranchStatus": "Cannot perform this operation on a branch with status {status}.",
+    "VersionControl:ErrorMessage:BaselineNameAlreadyExists": "A baseline with the name '{baselineName}' already exists.",
+    "VersionControl:ErrorMessage:CannotModifyActiveBaseline": "Cannot modify baseline with Active status.",
+    "VersionControl:ErrorMessage:CannotModifyArchivedBaseline": "Cannot modify baseline with Archived status.",
+    "VersionControl:ErrorMessage:InvalidVersionFormat": "Version format '{version}' is invalid. Must follow semantic versioning format (e.g., 1.0.0).",
+    
+    "VersionControl:Entity:RequirementVersion": "Requirement Version",
+    "VersionControl:Entity:Baseline": "Baseline",
+    "VersionControl:Entity:Branch": "Branch",
+    "VersionControl:Entity:MergeOperation": "Merge Operation",
+    
+    "VersionControl:Status:Draft": "Draft",
+    "VersionControl:Status:Active": "Active",
+    "VersionControl:Status:Archived": "Archived",
+    "VersionControl:Status:Merged": "Merged",
+    "VersionControl:Status:Abandoned": "Abandoned",
+    
+    "VersionControl:MergeStatus:InProgress": "In Progress",
+    "VersionControl:MergeStatus:Completed": "Completed",
+    "VersionControl:MergeStatus:HasConflicts": "Has Conflicts",
+    "VersionControl:MergeStatus:Aborted": "Aborted",
+    
+    "VersionControl:Notification:VersionCreated": "Version {version} created for requirement {requirementId}.",
+    "VersionControl:Notification:BaselineCreated": "Baseline '{name}' created with {requirementCount} requirements.",
+    "VersionControl:Notification:BaselineStatusChanged": "Baseline '{name}' status changed from {previousStatus} to {newStatus}.",
+    "VersionControl:Notification:BranchCreated": "Branch '{name}' created from {sourceType} {sourceId}.",
+    "VersionControl:Notification:MergeCompleted": "Merge from '{sourceBranchName}' to '{targetBranchName}' completed with {mergedRequirementCount} requirements merged and {resolvedConflictsCount} conflicts resolved."
+  }
+}

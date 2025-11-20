@@ -1,0 +1,129 @@
+// Add these modifications to the existing service
+
+using NouAssist.DecisionSupport.Settings;
+
+namespace NouAssist.DecisionSupport.Services
+{
+    public class DecisionModelManager : DomainService, IDecisionModelManager
+    {
+        private readonly IDecisionModelRepository _decisionModelRepository;
+        private readonly DecisionSupportOptions _options;
+        private readonly ILogger<DecisionModelManager> _logger;
+
+        public DecisionModelManager(
+            IDecisionModelRepository decisionModelRepository,
+            DecisionSupportOptions options,
+            ILogger<DecisionModelManager> logger)
+        {
+            _decisionModelRepository = decisionModelRepository;
+            _options = options;
+            _logger = logger;
+        }
+
+        // Add this to the AddCriterion method
+        public async Task<Criterion> AddCriterionAsync(
+            Guid decisionModelId,
+            string name,
+            string description,
+            decimal weight)
+        {
+            var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId);
+            
+            // Check if adding another criterion would exceed the limit
+            var maxCriteria = await _options.GetMaxCriteriaPerDecisionModelAsync();
+            if (decisionModel.Criteria.Count >= maxCriteria)
+            {
+                throw new BusinessRuleException(
+                    "DecisionSupport:ErrorMessage:MaxCriteriaExceeded",
+                    $"Cannot add more than {maxCriteria} criteria to a decision model");
+            }
+            
+            // Normalize weights if configured
+            if (await _options.GetAutoNormalizeWeightsAsync())
+            {
+                weight = NormalizeWeight(decisionModel, weight);
+            }
+            
+            var criterion = decisionModel.AddCriterion(name, description, weight);
+            
+            await _decisionModelRepository.UpdateAsync(decisionModel);
+            
+            return criterion;
+        }
+        
+        // Add this to the AddAlternative method
+        public async Task<Alternative> AddAlternativeAsync(
+            Guid decisionModelId,
+            string name,
+            string description)
+        {
+            var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId);
+            
+            // Check if adding another alternative would exceed the limit
+            var maxAlternatives = await _options.GetMaxAlternativesPerDecisionModelAsync();
+            if (decisionModel.Alternatives.Count >= maxAlternatives)
+            {
+                throw new BusinessRuleException(
+                    "DecisionSupport:ErrorMessage:MaxAlternativesExceeded",
+                    $"Cannot add more than {maxAlternatives} alternatives to a decision model");
+            }
+            
+            var alternative = decisionModel.AddAlternative(name, description);
+            
+            await _decisionModelRepository.UpdateAsync(decisionModel);
+            
+            return alternative;
+        }
+        
+        // Add this to the SetAlternativeScore method
+        public async Task SetAlternativeScoreAsync(
+            Guid alternativeId,
+            Guid criterionId,
+            decimal score,
+            string justification = null)
+        {
+            var alternative = await _alternativeRepository.GetAsync(alternativeId);
+            var decisionModel = await _decisionModelRepository.GetAsync(alternative.DecisionModelId);
+            
+            // Check if rationale is required
+            if (await _options.GetRequireRationaleForScoresAsync() && string.IsNullOrWhiteSpace(justification))
+            {
+                throw new BusinessRuleException(
+                    "DecisionSupport:ErrorMessage:RationaleRequired",
+                    "A rationale is required when scoring alternatives");
+            }
+            
+            decisionModel.SetAlternativeScore(alternativeId, criterionId, score, justification);
+            
+            await _decisionModelRepository.UpdateAsync(decisionModel);
+        }
+        
+        // Helper method to normalize weights
+        private decimal NormalizeWeight(DecisionModelInstance decisionModel, decimal newWeight)
+        {
+            // If this is the first criterion, return 1
+            if (!decisionModel.Criteria.Any())
+            {
+                return 1;
+            }
+            
+            // Sum of all existing weights
+            var existingWeightsSum = decisionModel.Criteria.Sum(c => c.Weight.Value);
+            
+            // Target sum after adding the new weight (should be 1)
+            var targetSum = 1m;
+            
+            // Scale factor to apply to all weights
+            var scaleFactor = (targetSum - newWeight) / existingWeightsSum;
+            
+            // Adjust existing weights
+            foreach (var criterion in decisionModel.Criteria)
+            {
+                var adjustedWeight = criterion.Weight.Value * scaleFactor;
+                decisionModel.UpdateCriterion(criterion.Id, criterion.Name, criterion.Description, adjustedWeight);
+            }
+            
+            return newWeight;
+        }
+    }
+}

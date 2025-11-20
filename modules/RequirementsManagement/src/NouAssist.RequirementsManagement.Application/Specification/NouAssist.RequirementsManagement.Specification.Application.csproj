@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.RequirementsManagement.Specification</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="9.1.0" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.1.0" />
+    <ProjectReference Include="..\NouAssist.RequirementsManagement.Specification.Application.Contracts\NouAssist.RequirementsManagement.Specification.Application.Contracts.csproj" />
+    <ProjectReference Include="..\NouAssist.RequirementsManagement.Specification.Domain\NouAssist.RequirementsManagement.Specification.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

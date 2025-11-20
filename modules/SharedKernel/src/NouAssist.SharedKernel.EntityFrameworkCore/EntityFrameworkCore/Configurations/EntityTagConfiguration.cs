@@ -8,8 +8,8 @@ namespace NouAssist.SharedKernel.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<EntityTag> builder)
         {
-            builder.ToTable(CoreDbProperties.DbTablePrefix + "EntityTags",
-                            CoreDbProperties.DbSchema);
+            builder.ToTable(SharedKernelDbProperties.DbTablePrefix + "EntityTags",
+                SharedKernelDbProperties.DbSchema);
 
             builder.HasKey(x => new { x.EntityType, x.EntityId, x.TagId });
 

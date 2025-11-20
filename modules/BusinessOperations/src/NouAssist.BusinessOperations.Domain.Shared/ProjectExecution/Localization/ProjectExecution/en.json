@@ -1,0 +1,47 @@
+{
+  "culture": "en",
+  "texts": {
+    "ProjectExecution:ErrorMessage:ProjectNotFound": "The requested project with ID {projectId} was not found.",
+    "ProjectExecution:ErrorMessage:TaskNotFound": "The requested task with ID {taskId} was not found.",
+    "ProjectExecution:ErrorMessage:InvalidProjectStatusTransition": "Cannot change project status from {currentStatus} to {targetStatus}.",
+    "ProjectExecution:ErrorMessage:InvalidTaskStatusTransition": "Cannot change task status from {currentStatus} to {targetStatus}.",
+    "ProjectExecution:ErrorMessage:DuplicateName": "A {entityType} with the name '{name}' already exists.",
+    "ProjectExecution:ErrorMessage:ProjectCannotBeModified": "The project in {status} status cannot be modified.",
+    "ProjectExecution:ErrorMessage:TaskCannotBeModified": "The task in {status} status cannot be modified.",
+    "ProjectExecution:ErrorMessage:CircularDependency": "Adding this dependency would create a circular reference.",
+    "ProjectExecution:ErrorMessage:TaskNotPartOfProject": "Task does not belong to the specified project.",
+    
+    "ProjectExecution:Entity:Project": "Project",
+    "ProjectExecution:Entity:Task": "Task",
+    "ProjectExecution:Entity:TimeLog": "Time Log",
+    "ProjectExecution:Entity:ProjectMember": "Project Member",
+    "ProjectExecution:Entity:ProjectPhase": "Project Phase",
+    "ProjectExecution:Entity:ProjectMilestone": "Project Milestone",
+    
+    "ProjectExecution:Status:Planning": "Planning",
+    "ProjectExecution:Status:Active": "Active",
+    "ProjectExecution:Status:OnHold": "On Hold",
+    "ProjectExecution:Status:Completed": "Completed",
+    "ProjectExecution:Status:Cancelled": "Cancelled",
+    
+    "ProjectExecution:TaskStatus:ToDo": "To Do",
+    "ProjectExecution:TaskStatus:InProgress": "In Progress",
+    "ProjectExecution:TaskStatus:Done": "Done",
+    "ProjectExecution:TaskStatus:Blocked": "Blocked",
+    
+    "ProjectExecution:TaskPriority:Low": "Low",
+    "ProjectExecution:TaskPriority:Medium": "Medium",
+    "ProjectExecution:TaskPriority:High": "High",
+    "ProjectExecution:TaskPriority:Critical": "Critical",
+    
+    "ProjectExecution:DependencyType:FinishToStart": "Finish to Start",
+    "ProjectExecution:DependencyType:StartToStart": "Start to Start",
+    "ProjectExecution:DependencyType:FinishToFinish": "Finish to Finish",
+    "ProjectExecution:DependencyType:StartToFinish": "Start to Finish",
+    
+    "ProjectExecution:Validation:NameRequired": "Name is required.",
+    "ProjectExecution:Validation:DateOrderInvalid": "End date must be after start date.",
+    "ProjectExecution:Validation:DurationInvalid": "Duration must be greater than zero.",
+    "ProjectExecution:Validation:MemberAlreadyExists": "Member is already part of the project."
+  }
+}

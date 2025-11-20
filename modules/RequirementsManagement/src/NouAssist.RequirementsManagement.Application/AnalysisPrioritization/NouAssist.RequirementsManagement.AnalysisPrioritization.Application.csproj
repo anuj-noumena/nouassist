@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.RequirementsManagement.AnalysisPrioritization</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AutoMapper" Version="9.1.0" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.1.0" />
+    <ProjectReference Include="..\NouAssist.RequirementsManagement.AnalysisPrioritization.Application.Contracts\NouAssist.RequirementsManagement.AnalysisPrioritization.Application.Contracts.csproj" />
+    <ProjectReference Include="..\NouAssist.RequirementsManagement.AnalysisPrioritization.Domain\NouAssist.RequirementsManagement.AnalysisPrioritization.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

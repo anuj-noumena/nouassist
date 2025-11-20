@@ -1,0 +1,72 @@
+/*
+{
+  "culture": "en",
+  "texts": {
+    "CapTable:ErrorMessage:EntityNotFound": "The requested {0} was not found.",
+    "CapTable:ErrorMessage:DuplicateSecurityHolder": "A security holder with the same identifier already exists.",
+    "CapTable:ErrorMessage:InsufficientShares": "Insufficient shares available for this operation.",
+    "CapTable:ErrorMessage:InvalidVestingSchedule": "The vesting schedule is invalid: {0}.",
+    "CapTable:ErrorMessage:UnauthorizedTransaction": "You are not authorized to perform this transaction.",
+    "CapTable:ErrorMessage:InvalidOwnershipPercentage": "Ownership percentage must be between 0 and 100.",
+    "CapTable:ErrorMessage:NegativeShareQuantity": "Share quantity cannot be negative.",
+    "CapTable:ErrorMessage:InvalidPricePerShare": "Price per share must be greater than zero.",
+    "CapTable:ErrorMessage:FundingRoundClosed": "Cannot modify a closed funding round.",
+    "CapTable:ErrorMessage:VestingNotStarted": "Vesting has not started for this security.",
+    "CapTable:ErrorMessage:OptionExpired": "Option has expired and cannot be exercised.",
+
+    "CapTable:Entity:CapTable": "Cap Table",
+    "CapTable:Entity:SecurityHolder": "Security Holder",
+    "CapTable:Entity:SecurityIssuance": "Security Issuance",
+    "CapTable:Entity:ShareClass": "Share Class",
+    "CapTable:Entity:FundingRound": "Funding Round",
+    "CapTable:Entity:OptionPool": "Option Pool",
+    "CapTable:Entity:VestingSchedule": "Vesting Schedule",
+    "CapTable:Entity:TransactionRecord": "Transaction Record",
+    "CapTable:Entity:ValuationHistory": "Valuation History",
+
+    "CapTable:SecurityType:CommonStock": "Common Stock",
+    "CapTable:SecurityType:PreferredStock": "Preferred Stock",
+    "CapTable:SecurityType:StockOption": "Stock Option",
+    "CapTable:SecurityType:Warrant": "Warrant",
+    "CapTable:SecurityType:ConvertibleNote": "Convertible Note",
+
+    "CapTable:HolderType:Founder": "Founder",
+    "CapTable:HolderType:Employee": "Employee",
+    "CapTable:HolderType:Investor": "Investor",
+    "CapTable:HolderType:Advisor": "Advisor",
+    "CapTable:HolderType:Company": "Company",
+
+    "CapTable:TransactionType:IssuanceOfShares": "Issuance of Shares",
+    "CapTable:TransactionType:Transfer": "Transfer",
+    "CapTable:TransactionType:OptionGrant": "Option Grant",
+    "CapTable:TransactionType:OptionExercise": "Option Exercise",
+    "CapTable:TransactionType:ShareRepurchase": "Share Repurchase",
+
+    "CapTable:Status:Active": "Active",
+    "CapTable:Status:Inactive": "Inactive",
+    "CapTable:Status:Vested": "Vested",
+    "CapTable:Status:Unvested": "Unvested",
+    "CapTable:Status:Exercised": "Exercised",
+    "CapTable:Status:Expired": "Expired",
+
+    "CapTable:Validation:Required": "{0} is required.",
+    "CapTable:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "CapTable:Validation:InvalidValue": "Invalid value for {0}.",
+    "CapTable:Validation:GreaterThanZero": "{0} must be greater than zero.",
+    "CapTable:Validation:BetweenRange": "{0} must be between {1} and {2}.",
+
+    "CapTable:Permission:CapTable": "Cap Table Management",
+    "CapTable:Permission:CapTable.View": "View Cap Table",
+    "CapTable:Permission:CapTable.Create": "Create Cap Table Entries",
+    "CapTable:Permission:CapTable.Edit": "Edit Cap Table Entries",
+    "CapTable:Permission:CapTable.Delete": "Delete Cap Table Entries",
+    "CapTable:Permission:CapTable.ManageOptions": "Manage Stock Options",
+    "CapTable:Permission:CapTable.ViewReports": "View Cap Table Reports",
+
+    "CapTable:Notification:CapTableUpdated": "Cap table updated successfully.",
+    "CapTable:Notification:SecurityIssued": "Securities issued successfully.",
+    "CapTable:Notification:OptionGranted": "Stock option granted successfully.",
+    "CapTable:Notification:SharesTransferred": "Shares transferred successfully."
+  }
+}
+*/

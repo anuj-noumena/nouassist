@@ -1,0 +1,106 @@
+{
+  "culture": "en",
+  "texts": {
+    "RequirementsAnalysisTools:ErrorMessage:GlossaryTermAlreadyExists": "A glossary term with the name '{termName}' already exists.",
+    "RequirementsAnalysisTools:ErrorMessage:CircularDependency": "Cannot create dependency: circular dependency detected between requirements {sourceId} and {targetId}.",
+    "RequirementsAnalysisTools:ErrorMessage:InvalidPrioritizationMethod": "Invalid prioritization method: {method}.",
+    "RequirementsAnalysisTools:ErrorMessage:AnalyzedRequirementNotFound": "Analyzed requirement with ID {id} was not found.",
+    "RequirementsAnalysisTools:ErrorMessage:PrioritizationActivityNotFound": "Prioritization activity with ID {id} was not found.",
+    "RequirementsAnalysisTools:ErrorMessage:ActivityNotInVotingStatus": "Cannot vote on activity that is not in voting status.",
+    "RequirementsAnalysisTools:ErrorMessage:DuplicateVote": "User has already voted in this prioritization activity.",
+    "RequirementsAnalysisTools:ErrorMessage:InvalidAttributeValue": "Invalid value for attribute: {attributeName}.",
+    
+    "RequirementsAnalysisTools:Entity:AnalyzedRequirement": "Analyzed Requirement",
+    "RequirementsAnalysisTools:Entity:GlossaryTerm": "Glossary Term",
+    "RequirementsAnalysisTools:Entity:PrioritizationActivity": "Prioritization Activity",
+    "RequirementsAnalysisTools:Entity:RelationshipLink": "Relationship Link",
+    
+    "RequirementsAnalysisTools:Enum:AttributeType:Priority": "Priority",
+    "RequirementsAnalysisTools:Enum:AttributeType:Complexity": "Complexity",
+    "RequirementsAnalysisTools:Enum:AttributeType:Business_Value": "Business Value",
+    "RequirementsAnalysisTools:Enum:AttributeType:Risk": "Risk",
+    "RequirementsAnalysisTools:Enum:AttributeType:Effort": "Effort",
+    "RequirementsAnalysisTools:Enum:AttributeType:Domain": "Domain",
+    "RequirementsAnalysisTools:Enum:AttributeType:Stakeholder_Impact": "Stakeholder Impact",
+    "RequirementsAnalysisTools:Enum:AttributeType:Technical_Debt": "Technical Debt",
+    "RequirementsAnalysisTools:Enum:AttributeType:Custom": "Custom",
+    
+    "RequirementsAnalysisTools:Enum:RelationshipType:Dependency": "Dependency",
+    "RequirementsAnalysisTools:Enum:RelationshipType:Conflict": "Conflict",
+    "RequirementsAnalysisTools:Enum:RelationshipType:Parent_Child": "Parent-Child",
+    "RequirementsAnalysisTools:Enum:RelationshipType:Similar": "Similar",
+    "RequirementsAnalysisTools:Enum:RelationshipType:Alternative": "Alternative",
+    "RequirementsAnalysisTools:Enum:RelationshipType:Derives_From": "Derives From",
+    "RequirementsAnalysisTools:Enum:RelationshipType:Supports": "Supports",
+    "RequirementsAnalysisTools:Enum:RelationshipType:Constrains": "Constrains",
+    
+    "RequirementsAnalysisTools:Enum:PrioritizationMethod:MoSCoW": "MoSCoW",
+    "RequirementsAnalysisTools:Enum:PrioritizationMethod:WSJF": "WSJF",
+    "RequirementsAnalysisTools:Enum:PrioritizationMethod:Kano": "Kano Model",
+    "RequirementsAnalysisTools:Enum:PrioritizationMethod:Numeric_Scoring": "Numeric Scoring",
+    "RequirementsAnalysisTools:Enum:PrioritizationMethod:Stack_Ranking": "Stack Ranking",
+    "RequirementsAnalysisTools:Enum:PrioritizationMethod:Buy_a_Feature": "Buy a Feature",
+    "RequirementsAnalysisTools:Enum:PrioritizationMethod:Cost_of_Delay": "Cost of Delay",
+    
+    "RequirementsAnalysisTools:Enum:ImpactLevel:None": "None",
+    "RequirementsAnalysisTools:Enum:ImpactLevel:Low": "Low",
+    "RequirementsAnalysisTools:Enum:ImpactLevel:Medium": "Medium",
+    "RequirementsAnalysisTools:Enum:ImpactLevel:High": "High",
+    "RequirementsAnalysisTools:Enum:ImpactLevel:Critical": "Critical",
+    
+    "RequirementsAnalysisTools:Enum:ActivityStatus:Draft": "Draft",
+    "RequirementsAnalysisTools:Enum:ActivityStatus:In_Progress": "In Progress",
+    "RequirementsAnalysisTools:Enum:ActivityStatus:Voting": "Voting",
+    "RequirementsAnalysisTools:Enum:ActivityStatus:Completed": "Completed",
+    "RequirementsAnalysisTools:Enum:ActivityStatus:Cancelled": "Cancelled",
+    
+    "RequirementsAnalysisTools:Validation:Required": "{0} is required.",
+    "RequirementsAnalysisTools:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "RequirementsAnalysisTools:Validation:InvalidValue": "Invalid value for {0}.",
+    "RequirementsAnalysisTools:Validation:MinValue": "{0} must be at least {1}.",
+    "RequirementsAnalysisTools:Validation:MaxValue": "{0} cannot exceed {1}.",
+    
+    "RequirementsAnalysisTools:Notification:GlossaryTermCreated": "Glossary term '{termName}' created successfully.",
+    "RequirementsAnalysisTools:Notification:PrioritizationActivityCompleted": "Prioritization activity '{activityName}' completed successfully.",
+    "RequirementsAnalysisTools:Notification:RelationshipEstablished": "Relationship established between requirements."
+  }
+}
+// Add permission localization strings:
+
+{
+  "culture": "en",
+  "texts": {
+    // ... existing entries ...
+    
+    "Permission:RequirementsAnalysisTools": "Requirements Analysis Tools",
+    "Permission:AnalyzedRequirements": "Analyzed Requirements",
+    "Permission:AnalyzedRequirements.Create": "Create Analyzed Requirements",
+    "Permission:AnalyzedRequirements.Update": "Update Analyzed Requirements",
+    "Permission:AnalyzedRequirements.Delete": "Delete Analyzed Requirements",
+    "Permission:AnalyzedRequirements.View": "View Analyzed Requirements",
+    "Permission:AnalyzedRequirements.ManageAttributes": "Manage Requirement Attributes",
+    "Permission:AnalyzedRequirements.ManageRelationships": "Manage Requirement Relationships",
+    "Permission:AnalyzedRequirements.ManageImpactAssessment": "Manage Impact Assessment",
+    
+    "Permission:GlossaryTerms": "Glossary Terms",
+    "Permission:GlossaryTerms.Create": "Create Glossary Terms",
+    "Permission:GlossaryTerms.Update": "Update Glossary Terms",
+    "Permission:GlossaryTerms.Delete": "Delete Glossary Terms",
+    "Permission:GlossaryTerms.View": "View Glossary Terms",
+    "Permission:GlossaryTerms.Approve": "Approve Glossary Terms",
+    "Permission:GlossaryTerms.ManageRelatedTerms": "Manage Related Terms",
+    
+    "Permission:PrioritizationActivities": "Prioritization Activities",
+    "Permission:PrioritizationActivities.Create": "Create Prioritization Activities",
+    "Permission:PrioritizationActivities.Update": "Update Prioritization Activities",
+    "Permission:PrioritizationActivities.Delete": "Delete Prioritization Activities",
+    "Permission:PrioritizationActivities.View": "View Prioritization Activities",
+    "Permission:PrioritizationActivities.Manage": "Manage Prioritization Activities",
+    "Permission:PrioritizationActivities.Vote": "Vote in Prioritization Activities",
+    "Permission:PrioritizationActivities.ViewResults": "View Prioritization Results",
+    
+    "RequirementsAnalysisTools:ErrorMessage:CannotDeleteReferencedTerm": "Cannot delete a glossary term that is referenced by other terms.",
+    "RequirementsAnalysisTools:ErrorMessage:ActivityNotCompleted": "The prioritization activity has not been completed yet.",
+    "RequirementsAnalysisTools:ErrorMessage:SourceRequirementNotAnalyzed": "The source requirement has not been analyzed yet."
+  }
+}

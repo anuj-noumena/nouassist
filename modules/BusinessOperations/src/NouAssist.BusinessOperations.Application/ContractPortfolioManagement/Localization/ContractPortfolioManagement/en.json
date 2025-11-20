@@ -1,0 +1,51 @@
+{
+  "culture": "en",
+  "texts": {
+    "ContractPortfolioManagement": "Contract & Portfolio Management",
+    
+    "Permission:ContractPortfolioManagement": "Contract & Portfolio Management",
+    "Permission:Contracts": "Contracts",
+    "Permission:Contracts.Create": "Create Contracts",
+    "Permission:Contracts.Update": "Update Contracts",
+    "Permission:Contracts.Delete": "Delete Contracts",
+    "Permission:Contracts.View": "View Contracts",
+    "Permission:Contracts.Manage": "Manage Contracts",
+    "Permission:Contracts.ChangeStatus": "Change Contract Status",
+    "Permission:Contracts.CreateVersion": "Create Contract Versions",
+    "Permission:Contracts.AddAmendment": "Add Contract Amendments",
+    
+    "Permission:Portfolios": "Portfolios",
+    "Permission:Portfolios.Create": "Create Portfolios",
+    "Permission:Portfolios.Update": "Update Portfolios",
+    "Permission:Portfolios.Delete": "Delete Portfolios",
+    "Permission:Portfolios.View": "View Portfolios",
+    "Permission:Portfolios.Manage": "Manage Portfolios",
+    "Permission:Portfolios.AddItem": "Add Portfolio Items",
+    "Permission:Portfolios.RemoveItem": "Remove Portfolio Items",
+    "Permission:Portfolios.Share": "Share Portfolios",
+    
+    "Permission:PortfolioRoadmaps": "Portfolio Roadmaps",
+    "Permission:PortfolioRoadmaps.Create": "Create Roadmaps",
+    "Permission:PortfolioRoadmaps.Update": "Update Roadmaps",
+    "Permission:PortfolioRoadmaps.Delete": "Delete Roadmaps",
+    "Permission:PortfolioRoadmaps.View": "View Roadmaps",
+    "Permission:PortfolioRoadmaps.Manage": "Manage Roadmaps",
+    "Permission:PortfolioRoadmaps.AddMilestone": "Add Roadmap Milestones",
+    "Permission:PortfolioRoadmaps.ManageDependencies": "Manage Roadmap Dependencies",
+    
+    "Contract:ErrorNotFound": "Contract with ID {0} was not found.",
+    "Contract:ErrorInvalidStatusTransition": "Cannot change contract status from {0} to {1}.",
+    "Contract:ErrorCreateVersion": "Failed to create contract version.",
+    "Contract:ErrorAddAmendment": "Failed to add contract amendment.",
+    
+    "Portfolio:ErrorNotFound": "Portfolio with ID {0} was not found.",
+    "Portfolio:ErrorDuplicateItem": "An item with ID {0} and type {1} already exists in portfolio {2}.",
+    "Portfolio:ErrorItemNotFound": "Item with ID {0} was not found in portfolio {1}.",
+    
+    "Roadmap:ErrorNotFound": "Roadmap with ID {0} was not found.",
+    "Roadmap:ErrorMilestoneNotFound": "Milestone with ID {0} was not found in roadmap {1}.",
+    "Roadmap:ErrorDateOutOfRange": "Milestone date must be within roadmap date range.",
+    
+    "Error:Generic": "An error occurred while processing your request. Please try again later."
+  }
+}

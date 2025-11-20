@@ -24,10 +24,24 @@ namespace NouAssist.SharedKernel.Inbox
             _inboxItemRepository = inboxItemRepository;
         }
 
+        public async Task<InboxItemDto> GetAsync(Guid id)
+        {
+            var item = await _inboxItemRepository.GetAsync(id);
+            return ObjectMapper.Map<InboxItem, InboxItemDto>(item);
+        }
+
         public async Task<ListResultDto<InboxItemDto>> GetMyUnprocessedItemsAsync()
         {
             var userId = CurrentUser.GetId();
             var items = await _inboxItemRepository.GetUnprocessedByUserAsync(userId);
+            var dtos = ObjectMapper.Map<List<InboxItem>, List<InboxItemDto>>(items);
+            return new ListResultDto<InboxItemDto>(dtos);
+        }
+
+        public async Task<ListResultDto<InboxItemDto>> GetStaleItemsAsync(int daysToConsiderStale = 7)
+        {
+            var userId = CurrentUser.GetId();
+            var items = await _inboxItemRepository.GetStaleItemsAsync(userId, daysToConsiderStale);
             var dtos = ObjectMapper.Map<List<InboxItem>, List<InboxItemDto>>(items);
             return new ListResultDto<InboxItemDto>(dtos);
         }
@@ -60,6 +74,24 @@ namespace NouAssist.SharedKernel.Inbox
             );
 
             await _inboxItemRepository.InsertAsync(item);
+            return ObjectMapper.Map<InboxItem, InboxItemDto>(item);
+        }
+
+        public async Task<InboxItemDto> UpdateAsync(Guid id, UpdateInboxItemDto input)
+        {
+            var item = await _inboxItemRepository.GetAsync(id);
+
+            if (!string.IsNullOrWhiteSpace(input.InboxContent))
+            {
+                item.UpdateContent(input.InboxContent);
+            }
+
+            if (input.Notes != null)
+            {
+                item.Notes = input.Notes;
+            }
+
+            await _inboxItemRepository.UpdateAsync(item);
             return ObjectMapper.Map<InboxItem, InboxItemDto>(item);
         }
 

@@ -11,8 +11,8 @@ namespace NouAssist.SharedKernel.EntityFrameworkCore.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(CoreDbProperties.DbTablePrefix + "InboxItems",
-                            CoreDbProperties.DbSchema);
+            builder.ToTable(SharedKernelDbProperties.DbTablePrefix + "InboxItems",
+                SharedKernelDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

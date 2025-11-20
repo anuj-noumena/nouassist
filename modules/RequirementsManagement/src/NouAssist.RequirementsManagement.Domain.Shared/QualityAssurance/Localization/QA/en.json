@@ -1,0 +1,36 @@
+{
+  "culture": "en",
+  "texts": {
+    "QA:ErrorMessage:TestPlanNotFound": "The test plan with ID {0} was not found.",
+    "QA:ErrorMessage:TestCycleNotFound": "The test cycle with ID {0} was not found.",
+    "QA:ErrorMessage:DefectNotFound": "The defect with ID {0} was not found.",
+    "QA:ErrorMessage:InvalidTestPlanStatusTransition": "Cannot change test plan status from '{0}' to '{1}'.",
+    "QA:ErrorMessage:InvalidTestCycleStatusTransition": "Cannot change test cycle status from '{0}' to '{1}'.",
+    "QA:ErrorMessage:InvalidDefectStatusTransition": "Cannot change defect status from '{0}' to '{1}'.",
+    "QA:ErrorMessage:TestCycleCannotBeStarted": "Test cycle cannot be started: {0}.",
+
+    "QA:Entity:TestPlan": "Test Plan",
+    "QA:Entity:TestCycle": "Test Cycle",
+    "QA:Entity:TestRun": "Test Run",
+    "QA:Entity:Defect": "Defect",
+
+    "QA:ValidationError:NameRequired": "Name is required.",
+    "QA:ValidationError:DescriptionRequired": "Description is required.",
+    "QA:ValidationError:NameTooLong": "Name cannot exceed {0} characters.",
+    "QA:ValidationError:DescriptionTooLong": "Description cannot exceed {0} characters.",
+    "QA:ValidationError:InvalidDates": "End date must be after start date.",
+    "QA:ValidationError:MissingBuildInformation": "Build information is required.",
+    "QA:ValidationError:AssignedUserRequired": "An assigned user is required.",
+
+    "QA:Notification:TestPlanCreated": "Test plan '{0}' has been created.",
+    "QA:Notification:TestPlanActivated": "Test plan '{0}' has been activated.",
+    "QA:Notification:TestPlanCompleted": "Test plan '{0}' has been completed.",
+    "QA:Notification:TestCycleStarted": "Test cycle '{0}' has been started.",
+    "QA:Notification:TestCycleCompleted": "Test cycle '{0}' has been completed.",
+    "QA:Notification:DefectCreated": "Defect '{0}' has been created.",
+    "QA:Notification:DefectAssigned": "Defect '{0}' has been assigned to {1}.",
+    "QA:Notification:DefectFixed": "Defect '{0}' has been fixed.",
+    "QA:Notification:DefectVerified": "Defect '{0}' has been verified.",
+    "QA:Notification:DefectClosed": "Defect '{0}' has been closed."
+  }
+}

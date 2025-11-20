@@ -1,0 +1,79 @@
+{
+  "culture": "en",
+  "texts": {
+    "KnowledgeInnovation:ErrorMessage:EntityNotFound": "The requested {0} was not found.",
+    "KnowledgeInnovation:ErrorMessage:DuplicateTitle": "A {0} with the title '{1}' already exists.",
+    "KnowledgeInnovation:ErrorMessage:InvalidStatusTransition": "Cannot transition {0} from {1} to {2}.",
+    "KnowledgeInnovation:ErrorMessage:BusinessRuleViolation": "Business rule violation: {0}",
+    "KnowledgeInnovation:ErrorMessage:ValidationFailed": "Validation failed for {0}.",
+    
+    "KnowledgeInnovation:Entity:KnowledgeAsset": "Knowledge Asset",
+    "KnowledgeInnovation:Entity:LearningResource": "Learning Resource",
+    "KnowledgeInnovation:Entity:Idea": "Idea",
+    "KnowledgeInnovation:Entity:DecisionRecord": "Decision Record",
+    "KnowledgeInnovation:Entity:MentorProfile": "Mentor Profile",
+    
+    "KnowledgeInnovation:Status:Draft": "Draft",
+    "KnowledgeInnovation:Status:Submitted": "Submitted",
+    "KnowledgeInnovation:Status:UnderEvaluation": "Under Evaluation",
+    "KnowledgeInnovation:Status:Approved": "Approved",
+    "KnowledgeInnovation:Status:Rejected": "Rejected",
+    "KnowledgeInnovation:Status:InProgress": "In Progress",
+    "KnowledgeInnovation:Status:Implemented": "Implemented",
+    "KnowledgeInnovation:Status:Archived": "Archived",
+    "KnowledgeInnovation:Status:Pending": "Pending",
+    "KnowledgeInnovation:Status:Made": "Made",
+    "KnowledgeInnovation:Status:Evaluated": "Evaluated",
+    "KnowledgeInnovation:Status:Reversed": "Reversed",
+    
+    "KnowledgeInnovation:AssetType:Playbook": "Playbook",
+    "KnowledgeInnovation:AssetType:Advice": "Advice",
+    "KnowledgeInnovation:AssetType:Template": "Template",
+    "KnowledgeInnovation:AssetType:MentalModel": "Mental Model",
+    "KnowledgeInnovation:AssetType:Article": "Article",
+    "KnowledgeInnovation:AssetType:Checklist": "Checklist",
+    
+    "KnowledgeInnovation:ResourceType:Video": "Video",
+    "KnowledgeInnovation:ResourceType:Article": "Article",
+    "KnowledgeInnovation:ResourceType:Podcast": "Podcast",
+    "KnowledgeInnovation:ResourceType:Course": "Course",
+    "KnowledgeInnovation:ResourceType:Webinar": "Webinar",
+    "KnowledgeInnovation:ResourceType:Book": "Book",
+    "KnowledgeInnovation:ResourceType:Presentation": "Presentation",
+    "KnowledgeInnovation:ResourceType:Template": "Template",
+    
+    "KnowledgeInnovation:Validation:Required": "{0} is required.",
+    "KnowledgeInnovation:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "KnowledgeInnovation:Validation:InvalidValue": "Invalid value for {0}.",
+    
+    "KnowledgeInnovation:Permission:KnowledgeAsset": "Knowledge Asset Management",
+    "KnowledgeInnovation:Permission:KnowledgeAsset.Create": "Create Knowledge Assets",
+    "KnowledgeInnovation:Permission:KnowledgeAsset.Edit": "Edit Knowledge Assets",
+    "KnowledgeInnovation:Permission:KnowledgeAsset.Delete": "Delete Knowledge Assets",
+    
+    "KnowledgeInnovation:Permission:LearningResource": "Learning Resource Management",
+    "KnowledgeInnovation:Permission:LearningResource.Create": "Create Learning Resources",
+    "KnowledgeInnovation:Permission:LearningResource.Edit": "Edit Learning Resources",
+    "KnowledgeInnovation:Permission:LearningResource.Delete": "Delete Learning Resources",
+    
+    "KnowledgeInnovation:Permission:Idea": "Idea Management",
+    "KnowledgeInnovation:Permission:Idea.Create": "Create Ideas",
+    "KnowledgeInnovation:Permission:Idea.Edit": "Edit Ideas",
+    "KnowledgeInnovation:Permission:Idea.Delete": "Delete Ideas",
+    "KnowledgeInnovation:Permission:Idea.Evaluate": "Evaluate Ideas",
+    
+    "KnowledgeInnovation:Permission:DecisionRecord": "Decision Record Management",
+    "KnowledgeInnovation:Permission:DecisionRecord.Create": "Create Decision Records",
+    "KnowledgeInnovation:Permission:DecisionRecord.Edit": "Edit Decision Records",
+    "KnowledgeInnovation:Permission:DecisionRecord.Delete": "Delete Decision Records",
+    
+    "KnowledgeInnovation:Permission:MentorProfile": "Mentor Profile Management",
+    "KnowledgeInnovation:Permission:MentorProfile.Create": "Create Mentor Profiles",
+    "KnowledgeInnovation:Permission:MentorProfile.Edit": "Edit Mentor Profiles",
+    "KnowledgeInnovation:Permission:MentorProfile.Delete": "Delete Mentor Profiles",
+    
+    "KnowledgeInnovation:Notification:EntityCreated": "{0} created successfully.",
+    "KnowledgeInnovation:Notification:EntityUpdated": "{0} updated successfully.",
+    "KnowledgeInnovation:Notification:EntityDeleted": "{0} deleted successfully."
+  }
+}

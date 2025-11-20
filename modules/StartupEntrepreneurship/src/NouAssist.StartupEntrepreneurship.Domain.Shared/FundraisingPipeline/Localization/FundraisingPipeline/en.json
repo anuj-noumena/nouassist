@@ -1,0 +1,23 @@
+{
+  "culture": "en",
+  "texts": {
+    "FundraisingPipeline:ErrorMessage:ProspectNotFound": "Prospect with ID {id} was not found.",
+    "FundraisingPipeline:ErrorMessage:FundraisingRoundNotFound": "Fundraising round with ID {id} was not found.",
+    "FundraisingPipeline:ErrorMessage:PitchDeckNotFound": "Pitch deck with ID {id} was not found.",
+    "FundraisingPipeline:ErrorMessage:TermSheetNotFound": "Term sheet with ID {id} was not found.",
+    "FundraisingPipeline:ErrorMessage:InvalidProspectStatusTransition": "Cannot transition prospect from status {currentStatus} to {newStatus}.",
+    "FundraisingPipeline:ErrorMessage:InvalidRoundStageTransition": "Cannot transition fundraising round from stage {currentStage} to {newStage}.",
+    "FundraisingPipeline:ErrorMessage:InvalidTermSheetStatusTransition": "Cannot transition term sheet from status {currentStatus} to {newStatus}.",
+    "FundraisingPipeline:ErrorMessage:InvalidAmount": "Amount must be greater than zero.",
+    "FundraisingPipeline:ErrorMessage:InvalidDate": "Date {fieldName} cannot be in the past.",
+    
+    "FundraisingPipeline:Entity:Prospect": "Prospect",
+    "FundraisingPipeline:Entity:FundraisingRound": "Fundraising Round",
+    "FundraisingPipeline:Entity:PitchDeck": "Pitch Deck",
+    "FundraisingPipeline:Entity:TermSheet": "Term Sheet",
+    
+    "FundraisingPipeline:Validation:Required": "{0} is required.",
+    "FundraisingPipeline:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "FundraisingPipeline:Validation:InvalidValue": "Invalid value for {0}."
+  }
+}

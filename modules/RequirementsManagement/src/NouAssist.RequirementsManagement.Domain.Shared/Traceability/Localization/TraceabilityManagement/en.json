@@ -1,0 +1,41 @@
+{
+  "culture": "en",
+  "texts": {
+    "TraceabilityManagement:ErrorMessage:TraceLinkNotFound": "The requested trace link with ID {0} was not found.",
+    "TraceabilityManagement:ErrorMessage:DuplicateLink": "A trace link from '{0}' to '{1}' with type '{2}' already exists.",
+    "TraceabilityManagement:ErrorMessage:InvalidOperation": "Cannot perform this operation in the current state.",
+    "TraceabilityManagement:ErrorMessage:ValidationFailed": "Validation failed for trace link.",
+    "TraceabilityManagement:ErrorMessage:ArtifactNotFound": "The specified artifact '{0}' was not found.",
+    
+    "TraceabilityManagement:Entity:TraceLink": "Trace Link",
+    "TraceabilityManagement:Entity:Artifact": "Artifact",
+    
+    "TraceabilityManagement:LinkType:Satisfies": "Satisfies",
+    "TraceabilityManagement:LinkType:Verifies": "Verifies",
+    "TraceabilityManagement:LinkType:Refines": "Refines",
+    "TraceabilityManagement:LinkType:Conflicts": "Conflicts",
+    "TraceabilityManagement:LinkType:Requires": "Requires",
+    "TraceabilityManagement:LinkType:Implements": "Implements",
+    "TraceabilityManagement:LinkType:Custom": "Custom",
+    
+    "TraceabilityManagement:LinkDirection:Forward": "Forward",
+    "TraceabilityManagement:LinkDirection:Backward": "Backward",
+    "TraceabilityManagement:LinkDirection:Bidirectional": "Bidirectional",
+    
+    "TraceabilityManagement:ArtifactType:Requirement": "Requirement",
+    "TraceabilityManagement:ArtifactType:Test": "Test",
+    "TraceabilityManagement:ArtifactType:Code": "Code",
+    "TraceabilityManagement:ArtifactType:Design": "Design",
+    "TraceabilityManagement:ArtifactType:Document": "Document",
+    "TraceabilityManagement:ArtifactType:Other": "Other",
+    
+    "TraceabilityManagement:Validation:Required": "{0} is required.",
+    "TraceabilityManagement:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "TraceabilityManagement:Validation:InvalidValue": "Invalid value for {0}.",
+    
+    "TraceabilityManagement:Notification:LinkCreated": "Trace link created successfully.",
+    "TraceabilityManagement:Notification:LinkUpdated": "Trace link updated successfully.",
+    "TraceabilityManagement:Notification:LinkDeleted": "Trace link deleted successfully.",
+    "TraceabilityManagement:Notification:ArtifactVerified": "Artifact verified successfully."
+  }
+}

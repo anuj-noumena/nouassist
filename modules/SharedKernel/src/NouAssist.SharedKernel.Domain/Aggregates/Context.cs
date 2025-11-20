@@ -10,7 +10,7 @@ namespace NouAssist.SharedKernel.Aggregates
     {
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string? Notes { get; set; }
         public string? Icon { get; set; }
         public string? Color { get; set; }
@@ -56,7 +56,22 @@ namespace NouAssist.SharedKernel.Aggregates
             Tools.Remove(tool);
         }
 
-        public void MarkAsUsed()
+        public void SetLocation(string location)
+        {
+            Location = location;
+        }
+
+        public void SetEnergyLevel(int energyLevel)
+        {
+            if (energyLevel < 1 || energyLevel > 10)
+            {
+                throw new BusinessException("Core:InvalidEnergyLevel",
+                    "Energy level must be between 1 and 10.");
+            }
+            EnergyLevel = energyLevel;
+        }
+
+        public void RecordUsage()
         {
             UsageCount++;
             LastUsedAt = DateTime.UtcNow;
@@ -68,7 +83,7 @@ namespace NouAssist.SharedKernel.Aggregates
             ArchivedAt = DateTime.UtcNow;
         }
 
-        public void Unarchive()
+        public void Reactivate()
         {
             IsActive = true;
             ArchivedAt = null;

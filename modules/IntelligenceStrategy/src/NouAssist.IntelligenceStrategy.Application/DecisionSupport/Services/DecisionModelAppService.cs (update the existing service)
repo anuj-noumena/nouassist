@@ -1,0 +1,31 @@
+// Update the method to check the feature flags
+
+public async Task<CriterionDto> AddCriterionAsync(CreateCriterionDto input)
+{
+    var criterion = await _decisionModelManager.AddCriterionAsync(
+        input.DecisionModelId,
+        input.Name,
+        input.Description,
+        input.Weight);
+        
+    return ObjectMapper.Map<Criterion, CriterionDto>(criterion);
+}
+
+public async Task<AlternativeDto> AddAlternativeAsync(CreateAlternativeDto input)
+{
+    var alternative = await _decisionModelManager.AddAlternativeAsync(
+        input.DecisionModelId,
+        input.Name,
+        input.Description);
+        
+    return ObjectMapper.Map<Alternative, AlternativeDto>(alternative);
+}
+
+public async Task SetScoreAsync(SetScoreDto input)
+{
+    await _decisionModelManager.SetAlternativeScoreAsync(
+        input.AlternativeId,
+        input.CriterionId,
+        input.Score,
+        input.Justification);
+}

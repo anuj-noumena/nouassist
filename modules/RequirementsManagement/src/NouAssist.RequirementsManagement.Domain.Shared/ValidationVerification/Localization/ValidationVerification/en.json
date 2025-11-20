@@ -1,0 +1,73 @@
+{
+  "culture": "en",
+  "texts": {
+    "ValidationVerification:ErrorMessage:ReviewCycleNotFound": "The requested review cycle was not found.",
+    "ValidationVerification:ErrorMessage:ReviewCycleAlreadyStarted": "Cannot modify a review cycle that has already started.",
+    "ValidationVerification:ErrorMessage:TestCaseNotFound": "The requested test case was not found.",
+    "ValidationVerification:ErrorMessage:InvalidReviewDecision": "Invalid review decision: {0}",
+    "ValidationVerification:ErrorMessage:TestExecutionInvalidState": "Cannot execute test case in current state: {0}",
+    "ValidationVerification:ErrorMessage:ReviewerNotAssigned": "Reviewer is not assigned to this review cycle.",
+    "ValidationVerification:ErrorMessage:ReviewAlreadyCompleted": "Review has already been completed by this reviewer.",
+    "ValidationVerification:ErrorMessage:DuplicateTestCase": "A test case with the same name already exists.",
+    
+    "ValidationVerification:Entity:ReviewCycle": "Review Cycle",
+    "ValidationVerification:Entity:TestCase": "Test Case",
+    "ValidationVerification:Entity:TestStep": "Test Step",
+    "ValidationVerification:Entity:ReviewFeedback": "Review Feedback",
+    "ValidationVerification:Entity:TestExecution": "Test Execution",
+    
+    "ValidationVerification:Status:Draft": "Draft",
+    "ValidationVerification:Status:InProgress": "In Progress",
+    "ValidationVerification:Status:Completed": "Completed",
+    "ValidationVerification:Status:Cancelled": "Cancelled",
+    "ValidationVerification:Status:RequiresChanges": "Requires Changes",
+    "ValidationVerification:Status:Ready": "Ready",
+    "ValidationVerification:Status:InExecution": "In Execution",
+    "ValidationVerification:Status:Blocked": "Blocked",
+    "ValidationVerification:Status:Obsolete": "Obsolete",
+    
+    "ValidationVerification:ExecutionStatus:NotExecuted": "Not Executed",
+    "ValidationVerification:ExecutionStatus:Pass": "Pass",
+    "ValidationVerification:ExecutionStatus:Fail": "Fail",
+    "ValidationVerification:ExecutionStatus:Blocked": "Blocked",
+    "ValidationVerification:ExecutionStatus:Skipped": "Skipped",
+    
+    "ValidationVerification:DecisionType:Pending": "Pending",
+    "ValidationVerification:DecisionType:Approve": "Approve",
+    "ValidationVerification:DecisionType:Reject": "Reject",
+    "ValidationVerification:DecisionType:RequestChanges": "Request Changes",
+    "ValidationVerification:DecisionType:Abstain": "Abstain",
+    
+    "ValidationVerification:Priority:Low": "Low",
+    "ValidationVerification:Priority:Medium": "Medium",
+    "ValidationVerification:Priority:High": "High",
+    "ValidationVerification:Priority:Critical": "Critical",
+    
+    "ValidationVerification:Validation:Required": "{0} is required.",
+    "ValidationVerification:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "ValidationVerification:Validation:InvalidValue": "Invalid value for {0}.",
+    "ValidationVerification:Validation:NoReviewersAssigned": "At least one reviewer must be assigned.",
+    "ValidationVerification:Validation:NoTestSteps": "Test case must have at least one test step.",
+    "ValidationVerification:Validation:InvalidDateRange": "Due date must be in the future.",
+    
+    "ValidationVerification:Permission:ReviewCycle": "Review Cycle Management",
+    "ValidationVerification:Permission:ReviewCycle.Create": "Create Review Cycles",
+    "ValidationVerification:Permission:ReviewCycle.Edit": "Edit Review Cycles",
+    "ValidationVerification:Permission:ReviewCycle.Delete": "Delete Review Cycles",
+    "ValidationVerification:Permission:ReviewCycle.Start": "Start Review Cycles",
+    "ValidationVerification:Permission:ReviewCycle.Review": "Review Requirements",
+    
+    "ValidationVerification:Permission:TestCase": "Test Case Management",
+    "ValidationVerification:Permission:TestCase.Create": "Create Test Cases",
+    "ValidationVerification:Permission:TestCase.Edit": "Edit Test Cases",
+    "ValidationVerification:Permission:TestCase.Delete": "Delete Test Cases",
+    "ValidationVerification:Permission:TestCase.Execute": "Execute Test Cases",
+    "ValidationVerification:Permission:TestCase.ViewResults": "View Test Results",
+    
+    "ValidationVerification:Notification:ReviewCycleStarted": "Review cycle '{0}' has been started.",
+    "ValidationVerification:Notification:ReviewDecisionMade": "Review decision made for '{0}': {1}",
+    "ValidationVerification:Notification:ReviewCycleCompleted": "Review cycle '{0}' has been completed.",
+    "ValidationVerification:Notification:TestCaseCreated": "Test case '{0}' has been created.",
+    "ValidationVerification:Notification:TestExecutionCompleted": "Test execution for '{0}' has been completed: {1}"
+  }
+}

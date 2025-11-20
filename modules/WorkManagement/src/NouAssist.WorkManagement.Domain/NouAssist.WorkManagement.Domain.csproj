@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="NouAssist.WorkManagement.Application"></InternalsVisibleTo>
+    <InternalsVisibleTo Include="NouAssist.WorkManagement.Application" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />

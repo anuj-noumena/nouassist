@@ -2,13 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Core.Aggregates;
-using NouAssist.Core.Data;
-using NouAssist.Core.Dtos;
+using NouAssist.SharedKernel.Aggregates;
+using NouAssist.SharedKernel.Data;
+using NouAssist.SharedKernel.Tags.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
-namespace NouAssist.Core.Tags
+namespace NouAssist.SharedKernel.Tags
 {
     [Authorize]
     public class TagAppService : ApplicationService, ITagAppService

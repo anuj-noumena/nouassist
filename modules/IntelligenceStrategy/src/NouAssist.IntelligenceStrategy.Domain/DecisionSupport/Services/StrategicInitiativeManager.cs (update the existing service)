@@ -1,0 +1,65 @@
+// Add these modifications to the existing service
+
+using NouAssist.DecisionSupport.Settings;
+
+namespace NouAssist.DecisionSupport.Services
+{
+    public class StrategicInitiativeManager : DomainService, IStrategicInitiativeManager
+    {
+        private readonly IStrategicInitiativeRepository _initiativeRepository;
+        private readonly DecisionSupportOptions _options;
+        private readonly ILogger<StrategicInitiativeManager> _logger;
+
+        public StrategicInitiativeManager(
+            IStrategicInitiativeRepository initiativeRepository,
+            DecisionSupportOptions options,
+            ILogger<StrategicInitiativeManager> logger)
+        {
+            _initiativeRepository = initiativeRepository;
+            _options = options;
+            _logger = logger;
+        }
+
+        // Modify the ProposeInitiativeAsync method to check if feature is enabled
+        public async Task<StrategicInitiativeProposal> ProposeInitiativeAsync(
+            string title,
+            string description,
+            string expectedOutcomes,
+            string rationale,
+            Guid? decisionModelId = null)
+        {
+            // Check if the strategic initiatives feature is enabled
+            if (!await _options.IsStrategicInitiativesEnabledAsync())
+            {
+                throw new BusinessRuleException(
+                    "DecisionSupport:ErrorMessage:FeatureDisabled",
+                    "The Strategic Initiatives feature is disabled");
+            }
+            
+            // Continue with existing implementation
+            try
+            {
+                var initiative = StrategicInitiativeProposal.Create(
+                    GuidGenerator.Create(),
+                    title,
+                    description,
+                    expectedOutcomes,
+                    rationale,
+                    decisionModelId,
+                    CurrentTenant.Id);
+                    
+                await _initiativeRepository.InsertAsync(initiative);
+                
+                _logger.LogInformation("Proposed strategic initiative {Title} with ID {InitiativeId}", 
+                    title, initiative.Id);
+                    
+                return initiative;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to propose strategic initiative {Title}", title);
+                throw;
+            }
+        }
+    }
+}

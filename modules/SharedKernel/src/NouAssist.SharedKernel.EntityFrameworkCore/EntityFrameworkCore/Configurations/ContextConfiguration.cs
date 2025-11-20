@@ -11,8 +11,8 @@ namespace NouAssist.SharedKernel.EntityFrameworkCore.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(CoreDbProperties.DbTablePrefix + "Contexts",
-                            CoreDbProperties.DbSchema);
+            builder.ToTable(SharedKernelDbProperties.DbTablePrefix + "Contexts",
+                SharedKernelDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

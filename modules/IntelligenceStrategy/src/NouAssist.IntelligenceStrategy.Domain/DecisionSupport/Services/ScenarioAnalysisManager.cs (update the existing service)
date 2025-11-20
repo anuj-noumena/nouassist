@@ -1,0 +1,107 @@
+// Add these modifications to the existing service
+
+using NouAssist.DecisionSupport.Settings;
+
+namespace NouAssist.DecisionSupport.Services
+{
+    public class ScenarioAnalysisManager : DomainService, IScenarioAnalysisManager
+    {
+        private readonly IScenarioAnalysisRepository _scenarioRepository;
+        private readonly DecisionSupportOptions _options;
+        private readonly ILogger<ScenarioAnalysisManager> _logger;
+
+        public ScenarioAnalysisManager(
+            IScenarioAnalysisRepository scenarioRepository,
+            DecisionSupportOptions options,
+            ILogger<ScenarioAnalysisManager> logger)
+        {
+            _scenarioRepository = scenarioRepository;
+            _options = options;
+            _logger = logger;
+        }
+
+        // Modify the CreateScenarioAnalysisAsync method to check if feature is enabled
+        public async Task<ScenarioAnalysis> CreateScenarioAnalysisAsync(
+            string title,
+            string purpose,
+            string timeHorizon,
+            string scope,
+            string keyDrivers,
+            Guid? decisionModelId = null)
+        {
+            // Check if the scenario analysis feature is enabled
+            if (!await _options.IsScenarioAnalysisEnabledAsync())
+            {
+                throw new BusinessRuleException(
+                    "DecisionSupport:ErrorMessage:FeatureDisabled",
+                    "The Scenario Analysis feature is disabled");
+            }
+            
+            // Continue with existing implementation
+            try
+            {
+                var analysis = ScenarioAnalysis.Create(
+                    GuidGenerator.Create(),
+                    title,
+                    purpose,
+                    timeHorizon,
+                    scope,
+                    keyDrivers,
+                    decisionModelId,
+                    CurrentTenant.Id);
+                    
+                await _scenarioRepository.InsertAsync(analysis);
+                
+                _logger.LogInformation("Created scenario analysis {Title} with ID {AnalysisId}", 
+                    title, analysis.Id);
+                    
+                return analysis;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to create scenario analysis {Title}", title);
+                throw;
+            }
+        }
+        
+        // Add this to the AddScenarioModelAsync method
+        public async Task<ScenarioAnalysis> AddScenarioModelAsync(
+            Guid analysisId,
+            string name,
+            string title,
+            string description,
+            string assumptions,
+            ScenarioLikelihood likelihood,
+            decimal confidenceLevel,
+            string likelihoodRationale)
+        {
+            var analysis = await _scenarioRepository.GetAsync(analysisId);
+            
+            // Check if adding another scenario model would exceed the limit
+            var maxScenarioModels = await _options.GetMaxScenarioModelsPerAnalysisAsync();
+            if (analysis.ScenarioModels.Count >= maxScenarioModels)
+            {
+                throw new BusinessRuleException(
+                    "DecisionSupport:ErrorMessage:MaxScenarioModelsExceeded",
+                    $"Cannot add more than {maxScenarioModels} scenario models to an analysis");
+            }
+            
+            // Continue with existing implementation
+            var scenarioDescription = new ScenarioDescription(title, description, assumptions);
+            
+            analysis.AddScenarioModel(
+                name,
+                scenarioDescription,
+                likelihood,
+                confidenceLevel,
+                likelihoodRationale);
+                
+            await _scenarioRepository.UpdateAsync(analysis);
+            
+            _logger.LogInformation("Added scenario model {Name} to analysis {AnalysisId}", 
+                name, analysisId);
+                
+            return analysis;
+        }
+    }
+}

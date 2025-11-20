@@ -1,0 +1,45 @@
+{
+  "culture": "en",
+  "texts": {
+    "Analytics:ErrorMessage:DataSourceNotFound": "The data source with ID {dataSourceId} was not found.",
+    "Analytics:ErrorMessage:InvalidDashboardConfiguration": "The dashboard configuration is invalid: {reason}",
+    "Analytics:ErrorMessage:InvalidReportParameter": "The report parameter '{parameterName}' is invalid: {reason}",
+    "Analytics:ErrorMessage:InvalidKpiDefinition": "The KPI definition is invalid: {reason}",
+    "Analytics:ErrorMessage:DuplicateName": "A {entityType} with the name '{name}' already exists.",
+    "Analytics:ErrorMessage:MaxWidgetsExceeded": "Maximum number of widgets ({maxWidgets}) exceeded for this dashboard.",
+    "Analytics:ErrorMessage:MaxParametersExceeded": "Maximum number of parameters ({maxParameters}) exceeded for this report.",
+    "Analytics:ErrorMessage:MaxThresholdsExceeded": "Maximum number of thresholds ({maxThresholds}) exceeded for this KPI.",
+    "Analytics:ErrorMessage:MaxTransformationStepsExceeded": "Maximum number of transformation steps ({maxSteps}) exceeded for this data source.",
+    
+    "Analytics:Entity:Dashboard": "Dashboard",
+    "Analytics:Entity:ReportConfiguration": "Report Configuration",
+    "Analytics:Entity:KpiDefinition": "KPI Definition",
+    "Analytics:Entity:DataSource": "Data Source",
+    
+    "Analytics:Status:OK": "OK",
+    "Analytics:Status:Warning": "Warning",
+    "Analytics:Status:Critical": "Critical",
+    "Analytics:Status:NotAvailable": "Not Available",
+    
+    "Analytics:ReportFormat:Pdf": "PDF",
+    "Analytics:ReportFormat:Excel": "Excel",
+    "Analytics:ReportFormat:Csv": "CSV",
+    "Analytics:ReportFormat:Html": "HTML",
+    "Analytics:ReportFormat:Json": "JSON",
+    
+    "Analytics:Validation:Required": "{0} is required.",
+    "Analytics:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "Analytics:Validation:InvalidValue": "Invalid value for {0}.",
+    
+    "Analytics:Permission:Analytics": "Analytics Management",
+    "Analytics:Permission:Analytics.Dashboards": "Dashboard Management",
+    "Analytics:Permission:Analytics.Reports": "Report Management",
+    "Analytics:Permission:Analytics.KPIs": "KPI Management",
+    "Analytics:Permission:Analytics.DataSources": "Data Source Management",
+    
+    "Analytics:Notification:ReportGenerated": "Report '{0}' has been generated successfully.",
+    "Analytics:Notification:KpiAlertTriggered": "KPI '{0}' has triggered an alert: {1}",
+    "Analytics:Notification:DashboardCreated": "Dashboard '{0}' has been created successfully.",
+    "Analytics:Notification:DataSourceConnected": "Data source '{0}' has been connected successfully."
+  }
+}

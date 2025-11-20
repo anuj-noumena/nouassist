@@ -1,0 +1,83 @@
+{
+  "culture": "en",
+  "texts": {
+    "RIM:ManagementName": "Resource & Inventory Management",
+    
+    "RIM:Entity:ResourceType": "Resource Type",
+    "RIM:Entity:ResourceInstance": "Resource",
+    "RIM:Entity:InventoryItem": "Inventory Item",
+    "RIM:Entity:StorageLocation": "Storage Location",
+    "RIM:Entity:ResourceBooking": "Resource Booking",
+    "RIM:Entity:ResourceAttribute": "Resource Attribute",
+    "RIM:Entity:InventoryAudit": "Inventory Audit",
+    
+    "RIM:ErrorMessage:ResourceTypeNotFound": "Resource type with ID '{id}' was not found.",
+    "RIM:ErrorMessage:ResourceTypeNotFoundByCode": "Resource type with code '{code}' was not found.",
+    "RIM:ErrorMessage:ResourceTypeAlreadyExists": "Resource type with code '{code}' already exists.",
+    
+    "RIM:ErrorMessage:ResourceInstanceNotFound": "Resource with ID '{id}' was not found.",
+    "RIM:ErrorMessage:ResourceInstanceNotFoundByIdentifier": "Resource with identifier '{identifier}' was not found.",
+    "RIM:ErrorMessage:ResourceAllocationFailed": "Failed to allocate resource '{resourceInstanceId}'. Reason: {reason}",
+    
+    "RIM:ErrorMessage:InventoryItemNotFound": "Inventory item with ID '{id}' was not found.",
+    "RIM:ErrorMessage:InventoryItemNotFoundBySku": "Inventory item with SKU '{sku}' was not found.",
+    "RIM:ErrorMessage:NegativeStockNotAllowed": "Cannot reduce stock below zero. Current stock: {currentStock}, Requested reduction: {requestedReduction}.",
+    
+    "RIM:ErrorMessage:StorageLocationNotFound": "Storage location with ID '{id}' was not found.",
+    "RIM:ErrorMessage:StorageLocationNotFoundByCode": "Storage location with code '{code}' was not found.",
+    
+    "RIM:ErrorMessage:ResourceBookingFailed": "Failed to book resource '{resourceInstanceId}'. Reason: {reason}",
+    "RIM:ErrorMessage:ResourceBookingOverlap": "Resource booking overlaps with existing booking(s).",
+    "RIM:ErrorMessage:ResourceBookingInvalidTime": "Resource booking time is invalid. End time must be after start time.",
+    
+    "RIM:ErrorMessage:InvalidAttributeValue": "Invalid value '{value}' for attribute '{attributeName}' with data type '{dataType}'.",
+    "RIM:ErrorMessage:AttributeNotFound": "Attribute with name '{attributeName}' was not found for this resource type.",
+    
+    "RIM:Status:Available": "Available",
+    "RIM:Status:Allocated": "Allocated",
+    "RIM:Status:Unavailable": "Unavailable",
+    "RIM:Status:Retired": "Retired",
+    
+    "RIM:BookingStatus:Pending": "Pending",
+    "RIM:BookingStatus:Confirmed": "Confirmed",
+    "RIM:BookingStatus:InUse": "In Use",
+    "RIM:BookingStatus:Completed": "Completed",
+    "RIM:BookingStatus:Cancelled": "Cancelled",
+    "RIM:BookingStatus:Rejected": "Rejected",
+    
+    "RIM:Category:HumanResource": "Human Resource",
+    "RIM:Category:Equipment": "Equipment",
+    "RIM:Category:Facility": "Facility",
+    "RIM:Category:Digital": "Digital",
+    "RIM:Category:Other": "Other",
+    
+    "RIM:TransactionType:Initial": "Initial",
+    "RIM:TransactionType:Receipt": "Receipt",
+    "RIM:TransactionType:Issuance": "Issuance",
+    "RIM:TransactionType:Transfer": "Transfer",
+    "RIM:TransactionType:Adjustment": "Adjustment",
+    "RIM:TransactionType:Loss": "Loss",
+    "RIM:TransactionType:Return": "Return",
+    "RIM:TransactionType:Reconciliation": "Reconciliation",
+    
+    "RIM:AuditStatus:Planned": "Planned",
+    "RIM:AuditStatus:InProgress": "In Progress",
+    "RIM:AuditStatus:CompleteNoDiscrepancies": "Complete - No Discrepancies",
+    "RIM:AuditStatus:CompleteWithDiscrepancies": "Complete - With Discrepancies",
+    "RIM:AuditStatus:Reconciled": "Reconciled",
+    "RIM:AuditStatus:Cancelled": "Cancelled",
+    
+    "RIM:Validation:Required": "{0} is required.",
+    "RIM:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "RIM:Validation:InvalidValue": "Invalid value for {0}.",
+    "RIM:Validation:InvalidDateRange": "End date must be after start date.",
+    "RIM:Validation:QuantityMustBePositive": "Quantity must be greater than zero.",
+    
+    "RIM:Notification:ResourceTypeCreated": "Resource type '{0}' created successfully.",
+    "RIM:Notification:ResourceInstanceCreated": "Resource '{0}' created successfully.",
+    "RIM:Notification:InventoryItemCreated": "Inventory item '{0}' created successfully.",
+    "RIM:Notification:StockLevelAdjusted": "Stock level for '{0}' at '{1}' adjusted successfully.",
+    "RIM:Notification:ResourceAllocated": "Resource '{0}' allocated successfully.",
+    "RIM:Notification:ResourceBooked": "Resource '{0}' booked successfully."
+  }
+}

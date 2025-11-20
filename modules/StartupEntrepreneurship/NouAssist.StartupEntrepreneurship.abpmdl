@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.StartupEntrepreneurship.Domain": {
+      "path": "src/NouAssist.StartupEntrepreneurship.Domain/NouAssist.StartupEntrepreneurship.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.StartupEntrepreneurship.Application.Contracts": {
+      "path": "src/NouAssist.StartupEntrepreneurship.Application.Contracts/NouAssist.StartupEntrepreneurship.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.StartupEntrepreneurship.Application": {
+      "path": "src/NouAssist.StartupEntrepreneurship.Application/NouAssist.StartupEntrepreneurship.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.StartupEntrepreneurship.EntityFrameworkCore": {
+      "path": "src/NouAssist.StartupEntrepreneurship.EntityFrameworkCore/NouAssist.StartupEntrepreneurship.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.StartupEntrepreneurship.HttpApi": {
+      "path": "src/NouAssist.StartupEntrepreneurship.HttpApi/NouAssist.StartupEntrepreneurship.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.StartupEntrepreneurship.HttpApi.Client": {
+      "path": "src/NouAssist.StartupEntrepreneurship.HttpApi.Client/NouAssist.StartupEntrepreneurship.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.StartupEntrepreneurship.TestBase": {
+      "path": "test/NouAssist.StartupEntrepreneurship.TestBase/NouAssist.StartupEntrepreneurship.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.StartupEntrepreneurship.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.StartupEntrepreneurship.EntityFrameworkCore.Tests/NouAssist.StartupEntrepreneurship.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.StartupEntrepreneurship.Domain.Tests": {
+      "path": "test/NouAssist.StartupEntrepreneurship.Domain.Tests/NouAssist.StartupEntrepreneurship.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.StartupEntrepreneurship.Application.Tests": {
+      "path": "test/NouAssist.StartupEntrepreneurship.Application.Tests/NouAssist.StartupEntrepreneurship.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.StartupEntrepreneurship.Domain.Shared": {
+      "path": "src/NouAssist.StartupEntrepreneurship.Domain.Shared/NouAssist.StartupEntrepreneurship.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.StartupEntrepreneurship.Installer": {
+       "path": "src/NouAssist.StartupEntrepreneurship.Installer/NouAssist.StartupEntrepreneurship.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

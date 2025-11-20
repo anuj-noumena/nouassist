@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.RequirementsManagement.CollaborationAccessControl</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="9.1.0" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="9.1.0" />
+    <ProjectReference Include="..\NouAssist.RequirementsManagement.CollaborationAccessControl.Domain.Shared\NouAssist.RequirementsManagement.CollaborationAccessControl.Domain.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

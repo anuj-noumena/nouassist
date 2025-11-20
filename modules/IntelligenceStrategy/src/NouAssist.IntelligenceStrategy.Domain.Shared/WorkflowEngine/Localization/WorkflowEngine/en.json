@@ -1,0 +1,56 @@
+{
+  "culture": "en",
+  "texts": {
+    "WorkflowEngine:Entity:WorkflowDefinition": "Workflow Definition",
+    "WorkflowEngine:Entity:WorkflowInstance": "Workflow Instance",
+    "WorkflowEngine:Entity:WorkflowTemplate": "Workflow Template",
+    "WorkflowEngine:Entity:ActivityDefinition": "Activity Definition",
+    "WorkflowEngine:Entity:ActivityInstance": "Activity Instance",
+    "WorkflowEngine:Entity:TaskAssignment": "Task Assignment",
+    
+    "WorkflowEngine:ErrorMessage:WorkflowNotFound": "The requested workflow with ID {workflowId} was not found.",
+    "WorkflowEngine:ErrorMessage:WorkflowTemplateNotFound": "The requested workflow template with ID {templateId} was not found.",
+    "WorkflowEngine:ErrorMessage:WorkflowInstanceNotFound": "The requested workflow instance with ID {instanceId} was not found.",
+    "WorkflowEngine:ErrorMessage:ActivityNotFound": "The requested activity with ID {activityId} was not found.",
+    "WorkflowEngine:ErrorMessage:InvalidWorkflowState": "Cannot perform the operation. Workflow {workflowId} is in state '{currentState}' but should be in '{expectedState}'.",
+    "WorkflowEngine:ErrorMessage:DuplicateName": "A {entityType} with the name '{name}' already exists.",
+    "WorkflowEngine:ErrorMessage:CannotDeletePublishedWorkflow": "Cannot delete a published workflow definition.",
+    "WorkflowEngine:ErrorMessage:CannotModifyActiveInstance": "Cannot modify a workflow instance that is active.",
+    "WorkflowEngine:ErrorMessage:CircularDependency": "Circular dependency detected in workflow activities.",
+    "WorkflowEngine:ErrorMessage:InvalidBpmnDefinition": "The BPMN definition is invalid: {reason}",
+    
+    "WorkflowEngine:Status:Running": "Running",
+    "WorkflowEngine:Status:Completed": "Completed",
+    "WorkflowEngine:Status:Failed": "Failed",
+    "WorkflowEngine:Status:Paused": "Paused",
+    "WorkflowEngine:Status:Waiting": "Waiting",
+    
+    "WorkflowEngine:TaskStatus:Created": "Created",
+    "WorkflowEngine:TaskStatus:Assigned": "Assigned",
+    "WorkflowEngine:TaskStatus:InProgress": "In Progress",
+    "WorkflowEngine:TaskStatus:Completed": "Completed",
+    "WorkflowEngine:TaskStatus:Failed": "Failed",
+    "WorkflowEngine:TaskStatus:Cancelled": "Cancelled",
+    "WorkflowEngine:TaskStatus:Waiting": "Waiting",
+    
+    "WorkflowEngine:AssigneeType:User": "User",
+    "WorkflowEngine:AssigneeType:Team": "Team",
+    "WorkflowEngine:AssigneeType:Role": "Role",
+    
+    "WorkflowEngine:ActivityType:UserTask": "User Task",
+    "WorkflowEngine:ActivityType:SystemTask": "System Task",
+    "WorkflowEngine:ActivityType:Gateway": "Gateway",
+    "WorkflowEngine:ActivityType:StartEvent": "Start Event",
+    "WorkflowEngine:ActivityType:EndEvent": "End Event",
+    "WorkflowEngine:ActivityType:IntermediateEvent": "Intermediate Event",
+    "WorkflowEngine:ActivityType:ScriptTask": "Script Task",
+    "WorkflowEngine:ActivityType:ServiceTask": "Service Task",
+    
+    "WorkflowEngine:Notification:WorkflowCreated": "Workflow '{name}' has been created successfully.",
+    "WorkflowEngine:Notification:WorkflowUpdated": "Workflow '{name}' has been updated successfully.",
+    "WorkflowEngine:Notification:WorkflowDeleted": "Workflow '{name}' has been deleted successfully.",
+    "WorkflowEngine:Notification:WorkflowInstanceStarted": "Workflow instance for '{name}' has been started successfully.",
+    "WorkflowEngine:Notification:WorkflowInstanceCompleted": "Workflow instance for '{name}' has completed successfully.",
+    "WorkflowEngine:Notification:TaskAssigned": "A task has been assigned to you in the '{workflowName}' workflow."
+  }
+}

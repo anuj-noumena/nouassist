@@ -1,0 +1,60 @@
+{
+  "culture": "en",
+  "texts": {
+    "Collaboration:ErrorMessage:PermissionDenied": "User {userId} does not have the required permission {requiredPermission} for {resourceType} with ID {resourceId}.",
+    "Collaboration:ErrorMessage:ResourceNotFound": "The requested {resourceType} with ID {resourceId} was not found.",
+    "Collaboration:ErrorMessage:InvalidOperation": "Cannot perform this operation in the current state.",
+    "Collaboration:ErrorMessage:DuplicateRole": "A role with the name {roleName} already exists.",
+    "Collaboration:ErrorMessage:DuplicateSubscription": "A subscription for this notification event already exists.",
+    "Collaboration:ErrorMessage:InvalidNotificationChannel": "The specified notification channel is not supported.",
+    
+    "Collaboration:Entity:UserAccessProfile": "User Access Profile",
+    "Collaboration:Entity:Role": "Role",
+    "Collaboration:Entity:Permission": "Permission",
+    "Collaboration:Entity:NotificationConfiguration": "Notification Configuration",
+    "Collaboration:Entity:SubscriptionRule": "Subscription Rule",
+    "Collaboration:Entity:DiscussionBoard": "Discussion Board",
+    "Collaboration:Entity:DiscussionThread": "Discussion Thread",
+    "Collaboration:Entity:Comment": "Comment",
+    
+    "Collaboration:PermissionType:Read": "Read",
+    "Collaboration:PermissionType:Write": "Write",
+    "Collaboration:PermissionType:ApproveReq": "Approve Requirements",
+    "Collaboration:PermissionType:CreateBaseline": "Create Baseline",
+    "Collaboration:PermissionType:DeleteResource": "Delete Resource",
+    "Collaboration:PermissionType:ManagePermissions": "Manage Permissions",
+    "Collaboration:PermissionType:ManageRoles": "Manage Roles",
+    "Collaboration:PermissionType:FullControl": "Full Control",
+    
+    "Collaboration:ResourceType:Requirement": "Requirement",
+    "Collaboration:ResourceType:Baseline": "Baseline",
+    "Collaboration:ResourceType:ChangeRequest": "Change Request",
+    "Collaboration:ResourceType:ReviewCycle": "Review Cycle",
+    "Collaboration:ResourceType:Project": "Project",
+    "Collaboration:ResourceType:Feature": "Feature",
+    "Collaboration:ResourceType:TestCase": "Test Case",
+    
+    "Collaboration:NotificationChannel:InApp": "In-App Notification",
+    "Collaboration:NotificationChannel:Email": "Email",
+    "Collaboration:NotificationChannel:SMS": "SMS",
+    "Collaboration:NotificationChannel:Teams": "Microsoft Teams",
+    "Collaboration:NotificationChannel:Slack": "Slack",
+    
+    "Collaboration:NotificationEvent:ResourceCreated": "Resource Created",
+    "Collaboration:NotificationEvent:ResourceUpdated": "Resource Updated",
+    "Collaboration:NotificationEvent:ResourceDeleted": "Resource Deleted",
+    "Collaboration:NotificationEvent:CommentAdded": "Comment Added",
+    "Collaboration:NotificationEvent:MentionedInComment": "Mentioned in Comment",
+    "Collaboration:NotificationEvent:ReviewAssigned": "Review Assigned",
+    "Collaboration:NotificationEvent:ReviewCompleted": "Review Completed",
+    "Collaboration:NotificationEvent:ApprovalRequired": "Approval Required",
+    "Collaboration:NotificationEvent:ApprovalGranted": "Approval Granted",
+    "Collaboration:NotificationEvent:ApprovalRejected": "Approval Rejected",
+    "Collaboration:NotificationEvent:PermissionChanged": "Permission Changed",
+    
+    "Collaboration:Validation:InvalidTitle": "Invalid title. The title must be between 1 and {maxLength} characters.",
+    "Collaboration:Validation:InvalidContent": "Invalid content. The content must be between 1 and {maxLength} characters.",
+    "Collaboration:Validation:EmptyPermissions": "At least one permission must be specified.",
+    "Collaboration:Validation:TooManyAttachments": "Maximum number of attachments ({maxCount}) exceeded."
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "culture": "en",
+  "texts": {
+    "ContractPortfolioManagement": "Contract & Portfolio Management",
+    
+    "ContractPortfolioManagement:ErrorMessage:ContractNotFound": "Contract with ID {contractId} was not found.",
+    "ContractPortfolioManagement:ErrorMessage:InvalidContractStatusTransition": "Cannot change contract status from {currentStatus} to {requestedStatus}.",
+    "ContractPortfolioManagement:ErrorMessage:ContractVersionNotFound": "Contract version with ID {versionId} was not found.",
+    "ContractPortfolioManagement:ErrorMessage:ContractPartyNotFound": "Contract party with ID {partyId} was not found.",
+    "ContractPortfolioManagement:ErrorMessage:PortfolioNotFound": "Portfolio with ID {portfolioId} was not found.",
+    "ContractPortfolioManagement:ErrorMessage:PortfolioItemNotFound": "Item with ID {itemId} was not found in portfolio {portfolioId}.",
+    "ContractPortfolioManagement:ErrorMessage:DuplicatePortfolioItem": "An item with ID {itemId} and type {itemType} already exists in portfolio {portfolioId}.",
+    "ContractPortfolioManagement:ErrorMessage:RoadmapNotFound": "Roadmap with ID {roadmapId} was not found.",
+    "ContractPortfolioManagement:ErrorMessage:MilestoneNotFound": "Milestone with ID {milestoneId} was not found in roadmap {roadmapId}.",
+    "ContractPortfolioManagement:ErrorMessage:InvalidOperation": "Cannot perform this operation in the current state.",
+    
+    "ContractPortfolioManagement:Entity:Contract": "Contract",
+    "ContractPortfolioManagement:Entity:ContractVersion": "Contract Version",
+    "ContractPortfolioManagement:Entity:ContractClause": "Contract Clause",
+    "ContractPortfolioManagement:Entity:ContractParty": "Contract Party",
+    "ContractPortfolioManagement:Entity:ContractAmendment": "Contract Amendment",
+    "ContractPortfolioManagement:Entity:ContractAlert": "Contract Alert",
+    "ContractPortfolioManagement:Entity:Portfolio": "Portfolio",
+    "ContractPortfolioManagement:Entity:PortfolioItem": "Portfolio Item",
+    "ContractPortfolioManagement:Entity:PortfolioCategory": "Portfolio Category",
+    "ContractPortfolioManagement:Entity:PortfolioRoadmap": "Portfolio Roadmap",
+    "ContractPortfolioManagement:Entity:RoadmapMilestone": "Roadmap Milestone",
+    
+    "ContractPortfolioManagement:Status:Draft": "Draft",
+    "ContractPortfolioManagement:Status:UnderReview": "Under Review",
+    "ContractPortfolioManagement:Status:Negotiation": "Negotiation",
+    "ContractPortfolioManagement:Status:PendingSignature": "Pending Signature",
+    "ContractPortfolioManagement:Status:Active": "Active",
+    "ContractPortfolioManagement:Status:Expired": "Expired",
+    "ContractPortfolioManagement:Status:Terminated": "Terminated",
+    "ContractPortfolioManagement:Status:Archived": "Archived",
+    
+    "ContractPortfolioManagement:PortfolioItemType:Contract": "Contract",
+    "ContractPortfolioManagement:PortfolioItemType:Project": "Project",
+    "ContractPortfolioManagement:PortfolioItemType:Initiative": "Initiative",
+    "ContractPortfolioManagement:PortfolioItemType:Program": "Program",
+    
+    "ContractPortfolioManagement:RiskLevel:Low": "Low",
+    "ContractPortfolioManagement:RiskLevel:Medium": "Medium",
+    "ContractPortfolioManagement:RiskLevel:High": "High",
+    "ContractPortfolioManagement:RiskLevel:Critical": "Critical",
+    
+    "ContractPortfolioManagement:AlertType:Renewal": "Renewal",
+    "ContractPortfolioManagement:AlertType:Expiration": "Expiration",
+    "ContractPortfolioManagement:AlertType:Payment": "Payment",
+    "ContractPortfolioManagement:AlertType:Deliverable": "Deliverable",
+    "ContractPortfolioManagement:AlertType:Compliance": "Compliance",
+    "ContractPortfolioManagement:AlertType:Custom": "Custom",
+    
+    "ContractPortfolioManagement:Validation:Required": "{0} is required.",
+    "ContractPortfolioManagement:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "ContractPortfolioManagement:Validation:DateRange": "The {0} must be after {1}.",
+    "ContractPortfolioManagement:Validation:InvalidValue": "Invalid value for {0}."
+  }
+}

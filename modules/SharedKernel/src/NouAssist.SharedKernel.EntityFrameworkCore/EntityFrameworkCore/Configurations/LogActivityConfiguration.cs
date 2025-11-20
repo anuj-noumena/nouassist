@@ -8,8 +8,8 @@ namespace NouAssist.SharedKernel.EntityFrameworkCore.Configurations
     {
         public void Configure(EntityTypeBuilder<LogActivity> builder)
         {
-            builder.ToTable(CoreDbProperties.DbTablePrefix + "LogActivities",
-                            CoreDbProperties.DbSchema);
+            builder.ToTable(SharedKernelDbProperties.DbTablePrefix + "LogActivities",
+                SharedKernelDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

@@ -1,0 +1,62 @@
+{
+  "culture": "en",
+  "texts": {
+    "IRM:ErrorMessage:InvestorNotFound": "The requested investor was not found.",
+    "IRM:ErrorMessage:DuplicateInvestorEmail": "An investor with email '{email}' already exists.",
+    "IRM:ErrorMessage:UnauthorizedDataRoomAccess": "Access to the data room is not authorized for this investor.",
+    "IRM:ErrorMessage:InvalidUpdateStatusTransition": "Cannot transition from {fromStatus} to {toStatus}.",
+    "IRM:ErrorMessage:EntityNotFound": "The requested {0} was not found.",
+    "IRM:ErrorMessage:InvalidOperation": "Cannot perform this operation in the current state.",
+
+    "IRM:Entity:InvestorProfile": "Investor Profile",
+    "IRM:Entity:InvestorUpdate": "Investor Update",
+    "IRM:Entity:DataRoom": "Data Room",
+    "IRM:Entity:Document": "Document",
+
+    "IRM:InvestorType:Angel": "Angel Investor",
+    "IRM:InvestorType:VentureCapital": "Venture Capital",
+    "IRM:InvestorType:PrivateEquity": "Private Equity",
+    "IRM:InvestorType:Strategic": "Strategic Investor",
+    "IRM:InvestorType:Family": "Family Office",
+    "IRM:InvestorType:Institutional": "Institutional Investor",
+    "IRM:InvestorType:Retail": "Retail Investor",
+
+    "IRM:InvestorStatus:Prospect": "Prospect",
+    "IRM:InvestorStatus:Active": "Active",
+    "IRM:InvestorStatus:Inactive": "Inactive",
+    "IRM:InvestorStatus:Exited": "Exited",
+    "IRM:InvestorStatus:Restricted": "Restricted",
+
+    "IRM:UpdateStatus:Draft": "Draft",
+    "IRM:UpdateStatus:Scheduled": "Scheduled",
+    "IRM:UpdateStatus:Sent": "Sent",
+    "IRM:UpdateStatus:Delivered": "Delivered",
+    "IRM:UpdateStatus:Read": "Read",
+    "IRM:UpdateStatus:Failed": "Failed",
+
+    "IRM:Validation:Required": "{0} is required.",
+    "IRM:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "IRM:Validation:InvalidEmail": "Invalid email format.",
+    "IRM:Validation:InvalidUrl": "Invalid URL format.",
+
+    "IRM:Permission:InvestorManagement": "Investor Management",
+    "IRM:Permission:InvestorManagement.Create": "Create Investors",
+    "IRM:Permission:InvestorManagement.Edit": "Edit Investors",
+    "IRM:Permission:InvestorManagement.Delete": "Delete Investors",
+    "IRM:Permission:InvestorManagement.View": "View Investors",
+
+    "IRM:Permission:UpdateManagement": "Update Management",
+    "IRM:Permission:UpdateManagement.Create": "Create Updates",
+    "IRM:Permission:UpdateManagement.Send": "Send Updates",
+    "IRM:Permission:UpdateManagement.View": "View Updates",
+
+    "IRM:Permission:DataRoomManagement": "Data Room Management",
+    "IRM:Permission:DataRoomManagement.Create": "Create Data Rooms",
+    "IRM:Permission:DataRoomManagement.Manage": "Manage Data Rooms",
+    "IRM:Permission:DataRoomManagement.Access": "Access Data Rooms",
+
+    "IRM:Notification:InvestorCreated": "Investor profile created successfully.",
+    "IRM:Notification:UpdateSent": "Investor update sent successfully.",
+    "IRM:Notification:DataRoomAccessGranted": "Data room access granted successfully."
+  }
+}

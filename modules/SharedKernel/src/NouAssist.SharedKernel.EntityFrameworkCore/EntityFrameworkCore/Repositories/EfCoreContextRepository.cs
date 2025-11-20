@@ -11,10 +11,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.SharedKernel.EntityFrameworkCore.Repositories
 {
     public class EfCoreContextRepository 
-        : EfCoreRepository<ICoreDbContext, Context, Guid>, IContextRepository
+        : EfCoreRepository<ISharedKernelDbContext, Context, Guid>, IContextRepository
     {
         public EfCoreContextRepository(
-            IDbContextProvider<ICoreDbContext> dbContextProvider)
+            IDbContextProvider<ISharedKernelDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

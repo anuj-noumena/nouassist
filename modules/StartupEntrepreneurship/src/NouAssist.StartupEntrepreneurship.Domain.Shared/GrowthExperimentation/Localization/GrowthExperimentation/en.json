@@ -1,0 +1,35 @@
+{
+  "culture": "en",
+  "texts": {
+    "GrowthExperimentation:ErrorMessage:ExperimentNotFound": "Experiment with ID {experimentId} was not found.",
+    "GrowthExperimentation:ErrorMessage:InvalidExperimentState": "Operation cannot be performed. Experiment is in '{currentStatus}' state, but should be in one of these states: {expectedStatuses}.",
+    "GrowthExperimentation:ErrorMessage:InsufficientVariants": "Experiment must have at least {requiredCount} variants, but only has {currentCount}.",
+    "GrowthExperimentation:ErrorMessage:InvalidFunnelConfiguration": "Conversion funnel configuration is invalid: {details}.",
+    "GrowthExperimentation:ErrorMessage:VariantNotFound": "Variant with ID {variantId} was not found in experiment {experimentId}.",
+    "GrowthExperimentation:ErrorMessage:DuplicateVariantName": "A variant with the name '{variantName}' already exists in this experiment.",
+    "GrowthExperimentation:ErrorMessage:InvalidMetricValue": "The value '{value}' is not valid for metric type '{metricType}'.",
+    "GrowthExperimentation:ErrorMessage:ChannelNotFound": "Marketing channel with ID {channelId} was not found.",
+    "GrowthExperimentation:ErrorMessage:FunnelNotFound": "Conversion funnel with ID {funnelId} was not found.",
+    "GrowthExperimentation:ErrorMessage:InsufficientData": "Insufficient data to perform statistical analysis.",
+    
+    "GrowthExperimentation:Entity:Experiment": "Growth Experiment",
+    "GrowthExperimentation:Entity:Variant": "Experiment Variant",
+    "GrowthExperimentation:Entity:Hypothesis": "Experiment Hypothesis",
+    "GrowthExperimentation:Entity:MarketingChannel": "Marketing Channel",
+    "GrowthExperimentation:Entity:Funnel": "Conversion Funnel",
+    "GrowthExperimentation:Entity:FunnelStage": "Funnel Stage",
+    
+    "GrowthExperimentation:Status:Draft": "Draft",
+    "GrowthExperimentation:Status:Ready": "Ready",
+    "GrowthExperimentation:Status:Running": "Running",
+    "GrowthExperimentation:Status:Paused": "Paused",
+    "GrowthExperimentation:Status:AnalysisInProgress": "Analysis In Progress",
+    "GrowthExperimentation:Status:Completed": "Completed",
+    "GrowthExperimentation:Status:Terminated": "Terminated",
+    
+    "GrowthExperimentation:Notification:ExperimentCreated": "Experiment '{0}' has been created successfully.",
+    "GrowthExperimentation:Notification:ExperimentStarted": "Experiment '{0}' has been started and is now running.",
+    "GrowthExperimentation:Notification:ExperimentCompleted": "Experiment '{0}' has been completed. Results are now available.",
+    "GrowthExperimentation:Notification:SignificantResult": "Experiment '{0}' has achieved statistical significance with p-value of {1}."
+  }
+}

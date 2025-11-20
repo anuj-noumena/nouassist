@@ -1,0 +1,60 @@
+{
+  "culture": "en",
+  "texts": {
+    "PersonalProductivityIntelligence:ErrorMessage:UserProfileNotFound": "User productivity profile was not found.",
+    "PersonalProductivityIntelligence:ErrorMessage:InvalidAutomationDefinition": "The automation definition is invalid: {reason}.",
+    "PersonalProductivityIntelligence:ErrorMessage:ModelTrainingFailed": "Training of {modelType} model failed: {reason}.",
+    "PersonalProductivityIntelligence:ErrorMessage:PredictionFailed": "Failed to generate prediction: {reason}.",
+    "PersonalProductivityIntelligence:ErrorMessage:RecommendationFailed": "Failed to generate recommendation: {reason}.",
+    "PersonalProductivityIntelligence:ErrorMessage:ExceedsMaxTriggersCount": "The number of triggers exceeds the maximum limit of {maxCount}.",
+    "PersonalProductivityIntelligence:ErrorMessage:ExceedsMaxActionsCount": "The number of actions exceeds the maximum limit of {maxCount}.",
+    
+    "PersonalProductivityIntelligence:Entity:UserProductivityProfile": "User Productivity Profile",
+    "PersonalProductivityIntelligence:Entity:PredictionInstance": "Prediction",
+    "PersonalProductivityIntelligence:Entity:RecommendationInstance": "Recommendation",
+    "PersonalProductivityIntelligence:Entity:PersonalAutomation": "Personal Automation",
+    "PersonalProductivityIntelligence:Entity:PerformanceSnapshot": "Performance Snapshot",
+    
+    "PersonalProductivityIntelligence:Status:Active": "Active",
+    "PersonalProductivityIntelligence:Status:Inactive": "Inactive",
+    "PersonalProductivityIntelligence:Status:Pending": "Pending",
+    "PersonalProductivityIntelligence:Status:Completed": "Completed",
+    "PersonalProductivityIntelligence:Status:Failed": "Failed",
+    
+    "PersonalProductivityIntelligence:CognitiveLoad:Low": "Low",
+    "PersonalProductivityIntelligence:CognitiveLoad:Medium": "Medium",
+    "PersonalProductivityIntelligence:CognitiveLoad:High": "High",
+    "PersonalProductivityIntelligence:CognitiveLoad:Critical": "Critical",
+    
+    "PersonalProductivityIntelligence:Prediction:Confidence:Low": "Low Confidence",
+    "PersonalProductivityIntelligence:Prediction:Confidence:Medium": "Medium Confidence",
+    "PersonalProductivityIntelligence:Prediction:Confidence:High": "High Confidence",
+    "PersonalProductivityIntelligence:Prediction:Confidence:VeryHigh": "Very High Confidence",
+    
+    "PersonalProductivityIntelligence:Recommendation:TaskScheduling": "Task Scheduling",
+    "PersonalProductivityIntelligence:Recommendation:TaskPrioritization": "Task Prioritization",
+    "PersonalProductivityIntelligence:Recommendation:WorkloadOptimization": "Workload Optimization",
+    "PersonalProductivityIntelligence:Recommendation:BreakScheduling": "Break Scheduling",
+    "PersonalProductivityIntelligence:Recommendation:FocusImprovement": "Focus Improvement",
+    "PersonalProductivityIntelligence:Recommendation:Motivational": "Motivational",
+    "PersonalProductivityIntelligence:Recommendation:AutomationOpportunity": "Automation Opportunity",
+    
+    "PersonalProductivityIntelligence:Validation:Required": "{0} is required.",
+    "PersonalProductivityIntelligence:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "PersonalProductivityIntelligence:Validation:InvalidValue": "Invalid value for {0}.",
+    "PersonalProductivityIntelligence:Validation:InvalidTimeEstimate": "Invalid time estimate format.",
+    "PersonalProductivityIntelligence:Validation:InvalidRiskProbability": "Risk probability must be between 0 and 1.",
+    
+    "PersonalProductivityIntelligence:Permission:UserProductivityProfile": "User Productivity Profile Management",
+    "PersonalProductivityIntelligence:Permission:PredictionManagement": "Prediction Management",
+    "PersonalProductivityIntelligence:Permission:RecommendationManagement": "Recommendation Management",
+    "PersonalProductivityIntelligence:Permission:AutomationManagement": "Automation Management",
+    "PersonalProductivityIntelligence:Permission:PerformanceTracking": "Performance Tracking",
+    
+    "PersonalProductivityIntelligence:Notification:WorkPatternDetected": "New work pattern detected.",
+    "PersonalProductivityIntelligence:Notification:CognitiveLoadHigh": "Your cognitive load is currently high. Consider taking a break.",
+    "PersonalProductivityIntelligence:Notification:RecommendationAvailable": "New recommendation available: {title}",
+    "PersonalProductivityIntelligence:Notification:AutomationTriggered": "Automation '{name}' was triggered.",
+    "PersonalProductivityIntelligence:Notification:PerformanceReportAvailable": "Your performance report is available."
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "NouAssist.IntelligenceStrategy.Domain": {
+      "path": "src/NouAssist.IntelligenceStrategy.Domain/NouAssist.IntelligenceStrategy.Domain.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.IntelligenceStrategy.Application.Contracts": {
+      "path": "src/NouAssist.IntelligenceStrategy.Application.Contracts/NouAssist.IntelligenceStrategy.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.IntelligenceStrategy.Application": {
+      "path": "src/NouAssist.IntelligenceStrategy.Application/NouAssist.IntelligenceStrategy.Application.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.IntelligenceStrategy.EntityFrameworkCore": {
+      "path": "src/NouAssist.IntelligenceStrategy.EntityFrameworkCore/NouAssist.IntelligenceStrategy.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.IntelligenceStrategy.HttpApi": {
+      "path": "src/NouAssist.IntelligenceStrategy.HttpApi/NouAssist.IntelligenceStrategy.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.IntelligenceStrategy.HttpApi.Client": {
+      "path": "src/NouAssist.IntelligenceStrategy.HttpApi.Client/NouAssist.IntelligenceStrategy.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.IntelligenceStrategy.TestBase": {
+      "path": "test/NouAssist.IntelligenceStrategy.TestBase/NouAssist.IntelligenceStrategy.TestBase.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.IntelligenceStrategy.EntityFrameworkCore.Tests": {
+      "path": "test/NouAssist.IntelligenceStrategy.EntityFrameworkCore.Tests/NouAssist.IntelligenceStrategy.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.IntelligenceStrategy.Domain.Tests": {
+      "path": "test/NouAssist.IntelligenceStrategy.Domain.Tests/NouAssist.IntelligenceStrategy.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.IntelligenceStrategy.Application.Tests": {
+      "path": "test/NouAssist.IntelligenceStrategy.Application.Tests/NouAssist.IntelligenceStrategy.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "NouAssist.IntelligenceStrategy.Domain.Shared": {
+      "path": "src/NouAssist.IntelligenceStrategy.Domain.Shared/NouAssist.IntelligenceStrategy.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "NouAssist.IntelligenceStrategy.Installer": {
+       "path": "src/NouAssist.IntelligenceStrategy.Installer/NouAssist.IntelligenceStrategy.Installer.abppkg",
+       "folder": "src"
+    }
+  }
+}

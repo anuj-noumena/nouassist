@@ -1,0 +1,90 @@
+{
+  "culture": "en",
+  "texts": {
+    "AnalyticsReporting:ErrorMessage:EntityNotFound": "The requested {0} was not found.",
+    "AnalyticsReporting:ErrorMessage:DuplicateName": "A {0} with the name '{1}' already exists.",
+    "AnalyticsReporting:ErrorMessage:InvalidDataSourceConfiguration": "Invalid data source configuration: {0}",
+    "AnalyticsReporting:ErrorMessage:InvalidKpiConfiguration": "Invalid KPI configuration: {0}",
+    "AnalyticsReporting:ErrorMessage:InvalidWidgetConfiguration": "Invalid widget configuration: {0}",
+    "AnalyticsReporting:ErrorMessage:InvalidReportConfiguration": "Invalid report configuration: {0}",
+    "AnalyticsReporting:ErrorMessage:InvalidDashboardConfiguration": "Invalid dashboard configuration: {0}",
+    "AnalyticsReporting:ErrorMessage:DataConnectionFailed": "Failed to connect to data source: {0}",
+    "AnalyticsReporting:ErrorMessage:ValidationFailed": "Validation failed for {0}.",
+    
+    "AnalyticsReporting:Entity:Dashboard": "Dashboard",
+    "AnalyticsReporting:Entity:Widget": "Widget",
+    "AnalyticsReporting:Entity:Report": "Report",
+    "AnalyticsReporting:Entity:KPI": "KPI",
+    "AnalyticsReporting:Entity:DataSource": "Data Source",
+    
+    "AnalyticsReporting:WidgetType:Chart": "Chart",
+    "AnalyticsReporting:WidgetType:Table": "Table",
+    "AnalyticsReporting:WidgetType:Metric": "Metric",
+    "AnalyticsReporting:WidgetType:List": "List",
+    "AnalyticsReporting:WidgetType:Text": "Text",
+    "AnalyticsReporting:WidgetType:Timeline": "Timeline",
+    "AnalyticsReporting:WidgetType:Heatmap": "Heatmap",
+    "AnalyticsReporting:WidgetType:StatusCard": "Status Card",
+    "AnalyticsReporting:WidgetType:KpiIndicator": "KPI Indicator",
+    "AnalyticsReporting:WidgetType:CustomWidget": "Custom Widget",
+    
+    "AnalyticsReporting:ChartType:Line": "Line Chart",
+    "AnalyticsReporting:ChartType:Bar": "Bar Chart",
+    "AnalyticsReporting:ChartType:Pie": "Pie Chart",
+    "AnalyticsReporting:ChartType:Area": "Area Chart",
+    "AnalyticsReporting:ChartType:Scatter": "Scatter Plot",
+    "AnalyticsReporting:ChartType:Bubble": "Bubble Chart",
+    "AnalyticsReporting:ChartType:Radar": "Radar Chart",
+    "AnalyticsReporting:ChartType:Polar": "Polar Chart",
+    "AnalyticsReporting:ChartType:Funnel": "Funnel Chart",
+    "AnalyticsReporting:ChartType:Gauge": "Gauge Chart",
+    
+    "AnalyticsReporting:ReportFormat:PDF": "PDF",
+    "AnalyticsReporting:ReportFormat:CSV": "CSV",
+    "AnalyticsReporting:ReportFormat:Excel": "Excel",
+    "AnalyticsReporting:ReportFormat:JSON": "JSON",
+    "AnalyticsReporting:ReportFormat:HTML": "HTML",
+    
+    "AnalyticsReporting:KpiStatus:Ok": "OK",
+    "AnalyticsReporting:KpiStatus:Warning": "Warning",
+    "AnalyticsReporting:KpiStatus:Critical": "Critical",
+    "AnalyticsReporting:KpiStatus:Unknown": "Unknown",
+    "AnalyticsReporting:KpiStatus:NotAvailable": "Not Available",
+    
+    "AnalyticsReporting:DataSourceType:EventStream": "Event Stream",
+    "AnalyticsReporting:DataSourceType:DatabaseView": "Database View",
+    "AnalyticsReporting:DataSourceType:API": "API",
+    "AnalyticsReporting:DataSourceType:FileImport": "File Import",
+    "AnalyticsReporting:DataSourceType:AggregatedDataView": "Aggregated Data View",
+    "AnalyticsReporting:DataSourceType:CustomDataSource": "Custom Data Source",
+    
+    "AnalyticsReporting:Validation:Required": "{0} is required.",
+    "AnalyticsReporting:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "AnalyticsReporting:Validation:InvalidValue": "Invalid value for {0}.",
+    
+    "AnalyticsReporting:Permission:Dashboard": "Dashboard Management",
+    "AnalyticsReporting:Permission:Dashboard.Create": "Create Dashboards",
+    "AnalyticsReporting:Permission:Dashboard.Edit": "Edit Dashboards",
+    "AnalyticsReporting:Permission:Dashboard.Delete": "Delete Dashboards",
+    
+    "AnalyticsReporting:Permission:Report": "Report Management",
+    "AnalyticsReporting:Permission:Report.Create": "Create Reports",
+    "AnalyticsReporting:Permission:Report.Edit": "Edit Reports",
+    "AnalyticsReporting:Permission:Report.Delete": "Delete Reports",
+    
+    "AnalyticsReporting:Permission:KPI": "KPI Management",
+    "AnalyticsReporting:Permission:KPI.Create": "Create KPIs",
+    "AnalyticsReporting:Permission:KPI.Edit": "Edit KPIs",
+    "AnalyticsReporting:Permission:KPI.Delete": "Delete KPIs",
+    
+    "AnalyticsReporting:Permission:DataSource": "Data Source Management",
+    "AnalyticsReporting:Permission:DataSource.Create": "Create Data Sources",
+    "AnalyticsReporting:Permission:DataSource.Edit": "Edit Data Sources",
+    "AnalyticsReporting:Permission:DataSource.Delete": "Delete Data Sources",
+    
+    "AnalyticsReporting:Notification:EntityCreated": "{0} created successfully.",
+    "AnalyticsReporting:Notification:EntityUpdated": "{0} updated successfully.",
+    "AnalyticsReporting:Notification:EntityDeleted": "{0} deleted successfully.",
+    "AnalyticsReporting:Notification:KpiThresholdBreached": "KPI '{0}' has breached threshold: current value {1}, threshold {2}"
+  }
+}

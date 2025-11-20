@@ -10,7 +10,7 @@ namespace NouAssist.SharedKernel.Aggregates
     {
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string? Description { get; set; }
         public Guid? ParentId { get; set; }
         public List<string> StandardsToMaintain { get; private set; }
@@ -44,11 +44,11 @@ namespace NouAssist.SharedKernel.Aggregates
             Title = Check.NotNullOrWhiteSpace(title, nameof(title), maxLength: 255);
         }
 
-        public void SetParent(Guid parentId)
+        public void AssignParent(Guid parentId)
         {
             if (parentId == Id)
             {
-                throw new BusinessException("Core:CannotSetSelfAsParent", 
+                throw new BusinessException("Core:CannotSetSelfAsParent",
                     "An area cannot be its own parent.");
             }
             ParentId = parentId;
@@ -86,7 +86,7 @@ namespace NouAssist.SharedKernel.Aggregates
             ArchivedAt = DateTime.UtcNow;
         }
 
-        public void Unarchive()
+        public void Reactivate()
         {
             IsActive = true;
             ArchivedAt = null;

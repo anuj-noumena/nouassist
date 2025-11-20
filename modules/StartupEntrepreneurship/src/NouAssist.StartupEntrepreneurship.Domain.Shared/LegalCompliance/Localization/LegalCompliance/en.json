@@ -1,0 +1,73 @@
+{
+  "culture": "en",
+  "texts": {
+    "LegalCompliance:ErrorMessage:EntityNotFound": "The requested {0} was not found.",
+    "LegalCompliance:ErrorMessage:DuplicateIPAsset": "An intellectual property asset with identifier '{0}' of type '{1}' already exists.",
+    "LegalCompliance:ErrorMessage:InvalidAgreementState": "Cannot perform this operation. The agreement is in '{0}' state, but must be in '{1}' state.",
+    "LegalCompliance:ErrorMessage:ComplianceDeadlineExpired": "The compliance deadline has already expired on {0}.",
+    "LegalCompliance:ErrorMessage:ValidationFailed": "Validation failed for {0}.",
+    
+    "LegalCompliance:Entity:IntellectualProperty": "Intellectual Property Asset",
+    "LegalCompliance:Entity:LegalAgreement": "Legal Agreement",
+    "LegalCompliance:Entity:ComplianceObligation": "Compliance Obligation",
+    "LegalCompliance:Entity:CorporateRecord": "Corporate Record",
+    
+    "LegalCompliance:IPType:Patent": "Patent",
+    "LegalCompliance:IPType:Trademark": "Trademark",
+    "LegalCompliance:IPType:Copyright": "Copyright",
+    "LegalCompliance:IPType:TradeSecret": "Trade Secret",
+    "LegalCompliance:IPType:IndustrialDesign": "Industrial Design",
+    "LegalCompliance:IPType:SoftwareCode": "Software Code",
+    "LegalCompliance:IPType:Database": "Database",
+    "LegalCompliance:IPType:Other": "Other",
+    
+    "LegalCompliance:AgreementType:Contract": "Contract",
+    "LegalCompliance:AgreementType:NDA": "Non-Disclosure Agreement",
+    "LegalCompliance:AgreementType:EmploymentAgreement": "Employment Agreement",
+    "LegalCompliance:AgreementType:ServiceAgreement": "Service Agreement",
+    "LegalCompliance:AgreementType:License": "License Agreement",
+    "LegalCompliance:AgreementType:EULA": "End-User License Agreement",
+    "LegalCompliance:AgreementType:TermsOfService": "Terms of Service",
+    "LegalCompliance:AgreementType:PrivacyPolicy": "Privacy Policy",
+    "LegalCompliance:AgreementType:SLA": "Service Level Agreement",
+    "LegalCompliance:AgreementType:Other": "Other Agreement",
+    
+    "LegalCompliance:ComplianceStatus:NotStarted": "Not Started",
+    "LegalCompliance:ComplianceStatus:InProgress": "In Progress",
+    "LegalCompliance:ComplianceStatus:Completed": "Completed",
+    "LegalCompliance:ComplianceStatus:Overdue": "Overdue",
+    "LegalCompliance:ComplianceStatus:NotApplicable": "Not Applicable",
+    "LegalCompliance:ComplianceStatus:Waived": "Waived",
+    
+    "LegalCompliance:RecordType:BoardMeetingMinutes": "Board Meeting Minutes",
+    "LegalCompliance:RecordType:ShareholderMeetingMinutes": "Shareholder Meeting Minutes",
+    "LegalCompliance:RecordType:BoardResolution": "Board Resolution",
+    "LegalCompliance:RecordType:ShareholderResolution": "Shareholder Resolution",
+    "LegalCompliance:RecordType:CertificateOfIncorporation": "Certificate of Incorporation",
+    "LegalCompliance:RecordType:Bylaws": "Bylaws",
+    "LegalCompliance:RecordType:AnnualReport": "Annual Report",
+    "LegalCompliance:RecordType:StockCertificate": "Stock Certificate",
+    "LegalCompliance:RecordType:EquityIssuance": "Equity Issuance",
+    "LegalCompliance:RecordType:Other": "Other Record",
+    
+    "LegalCompliance:FilingStatus:Draft": "Draft",
+    "LegalCompliance:FilingStatus:Filed": "Filed",
+    "LegalCompliance:FilingStatus:Pending": "Pending",
+    "LegalCompliance:FilingStatus:Approved": "Approved",
+    "LegalCompliance:FilingStatus:Registered": "Registered",
+    "LegalCompliance:FilingStatus:Rejected": "Rejected",
+    "LegalCompliance:FilingStatus:Abandoned": "Abandoned",
+    "LegalCompliance:FilingStatus:Expired": "Expired",
+    "LegalCompliance:FilingStatus:Renewed": "Renewed",
+    
+    "LegalCompliance:Validation:Required": "{0} is required.",
+    "LegalCompliance:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "LegalCompliance:Validation:InvalidValue": "Invalid value for {0}.",
+    "LegalCompliance:Validation:DateRange": "{0} must be after {1}.",
+    
+    "LegalCompliance:Notification:ReminderTitle": "Reminder: {0}",
+    "LegalCompliance:Notification:DeadlineApproaching": "Deadline approaching for: {0}",
+    "LegalCompliance:Notification:AgreementExpiring": "Agreement expiring soon: {0}",
+    "LegalCompliance:Notification:IPRenewalDue": "Intellectual property renewal due: {0}"
+  }
+}

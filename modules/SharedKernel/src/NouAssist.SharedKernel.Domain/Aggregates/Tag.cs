@@ -9,7 +9,7 @@ namespace NouAssist.SharedKernel.Aggregates
     {
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string? Color { get; set; }
         public Guid? CategoryId { get; set; }
         public int UsageCount { get; private set; }
@@ -54,7 +54,7 @@ namespace NouAssist.SharedKernel.Aggregates
     {
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public string Name { get; private set; }
+        public string Name { get; internal set; }
         public string? Color { get; set; }
 
         protected TagCategory() { }

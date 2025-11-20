@@ -11,8 +11,8 @@ namespace NouAssist.SharedKernel.EntityFrameworkCore.Configurations
         {
             builder.ConfigureByConvention();
 
-            builder.ToTable(CoreDbProperties.DbTablePrefix + "Tags",
-                            CoreDbProperties.DbSchema);
+            builder.ToTable(SharedKernelDbProperties.DbTablePrefix + "Tags",
+                SharedKernelDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

@@ -1,0 +1,30 @@
+{
+  "culture": "en",
+  "texts": {
+    "DecisionSupport:ErrorMessage:InitiativeNotFound": "Strategic initiative with ID {initiativeId} was not found.",
+    "DecisionSupport:ErrorMessage:InvalidStatusTransition": "Cannot transition initiative from {currentStatus} to {targetStatus}.",
+    "DecisionSupport:ErrorMessage:DuplicateName": "A strategic initiative with the name '{name}' already exists.",
+    "DecisionSupport:ErrorMessage:MissingRationale": "Strategic initiative requires a rationale.",
+    "DecisionSupport:ErrorMessage:MissingExpectedOutcomes": "Strategic initiative requires expected outcomes.",
+    "DecisionSupport:ErrorMessage:RejectionReasonRequired": "A reason is required when rejecting an initiative.",
+    "DecisionSupport:ErrorMessage:AlreadyApproved": "Initiative has already been approved.",
+    "DecisionSupport:ErrorMessage:AlreadyRejected": "Initiative has already been rejected.",
+    
+    "DecisionSupport:Entity:StrategicInitiative": "Strategic Initiative",
+    "DecisionSupport:Entity:DecisionModel": "Decision Model",
+    "DecisionSupport:Entity:ScenarioAnalysis": "Scenario Analysis",
+    
+    "DecisionSupport:Status:Proposed": "Proposed",
+    "DecisionSupport:Status:Approved": "Approved",
+    "DecisionSupport:Status:Rejected": "Rejected",
+    
+    "DecisionSupport:Alignment:NotEvaluated": "Not Evaluated",
+    "DecisionSupport:Alignment:Low": "Low",
+    "DecisionSupport:Alignment:Medium": "Medium",
+    "DecisionSupport:Alignment:High": "High",
+    
+    "DecisionSupport:Notification:InitiativeProposed": "Strategic initiative '{title}' has been proposed.",
+    "DecisionSupport:Notification:InitiativeApproved": "Strategic initiative '{title}' has been approved.",
+    "DecisionSupport:Notification:InitiativeRejected": "Strategic initiative '{title}' has been rejected."
+  }
+}

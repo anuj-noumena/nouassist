@@ -1,0 +1,28 @@
+// Add these entries to the existing en.json file
+{
+  "culture": "en",
+  "texts": {
+    // ... existing entries ...
+    
+    "Settings:MaxAlternativesPerDecisionModel": "Maximum Alternatives Per Decision Model",
+    "Settings:MaxAlternativesPerDecisionModelDescription": "The maximum number of alternatives that can be added to a single decision model.",
+    
+    "Settings:MaxCriteriaPerDecisionModel": "Maximum Criteria Per Decision Model",
+    "Settings:MaxCriteriaPerDecisionModelDescription": "The maximum number of criteria that can be added to a single decision model.",
+    
+    "Settings:MaxScenarioModelsPerAnalysis": "Maximum Scenario Models Per Analysis",
+    "Settings:MaxScenarioModelsPerAnalysisDescription": "The maximum number of scenario models that can be created in a single scenario analysis.",
+    
+    "Settings:RequireRationaleForScores": "Require Rationale For Scores",
+    "Settings:RequireRationaleForScoresDescription": "Whether users must provide a rationale when scoring alternatives against criteria.",
+    
+    "Settings:AutoNormalizeWeights": "Automatically Normalize Weights",
+    "Settings:AutoNormalizeWeightsDescription": "Automatically adjust criterion weights to ensure they sum to 1.",
+    
+    "Settings:EnabledFeatures.ScenarioAnalysis": "Enable Scenario Analysis",
+    "Settings:EnabledFeatures.ScenarioAnalysisDescription": "Enable or disable the Scenario Analysis feature.",
+    
+    "Settings:EnabledFeatures.StrategicInitiatives": "Enable Strategic Initiatives",
+    "Settings:EnabledFeatures.StrategicInitiativesDescription": "Enable or disable the Strategic Initiatives feature."
+  }
+}

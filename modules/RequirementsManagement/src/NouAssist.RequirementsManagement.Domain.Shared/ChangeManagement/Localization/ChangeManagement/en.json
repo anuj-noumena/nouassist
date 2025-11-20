@@ -1,0 +1,61 @@
+{
+  "culture": "en",
+  "texts": {
+    "ChangeManagement:ErrorMessage:ChangeRequestNotFound": "The change request was not found.",
+    "ChangeManagement:ErrorMessage:InvalidStatusTransition": "Cannot transition from {currentStatus} to {targetStatus}.",
+    "ChangeManagement:ErrorMessage:DuplicateRequestIdentifier": "A change request with identifier '{requestIdentifier}' already exists.",
+    "ChangeManagement:ErrorMessage:UnauthorizedApproval": "User is not authorized to approve this change request.",
+    "ChangeManagement:ErrorMessage:InvalidOperation": "Cannot perform this operation in the current state.",
+    "ChangeManagement:ErrorMessage:ValidationFailed": "Validation failed for {entity}.",
+    "ChangeManagement:ErrorMessage:MissingRequiredApprover": "Required approver role '{role}' is missing.",
+    "ChangeManagement:ErrorMessage:ApprovalStepNotFound": "Approval step was not found.",
+    "ChangeManagement:ErrorMessage:CannotModifyCompletedRequest": "Cannot modify a completed change request.",
+
+    "ChangeManagement:Entity:ChangeRequest": "Change Request",
+    "ChangeManagement:Entity:ApprovalStep": "Approval Step",
+    "ChangeManagement:Entity:ChangeRationale": "Change Rationale",
+    "ChangeManagement:Entity:ImpactStatement": "Impact Statement",
+
+    "ChangeManagement:Status:Submitted": "Submitted",
+    "ChangeManagement:Status:UnderReview": "Under Review",
+    "ChangeManagement:Status:ImpactAssessment": "Impact Assessment",
+    "ChangeManagement:Status:PendingApproval": "Pending Approval",
+    "ChangeManagement:Status:Approved": "Approved",
+    "ChangeManagement:Status:Rejected": "Rejected",
+    "ChangeManagement:Status:InProgress": "In Progress",
+    "ChangeManagement:Status:Completed": "Completed",
+    "ChangeManagement:Status:Cancelled": "Cancelled",
+
+    "ChangeManagement:Decision:Pending": "Pending",
+    "ChangeManagement:Decision:Approved": "Approved",
+    "ChangeManagement:Decision:Rejected": "Rejected",
+    "ChangeManagement:Decision:RequestMoreInfo": "Request More Info",
+
+    "ChangeManagement:ImpactType:Cost": "Cost",
+    "ChangeManagement:ImpactType:Time": "Time",
+    "ChangeManagement:ImpactType:Quality": "Quality",
+    "ChangeManagement:ImpactType:Scope": "Scope",
+    "ChangeManagement:ImpactType:Resources": "Resources",
+    "ChangeManagement:ImpactType:Risk": "Risk",
+
+    "ChangeManagement:Validation:Required": "{propertyName} is required.",
+    "ChangeManagement:Validation:StringLength": "{propertyName} must be between {min} and {max} characters.",
+    "ChangeManagement:Validation:InvalidValue": "Invalid value for {propertyName}.",
+    "ChangeManagement:Validation:InvalidStatus": "Invalid status: {status}.",
+    "ChangeManagement:Validation:InvalidDecision": "Invalid decision: {decision}.",
+
+    "ChangeManagement:Permission:ChangeRequest": "Change Request Management",
+    "ChangeManagement:Permission:ChangeRequest.Create": "Create Change Requests",
+    "ChangeManagement:Permission:ChangeRequest.Edit": "Edit Change Requests",
+    "ChangeManagement:Permission:ChangeRequest.Delete": "Delete Change Requests",
+    "ChangeManagement:Permission:ChangeRequest.Approve": "Approve Change Requests",
+    "ChangeManagement:Permission:ChangeRequest.Reject": "Reject Change Requests",
+    "ChangeManagement:Permission:ChangeRequest.ViewAll": "View All Change Requests",
+
+    "ChangeManagement:Notification:ChangeRequestCreated": "Change request '{requestIdentifier}' created successfully.",
+    "ChangeManagement:Notification:ChangeRequestUpdated": "Change request '{requestIdentifier}' updated successfully.",
+    "ChangeManagement:Notification:ChangeRequestApproved": "Change request '{requestIdentifier}' approved.",
+    "ChangeManagement:Notification:ChangeRequestRejected": "Change request '{requestIdentifier}' rejected.",
+    "ChangeManagement:Notification:StatusChanged": "Change request status changed to {status}."
+  }
+}

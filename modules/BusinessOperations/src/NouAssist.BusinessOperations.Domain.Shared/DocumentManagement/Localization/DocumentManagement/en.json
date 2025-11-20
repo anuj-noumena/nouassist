@@ -1,0 +1,47 @@
+{
+  "culture": "en",
+  "texts": {
+    "DocumentManagement": "Document Management",
+    
+    "DocumentManagement:Entity:Document": "Document",
+    "DocumentManagement:Entity:DocumentVersion": "Document Version",
+    
+    "DocumentManagement:ErrorMessage:DocumentNotFound": "The requested document was not found.",
+    "DocumentManagement:ErrorMessage:DocumentVersionNotFound": "The requested document version was not found.",
+    "DocumentManagement:ErrorMessage:AccessDenied": "You don't have the required permissions to perform this operation.",
+    "DocumentManagement:ErrorMessage:InvalidOperation": "Cannot perform the operation '{operation}' on document. Reason: {reason}",
+    "DocumentManagement:ErrorMessage:DuplicateName": "A document with the same name already exists in this location.",
+    "DocumentManagement:ErrorMessage:FileTooLarge": "The file size exceeds the maximum allowed limit of {maxSize} bytes.",
+    "DocumentManagement:ErrorMessage:InvalidMimeType": "The file type '{mimeType}' is not allowed.",
+    
+    "DocumentManagement:Status:Draft": "Draft",
+    "DocumentManagement:Status:Active": "Active",
+    "DocumentManagement:Status:Archived": "Archived",
+    "DocumentManagement:Status:MarkedForDeletion": "Marked for Deletion",
+    "DocumentManagement:Status:Deleted": "Deleted",
+    
+    "DocumentManagement:Permission:View": "View",
+    "DocumentManagement:Permission:Download": "Download",
+    "DocumentManagement:Permission:Edit": "Edit",
+    "DocumentManagement:Permission:ManageAccess": "Manage Access",
+    "DocumentManagement:Permission:Owner": "Owner",
+    
+    "DocumentManagement:Validation:Required": "{0} is required.",
+    "DocumentManagement:Validation:StringLength": "{0} must be between {1} and {2} characters.",
+    "DocumentManagement:Validation:InvalidValue": "Invalid value for {0}.",
+    
+    "DocumentManagement:Permission:DocumentManagement": "Document Management",
+    "DocumentManagement:Permission:Documents": "Documents",
+    "DocumentManagement:Permission:Documents.Create": "Create Documents",
+    "DocumentManagement:Permission:Documents.Edit": "Edit Documents",
+    "DocumentManagement:Permission:Documents.Delete": "Delete Documents",
+    "DocumentManagement:Permission:Documents.ManageAccess": "Manage Document Access",
+    
+    "DocumentManagement:Notification:DocumentCreated": "Document '{0}' created successfully.",
+    "DocumentManagement:Notification:DocumentUpdated": "Document '{0}' updated successfully.",
+    "DocumentManagement:Notification:DocumentDeleted": "Document '{0}' deleted successfully.",
+    "DocumentManagement:Notification:VersionAdded": "New version added to document '{0}'.",
+    "DocumentManagement:Notification:AccessGranted": "Access granted to document '{0}'.",
+    "DocumentManagement:Notification:AccessRevoked": "Access revoked from document '{0}'."
+  }
+}

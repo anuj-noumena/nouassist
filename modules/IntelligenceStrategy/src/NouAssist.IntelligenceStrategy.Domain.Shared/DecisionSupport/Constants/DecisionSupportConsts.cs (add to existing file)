@@ -1,0 +1,9 @@
+namespace NouAssist.DecisionSupport.Constants
+{
+    public static partial class DecisionSupportConsts
+    {
+        // DB schema and table prefix
+        public const string DbTablePrefix = "DecisionSupport";
+        public const string DbSchema = null; // Use default schema
+    }
+}

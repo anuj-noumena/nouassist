@@ -169,9 +169,8 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.C
             builder.HasIndex(x => new { x.Status, x.Type })
                 .HasDatabaseName("IX_Documents_Status_Type");
 
-            // Full-text search on description (PostgreSQL)
+            // Full-text search on description
             builder.HasIndex(x => x.Description)
-                .HasMethod("gin")
                 .HasDatabaseName("IX_Documents_Description_FullText");
         }
     }

@@ -83,8 +83,26 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Aggregates
             var unreconciledLines = _lines.Where(l => !l.IsMatched);
             var total = unreconciledLines
                 .Aggregate(0m, (sum, line) => sum + line.Amount.Amount);
-            
+
             return new MonetaryValue(total, ClosingBalance.Currency);
+        }
+
+        public void Reconcile(Guid reconciledBy)
+        {
+            if (!_lines.Any())
+            {
+                throw new BusinessException("GL:NoLines",
+                    "Cannot reconcile statement with no lines");
+            }
+
+            var unmatchedLines = _lines.Where(l => !l.IsMatched).ToList();
+            if (unmatchedLines.Any())
+            {
+                throw new BusinessException("GL:HasUnmatchedLines",
+                    $"Cannot reconcile statement. {unmatchedLines.Count} lines are still unmatched");
+            }
+
+            Status = ReconciliationStatus.FullyReconciled;
         }
 
         private void UpdateReconciliationStatus()

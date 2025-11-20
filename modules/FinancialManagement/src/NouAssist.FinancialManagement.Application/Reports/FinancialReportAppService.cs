@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using NouAssist.FinancialManagement.AccountsPayable.Data;
+using NouAssist.FinancialManagement.AccountsReceivable.Data;
+using NouAssist.FinancialManagement.FinancialPlanning.Data;
 using NouAssist.FinancialManagement.GeneralLedger.Data;
 using NouAssist.FinancialManagement.GeneralLedger.Enums;
 using NouAssist.FinancialManagement.Permissions;
@@ -16,7 +19,6 @@ namespace NouAssist.FinancialManagement.Reports
     public class FinancialReportAppService : ApplicationService, IFinancialReportAppService
     {
         private readonly ILedgerAccountRepository _ledgerAccountRepository;
-        private readonly IJournalEntryRepository _journalEntryRepository;
         private readonly IInvoiceRepository _invoiceRepository;
         private readonly IBillRepository _billRepository;
         private readonly IBudgetRepository _budgetRepository;
@@ -24,14 +26,12 @@ namespace NouAssist.FinancialManagement.Reports
 
         public FinancialReportAppService(
             ILedgerAccountRepository ledgerAccountRepository,
-            IJournalEntryRepository journalEntryRepository,
             IInvoiceRepository invoiceRepository,
             IBillRepository billRepository,
             IBudgetRepository budgetRepository,
             IExpenseRepository expenseRepository)
         {
             _ledgerAccountRepository = ledgerAccountRepository;
-            _journalEntryRepository = journalEntryRepository;
             _invoiceRepository = invoiceRepository;
             _billRepository = billRepository;
             _budgetRepository = budgetRepository;
@@ -56,7 +56,7 @@ namespace NouAssist.FinancialManagement.Reports
             {
                 var lineItem = new BalanceSheetLineItem
                 {
-                    AccountNumber = account.AccountNumber,
+                    AccountNumber = account.AccountNumber.Number,
                     AccountName = account.Name,
                     Amount = account.CurrentBalance
                 };
@@ -117,7 +117,7 @@ namespace NouAssist.FinancialManagement.Reports
                 {
                     incomeStatement.Revenue.Add(new IncomeStatementLineItem
                     {
-                        AccountNumber = account.AccountNumber,
+                        AccountNumber = account.AccountNumber.Number,
                         AccountName = account.Name,
                         Amount = account.CurrentBalance
                     });
@@ -126,7 +126,7 @@ namespace NouAssist.FinancialManagement.Reports
                 {
                     incomeStatement.Expenses.Add(new IncomeStatementLineItem
                     {
-                        AccountNumber = account.AccountNumber,
+                        AccountNumber = account.AccountNumber.Number,
                         AccountName = account.Name,
                         Amount = account.CurrentBalance
                     });
@@ -198,7 +198,7 @@ namespace NouAssist.FinancialManagement.Reports
         public async Task<AgingReportDto> GetAccountsReceivableAgingAsync(GetReportInputDto input)
         {
             var reportDate = input.AsOfDate ?? DateTime.Today;
-            var overdueInvoices = await _invoiceRepository.GetOverdueInvoicesAsync();
+            var overdueInvoices = await _invoiceRepository.GetOverdueInvoicesAsync(CurrentTenant.Id);
 
             var report = new AgingReportDto
             {
@@ -229,7 +229,7 @@ namespace NouAssist.FinancialManagement.Reports
                         CustomerOrVendorName = "Customer", // Load from customer repository
                         DueDate = invoice.DueDate,
                         DaysOverdue = daysOverdue,
-                        Amount = invoice.Balance
+                        Amount = invoice.GetRemainingBalance()
                     });
                 }
             }
@@ -260,7 +260,7 @@ namespace NouAssist.FinancialManagement.Reports
         public async Task<AgingReportDto> GetAccountsPayableAgingAsync(GetReportInputDto input)
         {
             var reportDate = input.AsOfDate ?? DateTime.Today;
-            var overdueBills = await _billRepository.GetOverdueBillsAsync();
+            var overdueBills = await _billRepository.GetOverdueBillsAsync(CurrentTenant.Id);
 
             var report = new AgingReportDto
             {
@@ -291,7 +291,7 @@ namespace NouAssist.FinancialManagement.Reports
                         CustomerOrVendorName = "Vendor", // Load from vendor repository
                         DueDate = bill.DueDate,
                         DaysOverdue = daysOverdue,
-                        Amount = bill.Amount
+                        Amount = bill.TotalAmount
                     });
                 }
             }

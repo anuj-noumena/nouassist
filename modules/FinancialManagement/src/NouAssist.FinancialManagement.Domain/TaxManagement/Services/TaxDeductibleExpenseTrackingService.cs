@@ -138,13 +138,24 @@ namespace NouAssist.FinancialManagement.TaxManagement.Services
         private string DetermineBusinessCategory(string categoryName)
         {
             if (categoryName.Contains("Travel", StringComparison.OrdinalIgnoreCase))
+            {
                 return "Travel Expenses";
+            }
+
             if (categoryName.Contains("Office", StringComparison.OrdinalIgnoreCase))
+            {
                 return "Office Expenses";
+            }
+
             if (categoryName.Contains("Supplies", StringComparison.OrdinalIgnoreCase))
+            {
                 return "Supplies";
+            }
+
             if (categoryName.Contains("Advertising", StringComparison.OrdinalIgnoreCase))
+            {
                 return "Advertising";
+            }
 
             return "Other Business Expenses";
         }

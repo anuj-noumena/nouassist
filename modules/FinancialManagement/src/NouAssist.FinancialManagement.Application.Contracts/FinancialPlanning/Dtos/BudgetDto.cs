@@ -45,6 +45,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Dtos
     public class CreateCategoryAllocationDto
     {
         public Guid CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public decimal BudgetedAmount { get; set; }
     }
 

@@ -232,7 +232,10 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
             var overdueBills = bills.Count(b => b.DueDate < Clock.Now && b.Status != AccountsPayable.Enums.BillStatus.Paid);
             var totalBills = bills.Count;
 
-            if (totalBills == 0) return 25;
+            if (totalBills == 0)
+            {
+                return 25;
+            }
 
             var overduePercent = (decimal)overdueBills / totalBills * 100;
 
@@ -252,7 +255,10 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
             var overdueInvoices = invoices.Count(i => i.DueDate < Clock.Now && i.Status != AccountsReceivable.Enums.InvoiceStatus.Paid);
             var totalInvoices = invoices.Count;
 
-            if (totalInvoices == 0) return 25;
+            if (totalInvoices == 0)
+            {
+                return 25;
+            }
 
             var overduePercent = (decimal)overdueInvoices / totalInvoices * 100;
 
@@ -269,10 +275,16 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
 
         private int CalculateBudgetScore(List<Budget> budgets, List<Expense> expenses)
         {
-            if (!budgets.Any()) return 25;
+            if (!budgets.Any())
+            {
+                return 25;
+            }
 
             var activeBudgets = budgets.Where(b => b.Status == FinancialPlanning.Enums.BudgetStatus.Active).ToList();
-            if (!activeBudgets.Any()) return 25;
+            if (!activeBudgets.Any())
+            {
+                return 25;
+            }
 
             var overBudgetCount = 0;
             foreach (var budget in activeBudgets)
@@ -282,7 +294,9 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
                     .Sum(e => e.Amount.Amount);
 
                 if (actualAmount > budget.TotalBudget.Amount)
+                {
                     overBudgetCount++;
+                }
             }
 
             var overBudgetPercent = (decimal)overBudgetCount / activeBudgets.Count * 100;

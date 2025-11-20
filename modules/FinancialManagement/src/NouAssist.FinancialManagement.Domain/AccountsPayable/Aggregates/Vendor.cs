@@ -18,6 +18,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public string PreferredPaymentMethod { get; private set; }
         public MonetaryValue CreditLimit { get; private set; }
         public bool IsActive { get; private set; }
+        public bool IsPreferred { get; private set; }
 
         protected Vendor() { }
 
@@ -37,6 +38,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
             PaymentTermsDays = paymentTermsDays;
             PreferredPaymentMethod = preferredPaymentMethod;
             IsActive = true;
+            IsPreferred = false;
             CreditLimit = MonetaryValue.Zero("USD");
         }
 
@@ -78,6 +80,16 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public void Activate()
         {
             IsActive = true;
+        }
+
+        public void MarkAsPreferred()
+        {
+            IsPreferred = true;
+        }
+
+        public void UnmarkAsPreferred()
+        {
+            IsPreferred = false;
         }
     }
 }

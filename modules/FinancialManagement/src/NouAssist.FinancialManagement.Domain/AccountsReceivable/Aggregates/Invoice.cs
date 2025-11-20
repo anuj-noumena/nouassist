@@ -109,14 +109,14 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
         {
             if (Status == InvoiceStatus.Cancelled)
             {
-                throw new BusinessException("AR:CannotPayCancelled", 
+                throw new BusinessException("AR:CannotPayCancelled",
                     "Cannot apply payment to cancelled invoice");
             }
 
             var remainingBalance = TotalAmount.Subtract(PaidAmount);
             if (paymentAmount.Amount > remainingBalance.Amount)
             {
-                throw new BusinessException("AR:PaymentExceedsBalance", 
+                throw new BusinessException("AR:PaymentExceedsBalance",
                     "Payment amount exceeds invoice balance");
             }
 
@@ -130,6 +130,23 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
             {
                 Status = InvoiceStatus.PartiallyPaid;
             }
+        }
+
+        public void MarkAsPaid(DateTime paymentDate)
+        {
+            if (Status == InvoiceStatus.Cancelled)
+            {
+                throw new BusinessException("AR:CannotPayCancelled",
+                    "Cannot mark cancelled invoice as paid");
+            }
+
+            if (Status == InvoiceStatus.Paid)
+            {
+                return; // Already paid
+            }
+
+            PaidAmount = TotalAmount;
+            Status = InvoiceStatus.Paid;
         }
 
         public void Cancel(string reason)

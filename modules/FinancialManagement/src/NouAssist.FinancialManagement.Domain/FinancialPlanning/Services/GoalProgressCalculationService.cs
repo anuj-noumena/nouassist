@@ -40,15 +40,21 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
         public DateTime? CalculateProjectedCompletionDate(FinancialGoal goal)
         {
             if (goal.CurrentAmount.Amount == 0)
+            {
                 return null;
+            }
 
             var totalDays = (Clock.Now - goal.CreationTime).Days;
             if (totalDays <= 0)
+            {
                 return null;
+            }
 
             var averageDailyContribution = goal.CurrentAmount.Amount / totalDays;
             if (averageDailyContribution <= 0)
+            {
                 return null;
+            }
 
             var remainingAmount = goal.TargetAmount.Amount - goal.CurrentAmount.Amount;
             var daysToCompletion = (int)Math.Ceiling(remainingAmount / averageDailyContribution);

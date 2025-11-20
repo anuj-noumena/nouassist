@@ -19,6 +19,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public ExpenseStatus Status { get; private set; }
         public Guid? ReceiptDocumentId { get; private set; }
         public Guid? ProjectId { get; private set; }
+        public Guid? ExpenseReportId { get; private set; }
         public bool IsReimbursable { get; private set; }
         public bool IsBillable { get; private set; }
 
@@ -97,17 +98,39 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         {
             if (Status != ExpenseStatus.Approved)
             {
-                throw new BusinessException("FPA:NotApproved", 
+                throw new BusinessException("FPA:NotApproved",
                     "Only approved expenses can be reimbursed");
             }
 
             if (!IsReimbursable)
             {
-                throw new BusinessException("FPA:NotReimbursable", 
+                throw new BusinessException("FPA:NotReimbursable",
                     "Expense is not marked as reimbursable");
             }
 
             Status = ExpenseStatus.Reimbursed;
+        }
+
+        public void AssignToReport(Guid expenseReportId)
+        {
+            if (Status != ExpenseStatus.Approved)
+            {
+                throw new BusinessException("FPA:NotApproved",
+                    "Only approved expenses can be assigned to a report");
+            }
+
+            if (ExpenseReportId.HasValue)
+            {
+                throw new BusinessException("FPA:AlreadyReported",
+                    "Expense is already assigned to a report");
+            }
+
+            ExpenseReportId = expenseReportId;
+        }
+
+        public void UnassignFromReport()
+        {
+            ExpenseReportId = null;
         }
 
         private void ValidateForSubmission()
@@ -115,7 +138,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             // Receipt required for expenses over $25
             if (Amount.Amount > 25 && ReceiptDocumentId == null)
             {
-                throw new BusinessException("FPA:ReceiptRequired", 
+                throw new BusinessException("FPA:ReceiptRequired",
                     "Receipt is required for expenses over $25");
             }
         }

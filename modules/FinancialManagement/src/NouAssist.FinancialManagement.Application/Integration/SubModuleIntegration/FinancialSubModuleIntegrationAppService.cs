@@ -77,7 +77,7 @@ namespace NouAssist.FinancialManagement.Integration.SubModuleIntegration
                 foreach (var allocation in budget.Allocations)
                 {
                     var variancePercent = allocation.BudgetedAmount.Amount > 0
-                        ? ((allocation.ActualSpent.Amount / allocation.BudgetedAmount.Amount) * 100) - 100
+                        ? ((allocation.ActualAmount.Amount / allocation.BudgetedAmount.Amount) * 100) - 100
                         : 0;
 
                     categories.Add(new BudgetCategorySummaryDto
@@ -85,9 +85,9 @@ namespace NouAssist.FinancialManagement.Integration.SubModuleIntegration
                         CategoryId = allocation.CategoryId,
                         CategoryName = allocation.CategoryName,
                         Budgeted = allocation.BudgetedAmount.Amount,
-                        Actual = allocation.ActualSpent.Amount,
+                        Actual = allocation.ActualAmount.Amount,
                         VariancePercent = variancePercent,
-                        IsOverBudget = allocation.ActualSpent.Amount > allocation.BudgetedAmount.Amount
+                        IsOverBudget = allocation.ActualAmount.Amount > allocation.BudgetedAmount.Amount
                     });
                 }
             }
@@ -146,11 +146,11 @@ namespace NouAssist.FinancialManagement.Integration.SubModuleIntegration
                 foreach (var allocation in budget.Allocations)
                 {
                     var variancePercent = allocation.BudgetedAmount.Amount > 0
-                        ? ((allocation.ActualSpent.Amount / allocation.BudgetedAmount.Amount) * 100) - 100
+                        ? ((allocation.ActualAmount.Amount / allocation.BudgetedAmount.Amount) * 100) - 100
                         : 0;
 
                     // Only include variances > 10% or over budget
-                    if (Math.Abs(variancePercent) > 10 || allocation.ActualSpent.Amount > allocation.BudgetedAmount.Amount)
+                    if (Math.Abs(variancePercent) > 10 || allocation.ActualAmount.Amount > allocation.BudgetedAmount.Amount)
                     {
                         alerts.Add(new BudgetVarianceAlertDto
                         {
@@ -159,9 +159,9 @@ namespace NouAssist.FinancialManagement.Integration.SubModuleIntegration
                             CategoryId = allocation.CategoryId,
                             CategoryName = allocation.CategoryName,
                             Budgeted = allocation.BudgetedAmount.Amount,
-                            Actual = allocation.ActualSpent.Amount,
+                            Actual = allocation.ActualAmount.Amount,
                             VariancePercent = variancePercent,
-                            IsOverBudget = allocation.ActualSpent.Amount > allocation.BudgetedAmount.Amount,
+                            IsOverBudget = allocation.ActualAmount.Amount > allocation.BudgetedAmount.Amount,
                             DetectedAt = DateTime.UtcNow,
                             Severity = variancePercent > 0 ? "Critical" : "Warning"
                         });
@@ -278,7 +278,7 @@ namespace NouAssist.FinancialManagement.Integration.SubModuleIntegration
 
             var overBudgetCategories = activeBudgets
                 .SelectMany(b => b.Allocations)
-                .Count(a => a.ActualSpent.Amount > a.BudgetedAmount.Amount);
+                .Count(a => a.ActualAmount.Amount > a.BudgetedAmount.Amount);
 
             var variancePercent = totalBudgeted > 0 ? ((totalActual / totalBudgeted) * 100) - 100 : 0;
 

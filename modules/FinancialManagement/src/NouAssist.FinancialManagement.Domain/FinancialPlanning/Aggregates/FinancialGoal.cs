@@ -18,6 +18,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public MonetaryValue CurrentAmount { get; private set; }
         public GoalStatus Status { get; private set; }
         public string Description { get; private set; }
+        public string Notes { get; private set; }
 
         protected FinancialGoal() { }
 
@@ -28,6 +29,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             string name,
             GoalType type,
             MonetaryValue targetAmount,
+            MonetaryValue? currentAmount,
             DateTime targetDate,
             string description = null) : base(id)
         {
@@ -36,7 +38,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             Name = Check.NotNullOrWhiteSpace(name, nameof(name));
             Type = type;
             TargetAmount = Check.NotNull(targetAmount, nameof(targetAmount));
-            
+            CurrentAmount = Check.NotNull(currentAmount, nameof(currentAmount));
             if (targetDate <= DateTime.UtcNow)
             {
                 throw new BusinessException("FPA:InvalidTargetDate",
@@ -72,6 +74,22 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public void Abandon(string reason)
         {
             Status = GoalStatus.Abandoned;
+        }
+
+        public void Complete()
+        {
+            if (Status == GoalStatus.Abandoned)
+            {
+                throw new BusinessException("FPA:GoalAbandoned",
+                    "Cannot complete an abandoned goal");
+            }
+
+            Status = GoalStatus.Achieved;
+        }
+
+        public void UpdateNotes(string notes)
+        {
+            Notes = notes;
         }
 
         public decimal GetProgressPercentage()

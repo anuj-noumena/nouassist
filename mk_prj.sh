@@ -57,4 +57,4 @@ create_sub_module() {
     cd "modules/$parent_name"
 }
 
-create_top_level_module "IntelligenceStrategy"
+create_top_level_module "Integrations"

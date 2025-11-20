@@ -27,7 +27,9 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Services
             foreach (var invoice in sortedInvoices)
             {
                 if (remainingAmount <= 0)
+                {
                     break;
+                }
 
                 var invoiceBalance = invoice.TotalAmount.Amount; // Simplified - should track remaining balance
                 var allocationAmount = Math.Min(remainingAmount, invoiceBalance);

@@ -79,6 +79,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
                 GuidGenerator.Create(),
                 CurrentTenant.Id,
                 CurrentUser.Id.Value,
+                input.BankName,
                 input.AccountName,
                 input.AccountNumber,
                 input.AccountType,

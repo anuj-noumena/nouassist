@@ -21,6 +21,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Dtos
     public class CreateLinkedBankAccountDto
     {
         public string BankName { get; set; }
+        public string AccountName { get; set; }
         public string AccountNumber { get; set; }
         public BankAccountType AccountType { get; set; }
         public string Currency { get; set; }

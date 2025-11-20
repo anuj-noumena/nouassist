@@ -18,6 +18,8 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Dtos
         public string Description { get; set; }
         public ExpenseStatus Status { get; set; }
         public Guid? ReceiptDocumentId { get; set; }
+        public Guid? ProjectId { get; set; }
+        public Guid? ExpenseReportId { get; set; }
         public bool IsReimbursable { get; set; }
         public bool IsBillable { get; set; }
     }

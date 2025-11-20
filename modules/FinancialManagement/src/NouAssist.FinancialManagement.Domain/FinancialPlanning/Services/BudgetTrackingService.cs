@@ -11,6 +11,7 @@ using NouAssist.FinancialManagement.Integration.Events;
 using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.EventBus.Distributed;
 using Volo.Abp.Uow;
 
 namespace NouAssist.FinancialManagement.FinancialPlanning.Services
@@ -19,13 +20,15 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
     {
         private readonly IBudgetRepository _budgetRepository;
         private readonly ILogger<BudgetTrackingService> _logger;
-
+        private readonly IDistributedEventBus _distributedEventBus;
         public BudgetTrackingService(
             IBudgetRepository budgetRepository,
-            ILogger<BudgetTrackingService> logger)
+            ILogger<BudgetTrackingService> logger,
+            IDistributedEventBus distributedEventBus)
         {
             _budgetRepository = budgetRepository;
             _logger = logger;
+            _distributedEventBus = distributedEventBus;
         }
 
         /// <summary>
@@ -83,7 +86,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                 if (allocation != null)
                 {
                     var categoryVariancePercent = allocation.BudgetedAmount.Amount > 0
-                        ? (allocation.ActualSpent.Amount / allocation.BudgetedAmount.Amount) * 100
+                        ? (allocation.ActualAmount.Amount / allocation.BudgetedAmount.Amount) * 100
                         : 0;
 
                     // Publish variance event if over threshold (>10% variance or exceeded budget)
@@ -99,10 +102,10 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                             CategoryId = categoryId,
                             CategoryName = allocation.CategoryName,
                             BudgetedAmount = allocation.BudgetedAmount,
-                            ActualSpent = allocation.ActualSpent,
+                            ActualSpent = allocation.ActualAmount,
                             Variance = new MonetaryValue(
-                                allocation.ActualSpent.Amount - allocation.BudgetedAmount.Amount,
-                                allocation.ActualSpent.Currency),
+                                allocation.ActualAmount.Amount - allocation.BudgetedAmount.Amount,
+                                allocation.ActualAmount.Currency),
                             VariancePercent = categoryVariancePercent - 100,
                             IsOverBudget = categoryVariancePercent > 100,
                             PeriodStart = budget.PeriodStart,
@@ -110,7 +113,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                             DetectedAt = Clock.Now
                         };
 
-                        budget.AddDistributedEvent(varianceEvent);
+                        _distributedEventBus.PublishAsync(varianceEvent);
 
                         _logger.LogWarning(
                             "Budget variance detected: Category {CategoryName} is at {VariancePercent}% ({IsOverBudget})",
@@ -166,7 +169,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                 return new BudgetCheckResult(true, null, "Category not in budget");
             }
 
-            var projectedSpent = allocation.ActualSpent.Add(plannedAmount);
+            var projectedSpent = allocation.ActualAmount.Add(plannedAmount);
             var wouldExceed = projectedSpent.Amount > allocation.BudgetedAmount.Amount;
             var projectedPercent = (projectedSpent.Amount / allocation.BudgetedAmount.Amount) * 100;
 

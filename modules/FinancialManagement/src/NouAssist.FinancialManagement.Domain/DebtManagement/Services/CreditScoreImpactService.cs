@@ -121,15 +121,24 @@ namespace NouAssist.FinancialManagement.DebtManagement.Services
             // Simplified model - real credit scoring is much more complex
             var utilizationDrop = currentUtilization - newUtilization;
 
-            if (utilizationDrop <= 0) return 0;
+            if (utilizationDrop <= 0)
+            {
+                return 0;
+            }
 
             // High utilization (>70%) → bigger impact
             if (currentUtilization > 70)
             {
                 if (newUtilization < 30)
+                {
                     return 40; // Major improvement
+                }
+
                 if (newUtilization < 50)
+                {
                     return 25;
+                }
+
                 return 15;
             }
 
@@ -137,9 +146,15 @@ namespace NouAssist.FinancialManagement.DebtManagement.Services
             if (currentUtilization > 30)
             {
                 if (newUtilization < 10)
+                {
                     return 25;
+                }
+
                 if (newUtilization < 30)
+                {
                     return 15;
+                }
+
                 return 10;
             }
 
@@ -149,23 +164,45 @@ namespace NouAssist.FinancialManagement.DebtManagement.Services
 
         private string DetermineImpactLevel(int scoreIncrease)
         {
-            if (scoreIncrease >= 40) return "Major";
-            if (scoreIncrease >= 20) return "Significant";
-            if (scoreIncrease >= 10) return "Moderate";
-            if (scoreIncrease > 0) return "Minor";
+            if (scoreIncrease >= 40)
+            {
+                return "Major";
+            }
+
+            if (scoreIncrease >= 20)
+            {
+                return "Significant";
+            }
+
+            if (scoreIncrease >= 10)
+            {
+                return "Moderate";
+            }
+
+            if (scoreIncrease > 0)
+            {
+                return "Minor";
+            }
+
             return "None";
         }
 
         private string GenerateRecommendation(decimal currentUtilization, string debtType)
         {
             if (currentUtilization > 70)
+            {
                 return $"URGENT: Pay down this {debtType} immediately. Utilization over 70% severely impacts your score.";
+            }
 
             if (currentUtilization > 50)
+            {
                 return $"HIGH PRIORITY: Reduce this {debtType} below 30% utilization for optimal credit score.";
+            }
 
             if (currentUtilization > 30)
+            {
                 return $"Paying off this {debtType} will improve your credit score. Target below 30% utilization.";
+            }
 
             return $"This {debtType} has healthy utilization. Maintain current payment schedule.";
         }
@@ -186,16 +223,24 @@ namespace NouAssist.FinancialManagement.DebtManagement.Services
         private string GenerateMilestoneMessage(string debtName, int scoreIncrease)
         {
             if (scoreIncrease >= 40)
+            {
                 return $"🎉 Amazing! Paying off {debtName} boosted your credit score by {scoreIncrease} points!";
+            }
 
             if (scoreIncrease >= 20)
+            {
                 return $"🎊 Great job! Your credit score increased by {scoreIncrease} points after paying off {debtName}!";
+            }
 
             if (scoreIncrease >= 10)
+            {
                 return $"✅ Nice work! Paying off {debtName} improved your score by {scoreIncrease} points.";
+            }
 
             if (scoreIncrease > 0)
+            {
                 return $"👍 {debtName} paid off! Your score improved by {scoreIncrease} points.";
+            }
 
             return $"✓ {debtName} paid off successfully!";
         }

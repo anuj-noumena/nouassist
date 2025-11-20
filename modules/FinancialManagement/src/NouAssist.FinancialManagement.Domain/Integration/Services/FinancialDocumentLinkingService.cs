@@ -187,17 +187,34 @@ namespace NouAssist.FinancialManagement.Integration.Services
             var lowerFileName = fileName.ToLower();
 
             if (lowerFileName.Contains("receipt"))
+            {
                 return "Receipt";
+            }
+
             if (lowerFileName.Contains("invoice"))
+            {
                 return "Invoice";
+            }
+
             if (lowerFileName.Contains("statement"))
+            {
                 return "Statement";
+            }
+
             if (lowerFileName.Contains("w-2") || lowerFileName.Contains("w2"))
+            {
                 return "TaxForm-W2";
+            }
+
             if (lowerFileName.Contains("1099"))
+            {
                 return "TaxForm-1099";
+            }
+
             if (extension == ".pdf" && lowerFileName.Contains("contract"))
+            {
                 return "Contract";
+            }
 
             return extension switch
             {

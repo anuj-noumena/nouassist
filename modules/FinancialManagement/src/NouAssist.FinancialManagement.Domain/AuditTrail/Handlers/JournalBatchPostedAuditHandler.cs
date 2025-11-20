@@ -40,15 +40,25 @@ namespace NouAssist.FinancialManagement.AuditTrail.Handlers
                 if (!string.IsNullOrEmpty(eventData.IdempotencyKey))
                 {
                     if (eventData.IdempotencyKey.Contains("BillPaid"))
+                    {
                         sourceType = "BillPayment";
+                    }
                     else if (eventData.IdempotencyKey.Contains("InvoiceSent"))
+                    {
                         sourceType = "InvoiceAccrual";
+                    }
                     else if (eventData.IdempotencyKey.Contains("InvoicePaid"))
+                    {
                         sourceType = "InvoicePayment";
+                    }
                     else if (eventData.IdempotencyKey.Contains("DebtPayment"))
+                    {
                         sourceType = "DebtPayment";
+                    }
                     else if (eventData.IdempotencyKey.Contains("Expense"))
+                    {
                         sourceType = "Expense";
+                    }
                 }
 
                 await _auditService.AuditJournalEntryAsync(

@@ -14,6 +14,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Dtos
         public decimal CurrentAmount { get; set; }
         public GoalStatus Status { get; set; }
         public string Description { get; set; }
+        public string Notes { get; set; }
         public string Currency { get; set; }
         public decimal ProgressPercentage { get; set; }
     }

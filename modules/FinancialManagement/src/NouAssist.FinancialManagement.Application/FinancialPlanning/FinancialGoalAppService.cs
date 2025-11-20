@@ -82,6 +82,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
                 input.Name,
                 input.Type,
                 new MonetaryValue(input.TargetAmount, input.Currency),
+                null,
                 input.TargetDate,
                 input.Description
             );
@@ -96,7 +97,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
         {
             var goal = await _goalRepository.GetAsync(input.GoalId);
             var amount = new MonetaryValue(input.Amount, goal.CurrentAmount.Currency);
-            goal.RecordProgress(amount);
+            goal.UpdateProgress(amount);
             await _goalRepository.UpdateAsync(goal, autoSave: true);
 
             return ObjectMapper.Map<FinancialGoal, FinancialGoalDto>(goal);

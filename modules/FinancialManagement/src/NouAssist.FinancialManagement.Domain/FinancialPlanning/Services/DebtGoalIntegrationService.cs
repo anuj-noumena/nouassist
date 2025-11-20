@@ -56,7 +56,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                 tenantId: tenantId,
                 userId: userId,
                 name: goalName,
-                type: GoalType.DebtPayoff,
+                type: GoalType.DebtReduction,
                 targetAmount: new MonetaryValue(totalDebtAmount, currency),
                 currentAmount: MonetaryValue.Zero(currency),
                 targetDate: targetPayoffDate,
@@ -90,7 +90,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
             var goals = await _goalRepository.GetListAsync();
             var linkedGoal = goals.Find(g =>
                 g.TenantId == tenantId &&
-                g.Type == GoalType.DebtPayoff &&
+                g.Type == GoalType.DebtReduction &&
                 g.Notes != null &&
                 g.Notes.Contains(payoffPlanId.ToString()));
 
@@ -114,7 +114,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
             _logger.LogInformation(
                 "Updated goal progress: {GoalName} - {Progress}%",
                 linkedGoal.Name,
-                linkedGoal.ProgressPercentage);
+                linkedGoal.GetProgressPercentage());
         }
     }
 }

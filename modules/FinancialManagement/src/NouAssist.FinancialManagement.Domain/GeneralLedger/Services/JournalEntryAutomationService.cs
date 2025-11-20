@@ -8,6 +8,7 @@ using NouAssist.FinancialManagement.Shared.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Uow;
+using Volo.Abp.Users;
 
 namespace NouAssist.FinancialManagement.GeneralLedger.Services
 {
@@ -20,15 +21,17 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Services
         private readonly IJournalEntryBatchRepository _journalEntryBatchRepository;
         private readonly ILedgerAccountRepository _ledgerAccountRepository;
         private readonly JournalEntryValidationService _validationService;
+        private readonly ICurrentUser _currentUser;
 
         public JournalEntryAutomationService(
             IJournalEntryBatchRepository journalEntryBatchRepository,
             ILedgerAccountRepository ledgerAccountRepository,
-            JournalEntryValidationService validationService)
+            JournalEntryValidationService validationService, ICurrentUser currentUser)
         {
             _journalEntryBatchRepository = journalEntryBatchRepository;
             _ledgerAccountRepository = ledgerAccountRepository;
             _validationService = validationService;
+            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -178,7 +181,7 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Services
                     $"Journal entry validation failed: {string.Join(", ", validation.Errors)}");
             }
 
-            batch.Post(CurrentUser.Id ?? Guid.Empty);
+            batch.Post(_currentUser.Id ?? Guid.Empty);
             await _journalEntryBatchRepository.InsertAsync(batch, autoSave: true);
 
             return batch;
@@ -250,7 +253,7 @@ namespace NouAssist.FinancialManagement.GeneralLedger.Services
                     $"Journal entry validation failed: {string.Join(", ", validation.Errors)}");
             }
 
-            batch.Post(CurrentUser.Id ?? Guid.Empty);
+            batch.Post(_currentUser.Id ?? Guid.Empty);
             await _journalEntryBatchRepository.InsertAsync(batch, autoSave: true);
 
             return batch;

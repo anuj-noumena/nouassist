@@ -48,7 +48,7 @@ namespace NouAssist.BusinessOperations.ResourceInventoryManagement.EntityFramewo
 <!-- src/NouAssist.BusinessOperations.ResourceInventoryManagement.Application.Contracts/NouAssist.BusinessOperations.ResourceInventoryManagement.Application.Contracts.csproj -->
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>NouAssist.BusinessOperations.ResourceInventoryManagement</RootNamespace>

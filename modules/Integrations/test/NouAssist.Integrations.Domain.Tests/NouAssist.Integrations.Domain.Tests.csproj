@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <RootNamespace>NouAssist.Integrations</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NouAssist.Integrations.Domain\NouAssist.Integrations.Domain.csproj" />
+    <ProjectReference Include="..\NouAssist.Integrations.TestBase\NouAssist.Integrations.TestBase.csproj" />
+  </ItemGroup>
+
+
+</Project>

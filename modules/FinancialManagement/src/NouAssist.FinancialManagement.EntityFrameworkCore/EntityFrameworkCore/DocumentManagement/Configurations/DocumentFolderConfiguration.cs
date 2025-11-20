@@ -39,12 +39,12 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.DocumentManagement.C
                 .HasColumnName(nameof(DocumentFolder.Level));
 
             // DocumentIds stored as JSON array
-            builder.Property("_documentIds")
+            builder.Property<System.Collections.Generic.List<System.Guid>>("_documentIds")
                 .HasColumnName("DocumentIds")
                 .HasColumnType("jsonb")
                 .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.List<System.Guid>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                    v => System.Text.Json.JsonSerializer.Serialize(v, default(System.Text.Json.JsonSerializerOptions)),
+                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.List<System.Guid>>(v, default(System.Text.Json.JsonSerializerOptions)) ?? new System.Collections.Generic.List<System.Guid>());
 
             // Indexes
             builder.HasIndex(x => x.ParentFolderId)

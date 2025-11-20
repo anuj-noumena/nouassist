@@ -24,13 +24,21 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Services
                 var amount = invoice.TotalAmount.Amount;
 
                 if (daysOutstanding <= 30)
+                {
                     agingBuckets.Current += amount;
+                }
                 else if (daysOutstanding <= 60)
+                {
                     agingBuckets.Days31To60 += amount;
+                }
                 else if (daysOutstanding <= 90)
+                {
                     agingBuckets.Days61To90 += amount;
+                }
                 else
+                {
                     agingBuckets.Over90Days += amount;
+                }
             }
 
             return new AgingReport(reportDate, agingBuckets, outstandingInvoices.Count);

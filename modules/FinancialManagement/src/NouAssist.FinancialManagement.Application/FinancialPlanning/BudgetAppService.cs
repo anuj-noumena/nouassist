@@ -84,6 +84,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
             {
                 var allocation = new CategoryAllocation(
                     allocationDto.CategoryId,
+                    allocationDto.CategoryName,
                     new MonetaryValue(allocationDto.BudgetedAmount, input.Currency)
                 );
                 budget.AddAllocation(allocation);

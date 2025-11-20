@@ -16,6 +16,10 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string ClosePeriods = Default + ".ClosePeriods";
             public const string ViewFinancialReports = Default + ".ViewFinancialReports";
             public const string ReconcileBankStatements = Default + ".ReconcileBankStatements";
+            public const string ViewStatements = Default + ".ViewStatements";
+            public const string CreateStatements = Default + ".CreateStatements";
+            public const string ImportStatements = Default + ".ImportStatements";
+            public const string ReconcileStatements = Default + ".ReconcileStatements";
         }
 
         public static class AccountsPayable
@@ -57,6 +61,13 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string CreateReports = Default + ".CreateReports";
             public const string SubmitReports = Default + ".SubmitReports";
             public const string ApproveReports = Default + ".ApproveReports";
+            public const string ViewGoals = Default + ".ViewGoals";
+            public const string CreateGoals = Default + ".CreateGoals";
+            public const string UpdateGoals = Default + ".UpdateGoals";
+            public const string CloseGoals = Default + ".CloseGoals";
+            public const string ViewAccounts = Default + ".ViewAccounts";
+            public const string CreateAccounts = Default + ".CreateAccounts";
+            public const string UpdateAccounts = Default + ".UpdateAccounts";
         }
     }
 }

@@ -82,7 +82,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                 "Net worth goal updated: Current {Current} / Target {Target} ({Progress}%)",
                 netWorthGoal.CurrentAmount.Amount,
                 netWorthGoal.TargetAmount.Amount,
-                netWorthGoal.ProgressPercentage);
+                netWorthGoal.GetProgressPercentage());
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
             _logger.LogInformation(
                 "Retirement goal updated from portfolio {PortfolioName}: {Progress}%",
                 portfolioName,
-                retirementGoal.ProgressPercentage);
+                retirementGoal.GetProgressPercentage());
         }
 
         /// <summary>

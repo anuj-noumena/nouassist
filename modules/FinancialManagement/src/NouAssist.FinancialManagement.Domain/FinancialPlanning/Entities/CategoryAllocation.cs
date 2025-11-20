@@ -9,21 +9,24 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Entities
     {
         public Guid BudgetId { get; private set; }
         public Guid CategoryId { get; private set; }
+        public string CategoryName { get; private set; }
         public MonetaryValue BudgetedAmount { get; private set; }
         public MonetaryValue ActualAmount { get; private set; }
         public MonetaryValue Variance => BudgetedAmount.Subtract(ActualAmount);
-        public decimal PercentageUsed => 
-            BudgetedAmount.Amount > 0 
-                ? (ActualAmount.Amount / BudgetedAmount.Amount) * 100 
+        public decimal PercentageUsed =>
+            BudgetedAmount.Amount > 0
+                ? (ActualAmount.Amount / BudgetedAmount.Amount) * 100
                 : 0;
 
         protected CategoryAllocation() { }
 
         public CategoryAllocation(
             Guid categoryId,
+            string categoryName,
             MonetaryValue budgetedAmount)
         {
             CategoryId = categoryId;
+            CategoryName = Check.NotNullOrWhiteSpace(categoryName, nameof(categoryName));
             BudgetedAmount = Check.NotNull(budgetedAmount, nameof(budgetedAmount));
             ActualAmount = MonetaryValue.Zero(budgetedAmount.Currency);
         }

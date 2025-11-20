@@ -144,7 +144,9 @@ namespace NouAssist.FinancialManagement.CurrencyManagement.Services
                 var originalRate = originalRates[i];
 
                 if (invoice.Currency == baseCurrency)
+                {
                     continue;
+                }
 
                 // Get current exchange rate
                 var currentRate = await GetExchangeRateAsync(

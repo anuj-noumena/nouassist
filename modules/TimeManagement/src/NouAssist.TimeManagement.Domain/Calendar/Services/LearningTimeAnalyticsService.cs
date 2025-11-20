@@ -28,7 +28,7 @@ namespace NouAssist.TimeManagement.Calendar.Services
             DateTime fromDate,
             DateTime toDate)
         {
-            var timeEntries = await _timeEntryRepository.GetByOwnerAndDateRangeAsync(
+            var timeEntries = await _timeEntryRepository.GetEntriesInRangeAsync(
                 userId, fromDate, toDate);
 
             var learningEntries = timeEntries

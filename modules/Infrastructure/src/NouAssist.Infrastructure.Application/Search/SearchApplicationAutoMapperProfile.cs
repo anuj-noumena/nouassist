@@ -1,9 +1,9 @@
 using AutoMapper;
-using NouAssist.Search.Aggregates;
-using NouAssist.Search.Search.Dtos;
-using NouAssist.Search.ValueObjects;
+using NouAssist.Infrastructure.Search.Aggregates;
+using NouAssist.Infrastructure.Search.Search.Dtos;
+using NouAssist.Infrastructure.Search.ValueObjects;
 
-namespace NouAssist.Search
+namespace NouAssist.Infrastructure.Search
 {
     public class SearchApplicationAutoMapperProfile : Profile
     {

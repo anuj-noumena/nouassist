@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NouAssist.LearningDevelopment.Learning.Aggregates;
+using System.Collections.Generic;
+using System.Text.Json;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurations
@@ -14,8 +17,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
 
             // Table Mapping
             builder.ToTable(
-                LearningDbProperties.DbTablePrefix + "Topics",
-                LearningDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "Topics",
+                LearningDevelopmentDbProperties.DbSchema);
 
             // Primary Key
             builder.HasKey(x => x.Id);
@@ -73,12 +76,14 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
                 .HasColumnName(nameof(Topic.LearningSessionId));
 
             // Complex Type: Tags (stored as JSON array)
+            var tagsConverter = new ValueConverter<List<string>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null));
+
             builder.Property("_tags")
                 .HasColumnName("Tags")
                 .HasColumnType("jsonb") // PostgreSQL JSONB
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.List<string>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(tagsConverter);
 
             // Self-referential relationship (Parent-Child)
             builder.HasOne<Topic>()

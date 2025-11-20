@@ -9,11 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="10.0.0" />
     <ProjectReference Include="..\..\src\NouAssist.PersonalDevelopment.EntityFrameworkCore\NouAssist.PersonalDevelopment.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\NouAssist.PersonalDevelopment.Application.Tests\NouAssist.PersonalDevelopment.Application.Tests.csproj" />
-    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="9.3.6"/>
+    <PackageReference Include="Volo.Abp.EntityFrameworkCore.Sqlite" Version="10.0.0" />
   </ItemGroup>
 
 </Project>

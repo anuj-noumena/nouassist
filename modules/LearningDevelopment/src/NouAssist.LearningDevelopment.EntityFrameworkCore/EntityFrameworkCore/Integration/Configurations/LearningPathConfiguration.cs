@@ -10,7 +10,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Integration.Configur
     {
         public void Configure(EntityTypeBuilder<LearningPath> builder)
         {
-            builder.ToTable("LearningPaths");
+            builder.ToTable(LearningDevelopmentDbProperties.DbTablePrefix + "LearningPaths",
+                LearningDevelopmentDbProperties.DbSchema);
 
             builder.ConfigureByConvention();
 

@@ -3,10 +3,11 @@ namespace NouAssist.TimeManagement.Calendar.Enums
     public enum TimeblockType : byte
     {
         FocusWork = 1,
-        Meeting = 2,
-        BreakTime = 3,
-        Personal = 4,
-        Commute = 5,
-        Other = 6
+        Learning = 2,
+        Meeting = 3,
+        BreakTime = 4,
+        Personal = 5,
+        Commute = 6,
+        Other = 7
     }
 }

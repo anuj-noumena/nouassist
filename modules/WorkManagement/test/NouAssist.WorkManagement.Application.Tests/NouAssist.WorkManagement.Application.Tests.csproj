@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\NouAssist.WorkManagement.Application\NouAssist.WorkManagement.Application.csproj" />
     <ProjectReference Include="..\NouAssist.WorkManagement.Domain.Tests\NouAssist.WorkManagement.Domain.Tests.csproj" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
   </ItemGroup>
 
 </Project>

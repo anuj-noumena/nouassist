@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="NouAssist.WorkManagement.Application" />
+    <InternalsVisibleTo Include="NouAssist.Integrations.Domain" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />

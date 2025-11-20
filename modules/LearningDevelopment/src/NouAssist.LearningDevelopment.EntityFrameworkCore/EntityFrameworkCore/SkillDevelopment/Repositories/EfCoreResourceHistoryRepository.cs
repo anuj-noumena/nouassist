@@ -12,24 +12,24 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Repositories
 {
     public class EfCoreResourceHistoryRepository 
-        : EfCoreRepository<ISkillDevelopmentDbContext, ResourceHistory, Guid>, 
+        : EfCoreRepository<ILearningDevelopmentDbContext, ResourceHistory, Guid>, 
           IResourceHistoryRepository
     {
         public EfCoreResourceHistoryRepository(
-            IDbContextProvider<ISkillDevelopmentDbContext> dbContextProvider)
+            IDbContextProvider<ILearningDevelopmentDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }
 
         public async Task<List<ResourceHistory>> GetByUserIdAsync(
-            Guid userId, 
-            bool? completedOnly = null, 
+            Guid userId,
+            bool? completedOnly = null,
             CancellationToken cancellationToken = default)
         {
-            var query = await GetQueryableAsync();
-            
+            IQueryable<ResourceHistory> query = await GetQueryableAsync();
+
             query = query.Where(r => r.UserId == userId);
-            
+
             if (completedOnly.HasValue)
             {
                 if (completedOnly.Value)
@@ -41,24 +41,28 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Rep
                     query = query.Where(r => r.Progress < 100);
                 }
             }
-            
+
             return await query
                 .OrderByDescending(r => r.AccessedAt)
                 .ToListAsync(cancellationToken);
         }
 
         public async Task<List<ResourceHistory>> GetBySkillIdAsync(
-            Guid skillId, 
+            Guid skillId,
             CancellationToken cancellationToken = default)
         {
-            var query = await GetQueryableAsync();
-            
-            // Note: RelatedSkillIds is a JSON array, so we need to use EF.Functions
-            // For PostgreSQL with jsonb
-            return await query
-                .Where(r => EF.Functions.JsonContains(r.RelatedSkillIds, skillId.ToString()))
+            IQueryable<ResourceHistory> query = await GetQueryableAsync();
+
+            // Load all records and filter in memory since RelatedSkillIds is a collection
+            // This is necessary because querying JSON arrays in EF Core requires provider-specific functions
+            var allRecords = await query
                 .OrderByDescending(r => r.AccessedAt)
                 .ToListAsync(cancellationToken);
+
+            // Filter in memory for records that contain the skillId
+            return allRecords
+                .Where(r => r.RelatedSkillIds.Contains(skillId))
+                .ToList();
         }
     }
 }

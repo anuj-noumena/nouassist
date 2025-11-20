@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using NouAssist.WorkManagement.TaskManagement.Aggregates;
 using NouAssist.WorkManagement.TaskManagement.Data;
 using NouAssist.WorkManagement.TaskManagement.Enums;
+using NouAssist.WorkManagement.TaskManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
+using TaskAggregate = NouAssist.WorkManagement.TaskManagement.Aggregates.Task;
 
 namespace NouAssist.WorkManagement.TaskManagement.Services
 {
@@ -38,51 +40,59 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             Guid categoryId,
             Guid? projectId,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var taskTitle = $"Approve Bill #{billNumber} - {vendorName}";
             var taskDescription = $"Review and approve bill from {vendorName} for {amount:N2} {currency}. Due: {dueDate:yyyy-MM-dd}";
 
-            var task = new Task(
+            var (importance, urgency) = GetBillApprovalPriority(amount);
+
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                GetBillApprovalPriority(amount),
-                dueDate.AddDays(-2), // Due 2 days before bill due date
-                null, // No project reference
-                TaskType.Approval,
-                EstimationUnit.Hours,
-                1); // 1 hour estimated
+                taskTypeId,
+                tenantId,
+                projectId,
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Bill");
-            task.AddTag("Approval");
-            task.AddTag("AccountsPayable");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(dueDate.AddDays(-2), 60); // Due 2 days before bill due date, 1 hour estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                projectId,
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
             // Add custom fields for financial integration
-            instance.AddCustomField("FinancialEntityType", "Bill");
-            instance.AddCustomField("BillId", billId.ToString());
-            instance.AddCustomField("BillNumber", billNumber);
-            instance.AddCustomField("VendorName", vendorName);
-            instance.AddCustomField("Amount", amount.ToString());
-            instance.AddCustomField("Currency", currency);
-            instance.AddCustomField("CategoryId", categoryId.ToString());
+            instance.SetCustomFieldValue("FinancialEntityType", "Bill");
+            instance.SetCustomFieldValue("BillId", billId.ToString());
+            instance.SetCustomFieldValue("BillNumber", billNumber);
+            instance.SetCustomFieldValue("VendorName", vendorName);
+            instance.SetCustomFieldValue("Amount", amount.ToString());
+            instance.SetCustomFieldValue("Currency", currency);
+            instance.SetCustomFieldValue("CategoryId", categoryId.ToString());
             if (projectId.HasValue)
             {
-                instance.AddCustomField("ProjectId", projectId.Value.ToString());
+                instance.SetCustomFieldValue("ProjectId", projectId.Value.ToString());
             }
-
-            instance.SetCognitiveLoad(CognitiveLoad.Medium);
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -100,51 +110,57 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             string currency,
             DateTime dueDate,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var taskTitle = $"Pay Bill #{billNumber} - {vendorName}";
             var taskDescription = $"Process payment to {vendorName} for {amount:N2} {currency}. Due: {dueDate:yyyy-MM-dd}";
 
             var daysUntilDue = (dueDate - DateTime.Today).Days;
-            var priority = daysUntilDue <= 2
-                ? ImportanceUrgencyMatrix.ImportantUrgent
-                : ImportanceUrgencyMatrix.ImportantNotUrgent;
+            var (importance, urgency) = daysUntilDue <= 2
+                ? (0.9, 0.9) // Important & Urgent
+                : (0.9, 0.3); // Important & Not Urgent
 
-            var task = new Task(
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                priority,
-                dueDate.AddDays(-1), // Due 1 day before bill due date
-                null,
-                TaskType.Action,
-                EstimationUnit.Minutes,
-                30);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Bill");
-            task.AddTag("Payment");
-            task.AddTag("AccountsPayable");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(dueDate.AddDays(-1), 30); // Due 1 day before bill due date, 30 min estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Bill");
-            instance.AddCustomField("BillId", billId.ToString());
-            instance.AddCustomField("BillNumber", billNumber);
-            instance.AddCustomField("VendorName", vendorName);
-            instance.AddCustomField("Amount", amount.ToString());
-            instance.AddCustomField("Currency", currency);
-            instance.AddCustomField("TaskSubtype", "Payment");
-
-            instance.SetCognitiveLoad(CognitiveLoad.Low);
+            instance.SetCustomFieldValue("FinancialEntityType", "Bill");
+            instance.SetCustomFieldValue("BillId", billId.ToString());
+            instance.SetCustomFieldValue("BillNumber", billNumber);
+            instance.SetCustomFieldValue("VendorName", vendorName);
+            instance.SetCustomFieldValue("Amount", amount.ToString());
+            instance.SetCustomFieldValue("Currency", currency);
+            instance.SetCustomFieldValue("TaskSubtype", "Payment");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -162,46 +178,54 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             string currency,
             DateTime issueDate,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var taskTitle = $"Follow up on Invoice #{invoiceNumber} - {customerName}";
             var taskDescription = $"Contact {customerName} regarding invoice for {totalAmount:N2} {currency} sent on {issueDate:yyyy-MM-dd}";
 
-            var task = new Task(
+            var (importance, urgency) = (0.9, 0.3); // Important & Not Urgent
+
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                ImportanceUrgencyMatrix.ImportantNotUrgent,
-                issueDate.AddDays(7), // Due 7 days after invoice sent
-                null,
-                TaskType.Communication,
-                EstimationUnit.Minutes,
-                15);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Invoice");
-            task.AddTag("FollowUp");
-            task.AddTag("AccountsReceivable");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(issueDate.AddDays(7), 15); // Due 7 days after invoice sent, 15 min estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Invoice");
-            instance.AddCustomField("InvoiceId", invoiceId.ToString());
-            instance.AddCustomField("InvoiceNumber", invoiceNumber);
-            instance.AddCustomField("CustomerName", customerName);
-            instance.AddCustomField("Amount", totalAmount.ToString());
-            instance.AddCustomField("Currency", currency);
-            instance.AddCustomField("TaskSubtype", "FollowUp");
-
-            instance.SetCognitiveLoad(CognitiveLoad.Low);
+            instance.SetCustomFieldValue("FinancialEntityType", "Invoice");
+            instance.SetCustomFieldValue("InvoiceId", invoiceId.ToString());
+            instance.SetCustomFieldValue("InvoiceNumber", invoiceNumber);
+            instance.SetCustomFieldValue("CustomerName", customerName);
+            instance.SetCustomFieldValue("Amount", totalAmount.ToString());
+            instance.SetCustomFieldValue("Currency", currency);
+            instance.SetCustomFieldValue("TaskSubtype", "FollowUp");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -219,50 +243,55 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             string currency,
             int daysOverdue,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var taskTitle = $"Collect Overdue Payment - Invoice #{invoiceNumber} ({daysOverdue} days overdue)";
             var taskDescription = $"Collect {amountDue:N2} {currency} from {customerName}. Invoice is {daysOverdue} days overdue.";
 
-            var priority = GetCollectionPriority(daysOverdue);
+            var (importance, urgency) = GetCollectionPriority(daysOverdue);
 
-            var task = new Task(
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                priority,
-                DateTime.Today.AddDays(2), // Due in 2 days
-                null,
-                TaskType.Communication,
-                EstimationUnit.Minutes,
-                30);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Invoice");
-            task.AddTag("Collection");
-            task.AddTag("Overdue");
-            task.AddTag("AccountsReceivable");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(DateTime.Today.AddDays(2), 30); // Due in 2 days, 30 min estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Invoice");
-            instance.AddCustomField("InvoiceId", invoiceId.ToString());
-            instance.AddCustomField("InvoiceNumber", invoiceNumber);
-            instance.AddCustomField("CustomerName", customerName);
-            instance.AddCustomField("AmountDue", amountDue.ToString());
-            instance.AddCustomField("Currency", currency);
-            instance.AddCustomField("DaysOverdue", daysOverdue.ToString());
-            instance.AddCustomField("TaskSubtype", "Collection");
-
-            instance.SetCognitiveLoad(CognitiveLoad.Medium);
+            instance.SetCustomFieldValue("FinancialEntityType", "Invoice");
+            instance.SetCustomFieldValue("InvoiceId", invoiceId.ToString());
+            instance.SetCustomFieldValue("InvoiceNumber", invoiceNumber);
+            instance.SetCustomFieldValue("CustomerName", customerName);
+            instance.SetCustomFieldValue("AmountDue", amountDue.ToString());
+            instance.SetCustomFieldValue("Currency", currency);
+            instance.SetCustomFieldValue("DaysOverdue", daysOverdue.ToString());
+            instance.SetCustomFieldValue("TaskSubtype", "Collection");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -280,46 +309,54 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             DateTime periodStart,
             DateTime periodEnd,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var taskTitle = $"Approve Budget: {budgetName}";
             var taskDescription = $"Review and approve budget for {totalBudget:N2} {currency}. Period: {periodStart:yyyy-MM-dd} to {periodEnd:yyyy-MM-dd}";
 
-            var task = new Task(
+            var (importance, urgency) = (0.9, 0.3); // Important & Not Urgent
+
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                ImportanceUrgencyMatrix.ImportantNotUrgent,
-                DateTime.Today.AddDays(3), // Due in 3 days
-                null,
-                TaskType.Approval,
-                EstimationUnit.Hours,
-                2);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Budget");
-            task.AddTag("Approval");
-            task.AddTag("Planning");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(DateTime.Today.AddDays(3), 120); // Due in 3 days, 2 hours estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Budget");
-            instance.AddCustomField("BudgetId", budgetId.ToString());
-            instance.AddCustomField("BudgetName", budgetName);
-            instance.AddCustomField("TotalBudget", totalBudget.ToString());
-            instance.AddCustomField("Currency", currency);
-            instance.AddCustomField("PeriodStart", periodStart.ToString("O"));
-            instance.AddCustomField("PeriodEnd", periodEnd.ToString("O"));
-
-            instance.SetCognitiveLoad(CognitiveLoad.High);
+            instance.SetCustomFieldValue("FinancialEntityType", "Budget");
+            instance.SetCustomFieldValue("BudgetId", budgetId.ToString());
+            instance.SetCustomFieldValue("BudgetName", budgetName);
+            instance.SetCustomFieldValue("TotalBudget", totalBudget.ToString());
+            instance.SetCustomFieldValue("Currency", currency);
+            instance.SetCustomFieldValue("PeriodStart", periodStart.ToString("O"));
+            instance.SetCustomFieldValue("PeriodEnd", periodEnd.ToString("O"));
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -339,6 +376,9 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             decimal variancePercent,
             bool isOverBudget,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var variance = actualAmount - plannedAmount;
@@ -347,47 +387,50 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
                 ? $"{categoryName} is over budget by {Math.Abs(variance):N2} ({Math.Abs(variancePercent):N1}%). Planned: {plannedAmount:N2}, Actual: {actualAmount:N2}"
                 : $"{categoryName} has variance of {Math.Abs(variancePercent):N1}%. Planned: {plannedAmount:N2}, Actual: {actualAmount:N2}";
 
-            var priority = isOverBudget
-                ? ImportanceUrgencyMatrix.ImportantUrgent
-                : ImportanceUrgencyMatrix.ImportantNotUrgent;
+            var (importance, urgency) = isOverBudget
+                ? (0.9, 0.9) // Important & Urgent
+                : (0.9, 0.3); // Important & Not Urgent
 
-            var task = new Task(
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                priority,
-                DateTime.Today.AddDays(1), // Due tomorrow
-                null,
-                TaskType.Analysis,
-                EstimationUnit.Hours,
-                1);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Budget");
-            task.AddTag("Variance");
-            task.AddTag("Investigation");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(DateTime.Today.AddDays(1), 60); // Due tomorrow, 1 hour estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Budget");
-            instance.AddCustomField("BudgetId", budgetId.ToString());
-            instance.AddCustomField("CategoryId", categoryId.ToString());
-            instance.AddCustomField("CategoryName", categoryName);
-            instance.AddCustomField("PlannedAmount", plannedAmount.ToString());
-            instance.AddCustomField("ActualAmount", actualAmount.ToString());
-            instance.AddCustomField("VariancePercent", variancePercent.ToString());
-            instance.AddCustomField("IsOverBudget", isOverBudget.ToString());
-            instance.AddCustomField("TaskSubtype", "VarianceInvestigation");
-
-            instance.SetCognitiveLoad(CognitiveLoad.High);
+            instance.SetCustomFieldValue("FinancialEntityType", "Budget");
+            instance.SetCustomFieldValue("BudgetId", budgetId.ToString());
+            instance.SetCustomFieldValue("CategoryId", categoryId.ToString());
+            instance.SetCustomFieldValue("CategoryName", categoryName);
+            instance.SetCustomFieldValue("PlannedAmount", plannedAmount.ToString());
+            instance.SetCustomFieldValue("ActualAmount", actualAmount.ToString());
+            instance.SetCustomFieldValue("VariancePercent", variancePercent.ToString());
+            instance.SetCustomFieldValue("IsOverBudget", isOverBudget.ToString());
+            instance.SetCustomFieldValue("TaskSubtype", "VarianceInvestigation");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -405,26 +448,29 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             string currency,
             DateTime targetDate,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var tasks = new List<TaskInstance>();
 
             // Task 1: Create action plan
             var actionPlanTask = await CreateGoalActionPlanTaskAsync(
-                goalId, goalName, targetAmount, currency, targetDate, userId, tenantId);
+                goalId, goalName, targetAmount, currency, targetDate, userId, taskTypeId, workflowId, workflowStatusId, tenantId);
             tasks.Add(actionPlanTask);
 
             // Task 2: Set up automation (if savings goal)
             if (goalType == "Savings")
             {
                 var automationTask = await CreateGoalAutomationTaskAsync(
-                    goalId, goalName, targetAmount, currency, targetDate, userId, tenantId);
+                    goalId, goalName, targetAmount, currency, targetDate, userId, taskTypeId, workflowId, workflowStatusId, tenantId);
                 tasks.Add(automationTask);
             }
 
             // Task 3: Budget review
             var budgetReviewTask = await CreateGoalBudgetReviewTaskAsync(
-                goalId, goalName, userId, tenantId);
+                goalId, goalName, userId, taskTypeId, workflowId, workflowStatusId, tenantId);
             tasks.Add(budgetReviewTask);
 
             return tasks;
@@ -443,49 +489,57 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             DateTime targetDate,
             string checkInFrequency,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId = null)
         {
             var taskTitle = $"Review Progress: {goalName} ({progressPercent:N1}% complete)";
             var remaining = targetAmount - currentAmount;
             var taskDescription = $"Review progress on {goalName}. Target: {targetAmount:N2} {currency}, Current: {currentAmount:N2} {currency}, Remaining: {remaining:N2} {currency}";
 
-            var task = new Task(
+            var (importance, urgency) = (0.9, 0.3); // Important & Not Urgent
+
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                ImportanceUrgencyMatrix.ImportantNotUrgent,
-                DateTime.Today.AddDays(7), // Due in 7 days
-                null,
-                TaskType.Review,
-                EstimationUnit.Minutes,
-                30);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Goal");
-            task.AddTag("CheckIn");
-            task.AddTag("Progress");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(DateTime.Today.AddDays(7), 30); // Due in 7 days, 30 min estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Goal");
-            instance.AddCustomField("GoalId", goalId.ToString());
-            instance.AddCustomField("GoalName", goalName);
-            instance.AddCustomField("TargetAmount", targetAmount.ToString());
-            instance.AddCustomField("CurrentAmount", currentAmount.ToString());
-            instance.AddCustomField("ProgressPercent", progressPercent.ToString());
-            instance.AddCustomField("Currency", currency);
-            instance.AddCustomField("CheckInFrequency", checkInFrequency);
-            instance.AddCustomField("TaskSubtype", "CheckIn");
-
-            instance.SetCognitiveLoad(CognitiveLoad.Medium);
+            instance.SetCustomFieldValue("FinancialEntityType", "Goal");
+            instance.SetCustomFieldValue("GoalId", goalId.ToString());
+            instance.SetCustomFieldValue("GoalName", goalName);
+            instance.SetCustomFieldValue("TargetAmount", targetAmount.ToString());
+            instance.SetCustomFieldValue("CurrentAmount", currentAmount.ToString());
+            instance.SetCustomFieldValue("ProgressPercent", progressPercent.ToString());
+            instance.SetCustomFieldValue("Currency", currency);
+            instance.SetCustomFieldValue("CheckInFrequency", checkInFrequency);
+            instance.SetCustomFieldValue("TaskSubtype", "CheckIn");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -501,41 +555,50 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             string currency,
             DateTime targetDate,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId)
         {
             var taskTitle = $"Create Action Plan for {goalName}";
             var taskDescription = $"Develop detailed action plan to achieve {targetAmount:N2} {currency} by {targetDate:yyyy-MM-dd}";
 
-            var task = new Task(
+            var (importance, urgency) = (0.9, 0.3); // Important & Not Urgent
+
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                ImportanceUrgencyMatrix.ImportantNotUrgent,
-                DateTime.Today.AddDays(7),
-                null,
-                TaskType.Planning,
-                EstimationUnit.Hours,
-                2);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Goal");
-            task.AddTag("Planning");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(DateTime.Today.AddDays(7), 120); // Due in 7 days, 2 hours estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Goal");
-            instance.AddCustomField("GoalId", goalId.ToString());
-            instance.AddCustomField("TaskSubtype", "ActionPlan");
-
-            instance.SetCognitiveLoad(CognitiveLoad.High);
+            instance.SetCustomFieldValue("FinancialEntityType", "Goal");
+            instance.SetCustomFieldValue("GoalId", goalId.ToString());
+            instance.SetCustomFieldValue("TaskSubtype", "ActionPlan");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -549,41 +612,50 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             string currency,
             DateTime targetDate,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId)
         {
             var taskTitle = $"Set Up Automatic Transfer for {goalName}";
             var taskDescription = $"Configure automatic monthly transfer to reach {targetAmount:N2} {currency} by {targetDate:yyyy-MM-dd}";
 
-            var task = new Task(
+            var (importance, urgency) = (0.9, 0.3); // Important & Not Urgent
+
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                ImportanceUrgencyMatrix.ImportantNotUrgent,
-                DateTime.Today.AddDays(3),
-                null,
-                TaskType.Action,
-                EstimationUnit.Minutes,
-                30);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Goal");
-            task.AddTag("Automation");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(DateTime.Today.AddDays(3), 30); // Due in 3 days, 30 min estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Goal");
-            instance.AddCustomField("GoalId", goalId.ToString());
-            instance.AddCustomField("TaskSubtype", "Automation");
-
-            instance.SetCognitiveLoad(CognitiveLoad.Medium);
+            instance.SetCustomFieldValue("FinancialEntityType", "Goal");
+            instance.SetCustomFieldValue("GoalId", goalId.ToString());
+            instance.SetCustomFieldValue("TaskSubtype", "Automation");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
@@ -594,64 +666,72 @@ namespace NouAssist.WorkManagement.TaskManagement.Services
             Guid goalId,
             string goalName,
             Guid userId,
+            Guid taskTypeId,
+            Guid workflowId,
+            Guid workflowStatusId,
             Guid? tenantId)
         {
             var taskTitle = $"Review Budget for {goalName}";
             var taskDescription = $"Analyze current budget and identify opportunities to allocate more toward {goalName}";
 
-            var task = new Task(
+            var (importance, urgency) = (0.9, 0.3); // Important & Not Urgent
+
+            var task = new TaskAggregate(
                 GuidGenerator.Create(),
-                tenantId,
                 userId,
                 taskTitle,
-                taskDescription,
-                ImportanceUrgencyMatrix.ImportantNotUrgent,
-                DateTime.Today.AddDays(5),
-                null,
-                TaskType.Analysis,
-                EstimationUnit.Hours,
-                1);
+                taskTypeId,
+                tenantId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                null, // taskHierarchy
+                importance,
+                urgency);
 
-            task.SetCategory("Financial");
-            task.AddTag("Goal");
-            task.AddTag("Budget");
-            task.AddTag("Analysis");
+            task.Description = taskDescription;
+            task.UpdateDefaultSchedule(DateTime.Today.AddDays(5), 60); // Due in 5 days, 1 hour estimate
 
             await _taskRepository.InsertAsync(task, autoSave: true);
 
             var instance = new TaskInstance(
                 GuidGenerator.Create(),
                 task.Id,
+                workflowId,
+                workflowStatusId,
                 userId,
+                null, // projectId
+                null, // areaId
+                null, // contextId
+                importance,
+                urgency,
                 tenantId);
 
-            instance.AddCustomField("FinancialEntityType", "Goal");
-            instance.AddCustomField("GoalId", goalId.ToString());
-            instance.AddCustomField("TaskSubtype", "BudgetReview");
-
-            instance.SetCognitiveLoad(CognitiveLoad.High);
+            instance.SetCustomFieldValue("FinancialEntityType", "Goal");
+            instance.SetCustomFieldValue("GoalId", goalId.ToString());
+            instance.SetCustomFieldValue("TaskSubtype", "BudgetReview");
 
             await _taskInstanceRepository.InsertAsync(instance, autoSave: true);
 
             return instance;
         }
 
-        private ImportanceUrgencyMatrix GetBillApprovalPriority(decimal amount)
+        private (double importance, double urgency) GetBillApprovalPriority(decimal amount)
         {
             if (amount > 1000)
-                return ImportanceUrgencyMatrix.ImportantUrgent;
+                return (0.9, 0.9); // Important & Urgent
             if (amount > 500)
-                return ImportanceUrgencyMatrix.ImportantNotUrgent;
-            return ImportanceUrgencyMatrix.NotImportantNotUrgent;
+                return (0.9, 0.3); // Important & Not Urgent
+            return (0.3, 0.3); // Not Important & Not Urgent
         }
 
-        private ImportanceUrgencyMatrix GetCollectionPriority(int daysOverdue)
+        private (double importance, double urgency) GetCollectionPriority(int daysOverdue)
         {
             if (daysOverdue > 14)
-                return ImportanceUrgencyMatrix.ImportantUrgent;
+                return (0.9, 0.9); // Important & Urgent
             if (daysOverdue > 7)
-                return ImportanceUrgencyMatrix.ImportantNotUrgent;
-            return ImportanceUrgencyMatrix.NotImportantUrgent;
+                return (0.9, 0.3); // Important & Not Urgent
+            return (0.3, 0.9); // Not Important & Urgent
         }
 
         #endregion

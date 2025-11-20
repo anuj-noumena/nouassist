@@ -14,8 +14,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
 
             // Table Mapping
             builder.ToTable(
-                LearningDbProperties.DbTablePrefix + "BookReadingHistories",
-                LearningDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "BookReadingHistories",
+                LearningDevelopmentDbProperties.DbSchema);
 
             // Primary Key
             builder.HasKey(x => x.Id);

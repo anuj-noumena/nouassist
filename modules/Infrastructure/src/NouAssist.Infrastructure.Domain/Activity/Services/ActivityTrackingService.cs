@@ -4,10 +4,11 @@ using NouAssist.Infrastructure.Activity.Aggregates;
 using NouAssist.Infrastructure.Activity.Enums;
 using NouAssist.Infrastructure.Activity.Events;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.EventBus.Distributed;
 
 namespace NouAssist.Infrastructure.Activity.Services
 {
-    public class ActivityTrackingService : DomainService
+    public class ActivityTrackingService(IDistributedEventBus distributedEventBus) : DomainService
     {
         public ActivityFeed CreateActivity(
             Guid actorId,
@@ -43,7 +44,7 @@ namespace NouAssist.Infrastructure.Activity.Services
             }
 
             // Publish domain event
-            activity.AddDistributedEvent(new ActivityCreatedEto
+            distributedEventBus.PublishAsync(new ActivityCreatedEto
             {
                 ActivityId = activity.Id,
                 ActorId = activity.ActorId,
@@ -93,7 +94,7 @@ namespace NouAssist.Infrastructure.Activity.Services
             }
 
             // Publish domain event
-            auditLog.AddDistributedEvent(new AuditLogCreatedEto
+            distributedEventBus.PublishAsync(new AuditLogCreatedEto
             {
                 AuditLogId = auditLog.Id,
                 UserId = auditLog.UserId,

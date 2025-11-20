@@ -10,8 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.3.6"/>
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
+    <ProjectReference Include="..\..\..\FinancialManagement\src\NouAssist.FinancialManagement.Domain\NouAssist.FinancialManagement.Domain.csproj" />
+    <ProjectReference Include="..\..\..\LearningDevelopment\src\NouAssist.LearningDevelopment.Domain\NouAssist.LearningDevelopment.Domain.csproj" />
+    <ProjectReference Include="..\..\..\TimeManagement\src\NouAssist.TimeManagement.Domain\NouAssist.TimeManagement.Domain.csproj" />
+    <ProjectReference Include="..\..\..\WorkManagement\src\NouAssist.WorkManagement.Domain\NouAssist.WorkManagement.Domain.csproj" />
     <ProjectReference Include="..\NouAssist.Integrations.Domain.Shared\NouAssist.Integrations.Domain.Shared.csproj" />
+    <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
+    <PackageReference Update="Fody" Version="6.9.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

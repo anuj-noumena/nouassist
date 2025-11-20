@@ -12,10 +12,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Repositories
 {
     public class EfCoreBookReadingHistoryRepository 
-        : EfCoreRepository<ILearningDbContext, BookReadingHistory, Guid>, IBookReadingHistoryRepository
+        : EfCoreRepository<ILearningDevelopmentDbContext, BookReadingHistory, Guid>, IBookReadingHistoryRepository
     {
         public EfCoreBookReadingHistoryRepository(
-            IDbContextProvider<ILearningDbContext> dbContextProvider)
+            IDbContextProvider<ILearningDevelopmentDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

@@ -2,8 +2,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NouAssist.Infrastructure.Activity.Aggregates;
 using NouAssist.Infrastructure.Activity.Data;
+using NouAssist.SharedKernel.Specifications;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
+using Volo.Abp.Specifications;
 using Volo.Abp.Uow;
 
 namespace NouAssist.Infrastructure.Activity.BackgroundJobs
@@ -30,7 +34,7 @@ namespace NouAssist.Infrastructure.Activity.BackgroundJobs
 
             try
             {
-                var spec = new Specification<Aggregates.ActivityFeed>(a => 
+                var spec = new BaseSpecification<Aggregates.ActivityFeed>(a => 
                     a.ActorId == args.UserId &&
                     a.OccurredAt.Date == args.Date.Date
                 );

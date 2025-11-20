@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NouAssist.LearningDevelopment.Learning.Aggregates;
+using System.Collections.Generic;
+using System.Text.Json;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurations
@@ -14,8 +17,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
 
             // Table Mapping
             builder.ToTable(
-                LearningDbProperties.DbTablePrefix + "LearningNotes",
-                LearningDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "LearningNotes",
+                LearningDevelopmentDbProperties.DbSchema);
 
             // Primary Key
             builder.HasKey(x => x.Id);
@@ -54,20 +57,24 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
                 .HasColumnName(nameof(LearningNote.Content));
 
             // Complex Type: KeyPoints (stored as JSON)
+            var keyPointsConverter = new ValueConverter<List<string>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null));
+
             builder.Property("_keyPoints")
                 .HasColumnName("KeyPoints")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.List<string>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(keyPointsConverter);
 
             // Complex Type: Metadata (stored as JSON)
+            var metadataConverter = new ValueConverter<Dictionary<string, object>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<Dictionary<string, object>>(v, (JsonSerializerOptions)null));
+
             builder.Property("_metadata")
                 .HasColumnName("Metadata")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(metadataConverter);
 
             // Indexes
             builder.HasIndex(x => x.UserId)

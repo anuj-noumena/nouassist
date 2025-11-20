@@ -10,10 +10,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Repositories
 {
     public class EfCoreSkillTreeRepository 
-        : EfCoreRepository<ISkillDevelopmentDbContext, SkillTree, Guid>, ISkillTreeRepository
+        : EfCoreRepository<ILearningDevelopmentDbContext, SkillTree, Guid>, ISkillTreeRepository
     {
         public EfCoreSkillTreeRepository(
-            IDbContextProvider<ISkillDevelopmentDbContext> dbContextProvider)
+            IDbContextProvider<ILearningDevelopmentDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

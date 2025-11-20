@@ -10,10 +10,10 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Repositories
 {
     public class EfCoreMindmapRepository 
-        : EfCoreRepository<ILearningDbContext, Mindmap, Guid>, IMindmapRepository
+        : EfCoreRepository<ILearningDevelopmentDbContext, Mindmap, Guid>, IMindmapRepository
     {
         public EfCoreMindmapRepository(
-            IDbContextProvider<ILearningDbContext> dbContextProvider)
+            IDbContextProvider<ILearningDevelopmentDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

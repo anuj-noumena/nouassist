@@ -54,6 +54,50 @@ public class InfrastructurePermissionDefinitionProvider : PermissionDefinitionPr
         searchPermission.AddChild(
             InfrastructurePermissions.Search.SearchFeatures.ViewAnalytics,
             L("Permission:Search.ViewAnalytics"));
+        
+        
+        // Notifications Permissions
+        var notificationsGroup = context.AddGroup(
+            InfrastructurePermissions.Notifications.GroupName,
+            L("Permission:Notifications"));
+
+        var notificationsPermission = notificationsGroup.AddPermission(
+            InfrastructurePermissions.Notifications.Notifications_.Default,
+            L("Permission:Notifications"));
+        notificationsPermission.AddChild(
+            InfrastructurePermissions.Notifications.Notifications_.Manage,
+            L("Permission:Notifications.Manage"));
+
+        var preferencesPermission = notificationsGroup.AddPermission(
+            InfrastructurePermissions.Notifications.Preferences.Default,
+            L("Permission:Preferences"));
+        preferencesPermission.AddChild(
+            InfrastructurePermissions.Notifications.Preferences.Manage,
+            L("Permission:Preferences.Manage"));
+
+        // Reminders Permissions
+        var remindersGroup = context.AddGroup(
+            InfrastructurePermissions.Reminders.GroupName,
+            L("Permission:Reminders"));
+
+        var remindersPermission = remindersGroup.AddPermission(
+            InfrastructurePermissions.Reminders.Reminders_.Default,
+            L("Permission:Reminders"));
+        remindersPermission.AddChild(
+            InfrastructurePermissions.Reminders.Reminders_.Create,
+            L("Permission:Reminders.Create"));
+        remindersPermission.AddChild(
+            InfrastructurePermissions.Reminders.Reminders_.Update,
+            L("Permission:Reminders.Update"));
+        remindersPermission.AddChild(
+            InfrastructurePermissions.Reminders.Reminders_.Delete,
+            L("Permission:Reminders.Delete"));
+        remindersPermission.AddChild(
+            InfrastructurePermissions.Reminders.Reminders_.Snooze,
+            L("Permission:Reminders.Snooze"));
+        remindersPermission.AddChild(
+            InfrastructurePermissions.Reminders.Reminders_.ViewAll,
+            L("Permission:Reminders.ViewAll"));
     }
 
     private static LocalizableString L(string name)

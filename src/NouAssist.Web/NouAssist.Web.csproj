@@ -72,7 +72,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Studio.Client.AspNetCore" Version="1.4.2" />
+    <PackageReference Include="Volo.Abp.Studio.Client.AspNetCore" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

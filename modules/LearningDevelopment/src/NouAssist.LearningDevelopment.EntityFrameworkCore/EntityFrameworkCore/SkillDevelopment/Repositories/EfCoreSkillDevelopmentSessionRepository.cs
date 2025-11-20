@@ -12,11 +12,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Repositories
 {
     public class EfCoreSkillDevelopmentSessionRepository 
-        : EfCoreRepository<ISkillDevelopmentDbContext, SkillDevelopmentSession, Guid>, 
+        : EfCoreRepository<ILearningDevelopmentDbContext, SkillDevelopmentSession, Guid>, 
           ISkillDevelopmentSessionRepository
     {
         public EfCoreSkillDevelopmentSessionRepository(
-            IDbContextProvider<ISkillDevelopmentDbContext> dbContextProvider)
+            IDbContextProvider<ILearningDevelopmentDbContext> dbContextProvider)
             : base(dbContextProvider)
         {
         }

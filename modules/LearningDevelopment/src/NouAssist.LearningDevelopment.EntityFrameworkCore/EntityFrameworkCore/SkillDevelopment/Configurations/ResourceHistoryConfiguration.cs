@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
 using NouAssist.SkillDevelopment;
 using Volo.Abp.EntityFrameworkCore.Modeling;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json;
 
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Configurations
 {
@@ -15,8 +17,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                SkillDevelopmentDbProperties.DbTablePrefix + "ResourceHistories",
-                SkillDevelopmentDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "ResourceHistories",
+                LearningDevelopmentDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -47,12 +49,14 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
                 .IsRequired();
 
             // RelatedSkillIds - stored as JSON array
-            builder.Property(x => x.RelatedSkillIds)
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<List<Guid>>(v, (System.Text.Json.JsonSerializerOptions)null))
+            var relatedSkillIdsConverter = new ValueConverter<List<Guid>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<List<Guid>>(v, (JsonSerializerOptions)null));
+
+            builder.Property("_relatedSkillIds")
                 .HasColumnName("RelatedSkillIds")
-                .HasColumnType("jsonb");
+                .HasColumnType("jsonb")
+                .HasConversion(relatedSkillIdsConverter);
 
             // Indexes
             builder.HasIndex(x => x.UserId);

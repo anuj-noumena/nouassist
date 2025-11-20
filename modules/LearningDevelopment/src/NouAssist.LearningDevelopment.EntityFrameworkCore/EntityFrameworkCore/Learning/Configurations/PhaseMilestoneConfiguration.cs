@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NouAssist.LearningDevelopment.Learning.Entities;
 using NouAssist.LearningDevelopment.Learning.ValueObjects;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurations
 {
@@ -11,8 +14,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
         {
             // Table Mapping
             builder.ToTable(
-                LearningDbProperties.DbTablePrefix + "PhaseMilestones",
-                LearningDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "PhaseMilestones",
+                LearningDevelopmentDbProperties.DbSchema);
 
             // Composite Primary Key
             builder.HasKey(x => new { x.SessionId, x.Phase });
@@ -43,19 +46,23 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
                 .HasColumnName(nameof(PhaseMilestone.UpdatedAt));
 
             // Phase-specific data (stored as JSON for flexibility)
+            var questionsConverter = new ValueConverter<List<string>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<List<string>>(v, (JsonSerializerOptions)null));
+
             builder.Property("_questions")
                 .HasColumnName("Questions")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.List<string>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(questionsConverter);
+
+            var sectionReflectionsConverter = new ValueConverter<Dictionary<string, string>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, (JsonSerializerOptions)null));
 
             builder.Property("_sectionReflections")
                 .HasColumnName("SectionReflections")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.Dictionary<string, string>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(sectionReflectionsConverter);
 
             builder.Property(x => x.CornellSummary)
                 .HasMaxLength(4000)
@@ -76,20 +83,24 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
             });
 
             // Complex Type: SpacedCycles (stored as JSON)
+            var spacedCyclesConverter = new ValueConverter<Dictionary<int, CycleProgress>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<Dictionary<int, CycleProgress>>(v, (JsonSerializerOptions)null));
+
             builder.Property("_spacedCycles")
                 .HasColumnName("SpacedCycles")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.Dictionary<int, CycleProgress>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(spacedCyclesConverter);
 
             // Complex Type: MasteryValidation (stored as JSON)
+            var masteryValidationConverter = new ValueConverter<Dictionary<string, object>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<Dictionary<string, object>>(v, (JsonSerializerOptions)null));
+
             builder.Property("_masteryValidation")
                 .HasColumnName("MasteryValidation")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(masteryValidationConverter);
 
             // Indexes
             builder.HasIndex(x => x.SessionId)

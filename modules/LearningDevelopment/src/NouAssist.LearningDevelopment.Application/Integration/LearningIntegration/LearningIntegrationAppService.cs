@@ -110,7 +110,7 @@ namespace NouAssist.LearningDevelopment.Integration.LearningIntegration
             var activePaths = learningPaths.Count(lp => lp.Status == Enums.LearningPathStatus.Active);
             var completedPaths = learningPaths.Count(lp => lp.Status == Enums.LearningPathStatus.Completed);
             var avgMasteryScore = learningPaths.Any()
-                ? learningPaths.Average(lp => lp.IntegratedMasteryScore)
+                ? learningPaths.Average(lp => (double)lp.IntegratedMasteryScore)
                 : 0;
 
             var totalTasksCompleted = activities.Sum(a => a.TotalTasksCompleted);
@@ -137,7 +137,7 @@ namespace NouAssist.LearningDevelopment.Integration.LearningIntegration
                     : 0,
                 MostProductiveTimeOfDay = "09:00-11:00", // Would calculate from time entries
                 AverageSessionLengthMinutes = activities.Any()
-                    ? (int)(activities.Average(a => a.ActualMinutesSpent) / Math.Max(1, activities.Average(a => a.TimeEntryCount)))
+                    ? (int)(activities.Average(a => a.ActualMinutesSpent) / Math.Max(1, activities.Average(a => (double)a.TimeEntryIds.Count)))
                     : 0,
                 CurrentStreak = CalculateStreak(activities),
                 RecommendedNextAction = GenerateRecommendation(learningPaths, activities)

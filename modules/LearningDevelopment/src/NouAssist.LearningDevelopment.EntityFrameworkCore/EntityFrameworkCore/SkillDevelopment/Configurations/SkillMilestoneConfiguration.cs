@@ -88,8 +88,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
             builder.OwnsMany(x => x.PracticeLogs, practiceLogs =>
             {
                 practiceLogs.ToTable(
-                    SkillDevelopmentDbProperties.DbTablePrefix + "PracticeLogs",
-                    SkillDevelopmentDbProperties.DbSchema);
+                    LearningDevelopmentDbProperties.DbTablePrefix + "PracticeLogs",
+                    LearningDevelopmentDbProperties.DbSchema);
 
                 practiceLogs.WithOwner().HasForeignKey("MilestoneSessionId", "MilestoneStep");
 
@@ -116,8 +116,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
             builder.OwnsMany(x => x.Applications, applications =>
             {
                 applications.ToTable(
-                    SkillDevelopmentDbProperties.DbTablePrefix + "ApplicationExamples",
-                    SkillDevelopmentDbProperties.DbSchema);
+                    LearningDevelopmentDbProperties.DbTablePrefix + "ApplicationExamples",
+                    LearningDevelopmentDbProperties.DbSchema);
 
                 applications.WithOwner().HasForeignKey("MilestoneSessionId", "MilestoneStep");
 

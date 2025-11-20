@@ -11,7 +11,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Integration.Configur
     {
         public void Configure(EntityTypeBuilder<LearningActivity> builder)
         {
-            builder.ToTable("LearningActivities");
+            builder.ToTable(LearningDevelopmentDbProperties.DbTablePrefix + "LearningActivities",
+                LearningDevelopmentDbProperties.DbSchema);
 
             builder.ConfigureByConvention();
 

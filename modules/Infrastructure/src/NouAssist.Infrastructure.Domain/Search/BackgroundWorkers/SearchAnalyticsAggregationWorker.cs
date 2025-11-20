@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NouAssist.Infrastructure.Search.Data;
+using NouAssist.Infrastructure.Search.Services;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 using Volo.Abp.Uow;
@@ -24,10 +24,10 @@ namespace NouAssist.Infrastructure.Search.BackgroundWorkers
         {
             Logger.LogInformation("SearchAnalyticsAggregationWorker: Aggregating search analytics...");
 
-            var popularSearchRepository = workerContext.ServiceProvider.GetRequiredService<IPopularSearchRepository>();
+            var searchAnalyticsService = workerContext.ServiceProvider.GetRequiredService<SearchAnalyticsService>();
 
-            // Update popular searches based on recent history
-            await popularSearchRepository.UpdatePopularSearchesAsync(DateTime.UtcNow.AddHours(-1), DateTime.UtcNow);
+            // Update popular searches based on recent history (last hour)
+            await searchAnalyticsService.UpdatePopularSearchesAsync(DateTime.UtcNow.AddHours(-1), DateTime.UtcNow);
 
             Logger.LogInformation("SearchAnalyticsAggregationWorker: Completed aggregation");
         }

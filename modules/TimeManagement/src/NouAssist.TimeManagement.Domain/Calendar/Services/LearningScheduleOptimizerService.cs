@@ -62,7 +62,7 @@ namespace NouAssist.TimeManagement.Calendar.Services
         private async Task<List<Aggregates.TimeEntry>> GetLearningHistoryAsync(Guid userId)
         {
             var thirtyDaysAgo = DateTime.Today.AddDays(-30);
-            var allEntries = await _timeEntryRepository.GetByOwnerAndDateRangeAsync(
+            var allEntries = await _timeEntryRepository.GetEntriesInRangeAsync(
                 userId, thirtyDaysAgo, DateTime.Today);
 
             return allEntries
@@ -131,7 +131,7 @@ namespace NouAssist.TimeManagement.Calendar.Services
             var slots = new List<AvailableSlot>();
 
             // Get existing timeblocks to avoid conflicts
-            var existingTimeblocks = await _timeblockRepository.GetByOwnerAndDateRangeAsync(
+            var existingTimeblocks = await _timeblockRepository.GetTimeblocksInRangeAsync(
                 userId, startDate, endDate);
 
             // Generate potential slots for each day

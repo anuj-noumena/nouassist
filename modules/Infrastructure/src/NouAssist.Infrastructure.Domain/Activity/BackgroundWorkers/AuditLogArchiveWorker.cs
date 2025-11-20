@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NouAssist.Infrastructure.Activity.Data;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 using Volo.Abp.Uow;
@@ -29,7 +30,7 @@ namespace NouAssist.Infrastructure.Activity.BackgroundWorkers
             // Archive logs older than 90 days
             var archiveDate = DateTime.UtcNow.AddDays(-90);
 
-            var spec = new Specification<Aggregates.AuditLog>(a => a.Timestamp < archiveDate);
+            var spec = new BaseSpecification<Aggregates.AuditLog>(a => a.Timestamp < archiveDate);
 
             var oldLogs = await auditLogRepository.GetListAsync(spec, 1000);
 

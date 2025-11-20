@@ -8,6 +8,8 @@ using NouAssist.Infrastructure.Search.Enums;
 using NouAssist.Infrastructure.Search.ValueObjects;
 using Volo.Abp.Domain.Services;
 
+using Volo.Abp.Uow; // Added for IUnitOfWorkManager
+
 namespace NouAssist.Infrastructure.Search.Services
 {
     public class SearchAnalyticsService : DomainService
@@ -15,15 +17,18 @@ namespace NouAssist.Infrastructure.Search.Services
         private readonly ISearchAnalyticsRepository _analyticsRepository;
         private readonly ISearchHistoryRepository _historyRepository;
         private readonly IPopularSearchRepository _popularSearchRepository;
+        private readonly IUnitOfWorkManager _unitOfWorkManager; // Injected
 
         public SearchAnalyticsService(
             ISearchAnalyticsRepository analyticsRepository,
             ISearchHistoryRepository historyRepository,
-            IPopularSearchRepository popularSearchRepository)
+            IPopularSearchRepository popularSearchRepository,
+            IUnitOfWorkManager unitOfWorkManager) // Injected
         {
             _analyticsRepository = analyticsRepository;
             _historyRepository = historyRepository;
             _popularSearchRepository = popularSearchRepository;
+            _unitOfWorkManager = unitOfWorkManager;
         }
 
         public async Task<SearchAnalytics> RecordSearchAsync(
@@ -168,6 +173,70 @@ namespace NouAssist.Infrastructure.Search.Services
                 { "clickThroughRate", analytics.Any() ? (double)analytics.Count(a => a.UserClickedResult) / analytics.Count : 0 },
                 { "zeroResultSearches", analytics.Count(a => a.ResultCount == 0) }
             };
+        }
+
+        public async Task UpdatePopularSearchesAsync(DateTime startDate, DateTime endDate)
+        {
+            // Get all search history within the date range
+            var recentSearches = await _historyRepository.GetListAsync(
+                h => h.CreationTime >= startDate && h.CreationTime <= endDate,
+                includeDetails: false
+            );
+
+            if (!recentSearches.Any())
+            {
+                return;
+            }
+
+            // Group by query and count occurrences
+            var searchCounts = recentSearches
+                .GroupBy(h => h.Query.ToLowerInvariant())
+                .Select(g => new
+                {
+                    Query = g.Key,
+                    Count = g.Count(),
+                    TenantId = g.FirstOrDefault()?.TenantId
+                })
+                .OrderByDescending(x => x.Count)
+                .Take(100) // Process top 100 queries
+                .ToList();
+
+            // Update popular searches
+            foreach (var searchCount in searchCounts)
+            {
+                var popularSearch = await _popularSearchRepository.FindByQueryAsync(searchCount.Query);
+
+                if (popularSearch == null)
+                {
+                    // Create new popular search
+                    popularSearch = new PopularSearch(
+                        GuidGenerator.Create(),
+                        searchCount.Query,
+                        searchCount.TenantId
+                    );
+
+                    // Set initial count based on recent activity
+                    for (int i = 1; i < searchCount.Count; i++)
+                    {
+                        popularSearch.IncrementCount();
+                    }
+
+                    await _popularSearchRepository.InsertAsync(popularSearch, autoSave: false);
+                }
+                else
+                {
+                    // Update existing popular search with recent activity
+                    for (int i = 0; i < searchCount.Count; i++)
+                    {
+                        popularSearch.IncrementCount();
+                    }
+
+                    await _popularSearchRepository.UpdateAsync(popularSearch, autoSave: false);
+                }
+            }
+
+            // Save all changes in batch
+            await _unitOfWorkManager.Current.SaveChangesAsync();
         }
     }
 }

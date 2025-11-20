@@ -1,4 +1,5 @@
 using System;
+using NouAssist.SharedKernel.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 

@@ -14,8 +14,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                SkillDevelopmentDbProperties.DbTablePrefix + "SkillTrees",
-                SkillDevelopmentDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "SkillTrees",
+                LearningDevelopmentDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 

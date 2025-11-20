@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NouAssist.LearningDevelopment.Learning.Aggregates;
+using System.Collections.Generic;
+using System.Text.Json;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurations
@@ -14,8 +17,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
 
             // Table Mapping
             builder.ToTable(
-                LearningDbProperties.DbTablePrefix + "Mindmaps",
-                LearningDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "Mindmaps",
+                LearningDevelopmentDbProperties.DbSchema);
 
             // Primary Key
             builder.HasKey(x => x.Id);
@@ -34,12 +37,14 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.Learning.Configurati
                 .HasColumnName(nameof(Mindmap.Url));
 
             // Complex Type: Data (stored as JSON - nodes and edges)
+            var dataConverter = new ValueConverter<Dictionary<string, object>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<Dictionary<string, object>>(v, (JsonSerializerOptions)null));
+
             builder.Property("_data")
                 .HasColumnName("Data")
                 .HasColumnType("jsonb")
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<System.Collections.Generic.Dictionary<string, object>>(v, (System.Text.Json.JsonSerializerOptions)null));
+                .HasConversion(dataConverter);
 
             // Indexes
             builder.HasIndex(x => x.UserId)

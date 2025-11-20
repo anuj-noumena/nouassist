@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.LearningDevelopment.SkillDevelopment.Aggregates;
+using NouAssist.LearningDevelopment.SkillDevelopment.Entities;
 using NouAssist.SkillDevelopment;
 using NouAssist.SkillDevelopment.Enums;
 using Volo.Abp.EntityFrameworkCore.Modeling;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json;
 
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Configurations
 {
@@ -16,8 +19,8 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
             builder.ConfigureByConvention();
 
             builder.ToTable(
-                SkillDevelopmentDbProperties.DbTablePrefix + "DevelopmentSessions",
-                SkillDevelopmentDbProperties.DbSchema);
+                LearningDevelopmentDbProperties.DbTablePrefix + "DevelopmentSessions",
+                LearningDevelopmentDbProperties.DbSchema);
 
             builder.HasKey(x => x.Id);
 
@@ -46,11 +49,11 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
                 .IsRequired();
 
             // Store Milestones as owned entities (separate table)
-            builder.OwnsMany(x => x.Milestones, milestones =>
+            builder.OwnsMany<SkillMilestone>(x => x.Milestones.Values, milestones =>
             {
                 milestones.ToTable(
-                    SkillDevelopmentDbProperties.DbTablePrefix + "SessionMilestones",
-                    SkillDevelopmentDbProperties.DbSchema);
+                    LearningDevelopmentDbProperties.DbTablePrefix + "SessionMilestones",
+                    LearningDevelopmentDbProperties.DbSchema);
 
                 milestones.WithOwner().HasForeignKey("SessionId");
 
@@ -62,12 +65,14 @@ namespace NouAssist.LearningDevelopment.EntityFrameworkCore.SkillDevelopment.Con
             });
 
             // Store PracticeTimeTracking as JSON
-            builder.Property(x => x.PracticeTimeTracking)
-                .HasConversion(
-                    v => System.Text.Json.JsonSerializer.Serialize(v, (System.Text.Json.JsonSerializerOptions)null),
-                    v => System.Text.Json.JsonSerializer.Deserialize<Dictionary<DevelopmentStep, int>>(v, (System.Text.Json.JsonSerializerOptions)null))
+            var practiceTimeTrackingConverter = new ValueConverter<Dictionary<DevelopmentStep, int>, string>(
+                v => JsonSerializer.Serialize(v, (JsonSerializerOptions)null),
+                v => JsonSerializer.Deserialize<Dictionary<DevelopmentStep, int>>(v, (JsonSerializerOptions)null));
+
+            builder.Property("_practiceTimeTracking")
                 .HasColumnName("PracticeTimeTracking")
-                .HasColumnType("jsonb");
+                .HasColumnType("jsonb")
+                .HasConversion(practiceTimeTrackingConverter);
 
             // Indexes
             builder.HasIndex(x => x.SkillId).IsUnique();

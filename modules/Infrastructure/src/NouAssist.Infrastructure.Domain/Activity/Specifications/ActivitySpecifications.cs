@@ -6,17 +6,33 @@ using Volo.Abp.Specifications;
 
 namespace NouAssist.Infrastructure.Activity.Specifications
 {
-    public class UnreadActivitiesSpecification : Specification<ActivityFeed>
+    public class ActivitiesSpecification : Specification<ActivityFeed>
     {
         private readonly Guid _userId;
+        private readonly bool _showRead;
+        private readonly DateTime? _fromDate;
+        private readonly DateTime? _toDate;
 
-        public UnreadActivitiesSpecification(Guid userId)
+        public ActivitiesSpecification(Guid userId, bool? showRead = false, DateTime? fromDate = null, DateTime? toDate = null)
         {
             _userId = userId;
+            _showRead = showRead ?? false;
+            _fromDate = fromDate;
+            _toDate = toDate;
         }
 
         public override Expression<Func<ActivityFeed, bool>> ToExpression() =>
-            a => !a.IsRead && (a.ActorId == _userId || a.TargetUserId == _userId);
+            a =>  // Condition 1: Filter by read status
+                (_showRead || a.IsRead == false) &&
+
+                // Condition 2: Filter by user involvement
+                (a.ActorId == _userId || a.TargetUserId == _userId) &&
+
+                // Condition 3: Filter by date range (fromDate)
+                (_fromDate == null || a.OccurredAt >= _fromDate) &&
+
+                // Condition 4: Filter by date range (toDate)
+                (_toDate == null || a.OccurredAt <= _toDate);
     }
 
     public class ActivitiesByEntitySpecification : Specification<ActivityFeed>

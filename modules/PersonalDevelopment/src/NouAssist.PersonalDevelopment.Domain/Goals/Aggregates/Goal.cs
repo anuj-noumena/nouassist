@@ -9,6 +9,8 @@ using NouAssist.SharedKernel.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
+using GoalProgressLevel = NouAssist.PersonalDevelopment.Goals.Enums.GoalProgressLevel;
+using GoalStatus = NouAssist.PersonalDevelopment.Goals.Enums.GoalStatus;
 
 namespace NouAssist.PersonalDevelopment.Goals.Aggregates
 {

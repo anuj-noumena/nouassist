@@ -1,7 +1,7 @@
 using AutoMapper;
 using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.PersonalDevelopment.Goals.Dtos;
 using NouAssist.PersonalDevelopment.Goals.Entities;
-using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
 
 namespace NouAssist.PersonalDevelopment.Goals
 {

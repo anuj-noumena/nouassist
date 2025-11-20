@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
     <ProjectReference Include="..\..\..\SharedKernel\src\NouAssist.SharedKernel.Domain.Shared\NouAssist.SharedKernel.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\SharedKernel\src\NouAssist.SharedKernel.Domain\NouAssist.SharedKernel.Domain.csproj" />
     <ProjectReference Include="..\NouAssist.PersonalDevelopment.Domain.Shared\NouAssist.PersonalDevelopment.Domain.Shared.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageReference Update="Fody" Version="6.9.3">

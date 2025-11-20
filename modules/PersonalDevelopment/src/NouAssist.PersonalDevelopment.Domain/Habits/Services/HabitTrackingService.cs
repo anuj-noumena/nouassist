@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using NouAssist.PersonalDevelopment.Habits.Data;
-using NouAssist.PersonalDevelopment.Habits.Entities;
 using NouAssist.PersonalDevelopment.Habits.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;

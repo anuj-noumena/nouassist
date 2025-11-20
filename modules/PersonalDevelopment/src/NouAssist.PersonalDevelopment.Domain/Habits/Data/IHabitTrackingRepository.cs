@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NouAssist.PersonalDevelopment.Habits.Entities;
+using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.PersonalDevelopment.Habits.Data

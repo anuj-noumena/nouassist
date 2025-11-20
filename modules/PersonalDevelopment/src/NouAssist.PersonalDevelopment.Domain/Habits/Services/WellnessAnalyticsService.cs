@@ -6,6 +6,7 @@ using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using NouAssist.PersonalDevelopment.Habits.Data;
 using NouAssist.PersonalDevelopment.Habits.ValueObjects;
 using Volo.Abp.Domain.Services;
+using System.Linq.Dynamic.Core;
 
 namespace NouAssist.PersonalDevelopment.Habits.Services
 {

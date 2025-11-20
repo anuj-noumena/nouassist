@@ -1,4 +1,5 @@
-using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
+using FluentValidation;
+using NouAssist.PersonalDevelopment.Goals.Dtos;
 
 namespace NouAssist.PersonalDevelopment.Goals.Goals.Validators
 {

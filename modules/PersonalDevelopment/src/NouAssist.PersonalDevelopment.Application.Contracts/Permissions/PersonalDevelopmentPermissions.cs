@@ -12,7 +12,7 @@ public class PersonalDevelopmentPermissions
     }
 
     // Goals Permissions
-    public static class Goals
+    public static class Goal
     {
         public const string GroupName = "Goals";
 
@@ -36,7 +36,7 @@ public class PersonalDevelopmentPermissions
     }
 
     // Habits Permissions
-    public static class Habits
+    public static class Habit
     {
         public const string GroupName = "Habits";
 

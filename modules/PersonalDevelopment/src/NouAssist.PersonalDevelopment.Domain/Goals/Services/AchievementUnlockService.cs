@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using NouAssist.PersonalDevelopment.Goals.Data;
+using NouAssist.SharedKernel.Events;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.EventBus.Distributed;
 

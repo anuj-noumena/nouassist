@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NouAssist.PersonalDevelopment.Goals.Aggregates;
+using NouAssist.SharedKernel.Enums;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 

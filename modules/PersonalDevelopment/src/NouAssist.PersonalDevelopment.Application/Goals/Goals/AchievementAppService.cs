@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using NouAssist.PersonalDevelopment.Goals.Data;
-using NouAssist.PersonalDevelopment.Goals.Goals.Dtos;
+using NouAssist.PersonalDevelopment.Goals.Dtos;
 using NouAssist.PersonalDevelopment.Goals.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;

@@ -24,7 +24,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
 
             return new GoalProgress(
                 goal.Id,
-                goal.GoalName,
+                goal.Name,
                 goal.TargetAmount.Amount,
                 goal.CurrentAmount.Amount,
                 remainingAmount,
@@ -131,7 +131,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                     {
                         alerts.Add(new MilestoneAlert(
                             goal.Id,
-                            goal.GoalName,
+                            goal.Name,
                             milestone,
                             $"You've reached {milestone}% of your goal!"
                         ));

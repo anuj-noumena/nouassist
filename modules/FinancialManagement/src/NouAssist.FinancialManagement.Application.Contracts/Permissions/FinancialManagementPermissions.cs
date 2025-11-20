@@ -39,6 +39,8 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string ManageCustomers = Default + ".ManageCustomers";
             public const string ManageCollections = Default + ".ManageCollections";
             public const string ViewReports = Default + ".ViewReports";
+            public const string ViewPayments = Default + ".ViewPayments";
+            public const string CreatePayments = Default + ".CreatePayments";
         }
 
         public static class FinancialPlanning
@@ -51,6 +53,10 @@ namespace NouAssist.FinancialManagement.Permissions
             public const string ManageGoals = Default + ".ManageGoals";
             public const string LinkBankAccounts = Default + ".LinkBankAccounts";
             public const string ViewReports = Default + ".ViewReports";
+            public const string ViewAnalytics = Default + ".ViewAnalytics";
+            public const string CreateReports = Default + ".CreateReports";
+            public const string SubmitReports = Default + ".SubmitReports";
+            public const string ApproveReports = Default + ".ApproveReports";
         }
     }
 }

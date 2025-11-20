@@ -85,7 +85,7 @@ namespace NouAssist.FinancialManagement.AccountsReceivable
                 CurrentTenant.Id,
                 input.InvoiceNumber,
                 input.CustomerId,
-                customer.Name,
+                customer.CustomerName,
                 input.IssueDate,
                 input.DueDate,
                 input.Currency,

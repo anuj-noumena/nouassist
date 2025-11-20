@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NouAssist.LearningDevelopment.EntityFrameworkCore.Integration.Configurations;
+using NouAssist.LearningDevelopment.Integration.Aggregates;
 using Volo.Abp;
 
 namespace NouAssist.LearningDevelopment.EntityFrameworkCore;
@@ -29,5 +31,9 @@ public static class LearningDevelopmentDbContextModelCreatingExtensions
             b.HasIndex(q => q.CreationTime);
         });
         */
+
+        // Integration
+        builder.ApplyConfiguration(new LearningPathConfiguration());
+        builder.ApplyConfiguration(new LearningActivityConfiguration());
     }
 }

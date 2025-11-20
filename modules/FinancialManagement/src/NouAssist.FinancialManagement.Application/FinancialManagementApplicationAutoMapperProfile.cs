@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AutoMapper;
 using NouAssist.FinancialManagement.AccountsPayable.Aggregates;
 using NouAssist.FinancialManagement.AccountsPayable.Dtos;
@@ -51,8 +52,8 @@ namespace NouAssist.FinancialManagement
 
             // Accounts Payable Mappings
             CreateMap<Bill, BillDto>()
-                .ForMember(d => d.Amount, opt => opt.MapFrom(s => s.Amount.Amount))
-                .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.Amount.Currency))
+                .ForMember(d => d.Amount, opt => opt.MapFrom(s => s.TotalAmount.Amount))
+                .ForMember(d => d.Currency, opt => opt.MapFrom(s => s.TotalAmount.Currency))
                 .ForMember(d => d.DaysUntilDue, opt => opt.MapFrom(s => (s.DueDate - DateTime.UtcNow.Date).Days))
                 .ForMember(d => d.IsOverdue, opt => opt.MapFrom(s => s.IsOverdue()));
 

@@ -33,7 +33,7 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Exceptions
 
         public static SkillDevelopmentDomainException InvalidSkillTreeHierarchy()
         {
-            return new SkillDomainException(
+            return new SkillDevelopmentDomainException(
                 "SkillDevelopment:InvalidSkillTreeHierarchy",
                 "Invalid skill tree hierarchy. Circular dependencies detected.");
         }

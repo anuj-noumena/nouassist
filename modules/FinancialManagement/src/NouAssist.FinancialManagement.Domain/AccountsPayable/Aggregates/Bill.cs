@@ -17,7 +17,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
         public string BillNumber { get; private set; }
         public Guid VendorId { get; private set; }
         public string VendorName { get; private set; }
-        public MonetaryValue Amount { get; private set; }
+        public MonetaryValue TotalAmount { get; private set; }
         public DateTime IssueDate { get; private set; }
         public DateTime DueDate { get; private set; }
         public BillStatus Status { get; private set; }
@@ -52,7 +52,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
             BillNumber = Check.NotNullOrWhiteSpace(billNumber, nameof(billNumber));
             VendorId = vendorId;
             VendorName = Check.NotNullOrWhiteSpace(vendorName, nameof(vendorName));
-            Amount = Check.NotNull(amount, nameof(amount));
+            TotalAmount = Check.NotNull(amount, nameof(amount));
             
             if (dueDate < issueDate)
             {
@@ -76,7 +76,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
                 BillNumber = BillNumber,
                 VendorId = VendorId,
                 VendorName = VendorName,
-                Amount = Amount,
+                Amount = TotalAmount,
                 DueDate = DueDate,
                 CategoryId = CategoryId,
                 ProjectId = ProjectId,
@@ -135,7 +135,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
                 PaymentId = paymentId,
                 VendorId = VendorId,
                 VendorName = VendorName,
-                Amount = Amount,
+                Amount = TotalAmount,
                 PaymentDate = paymentDate,
                 PaymentMethod = "ACH", // Simplified
                 ConfirmationNumber = confirmationNumber,

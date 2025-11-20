@@ -95,7 +95,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable
                 CurrentTenant.Id,
                 input.BillNumber,
                 input.VendorId,
-                vendor.Name,
+                vendor.VendorName,
                 new MonetaryValue(input.Amount, input.Currency),
                 input.IssueDate,
                 input.DueDate,

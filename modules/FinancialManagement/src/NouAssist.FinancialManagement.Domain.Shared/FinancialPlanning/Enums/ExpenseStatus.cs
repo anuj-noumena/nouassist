@@ -4,8 +4,9 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Enums
     {
         Draft = 1,
         Submitted = 2,
-        Approved = 3,
-        Reimbursed = 4,
-        Rejected = 5
+        Pending = 3,
+        Approved = 4,
+        Reimbursed = 5,
+        Rejected = 6
     }
 }

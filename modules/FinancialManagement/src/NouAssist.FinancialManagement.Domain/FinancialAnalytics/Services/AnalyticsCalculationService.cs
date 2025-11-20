@@ -34,8 +34,8 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
                 summaries.Add(new AccountBalanceSummary
                 {
                     AccountId = account.Id,
-                    AccountNumber = account.AccountNumber.Value,
-                    AccountName = account.AccountName,
+                    AccountNumber = account.AccountNumber.Number,
+                    AccountName = account.Name,
                     CurrentBalance = currentBalance,
                     MonthStartBalance = monthStartBalance,
                     MonthEndBalance = monthEndBalance,
@@ -134,7 +134,7 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
             Budget budget,
             List<Expense> expenses)
         {
-            var budgetedAmount = budget.TotalBudgetedAmount.Amount;
+            var budgetedAmount = budget.TotalBudget.Amount;
             var actualAmount = expenses
                 .Where(e => e.ExpenseDate >= budget.PeriodStart && e.ExpenseDate <= budget.PeriodEnd)
                 .Sum(e => e.Amount.Amount);
@@ -142,7 +142,7 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
             var variance = budgetedAmount - actualAmount;
             var percentUsed = budgetedAmount > 0 ? (actualAmount / budgetedAmount) * 100 : 0;
 
-            var categoryBreakdown = budget.CategoryAllocations
+            var categoryBreakdown = budget.Allocations
                 .Select(allocation =>
                 {
                     var categoryActual = expenses
@@ -151,15 +151,15 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
                             && e.ExpenseDate <= budget.PeriodEnd)
                         .Sum(e => e.Amount.Amount);
 
-                    return new CategoryBreakdown
+                    return new CategoryPerformance
                     {
                         CategoryId = allocation.CategoryId,
                         CategoryName = allocation.CategoryName,
-                        Budgeted = allocation.AllocatedAmount,
-                        Actual = new MonetaryValue(categoryActual, allocation.AllocatedAmount.Currency),
+                        Budgeted = allocation.BudgetedAmount,
+                        Actual = new MonetaryValue(categoryActual, allocation.ActualAmount.Currency),
                         Variance = new MonetaryValue(
-                            allocation.AllocatedAmount.Amount - categoryActual,
-                            allocation.AllocatedAmount.Currency
+                            allocation.BudgetedAmount.Amount - categoryActual,
+                            allocation.BudgetedAmount.Currency
                         )
                     };
                 })
@@ -168,15 +168,15 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
             return new BudgetPerformanceSummary
             {
                 BudgetId = budget.Id,
-                BudgetName = budget.BudgetName,
+                BudgetName = budget.Name,
                 PeriodStart = budget.PeriodStart,
                 PeriodEnd = budget.PeriodEnd,
-                TotalBudgeted = budget.TotalBudgetedAmount,
-                TotalActual = new MonetaryValue(actualAmount, budget.TotalBudgetedAmount.Currency),
-                Variance = new MonetaryValue(variance, budget.TotalBudgetedAmount.Currency),
-                PercentUsed = percentUsed,
+                TotalBudget = budget.TotalBudget,
+                TotalSpent = new MonetaryValue(actualAmount, budget.TotalBudget.Currency),
+                Remaining = new MonetaryValue(variance, budget.TotalBudget.Currency),
+                PercentageUsed = percentUsed,
                 CategoryBreakdown = categoryBreakdown,
-                GeneratedDate = Clock.Now
+                ReportDate = Clock.Now
             };
         }
 
@@ -213,7 +213,7 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
         private int CalculateLiquidityScore(List<LedgerAccount> accounts)
         {
             // Simplified liquidity calculation
-            var cashAccounts = accounts.Where(a => a.AccountName.Contains("Cash", StringComparison.OrdinalIgnoreCase));
+            var cashAccounts = accounts.Where(a => a.Name.Contains("Cash", StringComparison.OrdinalIgnoreCase));
             var totalCash = cashAccounts.Sum(a => a.CurrentBalance.Amount);
 
             return totalCash switch
@@ -281,7 +281,7 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.Services
                     .Where(e => e.ExpenseDate >= budget.PeriodStart && e.ExpenseDate <= budget.PeriodEnd)
                     .Sum(e => e.Amount.Amount);
 
-                if (actualAmount > budget.TotalBudgetedAmount.Amount)
+                if (actualAmount > budget.TotalBudget.Amount)
                     overBudgetCount++;
             }
 

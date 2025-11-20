@@ -42,13 +42,13 @@ namespace NouAssist.FinancialManagement.AccountsPayable
 
             if (!string.IsNullOrWhiteSpace(input.SearchTerm))
             {
-                queryable = queryable.Where(v => v.Name.Contains(input.SearchTerm));
+                queryable = queryable.Where(v => v.VendorName.Contains(input.SearchTerm));
             }
 
             var totalCount = await AsyncExecuter.CountAsync(queryable);
 
             queryable = queryable
-                .OrderBy(v => v.Name)
+                .OrderBy(v => v.VendorName)
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount);
 

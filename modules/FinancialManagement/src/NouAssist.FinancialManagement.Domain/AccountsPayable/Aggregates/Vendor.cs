@@ -9,9 +9,9 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
     public class Vendor : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         public Guid? TenantId { get; private set; }
-        public string Name { get; private set; }
+        public string VendorName { get; private set; }
         public TaxId TaxId { get; private set; }
-        public string Email { get; private set; }
+        public string ContactEmail { get; private set; }
         public string Phone { get; private set; }
         public string Address { get; private set; }
         public int PaymentTermsDays { get; private set; }
@@ -31,9 +31,9 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
             string preferredPaymentMethod = "ACH") : base(id)
         {
             TenantId = tenantId;
-            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
+            VendorName = Check.NotNullOrWhiteSpace(name, nameof(name));
             TaxId = taxId;
-            Email = Check.NotNullOrWhiteSpace(email, nameof(email));
+            ContactEmail = Check.NotNullOrWhiteSpace(email, nameof(email));
             PaymentTermsDays = paymentTermsDays;
             PreferredPaymentMethod = preferredPaymentMethod;
             IsActive = true;
@@ -42,7 +42,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Aggregates
 
         public void UpdateContactInfo(string email, string phone, string address)
         {
-            Email = Check.NotNullOrWhiteSpace(email, nameof(email));
+            ContactEmail = Check.NotNullOrWhiteSpace(email, nameof(email));
             Phone = phone;
             Address = address;
         }

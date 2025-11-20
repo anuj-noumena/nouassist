@@ -31,6 +31,9 @@ namespace NouAssist.LearningDevelopment.Learning.Aggregates
         // Reference to LearningSession by ID (aggregate reference pattern)
         public Guid? LearningSessionId { get; private set; }
 
+        // Integration: Reference to related Skill for practice
+        public Guid? RelatedSkillId { get; private set; }
+
         private readonly List<string> _tags = new();
         public IReadOnlyCollection<string> Tags => _tags.AsReadOnly();
 
@@ -212,6 +215,21 @@ namespace NouAssist.LearningDevelopment.Learning.Aggregates
         public void Archive()
         {
             Status = TopicStatus.Archived;
+        }
+
+        public void LinkToSkill(Guid skillId)
+        {
+            if (IsFolder)
+            {
+                throw new BusinessException("Learning:CannotLinkFolderToSkill",
+                    "Only non-folder topics can be linked to skills.");
+            }
+            RelatedSkillId = skillId;
+        }
+
+        public void UnlinkFromSkill()
+        {
+            RelatedSkillId = null;
         }
 
         public TopicMetrics CalculateMetrics(int totalTimeSpentMs)

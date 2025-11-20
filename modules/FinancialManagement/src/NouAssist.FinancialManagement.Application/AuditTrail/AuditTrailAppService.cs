@@ -11,6 +11,7 @@ using NouAssist.FinancialManagement.AuditTrail.Permissions;
 using NouAssist.FinancialManagement.AuditTrail.Services;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using AuditEntry = NouAssist.FinancialManagement.AuditTrail.Aggregates.AuditEntry;
 
 namespace NouAssist.FinancialManagement.AuditTrail
 {

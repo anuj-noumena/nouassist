@@ -20,7 +20,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.FinancialPlanning.Co
 
             builder.Property(x => x.UserId).IsRequired();
             
-            builder.Property(x => x.BankName)
+            builder.Property(x => x.AccountName)
                 .IsRequired()
                 .HasMaxLength(FinancialConsts.MaxNameLength);
 

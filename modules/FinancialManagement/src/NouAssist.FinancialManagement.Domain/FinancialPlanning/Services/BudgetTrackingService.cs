@@ -1,23 +1,192 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using NouAssist.FinancialManagement.FinancialPlanning.Aggregates;
+using NouAssist.FinancialManagement.FinancialPlanning.Data;
 using NouAssist.FinancialManagement.FinancialPlanning.Entities;
+using NouAssist.FinancialManagement.FinancialPlanning.Events;
+using NouAssist.FinancialManagement.Integration.Events;
+using NouAssist.FinancialManagement.Shared.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Uow;
 
 namespace NouAssist.FinancialManagement.FinancialPlanning.Services
 {
     public class BudgetTrackingService : DomainService
     {
+        private readonly IBudgetRepository _budgetRepository;
+        private readonly ILogger<BudgetTrackingService> _logger;
+
+        public BudgetTrackingService(
+            IBudgetRepository budgetRepository,
+            ILogger<BudgetTrackingService> logger)
+        {
+            _budgetRepository = budgetRepository;
+            _logger = logger;
+        }
+
+        /// <summary>
+        /// Track actual spending from bills, expenses, or payments against budget
+        /// Automatically checks for variance and publishes alerts if needed
+        /// </summary>
+        [UnitOfWork]
+        public virtual async Task<BudgetTrackingResult> TrackActualSpendingAsync(
+            Guid? budgetId,
+            Guid categoryId,
+            MonetaryValue amount,
+            DateTime transactionDate,
+            string description,
+            Guid? tenantId = null)
+        {
+            Check.NotNull(amount, nameof(amount));
+
+            Budget budget;
+
+            // If no budget ID provided, find active budget for the period
+            if (budgetId.HasValue)
+            {
+                budget = await _budgetRepository.GetAsync(budgetId.Value);
+            }
+            else
+            {
+                budget = await FindActiveBudgetForDateAsync(tenantId, transactionDate);
+                if (budget == null)
+                {
+                    _logger.LogWarning(
+                        "No active budget found for date {TransactionDate}, skipping budget tracking",
+                        transactionDate);
+                    return new BudgetTrackingResult(false, null, null);
+                }
+            }
+
+            // Update actual spent
+            try
+            {
+                budget.TrackActual(categoryId, amount);
+                await _budgetRepository.UpdateAsync(budget, autoSave: true);
+
+                _logger.LogInformation(
+                    "Tracked actual spending: {Amount} for category {CategoryId} in budget {BudgetId}",
+                    amount,
+                    categoryId,
+                    budget.Id);
+
+                // Check for variance
+                var variancePercent = budget.GetVariancePercentage();
+                var allocation = budget.Allocations.FirstOrDefault(a => a.CategoryId == categoryId);
+
+                BudgetVarianceDetectedEto varianceEvent = null;
+
+                if (allocation != null)
+                {
+                    var categoryVariancePercent = allocation.BudgetedAmount.Amount > 0
+                        ? (allocation.ActualSpent.Amount / allocation.BudgetedAmount.Amount) * 100
+                        : 0;
+
+                    // Publish variance event if over threshold (>10% variance or exceeded budget)
+                    if (categoryVariancePercent > 110 || (categoryVariancePercent > 90 && categoryVariancePercent < 110))
+                    {
+                        varianceEvent = new BudgetVarianceDetectedEto
+                        {
+                            IdempotencyKey = Guid.NewGuid().ToString(),
+                            BudgetId = budget.Id,
+                            TenantId = budget.TenantId,
+                            UserId = budget.UserId,
+                            BudgetName = budget.Name,
+                            CategoryId = categoryId,
+                            CategoryName = allocation.CategoryName,
+                            BudgetedAmount = allocation.BudgetedAmount,
+                            ActualSpent = allocation.ActualSpent,
+                            Variance = new MonetaryValue(
+                                allocation.ActualSpent.Amount - allocation.BudgetedAmount.Amount,
+                                allocation.ActualSpent.Currency),
+                            VariancePercent = categoryVariancePercent - 100,
+                            IsOverBudget = categoryVariancePercent > 100,
+                            PeriodStart = budget.PeriodStart,
+                            PeriodEnd = budget.PeriodEnd,
+                            DetectedAt = Clock.Now
+                        };
+
+                        budget.AddDistributedEvent(varianceEvent);
+
+                        _logger.LogWarning(
+                            "Budget variance detected: Category {CategoryName} is at {VariancePercent}% ({IsOverBudget})",
+                            allocation.CategoryName,
+                            categoryVariancePercent,
+                            categoryVariancePercent > 100 ? "OVER BUDGET" : "WARNING");
+                    }
+                }
+
+                return new BudgetTrackingResult(true, budget.Id, varianceEvent);
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogError(ex, "Failed to track actual spending for budget {BudgetId}", budget.Id);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Find active budget for a specific date and tenant
+        /// </summary>
+        public virtual async Task<Budget> FindActiveBudgetForDateAsync(Guid? tenantId, DateTime date)
+        {
+            var budgets = await _budgetRepository.GetListAsync();
+
+            return budgets
+                .Where(b => b.TenantId == tenantId
+                    && b.Status == Enums.BudgetStatus.Active
+                    && b.PeriodStart <= date
+                    && b.PeriodEnd >= date)
+                .OrderByDescending(b => b.CreationTime)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Check if adding an expense would exceed budget
+        /// </summary>
+        public virtual async Task<BudgetCheckResult> CheckBudgetAvailabilityAsync(
+            Guid categoryId,
+            MonetaryValue plannedAmount,
+            DateTime transactionDate,
+            Guid? tenantId = null)
+        {
+            var budget = await FindActiveBudgetForDateAsync(tenantId, transactionDate);
+            if (budget == null)
+            {
+                return new BudgetCheckResult(true, null, "No active budget found");
+            }
+
+            var allocation = budget.Allocations.FirstOrDefault(a => a.CategoryId == categoryId);
+            if (allocation == null)
+            {
+                return new BudgetCheckResult(true, null, "Category not in budget");
+            }
+
+            var projectedSpent = allocation.ActualSpent.Add(plannedAmount);
+            var wouldExceed = projectedSpent.Amount > allocation.BudgetedAmount.Amount;
+            var projectedPercent = (projectedSpent.Amount / allocation.BudgetedAmount.Amount) * 100;
+
+            return new BudgetCheckResult(
+                !wouldExceed,
+                budget.Id,
+                wouldExceed
+                    ? $"Would exceed budget by {projectedPercent - 100:F1}%"
+                    : $"Within budget ({projectedPercent:F1}% used)");
+        }
+
         public BudgetPerformance CalculateBudgetPerformance(
             Budget budget,
             List<Expense> actualExpenses)
         {
             var categoryPerformances = new List<CategoryPerformance>();
-            var totalBudgeted = budget.TotalBudgetedAmount.Amount;
+            var totalBudgeted = budget.TotalBudget.Amount;
             var totalActual = 0m;
 
-            foreach (var allocation in budget.CategoryAllocations)
+            foreach (var allocation in budget.Allocations)
             {
                 var categoryExpenses = actualExpenses
                     .Where(e => e.CategoryId == allocation.CategoryId
@@ -28,15 +197,15 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                 var actualAmount = categoryExpenses.Sum(e => e.Amount.Amount);
                 totalActual += actualAmount;
 
-                var variance = allocation.AllocatedAmount.Amount - actualAmount;
-                var percentUsed = allocation.AllocatedAmount.Amount > 0
-                    ? (actualAmount / allocation.AllocatedAmount.Amount) * 100
+                var variance = allocation.BudgetedAmount.Amount - actualAmount;
+                var percentUsed = allocation.BudgetedAmount.Amount > 0
+                    ? (actualAmount / allocation.BudgetedAmount.Amount) * 100
                     : 0;
 
                 categoryPerformances.Add(new CategoryPerformance(
                     allocation.CategoryId,
                     allocation.CategoryName,
-                    allocation.AllocatedAmount.Amount,
+                    allocation.BudgetedAmount.Amount,
                     actualAmount,
                     variance,
                     percentUsed
@@ -62,7 +231,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
             Budget budget,
             List<Expense> actualExpenses)
         {
-            return budget.CategoryAllocations
+            return budget.Allocations
                 .Where(allocation =>
                 {
                     var actualAmount = actualExpenses
@@ -71,7 +240,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                             && e.ExpenseDate <= budget.PeriodEnd)
                         .Sum(e => e.Amount.Amount);
 
-                    return actualAmount > allocation.AllocatedAmount.Amount;
+                    return actualAmount > allocation.BudgetedAmount.Amount;
                 })
                 .ToList();
         }
@@ -83,7 +252,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
         {
             var alerts = new List<BudgetAlert>();
 
-            foreach (var allocation in budget.CategoryAllocations)
+            foreach (var allocation in budget.Allocations)
             {
                 var actualAmount = actualExpenses
                     .Where(e => e.CategoryId == allocation.CategoryId
@@ -91,8 +260,8 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                         && e.ExpenseDate <= budget.PeriodEnd)
                     .Sum(e => e.Amount.Amount);
 
-                var percentUsed = allocation.AllocatedAmount.Amount > 0
-                    ? (actualAmount / allocation.AllocatedAmount.Amount) * 100
+                var percentUsed = allocation.BudgetedAmount.Amount > 0
+                    ? (actualAmount / allocation.BudgetedAmount.Amount) * 100
                     : 0;
 
                 if (percentUsed >= 100)
@@ -124,7 +293,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
                 .Where(e => e.ExpenseDate >= budget.PeriodStart && e.ExpenseDate <= budget.PeriodEnd)
                 .Sum(e => e.Amount.Amount);
 
-            return Math.Max(0, budget.TotalBudgetedAmount.Amount - totalActual);
+            return Math.Max(0, budget.TotalBudget.Amount - totalActual);
         }
 
         public int CalculateDaysRemainingInPeriod(Budget budget)
@@ -220,5 +389,33 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Services
     {
         Warning = 1,
         Critical = 2
+    }
+
+    public class BudgetTrackingResult
+    {
+        public bool Success { get; }
+        public Guid? BudgetId { get; }
+        public BudgetVarianceDetectedEto VarianceEvent { get; }
+
+        public BudgetTrackingResult(bool success, Guid? budgetId, BudgetVarianceDetectedEto varianceEvent)
+        {
+            Success = success;
+            BudgetId = budgetId;
+            VarianceEvent = varianceEvent;
+        }
+    }
+
+    public class BudgetCheckResult
+    {
+        public bool IsWithinBudget { get; }
+        public Guid? BudgetId { get; }
+        public string Message { get; }
+
+        public BudgetCheckResult(bool isWithinBudget, Guid? budgetId, string message)
+        {
+            IsWithinBudget = isWithinBudget;
+            BudgetId = budgetId;
+            Message = message;
+        }
     }
 }

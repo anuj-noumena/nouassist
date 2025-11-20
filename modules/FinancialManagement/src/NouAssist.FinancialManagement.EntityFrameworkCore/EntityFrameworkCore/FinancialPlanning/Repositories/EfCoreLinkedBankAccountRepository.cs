@@ -52,7 +52,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.FinancialPlanning.Re
         {
             var dbContext = await GetDbContextAsync();
             return await dbContext.LinkedBankAccounts
-                .Where(a => a.UserId == userId && a.Status == status)
+                .Where(a => a.UserId == userId && a.ConnectionStatus == status)
                 .OrderBy(a => a.AccountName)
                 .ToListAsync();
         }

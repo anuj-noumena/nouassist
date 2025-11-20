@@ -37,6 +37,9 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
         // Reference to active development session (by ID, not object)
         public Guid? ActiveDevelopmentSessionId { get; private set; }
 
+        // Integration: Reference to related Topic for theory
+        public Guid? RelatedTopicId { get; private set; }
+
         protected Skill() { /* ORM */ }
 
         public Skill(
@@ -199,5 +202,15 @@ namespace NouAssist.LearningDevelopment.SkillDevelopment.Aggregates
 
         public bool CanStartDevelopment() =>
             Status == SkillStatus.NotStarted || Status == SkillStatus.Archived;
+
+        public void LinkToTopic(Guid topicId)
+        {
+            RelatedTopicId = topicId;
+        }
+
+        public void UnlinkFromTopic()
+        {
+            RelatedTopicId = null;
+        }
     }
 }

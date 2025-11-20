@@ -60,7 +60,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
             var totalCount = await AsyncExecuter.CountAsync(queryable);
 
             queryable = queryable
-                .OrderBy(a => a.BankName)
+                .OrderBy(a => a.AccountName)
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount);
 
@@ -79,7 +79,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning
                 GuidGenerator.Create(),
                 CurrentTenant.Id,
                 CurrentUser.Id.Value,
-                input.BankName,
+                input.AccountName,
                 input.AccountNumber,
                 input.AccountType,
                 input.Currency

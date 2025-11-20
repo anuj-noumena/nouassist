@@ -21,6 +21,13 @@ namespace NouAssist.TimeManagement.Calendar.Enums
         Venue = 17,
         Resource = 18,
         Invoice = 19,
-        Expense = 20
+        Expense = 20,
+
+        // LearningDevelopment Module Integration
+        LearningSession = 30,
+        SkillDevelopmentSession = 31,
+        LearningPath = 32,
+        Topic = 33,
+        Skill = 34
     }
 }

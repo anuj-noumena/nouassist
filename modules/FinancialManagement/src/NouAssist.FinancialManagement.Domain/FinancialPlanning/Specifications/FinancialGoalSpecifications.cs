@@ -35,7 +35,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Specifications
         }
 
         public override Expression<Func<FinancialGoal, bool>> ToExpression() =>
-            g => g.GoalType == _type;
+            g => g.Type == _type;
     }
 
     public class GoalsDueSoonSpecification : Specification<FinancialGoal>

@@ -18,7 +18,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AccountsReceivable.C
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Name)
+            builder.Property(x => x.CustomerName)
                 .IsRequired()
                 .HasMaxLength(FinancialConsts.MaxNameLength);
 
@@ -44,7 +44,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AccountsReceivable.C
             builder.Property(x => x.BillingAddress)
                 .HasMaxLength(FinancialConsts.MaxAddressLength);
 
-            builder.Property(x => x.Type)
+            builder.Property(x => x.CustomerType)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(50);
@@ -83,9 +83,9 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AccountsReceivable.C
             builder.Property(x => x.CreditOnHold).IsRequired();
 
             // Indexes
-            builder.HasIndex(x => x.Name);
+            builder.HasIndex(x => x.CustomerName);
             builder.HasIndex(x => x.IsActive);
-            builder.HasIndex(x => new { x.TenantId, x.Name })
+            builder.HasIndex(x => new { x.TenantId, x.CustomerName })
                 .HasDatabaseName("IX_Customers_Tenant_Name");
 
             builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();

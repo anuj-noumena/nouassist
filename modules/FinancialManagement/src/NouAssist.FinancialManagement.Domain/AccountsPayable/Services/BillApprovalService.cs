@@ -43,7 +43,7 @@ namespace NouAssist.FinancialManagement.AccountsPayable.Services
                     $"User does not have sufficient approval authority. Required: {requiredLevel}, User has: {approverLevel}");
             }
 
-            bill.Approve(approverId, Clock.Now);
+            bill.Approve(approverId, approverLevel, comments);
         }
 
         public List<Bill> FilterBillsRequiringApproval(List<Bill> bills, decimal approvalThreshold)

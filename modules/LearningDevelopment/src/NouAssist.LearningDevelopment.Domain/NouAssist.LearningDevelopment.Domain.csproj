@@ -12,6 +12,8 @@
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
     <ProjectReference Include="..\NouAssist.LearningDevelopment.Domain.Shared\NouAssist.LearningDevelopment.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\TimeManagement\src\NouAssist.TimeManagement.Domain.Shared\NouAssist.TimeManagement.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\..\WorkManagement\src\NouAssist.WorkManagement.Domain.Shared\NouAssist.WorkManagement.Domain.Shared.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageReference Update="Fody" Version="6.9.3">
       <PrivateAssets>all</PrivateAssets>

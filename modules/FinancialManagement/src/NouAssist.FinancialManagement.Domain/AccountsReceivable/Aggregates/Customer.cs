@@ -10,12 +10,12 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
     public class Customer : FullAuditedAggregateRoot<Guid>, IMultiTenant
     {
         public Guid? TenantId { get; private set; }
-        public string Name { get; private set; }
+        public string CustomerName { get; private set; }
         public TaxId TaxId { get; private set; }
         public string Email { get; private set; }
         public string Phone { get; private set; }
         public string BillingAddress { get; private set; }
-        public CustomerType Type { get; private set; }
+        public CustomerType CustomerType { get; private set; }
         public int CreditTermsDays { get; private set; }
         public MonetaryValue CreditLimit { get; private set; }
         public MonetaryValue CurrentBalance { get; private set; }
@@ -34,10 +34,10 @@ namespace NouAssist.FinancialManagement.AccountsReceivable.Aggregates
             int creditTermsDays = 30) : base(id)
         {
             TenantId = tenantId;
-            Name = Check.NotNullOrWhiteSpace(name, nameof(name));
+            CustomerName = Check.NotNullOrWhiteSpace(name, nameof(name));
             TaxId = taxId;
             Email = Check.NotNullOrWhiteSpace(email, nameof(email));
-            Type = type;
+            CustomerType = type;
             CreditTermsDays = creditTermsDays;
             IsActive = true;
             CreditOnHold = false;

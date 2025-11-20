@@ -14,6 +14,8 @@ namespace NouAssist.FinancialManagement.FinancialAnalytics.ReadModels
         public decimal PercentageUsed { get; set; }
         public List<CategoryPerformance> CategoryBreakdown { get; set; }
         public DateTime ReportDate { get; set; }
+        public DateTime PeriodStart { get; set; }
+        public DateTime PeriodEnd { get; set; }
     }
 
     public class CategoryPerformance

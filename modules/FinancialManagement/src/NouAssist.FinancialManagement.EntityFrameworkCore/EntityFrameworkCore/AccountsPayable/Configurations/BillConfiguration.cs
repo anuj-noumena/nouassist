@@ -29,7 +29,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AccountsPayable.Conf
                 .HasMaxLength(FinancialConsts.MaxNameLength);
 
             // Amount value object
-            builder.OwnsOne(x => x.Amount, a =>
+            builder.OwnsOne(x => x.TotalAmount, a =>
             {
                 a.Property(m => m.Amount)
                     .HasColumnName("Amount")

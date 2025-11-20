@@ -49,8 +49,8 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.InvestmentManagement
             builder.OwnsMany(x => x.Holdings, holding =>
             {
                 holding.ToTable(
-                    InvestmentManagementDbProperties.DbTablePrefix + "Holdings",
-                    InvestmentManagementDbProperties.DbSchema
+                    FinancialManagementDbProperties.DbTablePrefix + "Holdings",
+                    FinancialManagementDbProperties.DbSchema
                 );
 
                 holding.WithOwner().HasForeignKey("PortfolioId");
@@ -78,7 +78,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.InvestmentManagement
                 holding.Property(h => h.AverageCostBasis).HasPrecision(18, 4);
                 holding.Property(h => h.CurrentPrice).HasPrecision(18, 4);
                 holding.Property(h => h.MarketValue).HasPrecision(18, 2);
-                holding.Property(h => h.UtilizationPercentage).HasPrecision(5, 2);
+                holding.Property(h => h.GetUnrealizedGainLossPercentage()).HasPrecision(5, 2);
 
                 holding.HasKey("PortfolioId", nameof(Holding.Symbol));
                 holding.HasIndex(h => h.Symbol);

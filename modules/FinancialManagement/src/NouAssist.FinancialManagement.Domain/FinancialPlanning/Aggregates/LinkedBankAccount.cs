@@ -12,6 +12,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
         public Guid? TenantId { get; private set; }
         public Guid UserId { get; private set; }
         public string BankName { get; private set; }
+        public string AccountName { get; private set; }
         public string AccountNumber { get; private set; }
         public BankAccountType AccountType { get; private set; }
         public MonetaryValue CurrentBalance { get; private set; }
@@ -26,6 +27,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             Guid? tenantId,
             Guid userId,
             string bankName,
+            string accountName,
             string accountNumber,
             BankAccountType accountType,
             string currency) : base(id)
@@ -33,6 +35,7 @@ namespace NouAssist.FinancialManagement.FinancialPlanning.Aggregates
             TenantId = tenantId;
             UserId = userId;
             BankName = Check.NotNullOrWhiteSpace(bankName, nameof(bankName));
+            AccountName = Check.NotNullOrWhiteSpace(accountName, nameof(accountName));
             AccountNumber = Check.NotNullOrWhiteSpace(accountNumber, nameof(accountNumber));
             AccountType = accountType;
             CurrentBalance = MonetaryValue.Zero(currency);

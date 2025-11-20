@@ -42,18 +42,18 @@ namespace NouAssist.FinancialManagement.AccountsReceivable
 
             if (input.TypeFilter.HasValue)
             {
-                queryable = queryable.Where(c => c.Type == input.TypeFilter.Value);
+                queryable = queryable.Where(c => c.CustomerType == input.TypeFilter.Value);
             }
 
             if (!string.IsNullOrWhiteSpace(input.SearchTerm))
             {
-                queryable = queryable.Where(c => c.Name.Contains(input.SearchTerm));
+                queryable = queryable.Where(c => c.CustomerName.Contains(input.SearchTerm));
             }
 
             var totalCount = await AsyncExecuter.CountAsync(queryable);
 
             queryable = queryable
-                .OrderBy(c => c.Name)
+                .OrderBy(c => c.CustomerName)
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount);
 

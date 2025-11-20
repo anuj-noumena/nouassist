@@ -18,7 +18,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AccountsPayable.Conf
 
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.Name)
+            builder.Property(x => x.VendorName)
                 .IsRequired()
                 .HasMaxLength(FinancialConsts.MaxNameLength);
 
@@ -34,7 +34,7 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AccountsPayable.Conf
                     .HasMaxLength(2);
             });
 
-            builder.Property(x => x.Email)
+            builder.Property(x => x.ContactEmail)
                 .IsRequired()
                 .HasMaxLength(FinancialConsts.MaxEmailLength);
 
@@ -64,9 +64,9 @@ namespace NouAssist.FinancialManagement.EntityFrameworkCore.AccountsPayable.Conf
             builder.Property(x => x.IsActive).IsRequired();
 
             // Indexes
-            builder.HasIndex(x => x.Name);
+            builder.HasIndex(x => x.VendorName);
             builder.HasIndex(x => x.IsActive);
-            builder.HasIndex(x => new { x.TenantId, x.Name })
+            builder.HasIndex(x => new { x.TenantId, x.VendorName })
                 .HasDatabaseName("IX_Vendors_Tenant_Name");
 
             builder.Property(x => x.ConcurrencyStamp).IsConcurrencyToken();

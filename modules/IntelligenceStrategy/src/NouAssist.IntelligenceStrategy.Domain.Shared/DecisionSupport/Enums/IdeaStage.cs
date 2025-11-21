@@ -1,4 +1,4 @@
-namespace NouAssist.DecisionSupport.Enums
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Enums
 {
     /// <summary>
     /// Stage of an innovation idea in its lifecycle

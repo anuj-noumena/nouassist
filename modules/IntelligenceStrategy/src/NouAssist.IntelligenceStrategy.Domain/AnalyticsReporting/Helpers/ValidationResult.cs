@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NouAssist.IntelligenceStrategy.AnalyticsReporting
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Helpers
 {
     /// <summary>
     /// Represents the result of a validation operation

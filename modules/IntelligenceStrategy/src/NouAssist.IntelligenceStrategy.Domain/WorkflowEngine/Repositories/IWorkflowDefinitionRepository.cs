@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Specifications;
 
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Repositories
 {

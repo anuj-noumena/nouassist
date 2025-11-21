@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -375,8 +376,8 @@ namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Services
                 foreach (var condition in version.Conditions)
                 {
                     documentation.AppendLine($"### {condition.Name}");
-                    var sourceActivity = version.Activities.FirstOrDefault(a => a.Id == condition.SourceActivityId);
-                    var targetActivity = version.Activities.FirstOrDefault(a => a.Id == condition.TargetActivityId);
+                    var sourceActivity = ((IEnumerable<ActivityDefinition>)version.Activities).FirstOrDefault(a => a.Id == condition.SourceActivityId);
+                    var targetActivity = ((IEnumerable<ActivityDefinition>)version.Activities).FirstOrDefault(a => a.Id == condition.TargetActivityId);
                     
                     documentation.AppendLine($"From: {sourceActivity?.Name ?? condition.SourceActivityId.ToString()}");
                     documentation.AppendLine($"To: {targetActivity?.Name ?? condition.TargetActivityId.ToString()}");

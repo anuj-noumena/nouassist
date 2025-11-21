@@ -1,6 +1,6 @@
 using System;
 
-namespace NouAssist.Analytics.Exceptions
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Exceptions
 {
     /// <summary>
     /// Exception thrown when a report parameter is invalid

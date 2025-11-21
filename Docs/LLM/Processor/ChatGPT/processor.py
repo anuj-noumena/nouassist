@@ -58,7 +58,7 @@ def main(file_path):
 
 
 if __name__ == "__main__":
-    input_file = "input.json"
+    input_file = "../../../../artifacts/input.json"
     artifact = find_output_path()
     output_path = os.path.join(artifact, "output.txt")
     out = main(input_file)

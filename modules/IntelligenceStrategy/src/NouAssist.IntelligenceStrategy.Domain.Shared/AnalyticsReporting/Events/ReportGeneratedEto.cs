@@ -1,10 +1,9 @@
 using System;
-using NouAssist.Analytics.Enums;
-using NouAssist.Analytics.Events.Base;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Events.Base;
 using Volo.Abp.EventBus;
 
-namespace NouAssist.Analytics.Events
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Events
 {
     /// <summary>
     /// Event raised when a report is generated

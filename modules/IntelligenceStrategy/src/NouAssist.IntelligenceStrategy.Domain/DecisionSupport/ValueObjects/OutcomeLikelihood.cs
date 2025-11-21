@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using NouAssist.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DecisionSupport.ValueObjects
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects
 {
     /// <summary>
     /// Represents the likelihood of a scenario outcome

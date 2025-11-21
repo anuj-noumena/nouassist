@@ -1,9 +1,9 @@
 using System;
-using NouAssist.DecisionSupport.Enums;
-using NouAssist.DecisionSupport.Events.Base;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Events.Base;
 using Volo.Abp.EventBus;
 
-namespace NouAssist.DecisionSupport.Events
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Events
 {
     /// <summary>
     /// Event raised when an innovation idea is captured

@@ -11,6 +11,7 @@ using NouAssist.IntelligenceStrategy.StrategicPlanning.Repositories;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Specifications;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Specifications;
 
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Services
 {
@@ -95,7 +96,7 @@ namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Services
         {
             var behindScheduleSpec = new GoalsBehindScheduleSpecification();
             var duesSoonSpec = new GoalsDueWithinTimeframeSpecification(DateTime.UtcNow, DateTime.UtcNow.AddDays(30));
-            var combinedSpec = behindScheduleSpec.Or(duesSoonSpec);
+            var combinedSpec = SpecificationExtensions.Or(behindScheduleSpec, duesSoonSpec);
 
             return await _strategicGoalRepository.GetListAsync(combinedSpec.ToExpression());
         }

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DecisionSupport.ValueObjects
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects
 {
     /// <summary>
     /// Represents the impact level of a decision or scenario

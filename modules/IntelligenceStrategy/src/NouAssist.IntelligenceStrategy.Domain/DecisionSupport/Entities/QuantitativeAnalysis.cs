@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.DecisionSupport.Enums;
-using NouAssist.DecisionSupport.ValueObjects;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.DecisionSupport.Entities
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Entities
 {
     /// <summary>
     /// Represents a quantitative analysis (Cost-Benefit, ROI) for a decision model

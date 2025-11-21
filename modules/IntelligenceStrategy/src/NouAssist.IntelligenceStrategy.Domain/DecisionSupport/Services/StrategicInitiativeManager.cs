@@ -9,6 +9,7 @@ using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
 using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Users;
 
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
@@ -185,7 +186,7 @@ namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
         {
             try
             {
-                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken)
+                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken: cancellationToken)
                     ?? throw new EntityNotFoundException(nameof(DecisionModelInstance), decisionModelId);
                     
                 // Check if the decision has been finalized

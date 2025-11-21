@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Analytics.Constants;
 using NouAssist.Analytics.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Constants;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 
 namespace NouAssist.Analytics.DTOs.Report

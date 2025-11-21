@@ -1,1231 +1,1848 @@
-# Intelligence & Strategic Management Platform Domain-Driven Design Architecture Specification
-## Intelligence & Strategic Management Extensions
+# **1. EXECUTIVE SUMMARY**
+
+## **1.1 System Purpose**
+
+The Intelligence & Strategic Management Platform is an **AI-first, human-augmented operating system** for work.
+It integrates:
+
+* Productivity intelligence
+* Strategic planning
+* Decision augmentation
+* Workflow orchestration
+* Enterprise analytics
+* Cognitive modeling
+* Adaptive automation
+
+…into a unified, context-aware ecosystem.
+
+The goal is **better human decisions**, not replacing humans.
+The system continuously learns, reasons, explains, recommends, and adapts.
 
 ---
 
-## Table of Contents
+## **1.2 Core Strategic Goals**
 
-1. [Executive Summary](#1-executive-summary)
-2. [Domain Architecture Overview](#2-domain-architecture-overview)
-3. [Bounded Context Catalog](#3-bounded-context-catalog)
-4. [Bounded Context Specifications](#4-bounded-context-specifications)
-5. [Integration Patterns](#5-integration-patterns)
-6. [Implementation Guidelines](#6-implementation-guidelines)
-7. [Cross-Cutting Concerns](#7-cross-cutting-concerns)
-8. [Dependency Matrix](#8-dependency-matrix)
+1. **Turn work data into intelligence.**
+   Transform every workflow, decision, and task into a learning signal.
 
----
+2. **Amplify human capability via AI.**
+   The platform anticipates, explains, and augments decisions.
 
-## 1. Executive Summary
+3. **Create organizational self-awareness.**
+   Through knowledge graphs, strategic alignment, and reasoning models.
 
-### 1.1 System Purpose
-An intelligent productivity platform extension that leverages AI, strategic planning, and advanced analytics to provide personalized productivity optimization, decision support, workflow automation, and strategic alignment capabilities integrated with the core productivity management platform.
+4. **Enable adaptive and ethical automation.**
+   Automations that learn, adjust, and explain themselves.
 
-### 1.2 Architecture Approach
-- **Pattern**: Domain-Driven Design with CQRS, Event Sourcing, and AI/ML Integration
-- **Framework**: ABP Framework (.NET) with AI/ML microservices
-- **Integration**: Event-driven architecture with intelligent event processing
-- **Scalability**: AI-ready microservices with elastic scaling for ML workloads
-
-### 1.3 Core Domain Classification
-- **Core Domains**: Personal Productivity Intelligence, Decision Support, Strategic Planning
-- **Supporting Domains**: Workflow Engine, Team Management, Analytics & Reporting
-- **Generic Domains**: AI/ML Infrastructure, Data Processing Pipeline
+5. **Unify all contexts of work.**
+   Tasks, workflows, goals, decisions, teams, KPIs, and strategy
+   — all integrated under a consistent reasoning and knowledge model.
 
 ---
 
-## 2. Domain Architecture Overview
+## **1.3 AI-First Architecture Principles**
 
-### 2.1 Context Map
+* **AI as a domain citizen** (not an add-on)
+* **Explainability by design**
+* **Temporal intelligence** (horizons, cycles, cadences)
+* **Uncertainty modeling**
+* **Human–AI collaboration**
+* **Knowledge graph adjacency modeling**
+* **Event-first intelligence**
+* **Ethical, transparent, controllable AI**
+
+---
+
+## **1.4 Platform Capabilities at a Glance**
+
+* Personal productivity intelligence
+* Autonomous work pattern detection
+* Cognitive load modeling
+* Scenario-based decision augmentation
+* Strategic initiative reasoning
+* AI-powered workflow routing & assignment
+* Team capability & capacity intelligence
+* KPI forecasting & anomalies
+* Cross-domain intelligence synthesis
+* Unified scoring/priority framework
+* Explainable predictions and recommendations
+
+---
+
+# **2. HIGH-LEVEL ARCHITECTURE OVERVIEW**
+
+## **2.1 System View**
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│Personal Prod.   │────│Decision Support │────│Strategic Planning│
-│Intelligence     │    │      (Core)     │    │     (Core)      │
-│    (Core)       │    │                 │    │                 │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│Workflow Engine  │    │     Team        │    │Analytics &      │
-│  (Supporting)   │    │  (Supporting)   │    │Reporting        │
-│                 │    │                 │    │ (Supporting)    │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-        ┌────────────────────────┼────────────────────────┐
-        │                       │                        │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Core Platform │    │   AI/ML         │    │   External      │
-│   Integration   │    │ Infrastructure  │    │  Integrations   │
-│   (Generic)     │    │   (Generic)     │    │   (Generic)     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
+Users ────┐
+AI Agents ────────────────┐
+Systems ───────────────────┼────► Unified Actor Layer
+                            │
+                            ▼
+                ┌───────────────────────────────┐
+                │   Unified Intelligence Layer   │
+                │  (Reasoning, Context, Scoring) │
+                └───────────────────────────────┘
+                            │
+                            ▼
+         ┌────────────────────────────────────────────┐
+         │           Bounded Context Layer             │
+         │ (6 BCEs: Productivity, Decision, Strategy,  │
+         │   Workflow, Teams, Analytics)               │
+         └────────────────────────────────────────────┘
+                            │
+                            ▼
+         ┌────────────────────────────────────────────┐
+         │        Integration & Event Processing       │
+         │ ML Model Registry • Feature Store • Pipelines│
+         └────────────────────────────────────────────┘
+                            │
+                            ▼
+         ┌────────────────────────────────────────────┐
+         │                 Data Layer                  │
+         │   Event store • Knowledge graph • Projections│
+         └────────────────────────────────────────────┘
 ```
 
-### 2.2 Strategic Design Principles
+---
 
-1. **AI-First Design**: Intelligence capabilities built into the core domain logic
-2. **Strategic Alignment**: All domains support long-term strategic thinking
-3. **Adaptive Learning**: System improves based on user behavior and outcomes
-4. **Context Awareness**: Cross-domain intelligence for better recommendations
-5. **Human-AI Collaboration**: Augment human decision-making, don't replace it
+## **2.2 Bounded Context Map (Improved Version)**
+
+### **Core Domains**
+
+* **Personal Productivity Intelligence**
+* **Decision Support**
+* **Strategic Planning**
+
+### **Supporting Domains**
+
+* **Workflow Engine**
+* **Team Management**
+* **Analytics & Reporting**
+
+### **Cross-Cutting Intelligence**
+
+* Unified Reasoning Engine
+* Knowledge Graph
+* Actor Model
+* Scoring & Prioritization
+* Temporal & Uncertainty Models
+* Rule DSL
 
 ---
 
-## 3. Bounded Context Catalog
+## **2.3 AI/ML Architecture Overview**
 
-| Context | Type | Priority | Complexity | Team Size | AI/ML Focus |
-|---------|------|----------|------------|-----------|-------------|
-| Personal Productivity Intelligence | Core | Critical | High | 4-5 | High |
-| Decision Support | Core | Critical | High | 3-4 | Medium |
-| Strategic Planning | Core | High | Medium | 2-3 | Low |
-| Workflow Engine | Supporting | Medium | Medium | 2-3 | Low |
-| Team Management | Supporting | Medium | Low | 1-2 | None |
-| Analytics & Reporting | Supporting | High | Medium | 2-3 | Medium |
+The AI architecture is built on five layers:
+
+1. **Feature Engineering Layer**
+   Behavioral, cognitive, strategic, performance, environmental features.
+
+2. **Prediction Layer**
+   Task duration, schedule optimization, risk detection.
+   Scenario simulation, KPI forecasting.
+
+3. **Recommendation Layer**
+   Task suggestions, workflow routing, decision insights, strategic nudges.
+
+4. **Reasoning Layer (NEW)**
+   Cross-domain reasoning integrating:
+
+   * context
+   * behavior
+   * strategic alignment
+   * constraints
+   * uncertainty
+
+5. **Explainability Layer**
+   Feature contributions, SHAP values, narrative explanations, counterfactuals.
 
 ---
 
-## 4. Bounded Context Specifications
+## **2.4 Unified Intelligence Flow**
 
-### 4.1 Personal Productivity Intelligence Bounded Context
+**Event → Feature Extraction → Prediction → Reasoning → Recommendation → Action → Feedback → Retraining**
 
-#### 4.1.1 Context Overview
-**Responsibility**: Enhances individual user productivity and well-being via AI, including predictions, recommendations, cognitive modeling, automation, pattern recognition, performance tracking, NLP for tasks, and feedback loops.
+This ensures:
 
-**Strategic Classification**: Core Domain - Strategic
+* Always-learning system
+* Adaptive recommendations
+* Personalized insights
+* Closed-loop intelligence
 
-**Subdomains**:
-- AI Personalization & Prediction: Core predictive analytics and personalization
-- Performance Tracking: Supporting user performance monitoring
-- Cognitive Modeling: User cognitive state and capacity assessment
-- Natural Language Processing: Task and content understanding
+---
 
-#### 4.1.2 Core Domain Model
+# **2.5 Cross-Domain Intelligence Matrix**
+
+| Source                    | Consumes             | Purpose                        |
+| ------------------------- | -------------------- | ------------------------------ |
+| Productivity Intelligence | Decision Support     | Cognitive & workload context   |
+| Productivity Intelligence | Workflow Engine      | AI-based task routing          |
+| Decision Support          | Strategic Planning   | Initiative alignment           |
+| Strategy                  | Decision Support     | Goal alignment & constraints   |
+| Workflow Engine           | Analytics            | Performance aggregation        |
+| Teams                     | Workflow & Decisions | Capability + capacity insights |
+| Analytics                 | All domains          | KPI context for reasoning      |
+
+---
+
+# **2.6 Platform-Wide Concepts Introduced in Enhanced Model**
+
+### **NEW:** Actor Model (Human + AI + System)
+
+### **NEW:** Intelligence Contexts
+
+### **NEW:** Unified Reasoning Engine
+
+### **NEW:** Scoring & Priority Framework
+
+### **NEW:** Temporal Modeling
+
+### **NEW:** Uncertainty Modeling
+
+### **NEW:** Strategic Knowledge Graph
+
+### **NEW:** Domain Rule DSL
+
+These form the backbone of the regenerated domain model.
+
+---
+
+# **3. CORE DESIGN PRINCIPLES (ENHANCED EDITION)**
+
+These principles guide the structure, behavior, and evolution of the entire platform.
+They unify **AI, strategy, productivity, workflows, teams, and analytics** into a coherent system.
+
+---
+
+# **3.1 Domain-Driven Intelligence**
+
+The platform treats *intelligence as part of the domain*, not a separate layer.
+
+### **Key characteristics**
+
+* Predictions and recommendations must respect domain invariants.
+* Aggregates integrate “explanation and confidence” into core logic.
+* Learning is event-driven: **domain events → intelligence events → model updates**.
+* AI models are versioned, referenced in aggregates, and auditable.
+
+---
+
+# **3.2 Humans + AI as First-Class Actors**
+
+Traditional systems treat humans as users and AI as utilities.
+This platform treats **both humans and AI agents** as **Actors**.
+
+### **Actor Types**
+
+* **HumanActor** — a real user
+* **AIAgent** — strategic assistant, productivity agent, workflow router, etc.
+* **SystemActor** — automated processes, schedulers, integrations
+
+### **Why?**
+
+* AI must be allowed to act, propose, annotate, evaluate, and sometimes initiate.
+* Workflows need to assign tasks to humans *or* AI.
+* Decisions may be augmented by AI agents.
+* Strategic planning may be supported by AI scenario generators.
+
+### **Actor Model Introduces**
+
+* Capabilities
+* Preferences
+* Decision patterns
+* Constraints
+* Confidence thresholds
+
+---
+
+# **3.3 Explainable-by-Design Intelligence**
+
+Every prediction, recommendation, or automated decision must include:
+
+### **1. Explanation**
+
+* Feature contributions
+* Rule contributions
+* Narrative justification
+
+### **2. Uncertainty & Confidence**
+
+* Ranges
+* Variance
+* Confidence intervals
+
+### **3. Counterfactuals**
+
+* “If the deadline was 2 days later…”
+* “If the team had 1 more member…”
+
+### **4. Traceability**
+
+* Model version
+* Training data lineage
+* Feature extraction path
+
+This is critical for trust and governance.
+
+---
+
+# **3.4 Temporal Intelligence and Horizon Modeling**
+
+All strategic functions depend heavily on time.
+
+### **New Time Modeling Layer:**
+
+* **TimeWindow** (Start, End)
+* **MilestoneClock** (milestones + expected intervals)
+* **DecisionCadence** (daily/weekly/monthly/quarterly)
+* **StrategicHorizon** (H1 short, H2 mid, H3 long-range)
+* **Cyclical Patterns** (productivity cycles, growth cycles, planning cycles)
+
+This temporal layer is used for:
+
+* predictions
+* progress measurement
+* trend analysis
+* scenario modeling
+* strategic planning
+* task scheduling
+* cognitive load forecasting
+
+---
+
+# **3.5 Uncertainty Modeling & Confidence Principles**
+
+All domains—workflow, decisions, productivity, analytics—need uncertainty awareness.
+
+### **Standard Uncertainty Model Includes**
+
+* **ConfidenceLevel** (0–1)
+* **UncertaintyScore** (entropy or variance)
+* **RiskEnvelope** (min-max outcomes)
+* **ErrorMargin**
+* **DataQualityScore** (input reliability)
+* **PredictionVariance**
+
+### **Why?**
+
+* Strategic & decision BCs need scenario comparisons.
+* Productivity intelligence must measure reliability of future behavior prediction.
+* Workflow engine must know when routing is uncertain and request human approval.
+* KPIs must include confidence in measurement accuracy.
+
+---
+
+# **3.6 Knowledge Graph as the Strategic Backbone**
+
+Traditional DDD relationships are rigid.
+This enhanced architecture adds a **graph-based semantic layer** that relates every domain concept:
+
+### Nodes
+
+* Task
+* Workflow Step
+* Decision
+* Criterion
+* Alternative
+* Strategic Goal
+* KPI
+* Team Member
+* Capability
+* Project
+* Scenario
+* Automation
+* Prediction
+* Recommendation
+
+### Edges
+
+* *depends on*
+* *influences*
+* *is part of*
+* *precedes*
+* *optimizes*
+* *is aligned with*
+* *is measured by*
+
+### Why?
+
+Allows:
+
+* Strategic alignment scoring
+* Impact propagation
+* What-if reasoning
+* Context expansion for AI models
+* Cross-domain aggregation
+* Better recommendations (“based on related goals…”)
+
+---
+
+# **3.7 Unified Reasoning Model (NEW)**
+
+The system contains many forms of reasoning:
+
+* Decision scoring
+* Productivity recommendation
+* Workflow routing
+* Strategic prioritization
+* KPI insights
+* Scenario simulation
+
+This architecture introduces a **Unified Reasoning Model**:
+
+### Core Interface
+
+```
+IReasoningModel  
+ - Evaluate(Context)  
+ - Predict(Context)  
+ - Recommend(Context)  
+ - Explain(Context)  
+ - Simulate(Context)  
+```
+
+Each BC implements its own reasoning:
+
+* Productivity Intelligence → Workload optimization
+* Decision Support → Multi-criteria evaluation
+* Strategic Planning → Scenario-based reasoning
+* Workflow → Routing & assignment rules
+* Analytics → Forecasting & anomaly detection
+
+The UI, workflows, and humans interact with a consistent reasoning layer.
+
+---
+
+# **3.8 Domain Rule DSL (NEW)**
+
+Workflows, decisions, strategy, analytics all use rules.
+To unify these, a **Domain Rule DSL** is introduced:
+
+```
+WHEN <condition expression>
+AND <filters>
+THEN <actions>
+EXPLAIN USING <logic>
+CONFIDENCE <range>
+```
+
+Supports:
+
+* Workflow transitions
+* Decision scoring rules
+* Strategic planning protocols
+* KPI alerting
+* Productivity heuristics
+* Automation triggers
+
+This also supports **versioning**, **testing**, and **explainability**.
+
+---
+
+# **3.9 Aggregate Boundary Principles (Enhanced)**
+
+Rules for what belongs in an aggregate:
+
+### Aggregates Must Contain
+
+* invariants
+* identity
+* consistency boundaries
+* event emission logic
+* explainability of internal decisions
+
+### Aggregates Must *Not* Contain
+
+* external AI/ML logic
+* large collections with unbounded growth
+* UI or reporting concerns
+
+### Specific Improvements Applied
+
+* Personal Productivity Profile split into multiple aggregates
+* Decision Model Instance consolidated with reasoning & criteria
+* Workflow Definition and Workflow Instance separated cleanly
+* Team roles and team capabilities structured into separate modules
+* Strategic goal targets and crisis protocol steps isolated
+
+---
+
+# **3.10 Event-First Intelligence Architecture**
+
+Events are the fuel of intelligence.
+
+### **Every meaningful change emits events** like:
+
+* WorkPatternDetected
+* CognitiveLoadThresholdReached
+* RecommendationAccepted/Rejected
+* ScenarioOutcomeEvaluated
+* GoalTargetProgressed
+* WorkflowBottleneckDetected
+* TeamCapacityExceeded
+* KpiThresholdBreached
+
+### Why?
+
+* AI learns continuously
+* Knowledge graph updates
+* Aggregates remain thin
+* Analytics receives real-time data
+* Intelligence feedback loops are automatic
+
+---
+
+# **3.11 AI Governance & Ethical Control Layer**
+
+Every intelligence capability must be controllable.
+
+### Includes:
+
+* User consent
+* AI visibility controls
+* Explainability requirements
+* Bias monitoring
+* Audit logs
+* Safety thresholds
+* Human override mechanisms
+* Data minimization principles
+
+This ensures the platform is enterprise-ready.
+
+---
+
+# **3.12 Modular, Extensible, Composable Design**
+
+Every BC is independent yet connected through:
+
+* events
+* intelligence contexts
+* knowledge graph linkages
+* unified reasoning framework
+* shared actor model
+* shared rule DSL
+
+This ensures the system can evolve without breaking the core.
+
+---
+
+# **4. UNIFIED DOMAIN MODEL (ENHANCED & AI-FIRST)**
+
+This is the foundational model used across all bounded contexts, enabling:
+
+* consistency,
+* shared intelligence,
+* cross-context reasoning,
+* and graph-based strategic awareness.
+
+---
+
+# **4.1 ACTOR MODEL (HUMAN + AI + SYSTEM)**
+
+Actors represent any entity capable of making decisions, initiating commands, completing tasks, or interacting with workflows.
 
 ```mermaid
 classDiagram
-    direction LR
-
-    class UserProductivityProfile {
-        +UserId userId
-        +updateWorkPattern()
-        +assessCognitiveLoad()
-        +generateRecommendations()
+    class Actor {
+        +ActorId id
+        +ActorType type
+        +Capabilities capabilities
+        +Preferences preferences
+        +TrustLevel trustLevel
+        +ConfidenceThresholds thresholds
+        +ContextAwareness contextAwareness
     }
-    
+
+    class HumanActor {
+        +UserId userId
+        +RoleAssignments roles
+        +CognitiveProfile cognitiveProfile
+        +WorkPatterns patterns
+    }
+
+    class AIAgent {
+        +AgentId id
+        +AgentPurpose purpose
+        +ModelVersion model
+        +ReasoningCapabilities reasoning
+        +KnowledgeScope scope
+    }
+
+    class SystemActor {
+        +SystemId id
+        +ProcessType type
+        +ExecutionPolicy policy
+    }
+
+    Actor <|-- HumanActor
+    Actor <|-- AIAgent
+    Actor <|-- SystemActor
+```
+
+### **ActorType**
+
+* Human
+* AI
+* System
+
+### **Capabilities**
+
+* reasoning
+* task completion
+* decision annotation
+* content generation
+* workflow execution
+* scenario simulation
+
+### **Why this matters**
+
+This enables:
+
+* AI to take tasks in workflows
+* Humans + AI to co-own decisions
+* Team capacity models to include AI agents
+* Automated strategic suggestion flows
+* Task routing to AI when humans are overloaded
+
+---
+
+# **4.2 INTELLIGENCE CONTEXT MODEL**
+
+All AI operations rely on **context bundles**, which unify environmental, behavioral, cognitive, team, and strategic data.
+
+```mermaid
+classDiagram
+    class IntelligenceContext {
+        +ActorContext actor
+        +TaskContext task
+        +TeamContext team
+        +WorkflowContext workflow
+        +StrategicContext strategic
+        +TemporalContext temporal
+        +EnvironmentContext environment
+    }
+
+    class ActorContext {
+        +ActorId actorId
+        +Capabilities capabilities
+        +Preferences preferences
+        +CognitiveState cognitiveState
+        +WorkPattern pattern
+    }
+
+    class TaskContext {
+        +TaskId id
+        +Complexity complexity
+        +Tags tags
+        +Deadline deadline
+        +Dependencies dependencies
+    }
+
+    class TeamContext {
+        +TeamId id
+        +Capacity capacity
+        +Capabilities capabilities
+        +Assignments assignments
+    }
+
+    class WorkflowContext {
+        +WorkflowId id
+        +CurrentStep step
+        +RouteHistory history
+        +Constraints constraints
+    }
+
+    class StrategicContext {
+        +GoalLinks goalLinks
+        +AlignmentScore score
+        +RelatedInitiatives initiatives
+        +RiskFactors risks
+    }
+
+    class TemporalContext {
+        +TimeWindow window
+        +Cadence cadence
+        +Trend trend
+    }
+
+    class EnvironmentContext {
+        +Location location
+        +Device device
+        +Workload workload
+        +ExternalSignals signals
+    }
+```
+
+### Why this matters
+
+It creates a **standardized input** for every AI prediction, recommendation, simulation, or scoring model across all BCs.
+
+---
+
+# **4.3 UNIFIED REASONING MODEL**
+
+A shared interface for all reasoning processes across bounded contexts.
+
+```csharp
+public interface IReasoningModel
+{
+    ReasoningResult Evaluate(IntelligenceContext context);
+    PredictionResult Predict(IntelligenceContext context);
+    RecommendationResult Recommend(IntelligenceContext context);
+    SimulationResult Simulate(IntelligenceContext context);
+    Explanation Explain(IntelligenceContext context);
+}
+```
+
+### **Reasoning Types**
+
+* Productivity reasoning
+* Decision scoring
+* Strategic alignment reasoning
+* Workflow routing reasoning
+* KPI forecasting reasoning
+* Anomaly reasoning
+
+### **Why this matters**
+
+All BCs output reasoning in a predictable structure → consistent UI, consistent intelligence.
+
+---
+
+# **4.4 SCORING & PRIORITIZATION MODEL**
+
+All major decisions produce **scores**.
+
+```mermaid
+classDiagram
+    class Score {
+        +decimal value
+        +ConfidenceInterval confidence
+        +Explanation explanation
+        +ScoreBreakdown breakdown
+    }
+
+    class ScoreBreakdown {
+        +List<FactorContribution> factors
+    }
+
+    class FactorContribution {
+        +string factor
+        +decimal weight
+        +decimal impact
+        +string explanation
+    }
+
+    Score --> ScoreBreakdown
+    ScoreBreakdown --> FactorContribution
+```
+
+### Common Scores
+
+* ProductivityScore
+* CognitiveLoadScore
+* TaskPriorityScore
+* DecisionQualityScore
+* GoalAchievementScore
+* WorkflowEfficiencyScore
+* TeamCapacityScore
+* KPIHealthScore
+
+---
+
+# **4.5 TEMPORAL MODELING LAYER**
+
+Time is modeled as a domain concept.
+
+```mermaid
+classDiagram
+    class TimeWindow {
+        +DateTime start
+        +DateTime end
+        +bool Contains(DateTime)
+    }
+
+    class Cadence {
+        +CadenceType type
+        +int frequency
+    }
+
+    class MilestoneClock {
+        +List<Milestone> milestones
+        +DateTime expectedNext
+    }
+
+    class Horizon {
+        +HorizonType type // H1, H2, H3
+        +TimeWindow window
+    }
+```
+
+### Uses:
+
+* Strategic goal timelines
+* Workflow escalations
+* Cognitive load forecasting
+* KPI trend analysis
+* Scenario planning
+
+---
+
+# **4.6 UNCERTAINTY & CONFIDENCE MODEL**
+
+Every intelligent output includes uncertainty.
+
+```mermaid
+classDiagram
+    class UncertaintyModel {
+        +decimal variance
+        +decimal confidence
+        +decimal entropy
+        +ErrorMargin margin
+        +UncertaintySource source
+    }
+```
+
+### **Uncertainty Sources**
+
+* Data quality
+* Missing features
+* Model instability
+* External volatility
+* Conflicting signals
+
+---
+
+# **4.7 STRATEGIC KNOWLEDGE GRAPH MODEL**
+
+A semantic graph linking all entities across BCs.
+
+```mermaid
+graph TD
+    Goal -->|aligned with| Decision
+    Decision -->|produces| Initiative
+    Initiative -->|linked to| Project
+    Project -->|executed via| Workflow
+    Workflow -->|creates| Task
+    Task -->|influences| KPI
+    KPI -->|monitors| Goal
+    Team -->|executes| Task
+    Actor -->|assigned to| Task
+    Recommendation -->|affects| Task
+    Prediction -->|forecasts| Outcome
+```
+
+### Enables:
+
+* Impact propagation (“if this goal changes…”)
+* Intelligent routing (“tasks aligned with your goals…”)
+* Cross-domain analytics
+* Strategic prioritization
+* AI context expansion
+
+---
+
+# **4.8 DOMAIN EVENTS (CROSS-DOMAIN MODEL)**
+
+Events power intelligence, analytics, and knowledge graph updates.
+
+### **Unified Event Structure**
+
+```
+Event {
+    EventId
+    ActorId
+    Domain
+    Payload
+    Metadata {
+        Timestamp
+        CausationId
+        CorrelationId
+        ModelVersion
+        DataQualityScore
+    }
+}
+```
+
+### Event Categories
+
+* Behavior events
+* Decision events
+* Strategic events
+* Cognitive state events
+* Workflow events
+* Task events
+* KPI events
+* Capacity events
+* Recommendation feedback events
+
+---
+
+# **4.9 INTELLIGENCE FEEDBACK LOOP MODEL**
+
+A universal loop used across all BCs.
+
+```
+Prediction → Action → Feedback → Error Correction → Retraining → Deployment
+```
+
+### Domain-specific examples:
+
+* Productivity: “Recommendation accepted → reinforce pattern”
+* Workflow: “Assignment failed → update routing model”
+* Strategy: “Scenario inaccurate → recalibrate assumptions”
+* KPI: “Forecast variance high → retrain model”
+
+---
+
+# **4.10 DOMAIN MODEL SUMMARY DIAGRAM**
+
+```mermaid
+graph TD
+
+    A[Actors] --> B[Intelligence Context]
+    B --> C[Unified Reasoning Engine]
+    C --> D[Predictions]
+    C --> E[Recommendations]
+    C --> F[Simulations]
+    C --> G[Explanations]
+    D --> H[Uncertainty Model]
+    E --> I[Scoring Model]
+    F --> J[Temporal Modeling]
+    A --> K[Workflows / Tasks]
+    K --> L[Domain Events]
+    L --> M[Knowledge Graph]
+    M --> C
+```
+
+This shows the loop:
+
+**Actors → Context → Reasoning → Output → Events → Knowledge Graph → Improved Reasoning**
+
+---
+
+# **5. BOUNDED CONTEXTS (ENHANCED EDITION)**
+
+This section regenerates each BC using:
+
+* Improved aggregate boundaries
+* Unified reasoning model
+* Intelligence context model
+* Uncertainty modeling
+* Knowledge graph integration
+* Actor model integration
+* New policies & value objects
+* Domain rule DSL
+
+We begin with:
+
+# **5.1 PERSONAL PRODUCTIVITY INTELLIGENCE BOUNDED CONTEXT**
+
+## **5.1.1 Context Overview**
+
+This BC is dedicated to understanding and augmenting a person’s productivity behavior.
+
+### **Responsibilities**
+
+* Work pattern detection
+* Cognitive load assessment
+* Personal recommendation generation
+* Prediction (task duration, scheduling, risk)
+* Personal automation definition & execution
+* Performance tracking
+
+### **Strategic Classification**
+
+**Core Domain — Highest AI density**
+
+---
+
+# **5.1.2 Domain Model (Enhanced)**
+
+## **Aggregates (Refined and Split for DDD purity)**
+
+### **A. CognitiveState (NEW Aggregate Root)**
+
+Represents the user’s dynamic cognitive load and mental bandwidth.
+
+```mermaid
+classDiagram
+    class CognitiveState {
+        +UserId userId
+        +CognitiveLoadLevel currentLevel
+        +CognitiveLoadTrend trend
+        +ConfidenceLevel confidence
+        +List<CognitiveSignal> signals
+        +UpdateLoad()
+        +AddSignal()
+        +EvaluateThreshold()
+    }
+
+    class CognitiveSignal {
+        <<ValueObject>>
+        +SignalType type
+        +decimal value
+        +DateTime timestamp
+        +string source
+    }
+```
+
+**Business rules**
+
+* Cognitive load cannot exceed maximum sustainable threshold
+* Cognitive load predictions must include confidence
+
+---
+
+### **B. WorkPatternProfile (NEW Aggregate Root)**
+
+Stores recurring behavior patterns detected through events & ML.
+
+```mermaid
+classDiagram
+    class WorkPatternProfile {
+        +UserId userId
+        +List<WorkPattern> patterns
+        +AddPattern()
+        +UpdatePattern()
+        +DetectNewPattern()
+    }
+
+    class WorkPattern {
+        <<ValueObject>>
+        +PatternType type
+        +PatternDescription description
+        +PatternConfidence confidence
+        +TimeWindow activeWindow
+    }
+```
+
+---
+
+### **C. UserPreferenceProfile (Aggregate Root)**
+
+Represents stable user preferences relevant to productivity.
+
+```mermaid
+classDiagram
+    class UserPreferenceProfile {
+        +UserId userId
+        +List<UserPreference> preferences
+        +UpdatePreference()
+        +RemovePreference()
+    }
+
+    class UserPreference {
+        <<ValueObject>>
+        +PreferenceType type
+        +PreferenceValue value
+        +PreferenceConfidence confidence
+    }
+```
+
+---
+
+### **D. PerformanceHistory (Aggregate Root)**
+
+Tracks fine-grained performance metrics.
+
+```mermaid
+classDiagram
+    class PerformanceHistory {
+        +UserId userId
+        +List<PerformanceRecord> records
+        +RecordMetric()
+        +GenerateSnapshot()
+    }
+
+    class PerformanceRecord {
+        <<ValueObject>>
+        +PerformanceMetricType type
+        +decimal value
+        +DateTime recordedAt
+    }
+```
+
+---
+
+### **E. PredictionInstance (Aggregate Root — Updated)**
+
+Represents an ML prediction.
+
+```mermaid
+classDiagram
     class PredictionInstance {
         +PredictionId id
+        +UserId userId
         +PredictionType type
-        +ConfidenceLevel confidence
-        +DateTime timestamp
-        +validateAccuracy()
+        +PredictionOutput output
+        +PredictionInput input
+        +ConfidenceInterval confidence
+        +ModelVersion modelVersion
+        +Explainability explainability
+        +Validate()
     }
-    
-    class RecommendationInstance {
-        +RecommendationId id
-        +RecommendationType type
-        +Priority priority
-        +AcceptanceStatus status
-        +apply()
-    }
-    
-    class PersonalAutomation {
-        +AutomationId id
-        +AutomationName name
-        +EffectivenessMetric effectiveness
-        +bool isActive
-        +execute()
-    }
-    
-    class PerformanceSnapshot {
-        +SnapshotId id
-        +DateTime periodStart
-        +DateTime periodEnd
-        +generate()
-    }
-
-    %% ' --- Component & Data Classes (Value Objects) --- '
-    class WorkPatternModel { <<ValueObject>> }
-    class CognitiveLoadMetric { <<ValueObject>> }
-    class UserPreferenceSetting { <<ValueObject>> }
-    class PerformanceDataPoint { <<ValueObject>> }
-    class PredictionInputs { <<ValueObject>> }
-    class PredictionOutput { <<ValueObject>> }
-    class RecommendationContent { <<ValueObject>> }
-    class AutomationTrigger { <<ValueObject>> }
-    class AutomationAction { <<ValueObject>> }
-    class PerformanceMetricValue { <<ValueObject>> }
-
-
-    %% ' --- Core Entity Relationships --- '
-    UserProductivityProfile "1" -- "0..*" PredictionInstance : generates
-    UserProductivityProfile "1" -- "0..*" RecommendationInstance : provides
-    UserProductivityProfile "1" o-- "0..*" PersonalAutomation : has
-    UserProductivityProfile "1" -- "0..*" PerformanceSnapshot : is summarized by
-
-    %% ' --- Composition Relationships (showing "has-many") --- '
-    UserProductivityProfile "1" *-- "*" WorkPatternModel : has
-    UserProductivityProfile "1" *-- "*" UserPreferenceSetting : defines
-    UserProductivityProfile "1" *-- "*" PerformanceDataPoint : records
-    
-    PredictionInstance "1" *-- "1" PredictionInputs : uses
-    PredictionInstance "1" *-- "1" PredictionOutput : produces
-
-    PersonalAutomation "1" *-- "*" AutomationTrigger : is triggered by
-    PersonalAutomation "1" *-- "*" AutomationAction : performs
-
-    PerformanceSnapshot "1" *-- "*" PerformanceMetricValue : contains
 ```
 
-#### 4.1.3 Aggregates Specification
+### **Explainability (Value Object)**
 
-##### UserProductivityProfile Aggregate Root
-**Purpose**: Central repository for a user's patterns, preferences, cognitive state, and performance history
-
-**Entities**:
-- `WorkPatternModel`: Learned patterns of user work behavior
-- `CognitiveLoadMetric`: Current and historical cognitive capacity measurements
-- `UserPreferenceSetting`: Personal preferences and customizations
-- `PerformanceDataPoint`: Individual performance measurements
-
-**Value Objects**:
-- `TimeEstimate`: AI-generated time predictions
-- `RiskProbability`: Likelihood of task/project risks
-- `CognitiveLoadLevel`: Enum (Low, Medium, High, Overload)
-- `WorkloadOptimizationSuggestion`: Recommended workload adjustments
-- `TaskContext`: Contextual information for task execution
-- `PriorityScore`: AI-calculated priority values
-- `MotivationalNudgeContent`: Personalized motivational messages
-- `BehaviorPatternDescription`: Identified behavioral patterns
-- `ExternalContextRef`: References to projects, teams, etc.
-
-**Business Invariants**:
-- User profile must exist before generating predictions
-- Cognitive load cannot exceed maximum sustainable threshold
-- Performance data must be time-ordered
-- Recommendations must have explainable rationale
-
-##### PredictionInstance Aggregate Root
-**Purpose**: Represents a specific prediction with its inputs, output, confidence, and explainability factors
-
-**Entities**:
-- `PredictionModelMetadata`: Information about the ML model used
-- `FeatureImportance`: Importance weights of input features
-
-**Value Objects**:
-- `PredictionType`: TaskDuration, RiskAssessment, OptimalScheduling
-- `PredictionInputs`: Input feature vector
-- `PredictionOutput`: Predicted value or classification
-- `ConfidenceLevel`: Statistical confidence in prediction
-- `ExplainabilityFactors`: Human-readable explanation of prediction
-
-##### RecommendationInstance Aggregate Root
-**Purpose**: Represents a specific suggestion with rationale and tracking
-
-**Entities**:
-- `RecommendationRule`: Business rule that generated the recommendation
-
-**Value Objects**:
-- `RecommendationType`: TaskSuggestion, ScheduleOptimization, WorkloadAdjustment
-- `RecommendationContent`: The actual recommendation text
-- `Rationale`: Explanation of why this recommendation was made
-- `AcceptanceStatus`: Pending, Accepted, Rejected, PartiallyAccepted
-
-##### PersonalAutomation Aggregate Root
-**Purpose**: Defines and tracks user-specific automated tasks/workflows
-
-**Entities**:
-- `AutomationTrigger`: Conditions that activate automation
-- `AutomationAction`: Actions performed when triggered
-
-**Value Objects**:
-- `AutomationEffectivenessMetric`: Measurement of automation success
-- `TriggerCondition`: Boolean logic for automation activation
-- `ActionParameters`: Configuration for automated actions
-
-##### PerformanceSnapshot Aggregate Root
-**Purpose**: Represents a periodic or generated performance report
-
-**Entities**:
-- `PerformanceMetricValue`: Individual metric measurements
-- `BenchmarkData`: Comparison data points
-
-**Value Objects**:
-- `InsightText`: AI-generated insights about performance
-- `RecommendedAction`: Suggested improvements
-- `TrendAnalysis`: Performance trend indicators
-
-#### 4.1.4 Commands & Queries (CQRS)
-
-##### Commands
-**Profile Management**:
-```csharp
-public record UpdateWorkPatternModel(
-    UserId UserId,
-    WorkPatternData PatternData,
-    DateTime EffectiveDate
-);
-
-public record AssessCognitiveLoad(
-    UserId UserId,
-    CognitiveLoadInputs Inputs,
-    DateTime AssessmentTime
-);
-
-public record ApplyUserPreference(
-    UserId UserId,
-    PreferenceType Type,
-    PreferenceValue Value
-);
-```
-
-**AI Predictions & Recommendations**:
-```csharp
-public record GenerateTaskRecommendations(
-    UserId UserId,
-    TaskContext Context,
-    int MaxRecommendations = 5
-);
-
-public record PredictTaskCompletionTime(
-    UserId UserId,
-    TaskId TaskId,
-    TaskComplexity Complexity,
-    List<string> Tags
-);
-
-public record OptimizeUserSchedule(
-    UserId UserId,
-    DateTime StartDate,
-    DateTime EndDate,
-    OptimizationCriteria Criteria
-);
-```
-
-**Automation Management**:
-```csharp
-public record DefinePersonalAutomation(
-    UserId UserId,
-    string Name,
-    List<AutomationTrigger> Triggers,
-    List<AutomationAction> Actions
-);
-
-public record MonitorAutomationEffectiveness(
-    AutomationId AutomationId,
-    EffectivenessMetrics Metrics
-);
-```
-
-**Performance Tracking**:
-```csharp
-public record RecordUserPerformance(
-    UserId UserId,
-    PerformanceMetricType Type,
-    decimal Value,
-    DateTime RecordedAt,
-    string? Context
-);
-
-public record GeneratePerformanceReport(
-    UserId UserId,
-    DateTime StartDate,
-    DateTime EndDate,
-    ReportType Type
-);
-```
-
-##### Queries
-**Profile Queries**:
-```csharp
-public record GetUserProductivityProfile(UserId UserId);
-public record GetCognitiveLoad(UserId UserId, DateTime? AsOf = null);
-public record GetLearnedPreferences(UserId UserId, PreferenceCategory? Category = null);
-```
-
-**Prediction & Recommendation Queries**:
-```csharp
-public record GetRecommendedTasks(UserId UserId, TaskContext? Context = null);
-public record GetOptimizedSchedule(UserId UserId, DateTime Date);
-public record GetPrediction(PredictionId PredictionId);
-public record GetRecommendationExplanation(RecommendationId RecommendationId);
-```
-
-**Performance Queries**:
-```csharp
-public record GetPerformanceReport(UserId UserId, DateTime StartDate, DateTime EndDate);
-public record GetPerformanceTrends(UserId UserId, TrendPeriod Period);
-public record GetPersonalAutomations(UserId UserId, bool? ActiveOnly = true);
-```
-
-#### 4.1.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class WorkPatternDetected : DomainEvent
-{
-    public UserId UserId { get; }
-    public WorkPatternType PatternType { get; }
-    public PatternConfidence Confidence { get; }
-    public PatternDetails Details { get; }
-    public DateTime DetectedAt { get; }
-}
-
-public class CognitiveLoadThresholdReached : DomainEvent
-{
-    public UserId UserId { get; }
-    public CognitiveLoadLevel CurrentLevel { get; }
-    public CognitiveLoadLevel ThresholdLevel { get; }
-    public RecommendedActions SuggestedActions { get; }
-    public DateTime OccurredAt { get; }
-}
-
-public class RecommendationGenerated : DomainEvent
-{
-    public RecommendationId RecommendationId { get; }
-    public UserId UserId { get; }
-    public RecommendationType Type { get; }
-    public RecommendationContent Content { get; }
-    public ConfidenceLevel Confidence { get; }
-    public DateTime GeneratedAt { get; }
-}
-
-public class PredictionMade : DomainEvent
-{
-    public PredictionId PredictionId { get; }
-    public UserId UserId { get; }
-    public PredictionType Type { get; }
-    public PredictionOutput Output { get; }
-    public ConfidenceLevel Confidence { get; }
-    public DateTime MadeAt { get; }
-}
-
-public class PersonalAutomationTriggered : DomainEvent
-{
-    public AutomationId AutomationId { get; }
-    public UserId UserId { get; }
-    public List<TriggerCondition> FulfilledConditions { get; }
-    public List<AutomationAction> ExecutedActions { get; }
-    public DateTime TriggeredAt { get; }
-}
-
-public class PerformanceMetricUpdated : DomainEvent
-{
-    public UserId UserId { get; }
-    public PerformanceMetricType Type { get; }
-    public decimal PreviousValue { get; }
-    public decimal NewValue { get; }
-    public decimal ChangePercentage { get; }
-    public DateTime UpdatedAt { get; }
-}
-```
-
-#### 4.1.6 Business Rules & Policies
-
-##### Cognitive Load Management Policy
-```csharp
-public class CognitiveLoadManagementPolicy
-{
-    public async Task<CognitiveLoadAssessment> AssessCurrentLoad(
-        UserId userId,
-        CurrentWorkContext context)
-    {
-        var profile = await GetUserProfile(userId);
-        var currentTasks = await GetActiveTasks(userId);
-        var recentMetrics = await GetRecentCognitiveMetrics(userId);
-        
-        var baseLoad = CalculateBaseLoad(currentTasks);
-        var contextualAdjustment = CalculateContextualAdjustment(context, profile);
-        var personalFactors = CalculatePersonalFactors(profile, recentMetrics);
-        
-        var totalLoad = baseLoad + contextualAdjustment + personalFactors;
-        
-        return new CognitiveLoadAssessment
-        {
-            CurrentLevel = MapToLevel(totalLoad),
-            Capacity = profile.MaxCognitiveCapacity,
-            Utilization = totalLoad / profile.MaxCognitiveCapacity,
-            Recommendations = GenerateLoadRecommendations(totalLoad, profile)
-        };
-    }
-}
-```
-
-##### Recommendation Generation Policy
-```csharp
-public class RecommendationGenerationPolicy
-{
-    public async Task<List<RecommendationInstance>> GenerateRecommendations(
-        UserId userId,
-        RecommendationContext context)
-    {
-        var profile = await GetUserProfile(userId);
-        var cognitiveLoad = await GetCurrentCognitiveLoad(userId);
-        var workPatterns = await GetUserWorkPatterns(userId);
-        var externalContext = await GetExternalContext(userId);
-        
-        var recommendations = new List<RecommendationInstance>();
-        
-        // Task prioritization recommendations
-        if (context.IncludeTaskRecommendations)
-        {
-            recommendations.AddRange(await GenerateTaskRecommendations(
-                profile, cognitiveLoad, workPatterns, externalContext));
-        }
-        
-        // Schedule optimization recommendations
-        if (context.IncludeScheduleOptimization)
-        {
-            recommendations.AddRange(await GenerateScheduleRecommendations(
-                profile, cognitiveLoad, workPatterns));
-        }
-        
-        // Workload adjustment recommendations
-        if (cognitiveLoad.Level >= CognitiveLoadLevel.High)
-        {
-            recommendations.AddRange(await GenerateWorkloadRecommendations(
-                profile, cognitiveLoad));
-        }
-        
-        // Filter and rank recommendations
-        return FilterAndRankRecommendations(recommendations, profile.Preferences);
-    }
-}
-```
-
-#### 4.1.7 Technical Considerations
-
-##### AI/ML Integration
-- **Model Management**: Versioned ML models with A/B testing capabilities
-- **Feature Engineering**: Real-time feature extraction from user behavior
-- **Prediction Serving**: Low-latency prediction APIs with caching
-- **Model Training**: Automated retraining pipelines based on feedback
-
-##### Privacy & Ethics
-- **Data Minimization**: Only collect necessary data for AI processing
-- **Explainable AI**: All predictions must be explainable to users
-- **User Control**: Users can opt-out of specific AI features
-- **Bias Detection**: Regular monitoring for algorithmic bias
+* Feature contributions
+* Narrative explanation
+* Counterfactuals
 
 ---
 
-### 4.2 Decision Support Bounded Context
+### **F. RecommendationInstance (Aggregate Root — Updated)**
 
-#### 4.2.1 Context Overview
-**Responsibility**: Providing structured tools and intelligence for making better decisions, including modeling, analysis (SWOT, ROI, Risk), prioritization, scenario planning, journaling, assumption testing, and managing innovation ideas through strategic initiative proposals.
-
-**Strategic Classification**: Core Domain - Strategic
-
-**Subdomains**:
-- Advanced Decision Augmentation: Core decision modeling and analysis
-- Basic Decision Modeling: Supporting decision structures
-- Innovation Idea Management: Supporting idea pipeline management
-
-#### 4.2.2 Core Domain Model
+Represents an actionable suggestion for the user.
 
 ```mermaid
 classDiagram
-    class DecisionModelInstance {
-        +DecisionId id
+    class RecommendationInstance {
+        +RecommendationId id
         +UserId userId
-        +DecisionTitle title
-        +Criterion[] criteria
-        +Alternative[] alternatives
-        +AnalysisType[] analyses
-        +ModelStatus status
-        +DateTime createdAt
-        +addCriterion(Criterion)
-        +addAlternative(Alternative)
-        +performAnalysis(AnalysisType)
-        +calculateScores()
+        +RecommendationType type
+        +RecommendationContent content
+        +Score priorityScore
+        +AcceptanceStatus status
+        +Rationale rationale
+        +Apply()
     }
-    
+```
+
+---
+
+### **G. PersonalAutomation (Aggregate Root)**
+
+Automation rules owned by the user.
+
+```mermaid
+classDiagram
+    class PersonalAutomation {
+        +AutomationId id
+        +UserId userId
+        +string name
+        +bool isActive
+        +List<AutomationTrigger> triggers
+        +List<AutomationAction> actions
+        +Execute()
+        +EvaluateTriggers()
+    }
+```
+
+---
+
+### **H. ProductivitySnapshot (Aggregate Root)**
+
+Periodic summary of all productivity intelligence.
+
+```mermaid
+classDiagram
+    class ProductivitySnapshot {
+        +SnapshotId id
+        +UserId userId
+        +TimeWindow window
+        +Score productivityScore
+        +Score focusScore
+        +Score cognitiveRiskScore
+        +List<TrendInsight> insights
+        +Generate()
+    }
+```
+
+---
+
+# **5.1.3 Policies (Enhanced)**
+
+### **Cognitive Load Management Policy**
+
+Contains logic for detecting overload and generating mitigation recommendations.
+
+### **Work Pattern Detection Policy**
+
+Uses event streams and ML signals to identify new patterns.
+
+### **Personal Automation Safety Policy**
+
+Ensures automations never violate safety constraints or user intent.
+
+### **Recommendation Ranking Policy (NEW)**
+
+Ranks recommendations based on:
+
+* urgency
+* strategic alignment
+* cognitive state
+* workload
+* past acceptance behavior
+* uncertainty
+
+---
+
+# **5.1.4 Commands & Queries (Revised)**
+
+### **Key Commands**
+
+```csharp
+record UpdateCognitiveLoad(UserId UserId, List<CognitiveSignal> Signals);
+record DetectWorkPatterns(UserId UserId, TimeWindow Window);
+record GenerateProductivityRecommendations(UserId UserId, IntelligenceContext Context);
+record DefinePersonalAutomation(UserId UserId, string Name, List<AutomationTrigger> Triggers, List<AutomationAction> Actions);
+record RecordPerformance(UserId UserId, PerformanceRecord Record);
+```
+
+### **Key Queries**
+
+```csharp
+record GetCognitiveState(UserId UserId);
+record GetWorkPatterns(UserId UserId);
+record GetUserRecommendations(UserId UserId);
+record GetProductivitySnapshot(UserId UserId, TimeWindow Window);
+```
+
+---
+
+# **5.1.5 Domain Events (Enhanced)**
+
+* **WorkPatternDetected**
+* **CognitiveLoadExceededThreshold**
+* **RecommendationGenerated**
+* **RecommendationAccepted**
+* **RecommendationRejected**
+* **PredictionMade**
+* **AutomationTriggered**
+* **PerformanceMetricRecorded**
+
+These feed AI, analytics, and the knowledge graph.
+
+---
+
+---
+
+# **5.2 DECISION SUPPORT BOUNDED CONTEXT**
+
+## **5.2.1 Context Overview**
+
+This BC provides sophisticated, AI-augmented decision-making tools.
+
+### **Responsibilities**
+
+* Criteria-based decision modeling
+* Multi-alternative evaluation
+* Scenario analysis
+* Cost-benefit, SWOT, and prioritization frameworks
+* Strategic initiative proposal
+* Decision journaling & learning
+
+---
+
+# **5.2.2 Domain Model (Enhanced)**
+
+## **A. DecisionModel (Aggregate Root — Improved)**
+
+```mermaid
+classDiagram
+    class DecisionModel {
+        +DecisionId id
+        +ActorId createdBy
+        +string title
+        +DecisionIntent intent
+        +List<Criterion> criteria
+        +List<Alternative> alternatives
+        +DecisionReasoning reasoning
+        +DecisionStatus status
+        +AddCriterion()
+        +AddAlternative()
+        +Evaluate()
+        +Finalize()
+    }
+```
+
+### New Concepts Introduced:
+
+* **DecisionIntent** (Value Object)
+* **DecisionReasoning** (includes unified reasoning output)
+* **Confidence & Uncertainty scoring per alternative**
+
+---
+
+## **B. ScenarioAnalysis (Aggregate Root — Improved)**
+
+```mermaid
+classDiagram
+    class ScenarioAnalysis {
+        +ScenarioId id
+        +DecisionId decisionId
+        +List<ScenarioModel> models
+        +List<ScenarioOutcome> outcomes
+        +RiskEnvelope uncertainty
+        +Compare()
+        +Simulate()
+    }
+```
+
+### Key enhancements:
+
+* Outcomes include **variance, confidence, and counterfactual reasoning**
+* Scenario models use the **Temporal Context Model**
+
+---
+
+## **C. StrategicInitiativeProposal (Aggregate Root — Enhanced)**
+
+```mermaid
+classDiagram
     class StrategicInitiativeProposal {
         +ProposalId id
-        +UserId proposerId
+        +ActorId proposer
         +InitiativeTitle title
         +BusinessRationale rationale
         +ExpectedOutcomes outcomes
-        +SupportingAnalysis analysis
+        +AlignmentScore alignment
         +ProposalStatus status
-        +ProjectId? linkedProjectId
-        +propose()
-        +approve()
-        +reject()
-        +linkToProject(ProjectId)
+        +Approve()
+        +Reject()
+        +LinkToProject()
     }
-    
-    class ScenarioAnalysis {
-        +ScenarioId id
-        +DecisionId? relatedDecisionId
-        +ScenarioModel[] scenarios
-        +ScenarioOutcome[] outcomes
-        +OutcomeLikelihood likelihood
-        +RiskAssessment risks
-        +develop()
-        +analyze()
-        +compare()
-    }
-    
+```
+
+### New Elements:
+
+* **AlignmentScore** calculated from Knowledge Graph
+* **Uncertainty assessment** of initiative feasibility
+
+---
+
+## **D. DecisionJournalEntry (Aggregate Root)**
+
+Captures learning and improves future decisions.
+
+```mermaid
+classDiagram
     class DecisionJournalEntry {
         +EntryId id
-        +UserId userId
-        +DecisionId? relatedDecisionId
-        +DecisionDescription description
+        +ActorId userId
+        +DecisionSummary summary
         +DecisionRationale rationale
-        +TestedAssumption[] assumptions
-        +DecisionOutcome? outcome
+        +List<TestedAssumption> assumptions
+        +DecisionOutcome outcome
         +LessonsLearned lessons
-        +record()
-        +updateOutcome()
-        +extractLessons()
     }
-    
+```
+
+### Enhancements:
+
+* **Counterfactual tracking**
+* **Model retraining signals**
+
+---
+
+## **E. InnovationIdeaRecord (Aggregate Root)**
+
+```mermaid
+classDiagram
     class InnovationIdeaRecord {
         +IdeaId id
-        +UserId creatorId
+        +ActorId creator
         +IdeaDescription description
-        +EvaluationScore[] scores
-        +PipelineStage currentStage
-        +EvaluationCriteria criteria
-        +ProposalId? proposalId
-        +evaluate()
-        +advance()
-        +convertToProposal()
+        +PipelineStage stage
+        +List<EvaluationScore> scores
+        +PromoteToProposal()
     }
-
-    %% An innovation idea can lead to one or more formal proposals. This composition is logical.
-    InnovationIdeaRecord "1" o-- "0..*" StrategicInitiativeProposal : generates
-
-    %% A decision model instance is composed of the scenario analyses run within it.
-    DecisionModelInstance "1" o-- "0..*" ScenarioAnalysis : includes
-
-    %% --- Corrected Relationships for DecisionJournalEntry ---
-    %% A journal entry is an independent record that *documents* decisions.
-    %% It is associated with, not owned by, other entities.
-    DecisionModelInstance "1" -- "0..*" DecisionJournalEntry : is documented by
-    StrategicInitiativeProposal "1" -- "0..*" DecisionJournalEntry : is documented by
 ```
 
-#### 4.2.3 Aggregates Specification
+---
 
-##### DecisionModelInstance Aggregate Root
-**Purpose**: Central entity managing decision lifecycle and ensuring decision modeling integrity
+# **5.2.3 Decision Reasoning Policies (Updated)**
 
-**Entities**:
-- `Criterion`: Decision evaluation criteria with weights
-- `Alternative`: Possible choices being evaluated
-- `QualitativeAnalysis`: SWOT, Risk assessments
-- `QuantitativeAnalysis`: ROI, Cost-benefit calculations
-- `PrioritizationFrameworkUsage`: Applied frameworks (Eisenhower, MoSCoW)
+### **Multi-Criteria Decision Making Policy (MCDM)**
 
-**Value Objects**:
-- `Weight`: Criterion importance (0-1)
-- `Score`: Alternative rating for criterion
-- `Impact`: Expected impact level
-- `Probability`: Likelihood of outcomes
-- `SwotItem`: Individual SWOT elements
-- `CostValue`: Financial cost estimates
-- `BenefitValue`: Expected benefits
-- `RoiValue`: Return on investment calculations
+Applies weighted scoring, confidence modeling, and explainability.
 
-**Business Invariants**:
-- Decision must have at least one criterion and two alternatives
-- Weights must sum to 1.0 across all criteria
-- Scores must be within defined range (e.g., 1-10)
-- Cost-benefit analysis requires quantified values
+### **Scenario Simulation Policy**
 
-##### StrategicInitiativeProposal Aggregate Root
-**Purpose**: Represents a proposed initiative derived from strategic goals or decisions
+Simulates outcomes across horizons (H1/H2/H3) with uncertainty.
 
-**Entities**:
-- `SupportingAnalysis`: Linked decision models and analyses
-- `ExpectedOutcome`: Projected results and metrics
-- `ApprovalWorkflow`: Approval process tracking
+### **Strategic Alignment Policy**
 
-**Value Objects**:
-- `ProposalStatus`: Enum (Proposed, UnderReview, Approved, Rejected)
-- `BusinessRationale`: Justification for the initiative
-- `ProjectID`: Reference to linked project (if approved)
-- `ApprovalComments`: Feedback from reviewers
+Uses the knowledge graph to score alignment.
 
-**Business Invariants**:
-- Proposal must have clear business rationale
-- Expected outcomes must be measurable
-- Only approved proposals can be linked to projects
-- Proposal cannot be modified after approval
+---
 
-##### ScenarioAnalysis Aggregate Root
-**Purpose**: Holds different scenario models and their projected outcomes
+# **5.2.4 Commands & Queries (Updated)**
 
-**Entities**:
-- `ScenarioModel`: Individual scenario definition
-- `ScenarioOutcome`: Projected results for each scenario
-- `RiskAssessment`: Associated risks and mitigations
+### **Commands**
 
-**Value Objects**:
-- `ScenarioDescription`: Narrative description of scenario
-- `OutcomeLikelihood`: Probability of scenario occurring
-- `ImpactAssessment`: Potential impact if scenario occurs
-
-##### DecisionJournalEntry Aggregate Root
-**Purpose**: Records decisions, rationale, assumptions, and eventual outcomes
-
-**Entities**:
-- `TestedAssumption`: Assumptions and their validation status
-- `DecisionOutcome`: Actual results of the decision
-- `LessonsLearned`: Insights gained from the decision
-
-**Value Objects**:
-- `DecisionRationale`: Why the decision was made
-- `AssumptionConfidence`: Confidence level in assumptions
-- `OutcomeVariance`: Difference between expected and actual results
-
-##### InnovationIdeaRecord Aggregate Root
-**Purpose**: Tracks ideas from capture through evaluation and potential promotion to proposals
-
-**Entities**:
-- `IdeaEvaluationCriteria`: Criteria used to assess ideas
-- `EvaluationScore`: Scores against evaluation criteria
-
-**Value Objects**:
-- `IdeaDescription`: Detailed idea description
-- `PipelineStage`: Current stage in innovation pipeline
-- `EvaluationScore`: Quantified assessment score
-
-#### 4.2.4 Commands & Queries (CQRS)
-
-##### Commands
-**Decision Modeling**:
 ```csharp
-public record CreateDecisionModel(
-    string Title,
-    string Description,
-    DecisionType Type,
-    UserId CreatedBy
-);
-
-public record DefineCriterion(
-    DecisionId DecisionId,
-    string Name,
-    string Description,
-    decimal Weight,
-    CriterionType Type
-);
-
-public record AddAlternative(
-    DecisionId DecisionId,
-    string Name,
-    string Description,
-    Dictionary<CriterionId, decimal> Scores
-);
+record CreateDecisionModel(string Title, DecisionIntent Intent, ActorId CreatedBy);
+record AddDecisionCriterion(DecisionId DecisionId, Criterion Criterion);
+record AddDecisionAlternative(DecisionId DecisionId, Alternative Alternative);
+record RunScenarioAnalysis(DecisionId DecisionId, ScenarioParameters Params);
+record ProposeInitiative(InitiativeDraft Draft, ActorId ProposerId);
 ```
 
-**Analysis Commands**:
+### **Queries**
+
 ```csharp
-public record PerformSwotAnalysis(
-    DecisionId DecisionId,
-    AlternativeId? AlternativeId,
-    List<SwotItem> Strengths,
-    List<SwotItem> Weaknesses,
-    List<SwotItem> Opportunities,
-    List<SwotItem> Threats
-);
-
-public record CalculateCostBenefitAnalysis(
-    DecisionId DecisionId,
-    AlternativeId AlternativeId,
-    List<CostItem> Costs,
-    List<BenefitItem> Benefits,
-    TimeSpan EvaluationPeriod
-);
-
-public record ApplyPrioritizationFramework(
-    DecisionId DecisionId,
-    PrioritizationFramework Framework,
-    FrameworkParameters Parameters
-);
+record GetDecisionModel(DecisionId DecisionId);
+record GetScenarioComparison(ScenarioId ScenarioId);
+record GetStrategicInitiatives(ActorId? FilterBy = null);
+record GetDecisionJournalEntries(ActorId Actor);
 ```
 
-**Strategic Initiative Commands**:
-```csharp
-public record ProposeStrategicInitiative(
-    string Title,
-    BusinessRationale Rationale,
-    List<ExpectedOutcome> Outcomes,
-    List<SupportingAnalysisId> SupportingAnalyses,
-    UserId ProposedBy
-);
+---
 
-public record ApproveInitiativeForProjectCreation(
-    ProposalId ProposalId,
-    ApprovalComments Comments,
-    ProjectCreationParameters ProjectParams,
-    UserId ApprovedBy
-);
+# **5.2.5 Domain Events**
 
-public record RejectInitiativeProposal(
-    ProposalId ProposalId,
-    RejectionReason Reason,
-    string Comments,
-    UserId RejectedBy
-);
-```
+* **DecisionModelCreated**
+* **CriteriaAdded**
+* **AlternativeAdded**
+* **DecisionEvaluated**
+* **ScenarioAnalysisCompleted**
+* **StrategicInitiativeProposed**
+* **StrategicInitiativeApproved**
+* **IdeaCaptured**
 
-**Innovation Management Commands**:
-```csharp
-public record CaptureInnovationIdea(
-    string Description,
-    IdeaCategory Category,
-    List<string> Tags,
-    UserId CreatedBy
-);
+---
 
-public record EvaluateIdea(
-    IdeaId IdeaId,
-    List<EvaluationCriterion> Criteria,
-    Dictionary<CriterionId, decimal> Scores,
-    UserId EvaluatedBy
-);
+# **5.3 STRATEGIC PLANNING BOUNDED CONTEXT**
 
-public record ConvertIdeaToProposal(
-    IdeaId IdeaId,
-    BusinessRationale Rationale,
-    List<ExpectedOutcome> Outcomes,
-    UserId ConvertedBy
-);
-```
+## **5.3.1 Context Overview**
 
-##### Queries
-**Decision Queries**:
-```csharp
-public record GetDecisionModel(DecisionId DecisionId);
-public record CompareAlternatives(DecisionId DecisionId, ComparisonCriteria Criteria);
-public record GetDecisionAnalyses(DecisionId DecisionId, AnalysisType? Type = null);
-```
+This BC manages long-term and mid-term organizational strategy:
 
-**Strategic Initiative Queries**:
-```csharp
-public record GetStrategicInitiativeProposal(ProposalId ProposalId);
-public record ListPendingProposals(UserId? FilterByProposer = null);
-public record GetApprovedInitiatives(DateTime? SinceDate = null);
-```
+* Strategic goals
+* Planning horizons (H1, H2, H3)
+* Sustainable growth (ESG, metrics)
+* Crisis management
+* Scenario-based strategic futures
+* Long-term roadmaps & backcasting
 
-**Innovation Pipeline Queries**:
-```csharp
-public record ListInnovationIdeas(PipelineStage? Stage = null, IdeaCategory? Category = null);
-public record GetInnovationPipeline(UserId? FilterByCreator = null);
-public record GetIdeaEvaluation(IdeaId IdeaId);
-```
+### **Strategic Classification:**
 
-#### 4.2.5 Events & Integration
+**Core Domain — High level strategic intelligence**
 
-##### Domain Events
-```csharp
-public class DecisionModelCreated : DomainEvent
-{
-    public DecisionId DecisionId { get; }
-    public string Title { get; }
-    public DecisionType Type { get; }
-    public UserId CreatedBy { get; }
-    public DateTime CreatedAt { get; }
-}
+---
 
-public class StrategicInitiativeProposed : DomainEvent
-{
-    public ProposalId ProposalId { get; }
-    public string Title { get; }
-    public BusinessRationale Rationale { get; }
-    public List<ExpectedOutcome> Outcomes { get; }
-    public UserId ProposedBy { get; }
-    public DateTime ProposedAt { get; }
-}
+# **5.3.2 Domain Model (Enhanced)**
 
-public class StrategicInitiativeApproved : DomainEvent
-{
-    public ProposalId ProposalId { get; }
-    public string Title { get; }
-    public ProjectCreationParameters ProjectParams { get; }
-    public UserId ApprovedBy { get; }
-    public DateTime ApprovedAt { get; }
-}
+## **A. StrategicGoalDefinition (Aggregate Root — Improved)**
 
-public class AnalysisCompleted : DomainEvent
-{
-    public DecisionId DecisionId { get; }
-    public AnalysisType Type { get; }
-    public AnalysisResults Results { get; }
-    public UserId PerformedBy { get; }
-    public DateTime CompletedAt { get; }
-}
+Defines long-term organizational goals.
 
-public class IdeaCaptured : DomainEvent
-{
-    public IdeaId IdeaId { get; }
-    public string Description { get; }
-    public IdeaCategory Category { get; }
-    public UserId CreatedBy { get; }
-    public DateTime CapturedAt { get; }
-}
-```
-
-#### 4.2.6 Business Rules & Policies
-
-##### Strategic Initiative Approval Policy
-```csharp
-public class StrategicInitiativeApprovalPolicy
-{
-    public async Task<ApprovalResult> EvaluateForApproval(
-        StrategicInitiativeProposal proposal,
-        ApprovalContext context)
-    {
-        var evaluationResults = new List<EvaluationCriterion>();
-        
-        // Check strategic alignment
-        var strategicAlignment = await CheckStrategicAlignment(proposal);
-        evaluationResults.Add(new EvaluationCriterion("Strategic Alignment", strategicAlignment));
-        
-        // Assess resource requirements
-        var resourceFeasibility = await AssessResourceFeasibility(proposal);
-        evaluationResults.Add(new EvaluationCriterion("Resource Feasibility", resourceFeasibility));
-        
-        // Validate expected outcomes
-        var outcomeRealism = await ValidateExpectedOutcomes(proposal);
-        evaluationResults.Add(new EvaluationCriterion("Outcome Realism", outcomeRealism));
-        
-        // Calculate overall score
-        var overallScore = evaluationResults.Average(e => e.Score);
-        
-        return new ApprovalResult
-        {
-            IsApproved = overallScore >= context.ApprovalThreshold,
-            Score = overallScore,
-            Evaluations = evaluationResults,
-            Recommendations = GenerateRecommendations(evaluationResults)
-        };
+```mermaid
+classDiagram
+    class StrategicGoalDefinition {
+        +GoalId id
+        +GoalDescription description
+        +StrategicTheme theme
+        +PlanningHorizon horizon
+        +List<GoalTarget> targets
+        +AlignmentIndicators indicators
+        +ProgressState progress
+        +DefineTarget()
+        +UpdateProgress()
+        +AdjustTarget()
     }
+```
+
+### **Enhancements**
+
+* Targets modeled with **uncertainty & confidence**
+* Goals linked to **knowledge graph** for alignment
+* Progress state includes **trend analysis + variance**
+
+---
+
+## **B. IntegratedHorizonPlan (Aggregate Root — Enhanced)**
+
+Represents long-range plans across time horizons.
+
+```mermaid
+classDiagram
+    class IntegratedHorizonPlan {
+        +PlanId id
+        +List<TimelineEvent> timeline
+        +BackwardPlanningModel backwardPlan
+        +List<FutureScenarioLink> scenarioLinks
+        +DesignLegacy()
+        +MapTimeline()
+        +PlanBackward()
+    }
+```
+
+### **New components**
+
+* **FutureScenarioLink** ties to scenario outcomes in Decision BC
+* **TimelineEvent** includes confidence & volatility
+* **BackwardPlanningModel** supports backcasting
+
+---
+
+## **C. CrisisManagementPlan (Aggregate Root)**
+
+Handles crisis scenarios, resilience, and contingencies.
+
+```mermaid
+classDiagram
+    class CrisisManagementPlan {
+        +PlanId id
+        +List<ContingencyItem> contingencies
+        +ResilienceIndex resilience
+        +List<RiskScenario> scenarios
+        +ActivateProtocol()
+        +AssessResilience()
+    }
+```
+
+### **Enhancements**
+
+* ResilienceIndex includes **Entropic Stability Score**
+* Scenarios incorporate **uncertainty envelopes**
+* Integrates with **Actor Model** (human + AI responders)
+
+---
+
+## **D. SustainableGrowthFramework (Aggregate Root)**
+
+Tracks ESG and long-term sustainability metrics.
+
+```mermaid
+classDiagram
+    class SustainableGrowthFramework {
+        +FrameworkId id
+        +List<GrowthMetric> metrics
+        +List<ESGGoalRecord> esgGoals
+        +ImpactMeasurementData measurements
+        +TrackESGProgress()
+    }
+```
+
+### **Enhancements**
+
+* Each ESG metric includes **variance, confidence, and volatility indicators**
+* Integrates with **KPI BC** for data ingestion
+
+---
+
+## **E. StrategicLink (NEW Value Object)**
+
+Connects strategy to other BCs through the knowledge graph.
+
+```
+StrategicLink {
+    EntityId Source
+    EntityId Target
+    RelationType type  // influences, aligned_with, depends_on
+    Strength score
 }
 ```
 
 ---
 
-### 4.3 Workflow Engine Bounded Context
+# **5.3.3 Policies (Enhanced)**
 
-#### 4.3.1 Context Overview
-**Responsibility**: Designing, executing, and managing automated or semi-automated business processes using potentially standard notations (like BPMN) via underlying engine adapters. Assigns tasks potentially to users or teams defined in other BCs.
+### **Goal Progress Evaluation Policy**
 
-**Strategic Classification**: Supporting Domain
+Uses:
 
-**Subdomains**:
-- Workflow Automation: Supporting workflow design and execution
-- BPMN Engine Interface: Generic engine integration layer
+* KPI data
+* workflow outputs
+* decision outcomes
+* temporal trends
+* uncertainty modeling
 
-#### 4.3.2 Core Domain Model
+### **Strategic Alignment Policy**
+
+Computes:
+
+* how a task, decision, project, or workflow aligns with goals
+* using the **Strategic Knowledge Graph**
+
+### **Crisis Response Policy**
+
+Defines escalation logic using the domain DSL.
+
+---
+
+# **5.3.4 Commands & Queries**
+
+### Commands
+
+```csharp
+record DefineStrategicGoal(string Description, StrategicTheme Theme, PlanningHorizon Horizon, List<GoalTarget> Targets);
+record UpdateGoalProgress(GoalId GoalId, ProgressMeasurement Measurement);
+record CreateCrisisPlan(string Name, List<RiskScenario> Scenarios);
+record DefineESGGoal(ESGCategory Category, GoalTarget Target);
+record BuildHorizonPlan(List<TimelineEvent> Events);
+```
+
+### Queries
+
+```csharp
+record GetStrategicGoal(GoalId GoalId);
+record GetCrisisPlan(PlanId PlanId);
+record GetESGProgress(FrameworkId Id);
+record GetHorizonPlan(PlanId Id);
+```
+
+---
+
+# **5.3.5 Domain Events**
+
+* **StrategicGoalDefined**
+* **GoalTargetUpdated**
+* **GoalProgressEvaluated**
+* **CrisisPlanActivated**
+* **ESGProgressUpdated**
+* **HorizonPlanCreated**
+
+---
+
+---
+
+# **5.4 WORKFLOW ENGINE BOUNDED CONTEXT**
+
+## **5.4.1 Context Overview**
+
+This BC orchestrates and automates work execution:
+
+* Workflow definitions
+* Activity definitions
+* Routing logic
+* Execution state
+* Task assignments
+* Integration with AI routing models
+
+### **Strategic Classification:**
+
+**Supporting Domain — but AI-enhanced**
+
+---
+
+# **5.4.2 Domain Model (Enhanced)**
+
+## **A. WorkflowDefinition (Aggregate Root — Refined)**
 
 ```mermaid
 classDiagram
     class WorkflowDefinition {
         +WorkflowId id
-        +WorkflowName name
+        +string name
         +WorkflowVersion version
-        +ActivityDefinition[] activities
-        +ConditionDefinition[] conditions
-        +AutomationRule[] rules
-        +WorkflowStatus status
-        +createVersion()
-        +addActivity()
-        +defineCondition()
-        +setAutomationRule()
+        +List<StepDefinition> steps
+        +List<WorkflowRule> rules
+        +DefineStep()
+        +DefineTransition()
+        +SetRule()
+        +CreateVersion()
     }
-    
+```
+
+### **Enhancements**
+
+* Decoupled from execution
+* Integrates domain rule DSL
+* Steps include:
+
+  * required capabilities
+  * temporal constraints
+  * cognitive load expectations
+
+---
+
+## **B. WorkflowInstance (Aggregate Root — Cleaned)**
+
+```mermaid
+classDiagram
     class WorkflowInstance {
         +InstanceId id
-        +WorkflowId workflowId
+        +WorkflowId definitionId
         +InstanceStatus status
-        +ActivityInstance[] activities
-        +WorkflowData data
-        +DateTime startedAt
-        +DateTime? completedAt
-        +start()
-        +executeActivity()
-        +handleException()
-        +complete()
+        +List<StepInstance> activeSteps
+        +WorkflowContext context
+        +Start()
+        +Advance()
+        +Fail()
+        +Pause()
+        +Complete()
     }
-    
-    class WorkflowTemplate {
-        +TemplateId id
-        +TemplateName name
-        +WorkflowDefinition definition
-        +TemplateMetadata metadata
-        +bool isPublic
-        +instantiate()
-        +share()
-        +customize()
-    }
-    
-    class TaskAssignment {
-        +AssignmentId id
-        +InstanceId workflowInstanceId
-        +ActivityId activityId
-        +AssigneeReference assignee
-        +TaskStatus status
-        +DateTime assignedAt
-        +DateTime? completedAt
-        +assign()
-        +complete()
-        +reassign()
-    }
-
-    %% A Template provides a blueprint for creating specific Definitions.
-    WorkflowTemplate "1" -- "0..*" WorkflowDefinition : serves as template for
-
-    %% A Definition is composed of an ordered set of Step Definitions.
-    WorkflowDefinition "1" o-- "1..*" WorkflowStepDefinition : consists of
-
-    %% A Definition is instantiated to create a running Workflow Instance.
-    WorkflowDefinition "1" -- "0..*" WorkflowInstance : is instantiated as
-
-    %% A running Instance creates Tasks, each corresponding to a Step Definition.
-    WorkflowInstance "1" o-- "0..*" WorkflowTask : generates
-    WorkflowTask "1" -- "1" WorkflowStepDefinition : is an instance of
-
-    %% A Task is assigned to a User to be completed.
-    WorkflowTask "1" -- "1" User : is assigned to
-
 ```
 
-#### 4.3.3 Aggregates Specification
+### **New Fields**
 
-##### WorkflowDefinition Aggregate Root
-**Purpose**: The blueprint of a workflow, including versions, activities, conditions, and automation rules
+* Execution uncertainty
+* Actor assignment reasoning
+* Knowledge graph trace of workflow impact
 
-**Entities**:
-- `WorkflowVersion`: Version control for workflow changes
-- `ActivityDefinition`: Individual workflow steps
-- `ConditionDefinition`: Decision points and branching logic
-- `AutomationRule`: Automated actions and triggers
+---
 
-**Value Objects**:
-- `VersionIdentifier`: Semantic versioning for workflows
-- `ActivityType`: Manual, Automated, Decision, Parallel, Sequential
-- `ConditionExpression`: Boolean logic for workflow branching
-- `RuleTrigger`: Event or condition that activates automation
-- `RuleAction`: Action performed by automation rule
+## **C. StepDefinition (Entity)**
 
-**Business Invariants**:
-- Workflow must have at least one activity
-- All activities must be reachable from start node
-- Conditional branches must have valid expressions
-- Automation rules must have valid triggers and actions
+Defines one unit of work in a workflow.
 
-##### WorkflowInstance Aggregate Root
-**Purpose**: A live or completed execution of a workflow definition
-
-**Entities**:
-- `ActivityInstance`: Runtime instance of workflow activity
-- `WorkflowExecutionLog`: Audit trail of workflow execution
-- `WorkflowExceptionRecord`: Errors and exception handling
-
-**Value Objects**:
-- `InstanceStatus`: Running, Completed, Failed, Paused, Waiting
-- `ExecutionTimestamp`: Activity execution timing
-- `ExceptionDetails`: Error information and context
-- `WorkflowData`: Runtime data passed between activities
-
-**Business Invariants**:
-- Instance must be based on valid workflow definition
-- Activity instances must follow defined sequence
-- Exception handling must follow defined procedures
-- Workflow data must maintain consistency
-
-##### WorkflowTemplate Aggregate Root
-**Purpose**: A reusable workflow definition with metadata
-
-**Value Objects**:
-- `TemplateMetadata`: Description, tags, usage statistics
-- `VisibilityScope`: Private, Team, Organization, Public
-- `CustomizationOptions`: Configurable parameters
-
-##### TaskAssignment Aggregate Root
-**Purpose**: Assignment of workflow tasks to users or teams
-
-**Value Objects**:
-- `AssigneeReference`: UserID, TeamID, RoleID reference
-- `TaskStatus`: Assigned, InProgress, Completed, Cancelled
-- `TaskDependency`: Dependencies on other tasks
-
-#### 4.3.4 Commands & Queries (CQRS)
-
-##### Commands
-**Workflow Design**:
-```csharp
-public record DesignWorkflow(
-    string Name,
-    string Description,
-    WorkflowType Type,
-    UserId DesignedBy
-);
-
-public record DefineActivity(
-    WorkflowId WorkflowId,
-    string ActivityName,
-    ActivityType Type,
-    ActivityConfiguration Configuration
-);
-
-public record SetCondition(
-    WorkflowId WorkflowId,
-    ActivityId FromActivity,
-    ActivityId ToActivity,
-    ConditionExpression Condition
-);
-
-public record DefineAutomationRule(
-    WorkflowId WorkflowId,
-    RuleTrigger Trigger,
-    RuleAction Action,
-    RuleConditions Conditions
-);
 ```
-
-**Workflow Execution**:
-```csharp
-public record ExecuteWorkflowInstance(
-    WorkflowId WorkflowId,
-    WorkflowInputData InputData,
-    UserId StartedBy
-);
-
-public record AssignWorkflowTask(
-    InstanceId InstanceId,
-    ActivityId ActivityId,
-    AssigneeReference Assignee,
-    DateTime? DueDate,
-    UserId AssignedBy
-);
-
-public record UpdateTaskStatus(
-    AssignmentId AssignmentId,
-    TaskStatus NewStatus,
-    string? Comments,
-    UserId UpdatedBy
-);
-
-public record HandleWorkflowException(
-    InstanceId InstanceId,
-    ExceptionType Type,
-    ExceptionHandlingStrategy Strategy,
-    UserId HandledBy
-);
-```
-
-**Template Management**:
-```csharp
-public record CreateWorkflowTemplate(
-    WorkflowId SourceWorkflowId,
-    string TemplateName,
-    TemplateMetadata Metadata,
-    UserId CreatedBy
-);
-
-public record ShareWorkflowTemplate(
-    TemplateId TemplateId,
-    SharingScope Scope,
-    List<UserId>? SpecificUsers,
-    UserId SharedBy
-);
-```
-
-##### Queries
-**Workflow Queries**:
-```csharp
-public record GetWorkflowDefinition(WorkflowId WorkflowId);
-public record GetWorkflowVersionHistory(WorkflowId WorkflowId);
-public record ListWorkflowTemplates(UserId? FilterByCreator = null, WorkflowCategory? Category = null);
-```
-
-**Instance Queries**:
-```csharp
-public record GetWorkflowInstanceStatus(InstanceId InstanceId);
-public record GetWorkflowExecutionLogs(InstanceId InstanceId);
-public record GetAssignedTasks(UserId? AssigneeId = null, TaskStatus? Status = null);
-```
-
-**Performance Queries**:
-```csharp
-public record GetWorkflowPerformanceAnalytics(WorkflowId WorkflowId, DateTime StartDate, DateTime EndDate);
-public record GetWorkflowBottlenecks(WorkflowId WorkflowId);
-public record GetWorkflowEfficiencyMetrics(WorkflowId WorkflowId);
-```
-
-#### 4.3.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class WorkflowInstanceStarted : DomainEvent
-{
-    public InstanceId InstanceId { get; }
-    public WorkflowId WorkflowId { get; }
-    public WorkflowInputData InputData { get; }
-    public UserId StartedBy { get; }
-    public DateTime StartedAt { get; }
-}
-
-public class WorkflowActivityCompleted : DomainEvent
-{
-    public InstanceId InstanceId { get; }
-    public ActivityId ActivityId { get; }
-    public ActivityOutputData OutputData { get; }
-    public TimeSpan Duration { get; }
-    public UserId CompletedBy { get; }
-    public DateTime CompletedAt { get; }
-}
-
-public class TaskAssigned : DomainEvent
-{
-    public AssignmentId AssignmentId { get; }
-    public InstanceId InstanceId { get; }
-    public ActivityId ActivityId { get; }
-    public AssigneeReference Assignee { get; }
-    public DateTime? DueDate { get; }
-    public UserId AssignedBy { get; }
-    public DateTime AssignedAt { get; }
-}
-
-public class WorkflowInstanceCompleted : DomainEvent
-{
-    public InstanceId InstanceId { get; }
-    public WorkflowId WorkflowId { get; }
-    public WorkflowOutputData OutputData { get; }
-    public TimeSpan TotalDuration { get; }
-    public DateTime CompletedAt { get; }
-}
-
-public class WorkflowExceptionOccurred : DomainEvent
-{
-    public InstanceId InstanceId { get; }
-    public ActivityId? ActivityId { get; }
-    public ExceptionType Type { get; }
-    public ExceptionDetails Details { get; }
-    public DateTime OccurredAt { get; }
+StepDefinition {
+    StepId id
+    StepType type
+    RequiredCapabilities capabilities
+    TemporalRules timeRules
+    AssignmentRules assignmentRules
 }
 ```
 
 ---
 
-### 4.4 Team Management Bounded Context
+## **D. StepInstance (Entity)**
 
-#### 4.4.1 Context Overview
-**Responsibility**: Defining and managing team structures, memberships, roles, capabilities, and team-level availability or allocation.
+Runtime representation.
 
-**Strategic Classification**: Supporting Domain
+```
+StepInstance {
+    StepInstanceId id
+    StepId definitionId
+    ActorId assignedTo
+    ExecutionWindow window
+    Status status
+    Output output
+}
+```
 
-**Subdomains**:
-- Team & Role Management: Core team structure management
-- Capability Mapping: Supporting skill and capability tracking
+---
 
-#### 4.4.2 Core Domain Model
+## **E. TaskAssignment (Aggregate Root)**
+
+Standalone aggregate for task assignment logic.
+
+```mermaid
+classDiagram
+    class TaskAssignment {
+        +AssignmentId id
+        +InstanceId workflowInstanceId
+        +StepId stepId
+        +ActorId assignee
+        +AssignmentReasoning reasoning
+        +TaskStatus status
+        +Assign()
+        +Reassign()
+        +Complete()
+    }
+```
+
+### **Reasoning Includes**
+
+* Capability match score
+* Cognitive load model
+* Team capacity model
+* Strategic alignment scoring
+* Past performance data
+* Confidence and uncertainty
+
+---
+
+# **5.4.3 New AI-Driven Routing Logic**
+
+### **Routing Inputs**
+
+* StepDefinition’s required capabilities
+* ActorModel (human + AI)
+* CognitiveState
+* ProductivitySnapshot
+* TeamContext
+* StrategicContext
+
+### **Routing Output**
+
+* Recommended Actor Assignments
+* Ranked list
+* Explanation (feature contributions)
+* Uncertainty
+
+---
+
+# **5.4.4 Workflow Rule DSL Examples**
+
+### Example: Transition rule
+
+```
+WHEN step.output.status == "complete"
+AND context.cognitiveLoad < High
+THEN transition.to("ReviewStep")
+EXPLAIN USING "Requires cognitive clarity"
+```
+
+### Example: Auto-assign rule
+
+```
+WHEN step.requires.capability == "Analysis"
+AND team.capacity > 0.7
+THEN assign.to(best_match_by_capability)
+CONFIDENCE 0.84
+```
+
+---
+
+# **5.4.5 Commands & Queries**
+
+### Commands
+
+```csharp
+record CreateWorkflowDefinition(string Name);
+record AddWorkflowStep(WorkflowId WorkflowId, StepDefinition Definition);
+record ExecuteWorkflow(WorkflowId WorkflowId, ActorId StartedBy);
+record AssignWorkflowTask(InstanceId Instance, StepId Step, ActorId Assignee);
+record CompleteTask(AssignmentId Assignment, OutputData Output);
+```
+
+### Queries
+
+```csharp
+record GetWorkflowDefinition(WorkflowId Id);
+record GetWorkflowInstance(InstanceId Id);
+record GetWorkflowAssignments(ActorId Actor, TaskStatus? Status = null);
+record GetWorkflowPerformance(WorkflowId Id);
+```
+
+---
+
+# **5.4.6 Domain Events**
+
+* **WorkflowDefinitionCreated**
+* **WorkflowInstanceStarted**
+* **StepCompleted**
+* **TaskAssigned**
+* **WorkflowRouted**
+* **WorkflowCompleted**
+* **WorkflowExceptionOccurred**
+
+---
+
+# **5.5 TEAM MANAGEMENT BOUNDED CONTEXT**
+
+## **5.5.1 Context Overview**
+
+This BC governs organizational structure, human actors, roles, capabilities, and team capacity.
+
+### **Responsibilities**
+
+* Team structure
+* Roles & permissions
+* Capability modeling
+* Actor availability
+* Capacity forecasting
+* Team performance intelligence
+* AI agent inclusion in team structures (NEW)
+
+### **Strategic Classification:**
+
+**Supporting Domain — But critically important for intelligence-driven assignment and strategy alignment**
+
+---
+
+# **5.5.2 Domain Model (Enhanced)**
+
+## **A. Team (Aggregate Root — Clean & Strengthened)**
 
 ```mermaid
 classDiagram
@@ -1233,1346 +1850,2450 @@ classDiagram
         +TeamId id
         +TeamName name
         +TeamPurpose purpose
-        +TeamMember[] members
-        +Role[] roles
-        +CapabilityTag[] capabilities
+        +List<TeamMember> members
+        +List<RoleDefinition> roles
+        +TeamCapacity capacity
         +TeamStatus status
-        +addMember(TeamMember)
-        +removeMember(MemberId)
-        +assignRole(MemberId, RoleId)
-        +updateCapabilities()
+        +AddMember()
+        +RemoveMember()
+        +AssignRole()
+        +RecomputeCapacity()
     }
-    
-    class TeamMember {
-        +MemberId id
-        +UserID userId
-        +MemberName name
-        +Role[] assignedRoles
-        +CapabilityTag[] capabilities
-        +TeamAssignmentDateRange assignment
-        +MemberStatus status
-        +assignRole(Role)
-        +addCapability(CapabilityTag)
-    }
-    
-    class Role {
-        +RoleId id
-        +RoleName name
-        +RoleDescription description
-        +CapabilityTag[] requiredCapabilities
-        +List~Permission~ permissions
-        +definePermissions()
-        +addRequiredCapability()
-    }
-
-    %% A Team can define a set of Roles that are applicable within it.
-    Team "1" o-- "0..*" Role : defines
-
-    %% The TeamMembership class links a User, a Team, and a Role together.
-    %% This shows WHICH User is in WHICH Team with WHICH Role.
-    Team "1" -- "0..*" TeamMembership : has
-    User "1" -- "0..*" TeamMembership : has
-    TeamMembership "1" -- "1" Role : assigns
-
 ```
 
-#### 4.4.3 Aggregates Specification
+### **Enhancements**
 
-##### Team Aggregate Root
-**Purpose**: Represents a team, its members, purpose, and associated roles
+* Integrated **capacity model**
+* Inclusion of **AI agents as team members**
+* Purpose includes **strategic alignment score**
+* Capacity includes **cognitive load average + workload volatility**
 
-**Entities**:
-- `TeamMember`: Individual team member with roles and capabilities
-- `Role`: Role definitions within the team
+---
 
-**Value Objects**:
-- `TeamID`: Unique team identifier
-- `TeamName`: Human-readable team name
-- `TeamPurpose`: Mission/purpose statement
-- `MemberID`: Reference to user (likely UserID from IAM)
-- `RoleID`: Unique role identifier
-- `CapabilityTag`: Skill or capability identifier
-- `TeamAssignmentDateRange`: Membership period
+## **B. TeamMember (Entity — Enhanced)**
 
-**Business Invariants**:
-- Team must have at least one member
-- Team must have at least one member with admin/lead role
-- Members cannot have conflicting roles
-- Role assignments must match capability requirements
+Represents either a human member or an AI agent.
 
-#### 4.4.4 Commands & Queries (CQRS)
-
-##### Commands
-**Team Management**:
-```csharp
-public record CreateTeam(
-    string Name,
-    string Purpose,
-    TeamType Type,
-    UserId CreatedBy
-);
-
-public record UpdateTeamDetails(
-    TeamId TeamId,
-    string? Name,
-    string? Purpose,
-    TeamType? Type,
-    UserId UpdatedBy
-);
-
-public record DisbandTeam(
-    TeamId TeamId,
-    string Reason,
-    DateTime EffectiveDate,
-    UserId DisbandedBy
-);
 ```
-
-**Membership Management**:
-```csharp
-public record AddMemberToTeam(
-    TeamId TeamId,
-    UserId MemberId,
-    DateTime StartDate,
-    DateTime? EndDate,
-    UserId AddedBy
-);
-
-public record RemoveMemberFromTeam(
-    TeamId TeamId,
-    UserId MemberId,
-    DateTime EffectiveDate,
-    string? Reason,
-    UserId RemovedBy
-);
-```
-
-**Role Management**:
-```csharp
-public record DefineRole(
-    TeamId TeamId,
-    string RoleName,
-    string Description,
-    List<CapabilityTag> RequiredCapabilities,
-    List<Permission> Permissions,
-    UserId DefinedBy
-);
-
-public record AssignRoleToMember(
-    TeamId TeamId,
-    UserId MemberId,
-    RoleId RoleId,
-    DateTime EffectiveDate,
-    UserId AssignedBy
-);
-
-public record RevokeRoleFromMember(
-    TeamId TeamId,
-    UserId MemberId,
-    RoleId RoleId,
-    DateTime EffectiveDate,
-    string? Reason,
-    UserId RevokedBy
-);
-```
-
-##### Queries
-**Team Queries**:
-```csharp
-public record GetTeamDetails(TeamId TeamId);
-public record GetTeamMembers(TeamId TeamId, bool? ActiveOnly = true);
-public record GetTeamsForMember(UserId MemberId);
-public record FindTeamsByCapability(CapabilityTag Capability);
-```
-
-**Role Queries**:
-```csharp
-public record GetMemberRoles(TeamId TeamId, UserId MemberId);
-public record GetMembersInRole(TeamId TeamId, RoleId RoleId);
-public record GetRoleDefinition(RoleId RoleId);
-public record GetMemberCapabilities(UserId MemberId, TeamId? TeamFilter = null);
-```
-
-#### 4.4.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class TeamCreated : DomainEvent
-{
-    public TeamId TeamId { get; }
-    public string Name { get; }
-    public string Purpose { get; }
-    public TeamType Type { get; }
-    public UserId CreatedBy { get; }
-    public DateTime CreatedAt { get; }
+TeamMember {
+    MemberId id
+    ActorId actorId   // Human or AI Agent
+    MemberType type   // Human, AI-Agent, Hybrid
+    List<RoleId> assignedRoles
+    List<CapabilityTag> capabilities
+    Availability availability
+    CognitiveCapacity cognitiveCapacity
+    PerformanceProfile performance
 }
+```
 
-public class MemberAddedToTeam : DomainEvent
-{
-    public TeamId TeamId { get; }
-    public UserId MemberId { get; }
-    public DateTime StartDate { get; }
-    public DateTime? EndDate { get; }
-    public UserId AddedBy { get; }
-    public DateTime AddedAt { get; }
-}
+### **New Capabilities**
 
-public class RoleAssignedToMember : DomainEvent
-{
-    public TeamId TeamId { get; }
-    public UserId MemberId { get; }
-    public RoleId RoleId { get; }
-    public string RoleName { get; }
-    public DateTime EffectiveDate { get; }
-    public UserId AssignedBy { get; }
+* **Availability model**: Workload, schedule, burnout risk
+* **CognitiveCapacity**: Derived from personal productivity BC
+* **PerformanceProfile**: Past effectiveness
+
+---
+
+## **C. RoleDefinition (Entity — Enhanced)**
+
+```
+RoleDefinition {
+    RoleId id
+    RoleName name
+    RoleDescription description
+    List<CapabilityRequirement> requiredCapabilities
+    PermissionSet permissions
 }
 ```
 
 ---
 
-### 4.5 Strategic Planning Bounded Context
+## **D. TeamCapacity (Value Object — NEW)**
 
-#### 4.5.1 Context Overview
-**Responsibility**: Supporting long-term, high-level planning and strategy formulation, including strategic goals, future roadmaps, crisis management, sustainable growth, and major transitions.
-
-**Strategic Classification**: Core Domain - Strategic
-
-**Subdomains**:
-- Strategic & Future Planning: Core strategic planning capabilities
-
-#### 4.5.2 Core Domain Model
-
-```mermaid
-classDiagram
-    class StrategicGoalDefinition {
-        +GoalId id
-        +GoalDescription description
-        +GoalTarget[] targets
-        +PlanningHorizon horizon
-        +StrategicTheme theme
-        +GoalStatus status
-        +defineTarget()
-        +trackProgress()
-        +adjustTarget()
-    }
-    
-    class CrisisManagementPlan {
-        +PlanId id
-        +ContingencyPlanItem[] contingencies
-        +CrisisProtocolStep[] protocols
-        +BusinessContinuityStrategy strategy
-        +RiskScenario[] scenarios
-        +activateProtocol()
-        +assessResilience()
-    }
-    
-    class SustainableGrowthFramework {
-        +FrameworkId id
-        +GrowthMetric[] metrics
-        +ESGGoalRecord[] esgGoals
-        +ImpactMeasurementData measurements
-        +LongTermMetricData longTermData
-        +measureImpact()
-        +trackESGProgress()
-    }
-    
-    class IntegratedHorizonPlan {
-        +PlanId id
-        +TimelineEventMarker[] timeline
-        +BackwardPlanningModel backwardPlan
-        +FutureSelfDialogueLog[] dialogues
-        +LegacyDesignPrinciple[] legacy
-        +mapTimeline()
-        +planBackward()
-        +designLegacy()
-    }
-
-    %% All strategic plans and frameworks should align with one or more strategic goals.
-    %% A single goal can also inform multiple different plans.
-    StrategicGoalDefinition "*" -- "*" CrisisManagementPlan : aligns with
-    StrategicGoalDefinition "*" -- "*" SustainableGrowthFramework : informs
-    StrategicGoalDefinition "*" -- "*" IntegratedHorizonPlan : guides
 ```
-
-#### 4.5.3 Aggregates Specification
-
-##### StrategicGoalDefinition Aggregate Root
-**Purpose**: Defines high-level strategic goals with measurable targets
-
-**Entities**:
-- `GoalTarget`: Specific measurable targets for the goal
-
-**Value Objects**:
-- `GoalDescription`: Clear statement of the strategic goal
-- `TargetMetric`: Measurable metric for target
-- `TargetValue`: Specific target value and timeframe
-- `PlanningHorizon`: H1/H2/H3 planning timeframes
-- `StrategicTheme`: Category or theme of the goal
-
-##### CrisisManagementPlan Aggregate Root
-**Purpose**: Holds contingency plans, protocols, and resilience assessments
-
-**Entities**:
-- `ContingencyPlanItem`: Specific contingency actions
-- `CrisisProtocolStep`: Steps in crisis response protocol
-- `ResilienceAssessmentRecord`: Organizational resilience evaluations
-
-**Value Objects**:
-- `RiskScenario`: Potential crisis scenarios
-- `EmergencyProcedure`: Step-by-step emergency procedures
-- `VulnerabilityRating`: Assessment of organizational vulnerabilities
-
-##### SustainableGrowthFramework Aggregate Root
-**Purpose**: Tracks ESG goals, impact measurements, and long-term metrics
-
-**Entities**:
-- `GrowthMetric`: Metrics for measuring sustainable growth
-- `ESGGoalRecord`: Environmental, Social, Governance goals
-- `ImpactMeasurementData`: Impact assessment data
-
-**Value Objects**:
-- `BalancedGrowthMetric`: Metrics balancing multiple growth factors
-- `EsgTargetValue`: Specific ESG target values
-- `MetricTimescale`: Timeframe for metric measurement
-
-#### 4.5.4 Commands & Queries (CQRS)
-
-##### Commands
-**Strategic Goal Management**:
-```csharp
-public record DefineStrategicGoal(
-    string Description,
-    StrategicTheme Theme,
-    PlanningHorizon Horizon,
-    List<GoalTarget> Targets,
-    UserId DefinedBy
-);
-
-public record SetGoalTarget(
-    GoalId GoalId,
-    TargetMetric Metric,
-    TargetValue Value,
-    DateTime TargetDate,
-    UserId SetBy
-);
-
-public record TrackGoalProgress(
-    GoalId GoalId,
-    TargetMetric Metric,
-    decimal CurrentValue,
-    DateTime MeasuredAt,
-    UserId TrackedBy
-);
-```
-
-**Crisis Management**:
-```csharp
-public record DefineContingencyPlan(
-    string PlanName,
-    RiskScenario Scenario,
-    List<ContingencyAction> Actions,
-    UserId DefinedBy
-);
-
-public record CreateCrisisProtocol(
-    string ProtocolName,
-    CrisisType Type,
-    List<ProtocolStep> Steps,
-    UserId CreatedBy
-);
-
-public record AssessResilience(
-    List<RiskFactor> RiskFactors,
-    ResilienceArea Area,
-    UserId AssessedBy
-);
-```
-
-**Sustainable Growth**:
-```csharp
-public record EstablishGrowthFramework(
-    string FrameworkName,
-    List<GrowthMetric> Metrics,
-    SustainabilityPrinciples Principles,
-    UserId EstablishedBy
-);
-
-public record SetESGGoal(
-    ESGCategory Category,
-    string GoalDescription,
-    TargetValue Target,
-    DateTime TargetDate,
-    UserId SetBy
-);
-
-public record MeasureImpact(
-    ImpactCategory Category,
-    ImpactMetric Metric,
-    decimal Value,
-    DateTime MeasuredAt,
-    UserId MeasuredBy
-);
-```
-
-##### Queries
-**Strategic Goal Queries**:
-```csharp
-public record GetStrategicGoalDefinition(GoalId GoalId);
-public record GetGoalTargets(GoalId GoalId);
-public record GetGoalProgress(GoalId GoalId, DateTime? AsOf = null);
-public record ListStrategicGoals(StrategicTheme? Theme = null, PlanningHorizon? Horizon = null);
-```
-
-**Crisis Management Queries**:
-```csharp
-public record GetContingencyPlan(PlanId PlanId);
-public record GetCrisisProtocol(ProtocolId ProtocolId);
-public record GetResilienceAssessment(AssessmentId AssessmentId);
-```
-
-**Growth Framework Queries**:
-```csharp
-public record GetGrowthFrameworkMetrics(FrameworkId FrameworkId);
-public record GetESGGoals(ESGCategory? Category = null);
-public record GetImpactMeasurements(ImpactCategory Category, DateTime StartDate, DateTime EndDate);
-```
-
-#### 4.5.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class StrategicGoalDefined : DomainEvent
-{
-    public GoalId GoalId { get; }
-    public string Description { get; }
-    public StrategicTheme Theme { get; }
-    public PlanningHorizon Horizon { get; }
-    public List<GoalTarget> Targets { get; }
-    public UserId DefinedBy { get; }
-    public DateTime DefinedAt { get; }
-}
-
-public class GoalTargetSet : DomainEvent
-{
-    public GoalId GoalId { get; }
-    public TargetMetric Metric { get; }
-    public TargetValue Value { get; }
-    public DateTime TargetDate { get; }
-    public UserId SetBy { get; }
-}
-
-public class ContingencyPlanDefined : DomainEvent
-{
-    public PlanId PlanId { get; }
-    public string PlanName { get; }
-    public RiskScenario Scenario { get; }
-    public List<ContingencyAction> Actions { get; }
-    public UserId DefinedBy { get; }
-}
-
-public class ESGGoalProgressed : DomainEvent
-{
-    public GoalId GoalId { get; }
-    public ESGCategory Category { get; }
-    public decimal PreviousValue { get; }
-    public decimal NewValue { get; }
-    public decimal ProgressPercentage { get; }
-    public DateTime MeasuredAt { get; }
+TeamCapacity {
+    decimal totalCapacity
+    decimal currentUtilization
+    decimal forecastedUtilization
+    decimal stabilityScore  // workload volatility
 }
 ```
 
 ---
 
-### 4.6 Analytics & Reporting Bounded Context
+## **E. ActorCapabilityProfile (Value Object — NEW)**
 
-#### 4.6.1 Context Overview
-**Responsibility**: Consolidating data (primarily by subscribing to events from other BCs), allowing user configuration of dashboards/reports/KPIs, and visualizing information. Serves as the primary source for historical and aggregated status/progress reporting.
+Unified model of actor (human/AI) capability.
 
-**Strategic Classification**: Supporting Domain
+```
+ActorCapabilityProfile {
+    ActorId actor
+    CapabilityTag capability
+    decimal proficiency
+    decimal confidence
+}
+```
 
-**Subdomains**:
-- Standard Reporting: Supporting dashboard and report generation
-- Visualization Libraries: Generic chart and visualization components
-- Data Connectors: Generic event processing and data integration
+---
 
-#### 4.6.2 Core Domain Model
+# **5.5.3 Policies (Enhanced)**
+
+### **Capacity Forecasting Policy**
+
+* Uses historical workloads
+* Takes cognitive load predictions from Productivity BC
+* Applies volatility detection
+* Generates forecast:
+
+```
+available_capacity = base_capacity - predicted_load
+```
+
+---
+
+### **Role Alignment Policy**
+
+Ensures:
+
+* Member’s capabilities match required capabilities
+* Conflicting role rules aren’t violated
+* Cognitive load constraints
+
+---
+
+### **Team Stability Monitoring Policy**
+
+Detects:
+
+* Overload
+* Understaffing
+* Capability gaps
+* Imbalance between humans & AI agents
+
+---
+
+# **5.5.4 Commands & Queries**
+
+### Commands
+
+```csharp
+record CreateTeam(string Name, string Purpose, ActorId CreatedBy);
+record AddMemberToTeam(TeamId TeamId, ActorId MemberId, RoleId? Role);
+record AssignRoleToMember(TeamId TeamId, ActorId MemberId, RoleId RoleId);
+record UpdateTeamCapabilities(TeamId TeamId, List<CapabilityTag> Capabilities);
+record RecalculateTeamCapacity(TeamId TeamId);
+```
+
+### Queries
+
+```csharp
+record GetTeamDetails(TeamId Id);
+record GetTeamCapacity(TeamId Id);
+record GetMembersForRole(TeamId Id, RoleId Role);
+record FindTeamsByCapabilities(List<CapabilityTag> Capabilities);
+```
+
+---
+
+# **5.5.5 Domain Events**
+
+* **TeamCreated**
+* **TeamMemberAdded**
+* **RoleAssignedToMember**
+* **CapabilityUpdated**
+* **TeamCapacityUpdated**
+
+---
+
+---
+
+# **5.6 ANALYTICS & REPORTING BOUNDED CONTEXT**
+
+## **5.6.1 Context Overview**
+
+This BC acts as the system’s **historical intelligence**, assembling cross-domain data into:
+
+* KPIs
+* Dashboards
+* Reports
+* Trend analysis
+* Performance insights
+* AI-assisted interpretation
+
+### **Strategic Classification:**
+
+**Supporting Domain — but receives events from ALL BCs**
+
+It also feeds intelligence back to:
+
+* Productivity BC
+* Decision Support BC
+* Workflow Engine BC
+* Strategic Planning BC
+
+---
+
+# **5.6.2 Domain Model (Enhanced)**
+
+## **A. Dashboard (Aggregate Root — Improved)**
 
 ```mermaid
 classDiagram
     class Dashboard {
         +DashboardId id
-        +UserId userId
+        +UserId owner
         +DashboardName name
-        +DashboardLayoutSetting layout
-        +WidgetInstance[] widgets
-        +RefreshInterval refreshInterval
-        +configureLayout()
-        +addWidget()
-        +removeWidget()
-        +refresh()
+        +DashboardLayout layout
+        +List<WidgetInstance> widgets
+        +RefreshInterval interval
+        +AddWidget()
+        +ConfigureLayout()
+        +Refresh()
     }
-    
+```
+
+### **Enhancements**
+
+* Widgets now support **AI-based summarization**
+* Each dashboard includes **context-aware suggestions**
+* Layout is modeled as **composable grid elements**
+
+---
+
+## **B. WidgetInstance (Entity — Enhanced)**
+
+```
+WidgetInstance {
+    WidgetId id
+    WidgetType type
+    DataBinding binding
+    VisualizationConfig config
+    InsightOverlay overlay  // AI-generated insights layered on charts
+}
+```
+
+### **InsightOverlay (NEW)**
+
+Provides contextual interpretation:
+
+* Significant anomalies
+* Emerging trends
+* Forecasted changes
+* Recommendations
+
+---
+
+## **C. ReportConfiguration (Aggregate Root)**
+
+```mermaid
+classDiagram
     class ReportConfiguration {
         +ReportId id
-        +UserId userId
+        +UserId owner
         +ReportName name
-        +ReportParameter[] parameters
-        +DataSource[] dataSources
+        +List<ReportParameter> parameters
+        +List<DataSourceDefinition> sources
         +ReportSchedule schedule
         +ReportFormat format
-        +generate()
-        +schedule()
-        +export()
+        +Generate()
+        +Schedule()
     }
-    
+```
+
+### **Enhancements**
+
+Reports may include:
+
+* trend forecasts
+* performance narratives
+* strategic alignment scoring
+* anomalies detected
+
+---
+
+## **D. KpiDefinition (Aggregate Root)**
+
+```mermaid
+classDiagram
     class KpiDefinition {
         +KpiId id
-        +UserId userId
+        +UserId owner
         +KpiName name
         +KpiMetric metric
-        +KpiThreshold[] thresholds
-        +KpiAlertLog[] alerts
-        +calculate()
-        +checkThresholds()
-        +sendAlert()
+        +List<KpiThreshold> thresholds
+        +List<KpiAlert> alerts
+        +Calculate()
+        +EvaluateThresholds()
     }
-    
-    class AggregatedDataView {
-        +ViewId id
-        +ViewName name
-        +DataSource source
-        +AggregationRules rules
-        +RefreshStatus status
-        +LastUpdated timestamp
-        +refresh()
-        +query()
-    }
-
-    %% A Widget is the visual representation of either a KPI or a Report.
-    %% This uses a "Polymorphic" or "Exclusive Arc" relationship.
-    WidgetInstance "1" -- "0..1" KpiDefinition : displays
-    WidgetInstance "1" -- "0..1" ReportConfiguration : displays
-
-    %% The data for KPIs and Reports often comes from a pre-calculated Data View.
-    KpiDefinition "1" -- "0..1" AggregatedDataView : is sourced from
-    ReportConfiguration "1" -- "0..1" AggregatedDataView : is sourced from
-
 ```
 
-#### 4.6.3 Aggregates Specification
+### **Enhancements**
 
-##### Dashboard Aggregate Root
-**Purpose**: A user-defined dashboard configuration, including layout and widgets
+KPIs integrate:
 
-**Entities**:
-- `DashboardLayoutSetting`: Layout configuration and positioning
-- `WidgetInstance`: Individual dashboard widgets
-- `DashboardTemplate`: Reusable dashboard configurations
+* uncertainty modeling
+* trend projection
+* anomaly detection signals
+* strategic goal mapping
 
-**Value Objects**:
-- `WidgetType`: Chart, Table, Metric, Text, Image
-- `WidgetSettings`: Widget-specific configuration
-- `RefreshInterval`: How often to update widget data
-- `ChartType`: Bar, Line, Pie, Scatter, etc.
-- `VisualizationConfiguration`: Chart styling and options
+---
 
-##### ReportConfiguration Aggregate Root
-**Purpose**: Defines parameters, data sources, scheduling, and format for a specific report
+## **E. AggregatedDataView (Aggregate Root)**
 
-**Entities**:
-- `ReportParameter`: User-configurable report parameters
-- `ReportSchedule`: Automated report generation schedule
-- `ReportGenerationLog`: History of report generation
+Stores materialized views of important datasets.
 
-**Value Objects**:
-- `ReportFormat`: PDF, CSV, Excel, HTML
-- `ScheduleTiming`: Frequency and timing configuration
-- `DataSourceCredentials`: Encrypted connection information
-- `ExportSettings`: Export-specific configurations
-
-##### KpiDefinition Aggregate Root
-**Purpose**: Defines a Key Performance Indicator, its calculation, tracking, and associated alerts
-
-**Entities**:
-- `KpiThreshold`: Alert thresholds and conditions
-- `KpiAlertLog`: History of triggered alerts
-
-**Value Objects**:
-- `KpiValue`: Current and historical KPI values
-- `KpiStatus`: OK, Warning, Critical
-- `AlertConditionLogic`: Logic for triggering alerts
-- `KpiCalculationFormula`: Formula for KPI calculation
-
-#### 4.6.4 Commands & Queries (CQRS)
-
-##### Commands
-**Dashboard Management**:
-```csharp
-public record CreateDashboard(
-    string Name,
-    DashboardType Type,
-    LayoutConfiguration Layout,
-    UserId CreatedBy
-);
-
-public record AddWidgetToDashboard(
-    DashboardId DashboardId,
-    WidgetType Type,
-    WidgetConfiguration Configuration,
-    PositionInfo Position,
-    UserId AddedBy
-);
-
-public record ConfigureWidgetDataSource(
-    DashboardId DashboardId,
-    WidgetId WidgetId,
-    DataSourceConfiguration DataSource,
-    UserId ConfiguredBy
-);
 ```
-
-**Report Management**:
-```csharp
-public record DefineReport(
-    string Name,
-    ReportType Type,
-    List<ReportParameter> Parameters,
-    List<DataSourceConfiguration> DataSources,
-    ReportFormat Format,
-    UserId DefinedBy
-);
-
-public record ScheduleReportGeneration(
-    ReportId ReportId,
-    ScheduleTiming Schedule,
-    List<UserId> Recipients,
-    UserId ScheduledBy
-);
-
-public record GenerateReport(
-    ReportId ReportId,
-    Dictionary<string, object> ParameterValues,
-    ReportFormat? FormatOverride,
-    UserId GeneratedBy
-);
-```
-
-**KPI Management**:
-```csharp
-public record DefineKpi(
-    string Name,
-    string Description,
-    KpiCalculationFormula Formula,
-    List<DataSourceConfiguration> DataSources,
-    UserId DefinedBy
-);
-
-public record SetKpiAlert(
-    KpiId KpiId,
-    KpiThreshold Threshold,
-    AlertConfiguration AlertConfig,
-    UserId SetBy
-);
-
-public record ConfigureEventDataSource(
-    string DataSourceName,
-    List<EventType> SubscribedEvents,
-    DataTransformationRules TransformationRules,
-    UserId ConfiguredBy
-);
-```
-
-##### Queries
-**Dashboard Queries**:
-```csharp
-public record GetDashboard(DashboardId DashboardId);
-public record GetWidgetData(DashboardId DashboardId, WidgetId WidgetId, DateTime? AsOf = null);
-public record ListDashboardTemplates(DashboardCategory? Category = null);
-```
-
-**Report Queries**:
-```csharp
-public record GetReportDefinition(ReportId ReportId);
-public record GetGeneratedReport(ReportGenerationId GenerationId);
-public record ListScheduledReports(UserId? FilterByUser = null);
-```
-
-**KPI Queries**:
-```csharp
-public record GetKpiDefinition(KpiId KpiId);
-public record GetKpiValue(KpiId KpiId, DateTime? AsOf = null);
-public record GetKpiAlerts(KpiId KpiId, DateTime? SinceDate = null);
-```
-
-**Cross-Context Queries**:
-```csharp
-public record GetProjectProgressReport(ProjectId ProjectId, DateTime StartDate, DateTime EndDate);
-public record GetWorkflowPerformanceTrends(WorkflowId WorkflowId, TrendPeriod Period);
-public record GetTeamCapacityOverview(TeamId TeamId, DateTime StartDate, DateTime EndDate);
-```
-
-#### 4.6.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class DashboardCreated : DomainEvent
-{
-    public DashboardId DashboardId { get; }
-    public string Name { get; }
-    public DashboardType Type { get; }
-    public UserId CreatedBy { get; }
-    public DateTime CreatedAt { get; }
-}
-
-public class ReportGenerated : DomainEvent
-{
-    public ReportGenerationId GenerationId { get; }
-    public ReportId ReportId { get; }
-    public ReportFormat Format { get; }
-    public long FileSizeBytes { get; }
-    public TimeSpan GenerationDuration { get; }
-    public UserId GeneratedBy { get; }
-    public DateTime GeneratedAt { get; }
-}
-
-public class KpiThresholdBreached : DomainEvent
-{
-    public KpiId KpiId { get; }
-    public string KpiName { get; }
-    public KpiValue CurrentValue { get; }
-    public KpiThreshold BreachedThreshold { get; }
-    public KpiStatus NewStatus { get; }
-    public DateTime BreachedAt { get; }
-}
-
-public class EventDataProcessed : DomainEvent
-{
-    public string DataSourceName { get; }
-    public EventType ProcessedEventType { get; }
-    public int ProcessedCount { get; }
-    public DateTime ProcessingTimestamp { get; }
+AggregatedDataView {
+    ViewId id
+    ViewName name
+    List<DataPoint> data
+    AggregationRule rules
+    LastUpdated timestamp
+    Refresh()
 }
 ```
 
 ---
 
-## 5. Integration Patterns
+# **5.6.3 Policies (Enhanced)**
 
-### 5.1 AI-Enhanced Event Processing
+### **Metric Aggregation Policy**
 
-#### 5.1.1 Intelligent Event Classification
+Consolidates events from:
+
+* workflows
+* decisions
+* productivity
+* team capacity
+* strategic planning
+
+### **Threshold Evaluation Policy**
+
+Includes:
+
+* dynamic thresholding
+* adaptive alerts (based on volatility)
+* multi-metric composite KPIs
+
+### **AI Insight Overlay Policy**
+
+Adds:
+
+* narrative explanations
+* counterfactual insights
+* anomalies
+* predictions
+
+---
+
+# **5.6.4 Commands & Queries**
+
+### Commands
+
 ```csharp
-public class IntelligentEventProcessor
-{
-    private readonly IEventClassificationService _classificationService;
-    private readonly IPersonalProductivityService _productivityService;
-    
-    public async Task ProcessEvent(DomainEvent domainEvent)
-    {
-        // Classify event importance using AI
-        var classification = await _classificationService.ClassifyEvent(domainEvent);
-        
-        // Route to appropriate intelligence processing
-        switch (classification.Category)
-        {
-            case EventCategory.ProductivityRelevant:
-                await _productivityService.ProcessProductivityEvent(domainEvent);
-                break;
-            case EventCategory.DecisionRelevant:
-                await _decisionSupportService.ProcessDecisionEvent(domainEvent);
-                break;
-            case EventCategory.PerformanceMetric:
-                await _analyticsService.ProcessPerformanceEvent(domainEvent);
-                break;
-        }
-    }
+record CreateDashboard(string Name, LayoutConfig Layout);
+record AddWidget(DashboardId DashboardId, WidgetDefinition Widget);
+record DefineKpi(string Name, KpiMetric Metric, List<KpiThreshold> Thresholds);
+record ScheduleReport(ReportId ReportId, ReportSchedule Schedule);
+```
+
+### Queries
+
+```csharp
+record GetDashboard(DashboardId Id);
+record GetKpiValue(KpiId Id, DateTime? AsOf = null);
+record GetReportOutput(ReportId Id, DateTime Date);
+record GetInsightOverlay(WidgetId Id);
+```
+
+---
+
+# **5.6.5 Domain Events**
+
+* **DashboardCreated**
+* **WidgetAdded**
+* **ReportGenerated**
+* **KpiThresholdBreached**
+* **DataViewRefreshed**
+* **InsightGenerated**
+
+---
+
+# **6. UNIFIED POLICIES, RULES & DOMAIN DSL**
+
+This is a **newly introduced super-section** enhancing the entire system with:
+
+* Unified reasoning and rules
+* A domain-specific language (DSL) for encoding domain logic
+* AI-augmented decision and workflow rules
+* Policy-driven dynamic behaviors across BCs
+* Declarative modeling rather than scattered if/else logic
+* Auditability and explainability baked into rules
+
+The purpose is to create a **single coherent thinking layer** across all bounded contexts —
+**the Intelligence Layer**.
+
+---
+
+# **6.1 POLICY TYPES (SYSTEM-WIDE)**
+
+We define three primary policy classes:
+
+---
+
+## **6.1.1 Validation Policies**
+
+Ensure domain invariants and semantic correctness.
+
+Examples:
+
+* A decision model must have ≥1 criterion and ≥2 alternatives
+* A workflow must have at least one reachable completion path
+* A strategic goal target must include a measurable metric
+
+---
+
+## **6.1.2 Reasoning Policies**
+
+Provide structured domain reasoning using rule engines + ML signals.
+
+Examples:
+
+* Which team member is best suited for a workflow step?
+* How does a decision alternative score compared to others?
+* What task should the user focus on now?
+
+This uses:
+
+* Scoring models
+* Decision heuristics
+* Trend analysis
+* Cognitive load signals
+* Context fusion
+
+---
+
+## **6.1.3 Reactive Policies**
+
+Trigger state transitions when conditions occur.
+
+Examples:
+
+* If cognitive load exceeds threshold → generate mitigations
+* If KPI crosses threshold → generate alert
+* If strategic alignment drops for a goal → trigger reevaluation
+
+This is the backbone of proactive intelligence.
+
+---
+
+# **6.2 THE DOMAIN RULE DSL (NEW)**
+
+The DSL provides a **readable, declarative rule syntax** used across BCs.
+
+---
+
+## **6.2.1 DSL Goals**
+
+1. Human-readable domain logic
+2. Machine-executable
+3. Explainability-first
+4. Supports probabilities & uncertainty
+5. Supports “why” and “what-if” reasoning
+6. Integrates ML signals with business rules
+
+---
+
+# **6.3 DSL STRUCTURE OVERVIEW**
+
+```
+RULE <RuleName> 
+WHEN <ConditionExpression> 
+THEN <ActionExpression> 
+CONFIDENCE <0-1> 
+EXPLAIN "<Narrative>"
+```
+
+---
+
+# **6.4 DSL EXPRESSIONS**
+
+### **6.4.1 Condition Expressions**
+
+Allow:
+
+* Boolean logic
+* Comparisons
+* Domain references
+* Time conditions
+* AI signals
+
+Examples:
+
+```
+cognitive.load > High
+task.deadline.within(2h)
+team.capacity < 0.3
+decision.alternatives.count >= 2
+workflow.step.type == "Manual"
+```
+
+---
+
+### **6.4.2 Action Expressions**
+
+Actions include:
+
+* Trigger events
+* Mutate state
+* Recommend entities
+* Assign actors
+* Produce insights
+
+Examples:
+
+```
+recommend.task("TakeBreak")
+assign.actor(best_fit_by(capability, cognitive_load))
+emit.event("StrategicGoalAtRisk")
+transition.to("ReviewStep")
+```
+
+---
+
+### **6.4.3 Confidence Expression**
+
+The rule can embed:
+
+* ML model confidence
+* Rule-based confidence
+* Hybrid confidence
+
+Example:
+
+```
+CONFIDENCE 0.87
+```
+
+Or dynamic:
+
+```
+CONFIDENCE ml.predict_confidence("OverloadRisk")
+```
+
+---
+
+### **6.4.4 Explainability**
+
+Every rule includes structured natural language explanations.
+
+Example:
+
+```
+EXPLAIN "User's cognitive load is elevated, and high-focus tasks should be deferred."
+```
+
+---
+
+# **6.5 DSL EXAMPLES BY BOUNDED CONTEXT**
+
+---
+
+# 🔵 **6.5.1 DSL for Productivity Intelligence**
+
+### **A. Overload Detection Rule**
+
+```
+RULE CognitiveOverloadAlert
+WHEN cognitive.load >= VeryHigh
+THEN recommend.action("TakeBreak"), recommend.action("ReduceFocusTasks")
+CONFIDENCE ml.overload.probability
+EXPLAIN "Cognitive load is critically high based on behavioral signals."
+```
+
+---
+
+### **B. Smart Recommendation Rule**
+
+```
+RULE ProposeNextTask
+WHEN task.priority > 0.8 
+AND cognitive.load <= Medium
+THEN recommend.task(task.id)
+CONFIDENCE (task.priority * (1 - cognitive.load.percent))
+EXPLAIN "Task has high priority and user's cognitive load is within optimal range."
+```
+
+---
+
+# 🟣 **6.5.2 DSL for Decision Support**
+
+### **A. Alternative Scoring Rule**
+
+```
+RULE WeightedScoreComputation
+WHEN decision.criteria.count >= 1
+THEN compute.score(weighted_sum(criteria * alternative.scores))
+CONFIDENCE 1.0
+EXPLAIN "Scores computed using weighted criteria values."
+```
+
+---
+
+### **B. Scenario Volatility Rule**
+
+```
+RULE HighRiskScenarioFlag
+WHEN scenario.volatility > threshold("HighVolatility")
+THEN flag.scenario("HighRisk")
+CONFIDENCE ml.volatility.confidence
+EXPLAIN "Scenario exhibits high variance in projected outcomes."
+```
+
+---
+
+# 🟢 **6.5.3 DSL for Strategic Planning**
+
+### **A. Goal Drift Detection**
+
+```
+RULE GoalDriftDetected
+WHEN goal.progress.trend < Falling 
+AND goal.target.timeRemaining < 30days
+THEN emit.event("StrategicGoalAtRisk")
+CONFIDENCE ml.forecast.confidence
+EXPLAIN "The goal is off-track based on trend and time remaining."
+```
+
+---
+
+### **B. Crisis Escalation Rule**
+
+```
+RULE CrisisEscalation
+WHEN scenario.likelihood > 0.6 
+AND resilience.index < 0.5
+THEN activate.protocol("Emergency")
+CONFIDENCE 0.9
+EXPLAIN "High probability crisis with low resilience score."
+```
+
+---
+
+# 🟡 **6.5.4 DSL for Workflow Engine**
+
+### **A. Auto Assignment Based on Cognitive Load**
+
+```
+RULE SmartTaskAssignment
+WHEN step.requires.capability == actor.topCapability
+AND actor.cognitive.load < High
+THEN assign(actor)
+CONFIDENCE ml.assignment.score
+EXPLAIN "Actor's capabilities and cognitive state match the task requirements."
+```
+
+---
+
+### **B. Conditional Transition**
+
+```
+RULE ReviewTransition
+WHEN step.output.status == "approved"
+THEN transition.to("CompletionStep")
+CONFIDENCE 1.0
+EXPLAIN "Approval outcome leads to finalization step."
+```
+
+---
+
+# 🟤 **6.5.5 DSL for Team Management**
+
+### **Team Overload Rule**
+
+```
+RULE TeamOverloadRisk
+WHEN team.capacity.utilization > 0.85 
+AND team.stability < 0.4
+THEN send.alert("TeamOverloadRisk")
+CONFIDENCE ml.stressmodel.confidence
+EXPLAIN "Team workload is approaching overload threshold."
+```
+
+---
+
+# 🟠 **6.5.6 DSL for Analytics & Reporting**
+
+### **KPI Threshold Alert Rule**
+
+```
+RULE KPIThresholdBreached
+WHEN kpi.value < kpi.threshold.min
+THEN create.alert(kpi.id)
+CONFIDENCE 1.0
+EXPLAIN "KPI value has fallen below the defined lower threshold."
+```
+
+---
+
+# **6.6 DSL RUNTIME ARCHITECTURE**
+
+The rule engine uses:
+
+### **1. Rule Parser**
+
+Converts DSL text → AST (abstract syntax tree)
+
+### **2. Rule Executor**
+
+Executes rules on domain objects
+
+### **3. Explainability Service**
+
+Generates NLP output
+
+### **4. Policy Evaluator**
+
+Computes probability and confidence
+
+### **5. ML Bridge**
+
+Fetches model outputs (predictions, confidence, SHAP values)
+
+### **6. Event Dispatcher**
+
+Publishes domain events triggered by rules
+
+---
+
+# **6.7 BENEFITS OF THE UNIFIED DSL**
+
+### ✔ AI + rules coexist cleanly
+
+### ✔ Domain logic becomes readable
+
+### ✔ Easy auditing & governance
+
+### ✔ Explainability becomes default
+
+### ✔ New policies can be added without code changes
+
+### ✔ Future AI agents can generate rules automatically
+
+### ✔ Supports human override with traceability
+
+---
+
+# **7. DOMAIN EVENTS CATALOG**
+
+This section provides a **centralized, comprehensive, cross-domain event catalog**.
+All bounded contexts emit events, but here we unify them into one consistent, structured domain event system.
+
+It supports:
+
+* Event-driven architecture
+* Event sourcing (optional)
+* Knowledge graph enrichment
+* ML feature extraction
+* Reactive policies
+* Temporal analytics
+* Cross-context orchestration (e.g., strategies influencing workflows)
+
+---
+
+# **7.1 EVENTS ORGANIZED BY DOMAIN**
+
+---
+
+# **7.1.1 Personal Productivity Intelligence Events**
+
+### **1. Work Pattern Events**
+
+* **WorkPatternDetected**
+* **WorkPatternUpdated**
+* **WorkPatternConfidenceChanged**
+
+### **2. Cognitive Load Events**
+
+* **CognitiveLoadMeasured**
+* **CognitiveLoadThresholdExceeded**
+* **CognitiveLoadRecovered**
+
+### **3. Recommendation Events**
+
+* **RecommendationGenerated**
+* **RecommendationRankUpdated**
+* **RecommendationAccepted**
+* **RecommendationRejected**
+* **RecommendationDismissed**
+
+### **4. Prediction Events**
+
+* **PredictionMade**
+* **PredictionConfidenceLow**
+* **PredictionModelVersionChanged**
+
+### **5. Personal Automation Events**
+
+* **AutomationCreated**
+* **AutomationTriggered**
+* **AutomationExecuted**
+* **AutomationFailed**
+
+### **6. Performance Events**
+
+* **PerformanceMetricRecorded**
+* **PerformanceSnapshotGenerated**
+* **PerformanceTrendShiftDetected**
+
+---
+
+# **7.1.2 Decision Support Events**
+
+### **1. Decision Model Events**
+
+* **DecisionModelCreated**
+* **DecisionCriterionAdded**
+* **DecisionAlternativeAdded**
+* **DecisionEvaluationCompleted**
+* **DecisionFinalized**
+
+### **2. Scenario Analysis Events**
+
+* **ScenarioAnalysisStarted**
+* **ScenarioAnalysisCompleted**
+* **ScenarioVolatilityDetected**
+
+### **3. Assumption and Outcome Events**
+
+* **AssumptionTested**
+* **AssumptionInvalidated**
+* **DecisionOutcomeRecorded**
+
+### **4. Strategic Initiative Events**
+
+* **StrategicInitiativeProposed**
+* **StrategicInitiativeReviewed**
+* **StrategicInitiativeApproved**
+* **StrategicInitiativeRejected**
+* **InitiativeLinkedToProject**
+
+### **5. Decision Journal Events**
+
+* **DecisionJournalEntryCreated**
+* **DecisionLessonsExtracted**
+
+---
+
+# **7.1.3 Strategic Planning Events**
+
+### **1. Strategic Goal Events**
+
+* **StrategicGoalDefined**
+* **GoalTargetSet**
+* **GoalProgressRecorded**
+* **GoalOffTrackDetected**
+* **GoalAchieved**
+* **GoalUpdated**
+
+### **2. Crisis Management Events**
+
+* **CrisisScenarioDetected**
+* **CrisisPlanActivated**
+* **CrisisProtocolEscalated**
+* **CrisisResolved**
+
+### **3. ESG & Sustainability Events**
+
+* **ESGGoalSet**
+* **ESGProgressUpdated**
+* **ESGImpactMeasured**
+
+### **4. Horizon Planning Events**
+
+* **HorizonPlanCreated**
+* **HorizonPlanRevised**
+* **TimelineEventReached**
+* **FutureScenarioLinked**
+
+---
+
+# **7.1.4 Workflow Engine Events**
+
+### **1. Workflow Lifecycle**
+
+* **WorkflowDefinitionCreated**
+* **WorkflowVersionCreated**
+* **WorkflowInstanceStarted**
+* **WorkflowInstancePaused**
+* **WorkflowInstanceCompleted**
+* **WorkflowInstanceFailed**
+
+### **2. Step Execution Events**
+
+* **StepStarted**
+* **StepCompleted**
+* **StepFailed**
+* **StepTransitioned**
+
+### **3. Assignment Events**
+
+* **TaskAssigned**
+* **TaskReassigned**
+* **TaskCompleted**
+* **TaskAssignmentFailed**
+
+### **4. Exception Events**
+
+* **WorkflowExceptionOccurred**
+* **CompensationActionExecuted**
+
+---
+
+# **7.1.5 Team Management Events**
+
+### **1. Team Lifecycle**
+
+* **TeamCreated**
+* **TeamUpdated**
+* **TeamDisbanded**
+
+### **2. Membership Events**
+
+* **TeamMemberAdded**
+* **TeamMemberRemoved**
+* **TeamMemberRoleAssigned**
+* **TeamMemberRoleRevoked**
+
+### **3. Capability Events**
+
+* **TeamCapabilitiesUpdated**
+* **MemberCapabilitiesUpdated**
+
+### **4. Capacity Events**
+
+* **TeamCapacityRecalculated**
+* **TeamOverloadRiskDetected**
+* **TeamStabilityChanged**
+
+---
+
+# **7.1.6 Analytics & Reporting Events**
+
+### **1. Dashboard Events**
+
+* **DashboardCreated**
+* **WidgetAdded**
+* **WidgetRemoved**
+* **DashboardRefreshed**
+
+### **2. KPI Events**
+
+* **KpiCalculated**
+* **KpiThresholdBreached**
+* **KpiTrendShiftDetected**
+
+### **3. Report Events**
+
+* **ReportGenerated**
+* **ReportScheduled**
+* **ReportDelivered**
+
+### **4. Data Pipeline Events**
+
+* **DataViewRefreshed**
+* **EventDataProcessed**
+* **AnomalyDetected**
+
+---
+
+# **7.1.7 AI & ML Infrastructure Events (Cross-Domain)**
+
+### **1. ML Model Lifecycle**
+
+* **ModelRegistered**
+* **ModelPromotedToProduction**
+* **ModelRetrained**
+* **ModelPerformanceDegraded**
+
+### **2. Prediction/Explainability Events**
+
+* **ExplainabilityGenerated**
+* **FeatureImportanceShiftDetected**
+* **CounterfactualGenerated**
+
+### **3. Data Quality & Governance Events**
+
+* **DataQualityIssueDetected**
+* **DataLineageTraceCompleted**
+* **BiasAssessmentCompleted**
+* **BiasDetected**
+
+### **4. Privacy & Consent Events**
+
+* **UserConsentUpdated**
+* **AIProcessingBlockedDueToConsent**
+
+---
+
+# **7.2 STANDARDIZED EVENT METADATA**
+
+All events follow a structured metadata model for consistency.
+
+```
+EventBase {
+    EventId id
+    string eventType
+    ActorId? triggeredBy
+    DateTime occurredAt
+    EventImportance importanceLevel      // Low / Medium / High / Critical
+    Confidence? confidence               // optional for AI-generated events
+    TraceContext trace                   // correlation, causation, lineage
 }
 ```
 
-### 5.2 Strategic Alignment Integration
+---
 
-#### 5.2.1 Strategic Goal to Project Initiation Flow
+# **7.3 EVENTS → INTELLIGENCE PIPELINE**
+
+Event flows support:
+
+### ✔ ML Feature Extraction
+
+Feature store consumes detailed domain events.
+
+### ✔ Knowledge Graph Updates
+
+Strategic relationships update automatically based on events.
+
+### ✔ DSL Rule Engine Triggers
+
+Rules react to events to generate new decisions/actions.
+
+### ✔ Analytics Aggregation
+
+Dashboards and KPIs rebuild from event streams.
+
+### ✔ Predictive Model Retraining
+
+Event history automatically becomes ML training data.
+
+---
+
+# **7.4 EVENT RELIABILITY MODEL**
+
+### **Guarantees**
+
+* At-least-once delivery
+* Ordering within aggregate
+* Idempotent event handlers
+
+### **Partitions**
+
+* Human events
+* AI events
+* System workflow events
+* Strategic planning events
+
+### **Channels**
+
+* DomainEvents Bus
+* IntelligenceEvents Bus
+* AnalyticsEvents Bus
+* AuditEvents Bus
+
+---
+
+# **7.5 USE-CASE EXAMPLES OF CROSS-DOMAIN EVENT FLOWS**
+
+### **Example 1: Cognitive Overload → Workflow Routing**
+
+1. **CognitiveLoadThresholdExceeded** emitted
+2. Workflow Engine receives → pauses high-focus tasks
+3. Decision Support receives → adjusts alternative weighting
+4. Analytics receives → updates productivity KPI
+
+---
+
+### **Example 2: A Strategic Goal Becomes Off-Track**
+
+1. **GoalOffTrackDetected** emitted
+2. Productivity BC → generates relevant recommendations
+3. Decision BC → creates reevaluation decision model
+4. Workflow Engine → escalates critical steps
+5. Analytics → flags KPI drift
+
+---
+
+### **Example 3: New Work Pattern Detected**
+
+1. **WorkPatternDetected**
+2. Predictive models retrained
+3. Future recommendations improve
+4. Team Management may adjust capacity plans
+
+---
+
+# **8. INTEGRATION ARCHITECTURE (ENHANCED & UNIFIED)**
+
+This section describes how all bounded contexts, intelligence modules, data pipelines, and ML systems integrate into a single **cohesive intelligent ecosystem**.
+
+The platform uses:
+
+* **Event-driven integration**
+* **AI-first contextual reasoning**
+* **Uncertainty-aware prediction services**
+* **Knowledge graph–based alignment**
+* **Feature store + ML pipelines**
+* **Policy-driven runtime**
+* **Privacy, ethics, and governance controls**
+
+This is the “connective tissue” of the entire architecture.
+
+---
+
+# **8.1 HIGH-LEVEL INTEGRATION DIAGRAM**
+
 ```mermaid
-sequenceDiagram
-    participant SP as Strategic Planning BC
-    participant DS as Decision Support BC
-    participant PM as Project Management BC
-    participant Saga as Process Manager
-    
-    SP->>SP: DefineStrategicGoal
-    SP->>+DS: StrategicGoalDefined Event
-    DS->>DS: ProposeStrategicInitiative
-    DS->>DS: ApproveInitiativeForProjectCreation
-    DS->>+Saga: StrategicInitiativeApproved Event
-    Saga->>+PM: CreateProject Command
-    PM->>PM: Project Created
-    PM->>Saga: ProjectCreated Event
-    Saga->>DS: LinkInitiativeToProject Command
-```
+graph LR
 
-### 5.3 Cross-Context Intelligence Sharing
+A[Domain Events Bus] --> B[Feature Store]
+A --> C[Intelligence Services]
+A --> D[Analytics Pipeline]
+A --> E[Knowledge Graph]
 
-#### 5.3.1 AI Context Enrichment Pattern
-```csharp
-public class AIContextEnrichmentService
-{
-    public async Task<EnrichedContext> EnrichDecisionContext(
-        DecisionContext baseContext,
-        UserId userId)
-    {
-        // Get productivity intelligence
-        var productivityData = await _productivityService.GetUserContext(userId);
-        
-        // Get team context
-        var teamData = await _teamService.GetUserTeamContext(userId);
-        
-        // Get strategic context
-        var strategicData = await _strategicService.GetRelevantGoals(userId);
-        
-        return new EnrichedContext
-        {
-            BaseContext = baseContext,
-            CognitiveLoad = productivityData.CognitiveLoad,
-            TeamCapacity = teamData.CurrentCapacity,
-            StrategicAlignment = strategicData.AlignmentScore,
-            RecommendationWeight = CalculateWeight(productivityData, teamData, strategicData)
-        };
-    }
-}
-```
+C --> F[Recommendation Engine]
+C --> G[Prediction Engine]
+C --> H[Cognitive Analysis Service]
+C --> I[Decision Reasoning Engine]
+C --> J[Workflow Routing Engine]
 
-### 5.4 Workflow-AI Integration
+F --> A
+G --> A
+H --> A
+J --> A
 
-#### 5.4.1 AI-Powered Task Assignment
-```csharp
-public class IntelligentWorkflowTaskAssignment
-{
-    public async Task<AssignmentRecommendation> RecommendTaskAssignment(
-        WorkflowTaskRequirements requirements,
-        TeamId teamId)
-    {
-        // Get team capabilities
-        var teamMembers = await _teamService.GetTeamMembersWithCapabilities(teamId);
-        
-        // Get productivity insights for each member
-        var memberProductivity = await Task.WhenAll(
-            teamMembers.Select(async member => new
-            {
-                Member = member,
-                Productivity = await _productivityService.GetUserProductivityProfile(member.UserId),
-                CognitiveLoad = await _productivityService.GetCurrentCognitiveLoad(member.UserId)
-            })
-        );
-        
-        // Use AI to recommend best assignment
-        var recommendation = await _aiService.RecommendAssignment(
-            requirements,
-            memberProductivity.ToList()
-        );
-        
-        return recommendation;
-    }
-}
+B --> K[ML Training Pipeline]
+K --> L[Model Registry]
+L --> G
 ```
 
 ---
 
-## 6. Implementation Guidelines
+# **8.2 INTELLIGENCE SERVICES (UNIFIED)**
 
-### 6.1 AI/ML Integration Architecture
-
-#### 6.1.1 ML Model Management
-```csharp
-public interface IModelRegistry
-{
-    Task<ModelMetadata> RegisterModel(string modelName, string version, ModelArtifacts artifacts);
-    Task<ModelMetadata> GetLatestModel(string modelName);
-    Task<bool> PromoteModel(string modelName, string version, ModelStage targetStage);
-    Task<PredictionResult> Predict(string modelName, FeatureVector features);
-}
-
-public class ModelRegistry : IModelRegistry
-{
-    private readonly IModelStorage _storage;
-    private readonly IModelVersioning _versioning;
-    private readonly IFeatureStore _featureStore;
-    
-    public async Task<PredictionResult> Predict(string modelName, FeatureVector features)
-    {
-        var model = await GetLatestModel(modelName);
-        
-        // Load model if not in cache
-        var loadedModel = await _storage.LoadModel(model.ArtifactPath);
-        
-        // Make prediction
-        var prediction = await loadedModel.PredictAsync(features);
-        
-        // Log prediction for monitoring
-        await LogPrediction(modelName, features, prediction);
-        
-        return prediction;
-    }
-}
-```
-
-#### 6.1.2 Feature Store Integration
-```csharp
-public class ProductivityFeatureStore
-{
-    public async Task<FeatureVector> BuildUserFeatureVector(UserId userId, DateTime asOf)
-    {
-        var features = new Dictionary<string, object>();
-        
-        // Task completion patterns
-        var taskHistory = await GetUserTaskHistory(userId, asOf.AddDays(-30), asOf);
-        features["avg_task_completion_time"] = taskHistory.AverageCompletionTime;
-        features["task_completion_variance"] = taskHistory.CompletionTimeVariance;
-        features["overdue_task_ratio"] = taskHistory.OverdueRatio;
-        
-        // Work patterns
-        var workPatterns = await GetUserWorkPatterns(userId, asOf);
-        features["peak_productivity_hour"] = workPatterns.PeakHour;
-        features["work_session_length_avg"] = workPatterns.AverageSessionLength;
-        features["break_frequency"] = workPatterns.BreakFrequency;
-        
-        // Cognitive load indicators
-        var cognitiveMetrics = await GetCognitiveMetrics(userId, asOf);
-        features["cognitive_load_avg"] = cognitiveMetrics.AverageLoad;
-        features["cognitive_load_trend"] = cognitiveMetrics.Trend;
-        
-        // Context features
-        var contextData = await GetContextualFeatures(userId, asOf);
-        features["active_project_count"] = contextData.ActiveProjects;
-        features["team_workload"] = contextData.TeamWorkload;
-        features["deadline_pressure"] = contextData.DeadlinePressure;
-        
-        return new FeatureVector(features);
-    }
-}
-```
-
-### 6.2 Event-Driven AI Processing
-
-#### 6.2.1 Real-Time Intelligence Pipeline
-```csharp
-public class RealTimeIntelligencePipeline
-{
-    private readonly IEventProcessor[] _processors;
-    
-    public async Task ProcessEvent(DomainEvent domainEvent)
-    {
-        var processingTasks = _processors.Select(processor => 
-            ProcessWithProcessor(processor, domainEvent));
-            
-        await Task.WhenAll(processingTasks);
-    }
-    
-    private async Task ProcessWithProcessor(IEventProcessor processor, DomainEvent domainEvent)
-    {
-        try
-        {
-            if (processor.CanProcess(domainEvent))
-            {
-                await processor.ProcessAsync(domainEvent);
-            }
-        }
-        catch (Exception ex)
-        {
-            // Log and continue with other processors
-            _logger.LogError(ex, "Error processing event {EventType} with processor {ProcessorType}", 
-                domainEvent.GetType().Name, processor.GetType().Name);
-        }
-    }
-}
-
-public class TaskCompletionIntelligenceProcessor : IEventProcessor
-{
-    public bool CanProcess(DomainEvent domainEvent) => domainEvent is TaskCompleted;
-    
-    public async Task ProcessAsync(DomainEvent domainEvent)
-    {
-        if (domainEvent is TaskCompleted taskCompleted)
-        {
-            // Update user productivity model
-            await UpdateUserProductivityModel(taskCompleted);
-            
-            // Generate new predictions
-            await GenerateUpdatedPredictions(taskCompleted.CompletedBy);
-            
-            // Check for pattern changes
-            await AnalyzePatternChanges(taskCompleted.CompletedBy);
-            
-            // Update cognitive load assessment
-            await UpdateCognitiveLoadAssessment(taskCompleted.CompletedBy);
-        }
-    }
-}
-```
-
-### 6.3 Privacy-First AI Implementation
-
-#### 6.3.1 Differential Privacy for User Data
-```csharp
-public class PrivacyPreservingAnalytics
-{
-    private readonly IDifferentialPrivacyEngine _dpEngine;
-    
-    public async Task<AggregatedInsights> GenerateTeamInsights(TeamId teamId, double epsilon = 1.0)
-    {
-        var teamMembers = await _teamService.GetTeamMembers(teamId);
-        
-        // Collect individual metrics with noise
-        var noisyMetrics = new List<NoisyMetric>();
-        foreach (var member in teamMembers)
-        {
-            var rawMetrics = await GetUserMetrics(member.UserId);
-            var noisyMetric = _dpEngine.AddNoise(rawMetrics, epsilon / teamMembers.Count);
-            noisyMetrics.Add(noisyMetric);
-        }
-        
-        // Aggregate noisy metrics
-        return new AggregatedInsights
-        {
-            TeamId = teamId,
-            AverageProductivity = noisyMetrics.Average(m => m.ProductivityScore),
-            ProductivityTrend = CalculateTrend(noisyMetrics),
-            PrivacyBudgetUsed = epsilon
-        };
-    }
-}
-```
-
-### 6.4 Explainable AI Framework
-
-#### 6.4.1 Prediction Explanation Service
-```csharp
-public class ExplainablePredictionService
-{
-    public async Task<PredictionExplanation> ExplainPrediction(
-        PredictionInstance prediction,
-        ExplanationDetail detail = ExplanationDetail.Summary)
-    {
-        var explanation = new PredictionExplanation
-        {
-            PredictionId = prediction.Id,
-            PredictedValue = prediction.Output,
-            Confidence = prediction.Confidence
-        };
-        
-        // Feature importance
-        var featureImportances = await CalculateFeatureImportances(prediction);
-        explanation.TopFeatures = featureImportances
-            .OrderByDescending(f => f.Importance)
-            .Take(5)
-            .ToList();
-        
-        // Natural language explanation
-        explanation.Summary = await GenerateNaturalLanguageExplanation(
-            prediction, featureImportances);
-        
-        if (detail == ExplanationDetail.Detailed)
-        {
-            // SHAP values for detailed explanation
-            explanation.ShapValues = await CalculateShapValues(prediction);
-            
-            // Counterfactual examples
-            explanation.Counterfactuals = await GenerateCounterfactuals(prediction);
-        }
-        
-        return explanation;
-    }
-    
-    private async Task<string> GenerateNaturalLanguageExplanation(
-        PredictionInstance prediction,
-        List<FeatureImportance> features)
-    {
-        var template = await GetExplanationTemplate(prediction.Type);
-        
-        return template
-            .Replace("{predicted_value}", prediction.Output.ToString())
-            .Replace("{top_feature}", features.First().FeatureName)
-            .Replace("{top_feature_value}", features.First().Value.ToString())
-            .Replace("{confidence}", (prediction.Confidence * 100).ToString("F0"));
-    }
-}
-```
+These services provide the “thinking” capabilities of the platform.
 
 ---
 
-## 7. Cross-Cutting Concerns
+## **8.2.1 Cognitive State Service**
 
-### 7.1 AI Ethics and Governance
+* Aggregates signals from productivity BC
+* Computes cognitive load
+* Predicts upcoming overload
+* Provides cognitive context for:
 
-#### 7.1.1 Algorithmic Bias Detection
-```csharp
-public class BiasDetectionService
-{
-    public async Task<BiasAssessmentReport> AssessBias(
-        string modelName,
-        List<BiasDetectionCriteria> criteria)
-    {
-        var report = new BiasAssessmentReport
-        {
-            ModelName = modelName,
-            AssessmentDate = DateTime.UtcNow,
-            Criteria = criteria
-        };
-        
-        foreach (var criterion in criteria)
-        {
-            var assessment = await AssessCriterion(modelName, criterion);
-            report.Assessments.Add(assessment);
-            
-            if (assessment.BiasScore > criterion.Threshold)
-            {
-                report.BiasDetected = true;
-                await TriggerBiasAlert(modelName, criterion, assessment);
-            }
-        }
-        
-        return report;
-    }
-    
-    private async Task<CriterionAssessment> AssessCriterion(
-        string modelName,
-        BiasDetectionCriteria criterion)
-    {
-        // Get model predictions for different groups
-        var predictions = await GetModelPredictionsForGroups(modelName, criterion.Groups);
-        
-        // Calculate bias metrics (e.g., demographic parity, equalized odds)
-        var biasScore = criterion.BiasMetric switch
-        {
-            BiasMetric.DemographicParity => CalculateDemographicParity(predictions),
-            BiasMetric.EqualizedOdds => CalculateEqualizedOdds(predictions),
-            BiasMetric.CalibrationGap => CalculateCalibrationGap(predictions),
-            _ => throw new ArgumentException($"Unknown bias metric: {criterion.BiasMetric}")
-        };
-        
-        return new CriterionAssessment
-        {
-            Criterion = criterion,
-            BiasScore = biasScore,
-            IsBiased = biasScore > criterion.Threshold,
-            Details = predictions
-        };
-    }
-}
-```
+  * workflow routing
+  * task suggestions
+  * decision modeling
 
-#### 7.1.2 AI Consent and Control Framework
-```csharp
-public class AIConsentService
-{
-    public async Task<UserAIConsent> GetUserConsent(UserId userId)
-    {
-        var consent = await _consentRepository.GetByUserIdAsync(userId);
-        
-        if (consent == null)
-        {
-            // Create default consent with opt-in required
-            consent = new UserAIConsent
-            {
-                UserId = userId,
-                PredictiveAnalytics = ConsentStatus.NotProvided,
-                PersonalizedRecommendations = ConsentStatus.NotProvided,
-                DataProcessingForAI = ConsentStatus.NotProvided,
-                ModelTraining = ConsentStatus.NotProvided,
-                CreatedAt = DateTime.UtcNow
-            };
-            
-            await _consentRepository.SaveAsync(consent);
-        }
-        
-        return consent;
-    }
-    
-    public async Task<bool> CanProcessForAI(UserId userId, AIProcessingType type)
-    {
-        var consent = await GetUserConsent(userId);
-        
-        return type switch
-        {
-            AIProcessingType.PredictiveAnalytics => consent.PredictiveAnalytics == ConsentStatus.Granted,
-            AIProcessingType.Recommendations => consent.PersonalizedRecommendations == ConsentStatus.Granted,
-            AIProcessingType.DataProcessing => consent.DataProcessingForAI == ConsentStatus.Granted,
-            AIProcessingType.ModelTraining => consent.ModelTraining == ConsentStatus.Granted,
-            _ => false
-        };
-    }
-}
-```
-
-### 7.2 Intelligent Monitoring and Alerting
-
-#### 7.2.1 AI-Powered System Health Monitoring
-```csharp
-public class IntelligentSystemMonitor
-{
-    private readonly IAnomalyDetectionService _anomalyService;
-    private readonly IAlertingService _alertService;
-    
-    public async Task MonitorSystemHealth()
-    {
-        // Collect system metrics
-        var metrics = await CollectSystemMetrics();
-        
-        // Detect anomalies using AI
-        var anomalies = await _anomalyService.DetectAnomalies(metrics);
-        
-        foreach (var anomaly in anomalies)
-        {
-            await ProcessAnomaly(anomaly);
-        }
-    }
-    
-    private async Task ProcessAnomaly(SystemAnomaly anomaly)
-    {
-        // Classify anomaly severity using ML
-        var severity = await _anomalyService.ClassifySeverity(anomaly);
-        
-        // Generate context-aware alert
-        var alert = new IntelligentAlert
-        {
-            Anomaly = anomaly,
-            Severity = severity,
-            Context = await GenerateContext(anomaly),
-            RecommendedActions = await GenerateRecommendations(anomaly),
-            AffectedUsers = await IdentifyAffectedUsers(anomaly)
-        };
-        
-        await _alertService.SendAlert(alert);
-        
-        // Auto-remediation for low-severity issues
-        if (severity == AnomalySeverity.Low && anomaly.CanAutoRemediate)
-        {
-            await AutoRemediate(anomaly);
-        }
-    }
-}
-```
-
-### 7.3 Data Governance for AI
-
-#### 7.3.1 Data Lineage and Quality Monitoring
-```csharp
-public class AIDataGovernanceService
-{
-    public async Task<DataLineageReport> TraceDataLineage(PredictionInstance prediction)
-    {
-        var lineage = new DataLineageReport
-        {
-            PredictionId = prediction.Id,
-            TraceTimestamp = DateTime.UtcNow
-        };
-        
-        // Trace back through feature pipeline
-        var features = await GetPredictionFeatures(prediction.Id);
-        foreach (var feature in features)
-        {
-            var source = await TraceFeatureSource(feature);
-            lineage.DataSources.Add(source);
-        }
-        
-        // Validate data quality
-        foreach (var source in lineage.DataSources)
-        {
-            var qualityReport = await AssessDataQuality(source);
-            lineage.QualityReports.Add(qualityReport);
-        }
-        
-        return lineage;
-    }
-    
-    public async Task<DataQualityReport> AssessDataQuality(DataSource source)
-    {
-        var report = new DataQualityReport
-        {
-            DataSource = source,
-            AssessmentDate = DateTime.UtcNow
-        };
-        
-        // Completeness check
-        report.Completeness = await CalculateCompleteness(source);
-        
-        // Accuracy validation
-        report.Accuracy = await ValidateAccuracy(source);
-        
-        // Consistency check
-        report.Consistency = await CheckConsistency(source);
-        
-        // Timeliness assessment
-        report.Timeliness = await AssessTimeliness(source);
-        
-        // Overall quality score
-        report.OverallQuality = CalculateOverallQuality(
-            report.Completeness, 
-            report.Accuracy, 
-            report.Consistency, 
-            report.Timeliness);
-        
-        return report;
-    }
-}
-```
+**Key Output:**
+`CognitiveContext` (load, trend, stability, variance)
 
 ---
 
-## 8. Dependency Matrix
+## **8.2.2 Recommendation Engine**
 
-### 8.1 Bounded Context Dependencies
+Multi-source recommendation system integrating:
 
-| From Context | To Context | Dependency Type | Purpose | Coupling Level | AI/ML Integration |
-|--------------|------------|-----------------|---------|----------------|-------------------|
-| Personal Productivity Intelligence | All Core BCs | Event Subscription | Learning user patterns | Loose | High |
-| Personal Productivity Intelligence | Team Management | Query Service | Team context for personalization | Medium | Medium |
-| Decision Support | Personal Productivity Intelligence | Query Service | Cognitive state for decisions | Medium | High |
-| Decision Support | Strategic Planning | Event Subscription | Strategic goal alignment | Loose | Low |
-| Decision Support | Project Management | Command Service | Initiative to project creation | Medium | Low |
-| Workflow Engine | Team Management | Query Service | Task assignment recommendations | Medium | Medium |
-| Workflow Engine | Personal Productivity Intelligence | Query Service | AI-powered task routing | Medium | High |
-| Analytics & Reporting | All BCs | Event Subscription | Data aggregation and insights | Loose | Medium |
-| Strategic Planning | Decision Support | Event Publishing | Goal-driven decision context | Loose | Low |
-| Team Management | Personal Productivity Intelligence | Event Publishing | Team changes for personalization | Loose | Low |
+* tasks
+* workflows
+* goals
+* decisions
+* stress levels
+* availability
+* deadlines
+* historical behaviors
+* strategic alignment
 
-### 8.2 AI/ML Infrastructure Dependencies
+Outputs ranked recommendations with:
+
+* priority score
+* confidence
+* explainability
+* uncertainty
+
+---
+
+## **8.2.3 Prediction Engine**
+
+Supports:
+
+* task duration predictions
+* risk scoring
+* time-to-completion
+* workload forecasts
+* KPI forecasts
+* strategic drift forecasts
+
+---
+
+## **8.2.4 Decision Reasoning Engine**
+
+Implements:
+
+* weighted scoring
+* Bayesian adjustments
+* scenario evaluation
+* uncertainty envelopes
+* preference modeling
+
+Outputs include:
+
+* scores
+* rationales
+* counterfactuals
+* risk profiles
+
+---
+
+## **8.2.5 Workflow Routing Engine**
+
+Assigns tasks using:
+
+* team capabilities
+* cognitive state
+* availability
+* capability match
+* performance history
+* strategy alignment
+* actor type (human, AI agent)
+
+Generates:
+
+* assignment recommendations
+* explainability
+* reasoning trails
+
+---
+
+## **8.2.6 Alignment Engine (Knowledge Graph Based)**
+
+Every decision, workflow, task, recommendation, or initiative is mapped to:
+
+* strategic goals
+* themes
+* ESG targets
+* team capabilities
+
+Produces:
+
+* alignment scores
+* impact predictions
+* cross-goal interference detection
+
+---
+
+# **8.3 CROSS-CONTEXT REASONING PIPELINE**
+
+The system uses a **context fusion model** that merges insights from:
+
+* Cognitive state
+* Work patterns
+* Team capacity
+* Strategy
+* KPIs
+* Workflow states
+* Decisions
+* Performance trends
 
 ```mermaid
 graph TD
-    A[ML Model Registry] --> B[Personal Productivity Intelligence]
-    A --> C[Decision Support]
-    A --> D[Analytics & Reporting]
-    
-    E[Feature Store] --> B
-    E --> C
-    E --> D
-    
-    F[ML Training Pipeline] --> A
-    F --> E
-    
-    G[AI Ethics Framework] --> B
-    G --> C
-    G --> D
-    
-    H[Event Processing AI] --> B
-    H --> C
-    H --> D
-    
-    I[Privacy Framework] --> B
-    I --> C
-    I --> D
+Cognitive[Cognitive Context] --> Fusion
+WorkPatterns[Work Patterns] --> Fusion
+Team[Team Context] --> Fusion
+Strategy[Strategic Context] --> Fusion
+KPI[KPI Trends] --> Fusion
+Workflow[Workflow Context] --> Fusion
+Decision[Decision Context] --> Fusion
+
+Fusion --> Recommendations[Unified Recommendations]
+Fusion --> Predictions[Unified Predictions]
+Fusion --> Routing[Smart Workflow Routing]
+Fusion --> Insights
+Fusion --> StrategicAlignmentScore
 ```
 
-### 8.3 Intelligence Data Flow
+This fusion produces **holistic intelligence**.
 
-**AI Training Flow**:
-1. Events → Feature Store → Model Training → Model Registry → Prediction Services
-2. User Feedback → Model Evaluation → Model Updates → A/B Testing → Production Deployment
+---
 
-**Real-Time Intelligence Flow**:
-1. Domain Events → AI Event Processor → Feature Extraction → Prediction Services → Intelligence Updates
-2. User Interactions → Context Enrichment → Personalized Recommendations → User Experience
+# **8.4 EVENT-DRIVEN INTEGRATION (FULL DETAIL)**
 
-**Strategic Intelligence Flow**:
-1. Strategic Goals → Decision Context → AI-Enhanced Analysis → Recommendations → Strategic Initiatives
-2. Performance Data → Pattern Recognition → Strategic Insights → Goal Adjustments
+All bounded contexts publish domain events into a unified event bus.
+
+## **8.4.1 Event Bus Types**
+
+1. **Domain Events Bus**
+2. **Analytics Bus**
+3. **ML Feedback Bus**
+4. **Knowledge Graph Update Bus**
+5. **Audit/Compliance Bus**
+
+---
+
+# **8.4.2 Event Processing Flow**
+
+### **Step 1 — Domain Events Emitted**
+
+Examples:
+
+* TaskCompleted
+* RecommendationGenerated
+* GoalProgressRecorded
+* ScenarioAnalysisCompleted
+
+### **Step 2 — Event Classification (AI)**
+
+Events are classified into categories:
+
+* productivity-related
+* strategic
+* risk-related
+* anomaly
+* workflow-related
+
+### **Step 3 — Routing to Intelligence Services**
+
+Events are routed to the appropriate intelligence processors:
+
+* cognitive load analyzer
+* pattern detector
+* forecast model
+* decision reasoning module
+* KPI evaluator
+
+### **Step 4 — Side-Effects Triggered**
+
+Examples:
+
+* new predictions generated
+* alignment scores recalculated
+* team capacity recalculated
+* workflows re-routed
+
+### **Step 5 — Events enriched with intelligence**
+
+Then routed to the knowledge graph & analytics engines.
+
+---
+
+# **8.5 KNOWLEDGE GRAPH INTEGRATION (ENHANCED)**
+
+The graph encodes:
+
+* activities
+* tasks
+* workflows
+* decisions
+* KPIs
+* strategic goals
+* ESG goals
+* teams
+* capabilities
+* cognitive state patterns
+
+---
+
+## **8.5.1 Graph Node Types**
+
+* `Goal`
+* `Task`
+* `WorkflowStep`
+* `Decision`
+* `Scenario`
+* `KPI`
+* `Team`
+* `Member`
+* `Capability`
+* `Actor` (human or AI)
+* `Automation`
+* `Pattern`
+* `Context` nodes
+
+---
+
+## **8.5.2 Relation Types**
+
+* aligned_with
+* depends_on
+* influences
+* requires_capability
+* performed_by
+* part_of_workflow
+* impacts_kpi
+* contributes_to_goal
+* contradicts
+* risk_to
+
+---
+
+## **8.5.3 Knowledge Graph Use Cases**
+
+### **1. Strategic Alignment Scoring**
+
+Any entity can be scored against goals.
+
+### **2. Impact Modeling**
+
+“What does this failed workflow step affect?”
+
+### **3. Dependency Analysis**
+
+* if a team member leaves
+* if cognitive load spikes
+* if a KPI drops
+
+### **4. Root Cause Analysis**
+
+Graph traversal explains underlying causes.
+
+### **5. Predictive Interference Detection**
+
+Detects when changes in one domain affect another.
+
+---
+
+# **8.6 FEATURE STORE + ML PIPELINES**
+
+## **8.6.1 Feature Store**
+
+Stores:
+
+* per-user productivity features
+* workflow performance features
+* team capacity & stability features
+* decision model performance
+* KPI deltas
+* strategic drift features
+
+Supports streaming & batch features.
+
+---
+
+## **8.6.2 ML Training Pipeline**
+
+Stages:
+
+1. **Data ingestion**
+2. **Feature engineering**
+3. **Model training** (AutoML + custom)
+4. **Validation**
+5. **Bias detection**
+6. **Explainability**
+7. **Promotion**
+8. **Monitoring**
+
+Models include:
+
+* cognitive load prediction
+* task duration prediction
+* workflow assignment ranking
+* KPI forecasting
+* goal drift prediction
+* anomaly detection
+
+---
+
+# **8.7 PRIVACY, ETHICS & GOVERNANCE INTEGRATION**
+
+The platform enforces:
+
+## **8.7.1 Consent-Based Processing**
+
+Users must explicitly provide consent for:
+
+* data collection
+* predictive modeling
+* personalized recommendations
+* behavioral pattern analysis
+
+Events:
+
+* `UserConsentUpdated`
+* `AIProcessingBlockedDueToConsent`
+
+---
+
+## **8.7.2 Bias Detection**
+
+Every model undergoes:
+
+* demographic parity checks
+* equalized odds
+* calibration tests
+* SHAP-based bias surfaces
+
+Events:
+
+* **BiasDetected**
+* **BiasAssessmentCompleted**
+
+---
+
+## **8.7.3 Data Lineage Tracking**
+
+Every feature, prediction, decision, or recommendation has:
+
+* source trace
+* transformation history
+* timestamp
+* versioning
+
+Supports audits and compliance.
+
+---
+
+## **8.7.4 Ethical Guardrails**
+
+Rules that prevent:
+
+* over-automation
+* unsafe cognitive load actions
+* excessively risky workflows
+* manipulative recommendations
+
+Examples:
+
+```
+RULE PreventHighFocusTaskWithHighLoad
+WHEN cognitive.load >= High 
+THEN block.action("AssignHighFocusTask")
+EXPLAIN "Protecting user from potential cognitive overload."
+```
+
+---
+
+# **8.8 CROSS-CONTEXT CONTRACTS**
+
+To ensure compatibility, each BC exposes:
+
+## **1. Context APIs**
+
+* ProductivityContext
+* WorkflowContext
+* StrategyContext
+* TeamContext
+* AnalyticsContext
+
+## **2. Shared Value Objects**
+
+* TimeWindow
+* ConfidenceInterval
+* RiskEnvelope
+* StrategicLink
+* AlignmentScore
+* ReasoningTrace
+
+## **3. Common Query Contracts**
+
+* GetActorContext
+* GetGoalContext
+* GetWorkflowContext
+* GetTeamContext
+* GetKpiContext
+
+---
+
+# **8.9 EXAMPLE END-TO-END INTELLIGENCE FLOW**
+
+### **Scenario**: A critical task deadline is approaching.
+
+1. **Workflow Engine** emits `StepCompleted`
+2. **Analytics** updates KPI trend
+3. KPI drift detected → emits `KpiTrendShiftDetected`
+4. **Strategy** checks alignment → detects upcoming risk
+5. Emits `GoalOffTrackDetected`
+6. **Productivity** BC generates high-priority recommendation
+7. **Decision Support** creates scenario analysis to reevaluate plan
+8. **Workflow Routing Engine** reallocates upcoming tasks to best-fit actors
+9. **Notifications** sent with explanations
+
+This is **cross-domain intelligence in action**.
+
+---
+
+# **9. IMPLEMENTATION GUIDELINES (ENHANCED)**
+
+This section translates the architecture into **practical, actionable engineering guidance**, ensuring consistency, maintainability, and correctness when implementing the system.
+
+---
+
+# **9.1 AGGREGATES — IMPLEMENTATION RULES**
+
+## **9.1.1 Keep Aggregates Lean**
+
+Aggregates MUST:
+
+* enforce invariants
+* validate commands
+* emit domain events
+* never perform cross-BC logic
+* never call external services directly
+
+Aggregates MUST NOT:
+
+* contain ML logic
+* contain rule-engine logic
+* contain projection/analytics logic
+* store unbounded collections
+* depend on external sources for consistency
+
+---
+
+## **9.1.2 Aggregate Methods Naming**
+
+Use **explicit intent-revealing names**:
+
+* `EvaluateDecision()`
+* `RecordProgress()`
+* `AssignActor()`
+* `UpdateCapability()`
+* `GenerateSnapshot()`
+
+This prevents ambiguous behavior.
+
+---
+
+## **9.1.3 Emit Domain Events on All State Changes**
+
+Examples:
+
+```csharp
+AddCriterion()  -> CriteriaAdded
+AssignRole()    -> RoleAssigned
+RecordMetric()  -> PerformanceMetricRecorded
+PlanUpdated()   -> HorizonPlanRevised
+```
+
+This ensures integration with intelligence services.
+
+---
+
+# **9.2 VALUE OBJECTS — IMPLEMENTATION RULES**
+
+## **9.2.1 Immutable**
+
+Every VO MUST be immutable.
+
+## **9.2.2 Rich Semantic Meaning**
+
+Examples:
+
+* `TimeWindow`
+* `ConfidenceInterval`
+* `AlignmentScore`
+* `RiskEnvelope`
+* `CapabilityTag`
+* `CognitiveSignal`
+
+VOs are not just data—they represent domain concepts.
+
+---
+
+# **9.3 DOMAIN SERVICES**
+
+Use Domain Services for:
+
+* heavy calculations
+* orchestrating multiple entities
+* interfacing with rule DSL
+* integrating ML predictions into domain workflows
+
+Never include infrastructure logic.
+
+---
+
+# **9.4 APPLICATION SERVICES**
+
+Application services orchestrate:
+
+* aggregates
+* domain services
+* ML services
+* rule engine
+* event dispatching
+* context builders
+
+### Application service responsibilities:
+
+* Build **IntelligenceContext** from available data
+* Call domain and intelligence modules
+* Map inputs → domain commands
+* Use repositories (per BC)
+* Push events to the bus
+
+### Example Flow
+
+```
+1. Build IntelligenceContext
+2. Call ReasoningEngine to evaluate and recommend
+3. Update aggregates
+4. Emit events
+5. Return results with explanations + uncertainty
+```
+
+---
+
+# **9.5 INFRASTRUCTURE GUIDELINES**
+
+### **9.5.1 Repositories**
+
+Each BC has its own repositories:
+
+* `ProductivityRepository`
+* `DecisionRepository`
+* `StrategyRepository`
+* `WorkflowRepository`
+* `TeamRepository`
+* `AnalyticsRepository`
+
+Repositories SHOULD NOT:
+
+* expose IQueryable
+* return EF entities
+* perform business logic
+
+### **9.5.2 Event Bus**
+
+Prefer:
+
+* Outbox pattern
+* Exactly-once or at-least-once depending on domain criticality
+
+### **9.5.3 ML Services**
+
+Wrap ML services behind **interfaces**:
+
+```csharp
+interface IPredictionService { ... }
+interface IRecommendationService { ... }
+interface ICognitiveService { ... }
+```
+
+This makes each BC testable.
+
+---
+
+# **9.6 INTELLIGENCE CONTEXT CONSTRUCTION**
+
+Every intelligent operation requires a fresh **IntelligenceContext**.
+
+### Build from:
+
+* Cognitive state (Productivity BC)
+* Workflow state (Workflow BC)
+* Team capacity (Teams BC)
+* Strategic alignment (Strategy BC)
+* KPI trends (Analytics BC)
+
+Context is assembled by application services.
+
+---
+
+# **9.7 RULE ENGINE + AI COHERENCE**
+
+Policies should:
+
+* use DSL rules
+* override or augment ML predictions
+* adjust confidence
+* enforce safety guardrails
+
+AI models **never override domain invariants**.
+
+---
+
+# **9.8 ERROR HANDLING + RESILIENCE**
+
+### Use resilient patterns:
+
+* Circuit breakers
+* Retry with backoff
+* Idempotent command handlers
+* Event deduplication
+
+### Logging:
+
+* semantic logging
+* correlation IDs
+* model versions
+* context snapshots
+
+---
+
+# **9.9 TESTING STRATEGY**
+
+### Types of tests:
+
+* Aggregate invariant tests
+* Rule DSL evaluations
+* ML prediction validity tests
+* Integration event flow tests
+* Knowledge graph propagation tests
+* Explainability tests (counterfactuals)
+
+### Automation:
+
+* Continuous evaluation of model drift
+* Benchmarking recommendations
+* Stress testing workflow routing
+
+---
+
+# **9.10 SECURITY & PRIVACY IMPLEMENTATION**
+
+* Zero-trust principles
+* Role-based access (RBAC) tied to `RoleDefinition`
+* Consent-check interceptor in application services
+* Privacy-aware projections
+* Data minimization for ML features
+
+---
+
+# **9.11 DOMAIN-DRIVEN MICROSERVICES GUIDELINES**
+
+Each BC may be deployed independently.
+But AI services may be shared.
+
+### Hard boundaries:
+
+* Workflow Engine
+* Team Management
+* Strategic Planning
+
+### Soft boundaries:
+
+* Productivity Intelligence
+* Decision Support
+* Analytics
+
+---
+
+# **10. DEPENDENCY MATRIX**
+
+The following matrix shows how BCs depend on one another.
+Heavy dependencies marked as **●●●**, medium as **●●**, light as **●**.
+
+| From / To        | Productivity | Decision | Strategy | Workflow | Teams | Analytics |
+| ---------------- | ------------ | -------- | -------- | -------- | ----- | --------- |
+| **Productivity** | —            | ●        | ●        | ●●       | ●●    | ●●●       |
+| **Decision**     | ●●           | —        | ●●●      | ●        | ●     | ●●        |
+| **Strategy**     | ●●           | ●●●      | —        | ●●       | ●     | ●●●       |
+| **Workflow**     | ●●           | ●        | ●●       | —        | ●●●   | ●●        |
+| **Teams**        | ●            | ●        | ●        | ●●●      | —     | ●         |
+| **Analytics**    | ●●●          | ●●       | ●●●      | ●●       | ●     | —         |
+
+---
+
+# **10.1 CROSS-DOMAIN INTELLIGENCE DEPENDENCIES**
+
+### **Productivity → Workflow**
+
+Cognitive load influences task routing.
+
+### **Decision → Strategy**
+
+Scenario analysis feeds strategic planning.
+
+### **Strategy → Workflow**
+
+Goal alignment influences task prioritization.
+
+### **Analytics → Everything**
+
+KPIs, forecasts, and trends feed back into reasoning engines.
+
+### **Workflow → Teams**
+
+Assignments depend on team capacity and roles.
+
+---
+
+# **10.2 KNOWLEDGE GRAPH DEPENDENCIES**
+
+The graph sits at the center of these relationships:
+
+* Goals ↔ Decisions
+* Tasks ↔ KPIs
+* Workflows ↔ Teams
+* Decisions ↔ Strategy
+* Tasks ↔ Productivity
+* Capabilities ↔ Assignments
+* ESG goals ↔ Metrics
+
+---
+
+# **10.3 EVENTING DEPENDENCIES**
+
+### Productivity
+
+→ sends cognitive, performance, pattern events
+→ consumed by Workflow, Teams, Analytics
+
+### Decision
+
+→ sends evaluation, scenario, assumption events
+→ consumed by Strategy, Analytics
+
+### Strategy
+
+→ sends goal, progress, horizon events
+→ consumed by Workflow, Decision, Analytics
+
+### Workflow
+
+→ sends routing, task, completion events
+→ consumed by Productivity, Teams, Analytics
+
+### Teams
+
+→ sends capacity, capability events
+→ consumed by Workflow, Strategy
+
+### Analytics
+
+→ sends KPI, insight, anomaly events
+→ consumed by Strategy, Productivity, Decision
+
+---
+
+# **11. FINAL NOTES & ARCHITECTURE CONSOLIDATION**
+
+You now have a **fully regenerated, unified, enhanced, AI-first DDD architecture document**, rewritten with:
+
+* Improved structure
+* All new aggregates
+* Unified reasoning model
+* Temporal + uncertainty modeling
+* Knowledge graph foundation
+* DSL for domain rules
+* Rich domain events catalog
+* Cross-context integration
+* Privacy, ethics, and governance
+* Practical implementation guidelines
+* A complete dependency matrix
+
+This is now a **blueprint-level** architecture that supports:
+
+* Autonomous workflows
+* AI-augmented decision-making
+* Enterprise strategy orchestration
+* Behavioral intelligence
+* Cross-context reasoning
+* Explainable and ethical intelligence
+
+---
+
+### **C4 Level 1 — System Context**
+
+### **C4 Level 2 — Container Diagram**
+
+### **C4 Level 3 — Component Diagrams** (per bounded context)
+
+### **C4 Level 4 — Code/Domain Structure** 
+
+All diagrams are fully Markdown-compatible.
+
+---
+
+# 🟦 **C4 Level 1 — System Context Diagram**
+
+```mermaid
+flowchart TB
+    User([End User])
+    Admin([Admin User])
+    ExternalAI[(External AI Models/LLMs)]
+    ExternalData[(External Integrations – Calendar, Email, Projects)]
+
+    subgraph Platform[Intelligence & Strategic Management Platform]
+        ProductivityBC[[Personal Productivity Intelligence BC]]
+        DecisionBC[[Decision Support BC]]
+        StrategyBC[[Strategic Planning BC]]
+        WorkflowBC[[Workflow Engine BC]]
+        TeamBC[[Team Management BC]]
+        AnalyticsBC[[Analytics & Reporting BC]]
+        AIInfra[(AI/ML Infrastructure)]
+    end
+
+    User --> Platform
+    Admin --> Platform
+
+    Platform --> ExternalAI
+    Platform --> ExternalData
+
+    ProductivityBC -.uses.-> AIInfra
+    DecisionBC -.uses.-> AIInfra
+    AnalyticsBC -.feeds.-> AIInfra
+```
+
+---
+
+# 🟩 **C4 Level 2 — Container Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph WebApp[Web Application]
+        UI[Client UI – Web / Mobile]
+    end
+
+    subgraph Backend[Backend/API]
+        Gateway[API Gateway]
+        
+        subgraph BCs[Bounded Context Microservices]
+            ProductivityAPI[[Productivity Intelligence Service]]
+            DecisionAPI[[Decision Support Service]]
+            StrategyAPI[[Strategic Planning Service]]
+            WorkflowAPI[[Workflow Engine Service]]
+            TeamAPI[[Team Management Service]]
+            AnalyticsAPI[[Analytics & Reporting Service]]
+        end
+
+        Identity[Identity & Access Control]
+        EventBus[(Domain Event Bus)]
+    end
+
+    subgraph Data[Data Layer]
+        ProductivityDB[(Productivity DB)]
+        DecisionDB[(Decision DB)]
+        StrategyDB[(Strategy DB)]
+        WorkflowDB[(Workflow DB)]
+        TeamDB[(Team DB)]
+        AnalyticsDB[(Analytics Warehouse)]
+        FeatureStore[(ML Feature Store)]
+        ModelRegistry[(ML Model Registry)]
+    end
+
+    subgraph AIInfra[AI/ML Infrastructure]
+        PredictionSvc[[Prediction Service]]
+        RecommendationSvc[[Recommendation Service]]
+        CognitiveSvc[[Cognitive Load Service]]
+        ExplainabilitySvc[[Explainability/SHAP/CX]]
+    end
+
+    UI --> Gateway
+    Gateway --> BCs
+
+    ProductivityAPI --> ProductivityDB
+    DecisionAPI --> DecisionDB
+    StrategyAPI --> StrategyDB
+    WorkflowAPI --> WorkflowDB
+    TeamAPI --> TeamDB
+    AnalyticsAPI --> AnalyticsDB
+
+    BCs --> EventBus
+    EventBus --> BCs
+
+    BCs --> FeatureStore
+    FeatureStore --> ModelRegistry
+    ModelRegistry --> PredictionSvc
+
+    PredictionSvc --> ProductivityAPI
+    RecommendationSvc --> ProductivityAPI
+    ExplainabilitySvc --> DecisionAPI
+    CognitiveSvc --> ProductivityAPI
+
+    AnalyticsAPI --> FeatureStore
+```
+
+---
+
+# 🟨 **C4 Level 3 — Component Diagram (Per Bounded Context)**
+
+---
+
+## **1. Personal Productivity Intelligence — Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph ProductivityBC[Personal Productivity Intelligence BC]
+        ProfileAgg[[UserProductivityProfile Aggregate]]
+        PredictionsAgg[[PredictionInstance Aggregate]]
+        RecommendationsAgg[[RecommendationInstance Aggregate]]
+        AutomationAgg[[PersonalAutomation Aggregate]]
+        PerformanceAgg[[PerformanceSnapshot Aggregate]]
+
+        ProfileSvc[[Profile Domain Service]]
+        CognitiveSvc[[Cognitive Load Domain Service]]
+        PatternSvc[[Work Pattern Detector]]
+        RecommendationEngine[[Recommendation Generator]]
+        PredictionEngine[[Prediction Orchestrator]]
+
+        ProductivityRepo[(Productivity Repository)]
+        EventPub[[Event Publisher]]
+    end
+
+    UI([UI / API]) --> ProfileSvc
+    UI --> RecommendationEngine
+
+    ProfileSvc --> ProfileAgg
+    CognitiveSvc --> ProfileAgg
+    PatternSvc --> ProfileAgg
+
+    RecommendationEngine --> RecommendationsAgg
+    PredictionEngine --> PredictionsAgg
+
+    ProfileAgg --> ProductivityRepo
+    PredictionsAgg --> ProductivityRepo
+    RecommendationsAgg --> ProductivityRepo
+    PerformanceAgg --> ProductivityRepo
+
+    PredictionEngine --> EventPub
+    RecommendationEngine --> EventPub
+    PatternSvc --> EventPub
+```
+
+---
+
+## **2. Decision Support — Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph DecisionBC[Decision Support BC]
+        DecisionModelAgg[[DecisionModelInstance Aggregate]]
+        ScenarioAgg[[ScenarioAnalysis Aggregate]]
+        JournalAgg[[DecisionJournalEntry Aggregate]]
+        InitiativeAgg[[StrategicInitiativeProposal Aggregate]]
+
+        DecisionEval[[Decision Scoring Engine]]
+        SWOTService[[SWOT & Risk Analysis Service]]
+        CostBenefitSvc[[Cost-Benefit Calculator]]
+        PrioritizationSvc[[Prioritization Framework Engine]]
+        ScenarioSvc[[Scenario Modeling Engine]]
+
+        DecisionRepo[(Decision Repository)]
+        Events[[Domain Event Publisher]]
+    end
+
+    UI([UI / API]) --> DecisionModelAgg
+    UI --> ScenarioSvc
+    UI --> PrioritizationSvc
+
+    DecisionEval --> DecisionModelAgg
+    SWOTService --> DecisionModelAgg
+    CostBenefitSvc --> DecisionModelAgg
+    ScenarioSvc --> ScenarioAgg
+
+    DecisionModelAgg --> DecisionRepo
+    ScenarioAgg --> DecisionRepo
+    JournalAgg --> DecisionRepo
+    InitiativeAgg --> DecisionRepo
+
+    DecisionEval --> Events
+    ScenarioSvc --> Events
+```
+
+---
+
+## **3. Workflow Engine — Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph WorkflowBC[Workflow Engine BC]
+        DefinitionAgg[[WorkflowDefinition Aggregate]]
+        InstanceAgg[[WorkflowInstance Aggregate]]
+        TaskAgg[[TaskAssignment Aggregate]]
+
+        ExecutionSvc[[Workflow Execution Engine]]
+        RoutingSvc[[Task Routing Engine (AI-Augmented)]]
+        ExceptionSvc[[Exception & Compensation Handler]]
+
+        BPMNAdapter[[BPMN Adapter Layer]]
+        WorkflowRepo[(Workflow Repository)]
+        EventPublisher[[Domain Event Publisher]]
+    end
+
+    UI([UI / API]) --> DefinitionAgg
+    UI --> InstanceAgg
+
+    ExecutionSvc --> InstanceAgg
+    RoutingSvc --> TaskAgg
+
+    DefinitionAgg --> WorkflowRepo
+    InstanceAgg --> WorkflowRepo
+    TaskAgg --> WorkflowRepo
+
+    ExecutionSvc --> BPMNAdapter
+    BPMNAdapter --> ExternalEngines((External BPMN Engines))
+
+    ExecutionSvc --> EventPublisher
+    RoutingSvc --> EventPublisher
+```
+
+---
+
+# 🟧 **C4 Level 4 — Domain Structure Diagram**
+
+Here we show **Level 4** (deepest level) for **User Productivity Profile Aggregate**.
+
+```mermaid
+flowchart TB
+
+    subgraph UserProductivityProfile
+        UserId
+        WorkPatterns[WorkPatternModel (VO)]
+        CognitiveLoad[CognitiveLoadMetric (VO)]
+        Preferences[UserPreferenceSetting (VO)]
+        PerformancePoints[PerformanceDataPoint (VO)]
+        Recommendations[* Recommendation IDs]
+        Predictions[* Prediction IDs]
+
+        +UpdateWorkPattern()
+        +AssessCognitiveLoad()
+        +ApplyPreferences()
+        +RecordPerformance()
+        +GenerateRecommendations()
+        +EmitEvents()
+    end
+
+    WorkPatterns --> UserProductivityProfile
+    CognitiveLoad --> UserProductivityProfile
+    Preferences --> UserProductivityProfile
+    PerformancePoints --> UserProductivityProfile
+```
+
+---
+
+# 🟩 **1. Team Management Bounded Context — C4 Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph TeamBC[Team Management BC]
+        TeamAgg[[Team Aggregate]]
+        MemberAgg[[TeamMember Entity]]
+        RoleAgg[[Role Aggregate]]
+        CapabilitySvc[[Capability Mapping Service]]
+        CapacitySvc[[Team Capacity Calculator]]
+        RolePolicy[[Role Assignment Policy]]
+
+        TeamRepo[(Team Repository)]
+        EventPublisher[[Domain Event Publisher]]
+    end
+
+    UI([UI / API]) --> TeamAgg
+    UI --> RoleAgg
+
+    CapabilitySvc --> TeamAgg
+    CapacitySvc --> TeamAgg
+    RolePolicy --> TeamAgg
+
+    TeamAgg --> TeamRepo
+    RoleAgg --> TeamRepo
+
+    CapacitySvc --> EventPublisher
+    RolePolicy --> EventPublisher
+```
+
+---
+
+# 🟨 **2. Strategic Planning Bounded Context — C4 Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph StrategyBC[Strategic Planning BC]
+        GoalAgg[[StrategicGoalDefinition Aggregate]]
+        CrisisAgg[[CrisisManagementPlan Aggregate]]
+        GrowthAgg[[SustainableGrowthFramework Aggregate]]
+        HorizonAgg[[IntegratedHorizonPlan Aggregate]]
+
+        GoalSvc[[Goal Progress Evaluation Service]]
+        RiskSvc[[Risk & Vulnerability Assessment]]
+        ESGSvc[[ESG Impact Measurement Engine]]
+        HorizonSvc[[Future & Backward Planning Engine]]
+
+        StrategyRepo[(Strategic Planning Repository)]
+        EventPublisher[[Domain Event Publisher]]
+    end
+
+    UI([UI / API]) --> GoalAgg
+    UI --> GrowthAgg
+    UI --> HorizonAgg
+
+    GoalSvc --> GoalAgg
+    RiskSvc --> CrisisAgg
+    ESGSvc --> GrowthAgg
+    HorizonSvc --> HorizonAgg
+
+    GoalAgg --> StrategyRepo
+    CrisisAgg --> StrategyRepo
+    GrowthAgg --> StrategyRepo
+    HorizonAgg --> StrategyRepo
+
+    GoalSvc --> EventPublisher
+    ESGSvc --> EventPublisher
+    HorizonSvc --> EventPublisher
+```
+
+---
+
+# 🟦 **3. Analytics & Reporting Bounded Context — C4 Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph AnalyticsBC[Analytics & Reporting BC]
+        DashboardAgg[[Dashboard Aggregate]]
+        KPIAgg[[KpiDefinition Aggregate]]
+        ReportAgg[[ReportConfiguration Aggregate]]
+        DataViewAgg[[AggregatedDataView Entity]]
+
+        DashboardSvc[[Dashboard Orchestration Service]]
+        KpiEngine[[KPI Evaluation Engine]]
+        ReportGenSvc[[Report Generation Engine]]
+        DataPipeline[[Event Processing & ETL Pipeline]]
+        VisualizationSvc[[Visualization Renderer]]
+
+        AnalyticsRepo[(Analytics Repository / Warehouse)]
+        EventPublisher[[Domain Event Publisher]]
+    end
+
+    UI([UI / API]) --> DashboardAgg
+    UI --> ReportAgg
+    UI --> KPIAgg
+
+    DashboardSvc --> DashboardAgg
+    KpiEngine --> KPIAgg
+    ReportGenSvc --> ReportAgg
+    DataPipeline --> DataViewAgg
+
+    DashboardAgg --> AnalyticsRepo
+    KPIAgg --> AnalyticsRepo
+    ReportAgg --> AnalyticsRepo
+    DataViewAgg --> AnalyticsRepo
+
+    KpiEngine --> EventPublisher
+    DataPipeline --> EventPublisher
+```
+
+---
+
+# 🟥 **4. AI/ML Infrastructure — C4 Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph AIInfra[AI/ML Infrastructure]
+        PredictionSvc[[Prediction Service]]
+        RecommendationSvc[[Recommendation Service]]
+        CognitiveSvc[[Cognitive Load AI Service]]
+        PatternRecognizer[[Pattern Recognition AI Module]]
+        ExplainabilitySvc[[Explainability Service (SHAP, CX)]]
+
+        ModelRegistry[(ML Model Registry)]
+        FeatureStore[(Feature Store)]
+        TrainingPipeline[[Model Training Pipeline]]
+        DriftDetection[[Model Drift Detector]]
+        Monitoring[[Model Monitoring & Metrics]]
+    end
+
+    ProductivityBC([Productivity Intelligence BC]) --> PredictionSvc
+    ProductivityBC --> CognitiveSvc
+    ProductivityBC --> RecommendationSvc
+
+    DecisionBC([Decision Support BC]) --> ExplainabilitySvc
+
+    AnalyticsBC([Analytics BC]) --> FeatureStore
+    FeatureStore --> TrainingPipeline
+    TrainingPipeline --> ModelRegistry
+    ModelRegistry --> PredictionSvc
+
+    Monitoring --> DriftDetection
+```
+
+---
+
+# 🟪 **5. Eventing & Integration Layer — C4 Component Diagram**
+
+```mermaid
+flowchart TB
+
+    subgraph EventLayer[Eventing & Integration Layer]
+        EventBus[(Domain Event Bus)]
+        Outbox[[Outbox Pattern Handler]]
+        EventRouter[[Intelligent Event Router]]
+        EventClassifier[[AI-Based Event Classifier]]
+        EventProcessor[[Event Processor Pipeline]]
+        ReplaySvc[[Event Replay / Event-Sourcing Support]]
+    end
+
+    ProductivityBC([Productivity BC]) --> Outbox
+    DecisionBC([Decision BC]) --> Outbox
+    StrategyBC([Strategy BC]) --> Outbox
+    WorkflowBC([Workflow BC]) --> Outbox
+    TeamBC([Teams BC]) --> Outbox
+    AnalyticsBC([Analytics BC]) --> Outbox
+
+    Outbox --> EventBus
+    EventBus --> EventRouter
+    EventRouter --> EventProcessor
+    EventProcessor --> EventClassifier
+    EventClassifier --> AIInfra[(AI/ML Services)]
+
+    EventBus --> ReplaySvc
+```
+
+---
+
+# 🟫 **6. Identity & Access Bounded Context — C4 Component Diagram**
+
+*(Simple but necessary)*
+
+```mermaid
+flowchart TB
+
+    subgraph IdentityBC[Identity & Access Control BC]
+        UserAgg[[User Aggregate]]
+        PermissionSvc[[Permission Evaluation Service]]
+        TokenSvc[[JWT/Token Service]]
+
+        IdentityRepo[(Identity Repository)]
+    end
+
+    UI([UI / API]) --> TokenSvc
+    Backend([Other BCs]) --> PermissionSvc
+
+    UserAgg --> IdentityRepo
+    PermissionSvc --> IdentityRepo
+```
+
+---
+
+# 🟧 **7. Knowledge Graph & Global Reasoning Layer — C4 Component Diagram**
+
+*(Optional but present in your architecture)*
+
+```mermaid
+flowchart TB
+
+    subgraph KnowledgeGraph[Domain Knowledge Graph]
+        GraphStore[(Graph Database)]
+        RelationshipBuilder[[Relationship Extractor]]
+        InferenceEngine[[Semantic Reasoning Engine]]
+        QueryAPI[[Graph Query API]]
+    end
+
+    EventBus[(Event Bus)] --> RelationshipBuilder
+    RelationshipBuilder --> GraphStore
+    InferenceEngine --> GraphStore
+    UI([UI / API]) --> QueryAPI
+```
+
+---
+

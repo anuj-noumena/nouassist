@@ -1,6 +1,4 @@
-using NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions;
-
-namespace NouAssist.DecisionSupport.Exceptions
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions
 {
     /// <summary>
     /// Exception thrown when an entity with the same name already exists

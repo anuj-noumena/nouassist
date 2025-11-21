@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.EventBus;
 
-namespace NouAssist.Analytics.Events
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Events
 {
     /// <summary>
     /// Event published when a workflow instance is completed in the Workflow BC

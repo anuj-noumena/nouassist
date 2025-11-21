@@ -1,7 +1,7 @@
 using System;
 using Volo.Abp.EventBus;
 
-namespace NouAssist.Analytics.Events
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Events
 {
     /// <summary>
     /// Event published when a project's progress is updated in the Project BC

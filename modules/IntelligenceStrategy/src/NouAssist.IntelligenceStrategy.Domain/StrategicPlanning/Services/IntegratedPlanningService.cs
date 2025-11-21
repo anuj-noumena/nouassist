@@ -7,6 +7,7 @@ using NouAssist.IntelligenceStrategy.StrategicPlanning.Entities;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Enums;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Repositories;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Services
 {

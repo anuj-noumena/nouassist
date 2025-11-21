@@ -8,6 +8,8 @@ using NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
 {
@@ -91,7 +93,7 @@ namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
         {
             try
             {
-                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken)
+                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken: cancellationToken)
                     ?? throw new EntityNotFoundException(nameof(DecisionModelInstance), decisionModelId);
                     
                 var criterion = decisionModel.AddCriterion(name, description, weight);
@@ -125,7 +127,7 @@ namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
         {
             try
             {
-                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken)
+                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken: cancellationToken)
                     ?? throw new EntityNotFoundException(nameof(DecisionModelInstance), decisionModelId);
                     
                 var alternative = decisionModel.AddAlternative(name, description);
@@ -160,7 +162,7 @@ namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
         {
             try
             {
-                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken)
+                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken: cancellationToken)
                     ?? throw new EntityNotFoundException(nameof(DecisionModelInstance), decisionModelId);
                     
                 decisionModel.SetScore(alternativeId, criterionId, score);
@@ -194,7 +196,7 @@ namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
         {
             try
             {
-                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken)
+                var decisionModel = await _decisionModelRepository.GetAsync(decisionModelId, cancellationToken: cancellationToken)
                     ?? throw new EntityNotFoundException(nameof(DecisionModelInstance), decisionModelId);
                     
                 decisionModel.FinalizeDecision(selectedAlternativeId);

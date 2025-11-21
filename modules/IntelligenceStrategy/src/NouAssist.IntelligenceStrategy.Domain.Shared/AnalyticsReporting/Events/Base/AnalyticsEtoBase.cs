@@ -1,7 +1,6 @@
 using System;
-using Volo.Abp.EventBus;
 
-namespace NouAssist.Analytics.Events.Base
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Events.Base
 {
     /// <summary>
     /// Base class for all Analytics module event transfer objects

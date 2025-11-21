@@ -13,6 +13,7 @@ using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Localization;
+using Microsoft.Extensions.Localization;
 
 namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Services
 {
@@ -294,9 +295,6 @@ namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Services
         
         // Other implementation methods...
         
-        private static string L(string name)
-        {
-            return LocalizationResource.GetString(AnalyticsReportingResource.ResourceName, name);
-        }
+        private IStringLocalizer<AnalyticsReportingResource> L => LazyServiceProvider.LazyGetRequiredService<IStringLocalizer<AnalyticsReportingResource>>();
     }
 }

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Analytics.Aggregates;
 using NouAssist.Analytics.EntityFrameworkCore;
 using NouAssist.Analytics.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;

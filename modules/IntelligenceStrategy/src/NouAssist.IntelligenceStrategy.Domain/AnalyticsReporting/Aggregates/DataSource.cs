@@ -6,6 +6,7 @@ using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Events;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Exceptions;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Helpers;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;

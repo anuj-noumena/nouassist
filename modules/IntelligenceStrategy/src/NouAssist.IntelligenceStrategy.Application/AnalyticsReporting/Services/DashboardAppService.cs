@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.Analytics.Aggregates;
 using NouAssist.Analytics.DTOs.Dashboard;
 using NouAssist.Analytics.Entities;
-using NouAssist.Analytics.Interfaces.Services;
 using NouAssist.Analytics.Permissions;
 using NouAssist.Analytics.Repositories;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Exceptions;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using Volo.Abp.Application.Dtos;
@@ -189,7 +188,7 @@ namespace NouAssist.Analytics.Services
             
             if (widget == null)
             {
-                throw new Exceptions.AnalyticsDomainException("Dashboard:ErrorMessage:WidgetNotFound")
+                throw new AnalyticsDomainException("Dashboard:ErrorMessage:WidgetNotFound")
                     .WithData("widgetId", widgetId);
             }
             

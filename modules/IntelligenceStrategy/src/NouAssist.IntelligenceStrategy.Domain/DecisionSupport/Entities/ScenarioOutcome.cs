@@ -1,8 +1,8 @@
 using System;
-using NouAssist.DecisionSupport.ValueObjects;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.DecisionSupport.Entities
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Entities
 {
     /// <summary>
     /// Represents a potential outcome in a scenario model

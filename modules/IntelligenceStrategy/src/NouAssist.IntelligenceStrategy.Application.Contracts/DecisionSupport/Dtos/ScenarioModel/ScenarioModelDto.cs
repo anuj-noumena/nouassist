@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NouAssist.DecisionSupport.Dtos.ScenarioOutcome;
-using NouAssist.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.DecisionSupport.Dtos.ScenarioModel

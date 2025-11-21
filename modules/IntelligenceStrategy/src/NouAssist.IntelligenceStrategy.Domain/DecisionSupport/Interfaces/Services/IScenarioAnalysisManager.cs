@@ -1,9 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.DecisionSupport.Aggregates;
-using NouAssist.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 
-namespace NouAssist.DecisionSupport.Interfaces.Services
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services
 {
     /// <summary>
     /// Interface for scenario analysis management

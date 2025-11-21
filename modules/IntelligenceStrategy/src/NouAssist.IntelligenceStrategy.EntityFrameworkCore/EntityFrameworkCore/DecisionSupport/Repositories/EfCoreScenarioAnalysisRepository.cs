@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NouAssist.DecisionSupport.Aggregates;
 using NouAssist.DecisionSupport.EntityFrameworkCore;
-using NouAssist.DecisionSupport.Interfaces.Repositories;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
 using NouAssist.IntelligenceStrategy.DecisionSupport.EntityFrameworkCore;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

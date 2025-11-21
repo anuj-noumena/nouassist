@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using NouAssist.DecisionSupport.Constants;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Constants;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DecisionSupport.ValueObjects
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects
 {
     /// <summary>
     /// Represents a description of a scenario in scenario analysis

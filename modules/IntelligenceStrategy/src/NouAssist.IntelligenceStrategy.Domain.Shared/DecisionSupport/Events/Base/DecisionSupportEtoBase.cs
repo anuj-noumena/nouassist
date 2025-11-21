@@ -1,7 +1,6 @@
 using System;
-using Volo.Abp.EventBus;
 
-namespace NouAssist.DecisionSupport.Events.Base
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Events.Base
 {
     /// <summary>
     /// Base class for Decision Support integration events

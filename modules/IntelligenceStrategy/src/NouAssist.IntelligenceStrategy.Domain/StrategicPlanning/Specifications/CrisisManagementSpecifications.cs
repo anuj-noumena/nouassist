@@ -2,6 +2,7 @@ using System;
 using System.Linq.Expressions;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Aggregates;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Enums;
+using Volo.Abp.Specifications;
 
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Specifications
 {

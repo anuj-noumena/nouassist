@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using NouAssist.DecisionSupport.Aggregates;
 using NouAssist.DecisionSupport.Dtos.ScenarioAnalysis;
 using NouAssist.DecisionSupport.Dtos.ScenarioModel;
 using NouAssist.DecisionSupport.Dtos.ScenarioOutcome;
-using NouAssist.DecisionSupport.Interfaces.Repositories;
-using NouAssist.DecisionSupport.Interfaces.Services;
 using NouAssist.DecisionSupport.Permissions;
-using NouAssist.DecisionSupport.ValueObjects;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Entities;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Repositories;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Permissions;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
@@ -56,13 +57,13 @@ namespace NouAssist.DecisionSupport.Services
             var mostLikelyScenario = scenarioAnalysis.GetMostLikelyScenario();
             if (mostLikelyScenario != null)
             {
-                dto.MostLikelyScenario = ObjectMapper.Map<Entities.ScenarioModel, ScenarioModelDto>(mostLikelyScenario);
+                dto.MostLikelyScenario = ObjectMapper.Map<ScenarioModel, ScenarioModelDto>(mostLikelyScenario);
             }
             
             var highestImpactScenario = scenarioAnalysis.GetHighestImpactScenario();
             if (highestImpactScenario != null)
             {
-                dto.HighestImpactScenario = ObjectMapper.Map<Entities.ScenarioModel, ScenarioModelDto>(highestImpactScenario);
+                dto.HighestImpactScenario = ObjectMapper.Map<ScenarioModel, ScenarioModelDto>(highestImpactScenario);
             }
             
             // Calculate average impact for each scenario model

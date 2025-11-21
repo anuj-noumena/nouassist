@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.DecisionSupport.Entities
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Entities
 {
     /// <summary>
     /// Represents the usage of a prioritization framework in a decision model

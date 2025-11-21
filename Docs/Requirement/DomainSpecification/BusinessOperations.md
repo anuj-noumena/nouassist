@@ -1,2558 +1,3269 @@
-# Business Operations Platform Domain-Driven Design Architecture Specification
-## Business Operations Platform
+# **1. Executive Summary (Enhanced)**
+
+## **1.1 Purpose of the System**
+
+The **Business Operations Platform** is a unified operational system designed to coordinate and optimize:
+
+* Freelance project and client management
+* CRM capabilities and customer lifecycle management
+* Contract drafting, versioning, approvals, and portfolio management
+* Project execution, task management, and time tracking
+* Resource allocation and inventory management
+* Centralized document management, storage, and governance
+
+The platform supports **configuration, automation, and cross-bounded-context integration** to enable operational excellence across the business.
 
 ---
 
-## Table of Contents
+## **1.2 Architecture Approach**
 
-1. [Executive Summary](#1-executive-summary)
-2. [Domain Architecture Overview](#2-domain-architecture-overview)
-3. [Bounded Context Catalog](#3-bounded-context-catalog)
-4. [Bounded Context Specifications](#4-bounded-context-specifications)
-5. [Integration Patterns](#5-integration-patterns)
-6. [Implementation Guidelines](#6-implementation-guidelines)
-7. [Cross-Cutting Concerns](#7-cross-cutting-concerns)
-8. [Dependency Matrix](#8-dependency-matrix)
+This regenerated version follows advanced DDD principles:
 
----
+### **Strategic Patterns**
 
-## 1. Executive Summary
+* **Domain-Driven Design** with rich domain behavior
+* **Bounded Contexts** aligned to business capabilities
+* **Context Map**, relationships, and integration modes
+* **Ubiquitous Language** formalized across all contexts
 
-### 1.1 System Purpose
-A comprehensive business operations platform integrating freelance workflow management, customer relationship management, contract administration, resource allocation, project execution, and document management to optimize business operations and client relationships.
+### **Tactical Patterns**
 
-### 1.2 Architecture Approach
-- **Pattern**: Domain-Driven Design with CQRS and Event Sourcing
-- **Framework**: ABP Framework (.NET)
-- **Integration**: Event-driven architecture with eventual consistency
-- **Scalability**: Microservices-ready bounded contexts
+* Aggregates with explicit invariants
+* Value objects (strongly typed + domain rules)
+* Domain events (lifecycle + status + invariant events)
+* Domain services for cross-aggregate operations
+* Policies + Specifications to enforce business rules
 
-### 1.3 Core Domain Classification
-- **Core Domains**: Freelance Operations, Customer Relationship Management, Contract & Portfolio Management, Project Execution
-- **Supporting Domains**: Resource & Inventory Management
-- **Generic Domains**: Document Management
+### **Implementation Architecture**
+
+* CQRS with transactional commands
+* Event-driven architecture for cross-BC workflows
+* Event-sourced aggregates where high churn exists
+* ABP Framework (.NET) for application boundaries
+* Multi-tenant enforcement at domain and infrastructure layers
 
 ---
 
-## 2. Domain Architecture Overview
+## **1.3 Core Domain Classification (Updated)**
 
-### 2.1 Context Map
+Domains are classified based on strategic importance, competitive advantage, and domain complexity.
+
+### **Core Domains**
+
+* **Freelance Operations** — competitive differentiator
+* **CRM** — customer relationships & revenue funnel
+* **Contract & Portfolio Management** — high-value legal & strategic workflows
+* **Project Execution** — core operational engine
+
+### **Supporting Domains**
+
+* **Resource & Inventory Management** — supports planning & allocation
+
+### **Generic Domains**
+
+* **Document Management** — centralized generic subsystem
+
+---
+
+# **2. Domain Architecture Overview (Enhanced)**
+
+## **2.1 High-Level Structure**
+
+Below is the enhanced architecture showing flows, dependencies, and anti-corruption layers.
+
+```mermaid
+flowchart LR
+    subgraph CoreDomains[Core Domains]
+        FO[Freelance Operations]
+        CRM[Customer Relationship Management]
+        CPM[Contract & Portfolio Mgmt]
+        PE[Project Execution]
+    end
+
+    subgraph SupportingDomains[Supporting Domains]
+        RIM[Resource & Inventory Mgmt]
+    end
+
+    subgraph GenericDomains[Generic Domains]
+        DM[Document Mgmt]
+    end
+
+    FO --> DM
+    CRM --> DM
+    CPM --> DM
+    PE --> DM
+
+    PE -->|Resource Queries| RIM
+    RIM -->|Events: ResourceAllocated| PE
+
+    FO --> CRM
+    CRM --> FO
+
+    PE --> CPM
+    CPM --> PE
+
+    CPM --> CRM
+
+    DM -.-> FO
+    DM -.-> CRM
+    DM -.-> CPM
+    DM -.-> PE
+```
+
+### **Key Enhancements**
+
+✔ All BCs use Document Management via **DocumentReference VO**
+✔ Cross-BC direct dependencies removed → replaced with ACL patterns
+✔ Consistency boundaries defined per aggregate
+✔ Event flows normalized across BCs
+
+---
+
+## **2.2 Strategic Design Principles (Enhanced)**
+
+### **1. Behavioral Domain Model**
+
+Aggregates now expose **expressive behaviors**, not setters:
+
+* `Project.Activate()`
+* `Proposal.MarkAsAccepted()`
+* `Task.Block(reason)`
+* `Contract.EscalateForReview()`
+* `Resource.AllocateTo(projectId)`
+
+---
+
+### **2. Value Object–Driven Model**
+
+Strong VOs replace primitives:
+
+* Money, Rate, Percentage
+* Effort, Duration, DateRange
+* Email, Phone, Address
+* ContractValue, RiskScore
+* MilestoneDateRange
+
+This provides invariants and domain consistency.
+
+---
+
+### **3. Explicit Domain Policies & Specifications**
+
+Each complex rule is extracted:
+
+* `TimeLoggingPolicy`
+* `TaskAssignmentPolicy`
+* `ContractAmendmentPolicy`
+* `PortfolioHealthCalculationPolicy`
+* `ResourceAllocationPolicy`
+
+Policies enforce **domain-wide invariants**.
+Specifications enforce **contextual predicates**.
+
+---
+
+### **4. Event-Driven Consistency**
+
+Every BC emits rich domain events:
+
+* `ProjectCreated`
+* `LeadConverted`
+* `ContractVersioned`
+* `ResourceAllocated`
+* `DocumentUploaded`
+
+Downstream BCs react through integration handlers.
+
+---
+
+### **5. Anti-Corruption Layers (ACL)**
+
+No BC references the internal domain models of another BC.
+
+Instead, each BC accesses others via:
+
+* **Domain-friendly facades**
+* **Context translation objects**
+* **Read models**
+
+Example:
 
 ```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│ Freelance Ops   │────│      CRM        │────│   C&PM         │
-│   (Core)        │    │    (Core)       │    │   (Core)       │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│Project Execution│    │      RIM        │    │Document Mgmt    │
-│    (Core)       │    │  (Supporting)   │    │   (Generic)     │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         └───────────────────────┼───────────────────────┘
-                                 │
-        ┌────────────────────────┼────────────────────────┐
-        │                       │                        │
-        │                       │                        │
-        │              All BCs use Document Management   │
-        │              for file storage and retrieval    │
-        └─────────────────────────────────────────────────┘
+ICRMClientContext.GetClientSummary(ClientId)
+IFreelanceOpsContext.GetProjectBillingInfo(ProjectId)
 ```
 
-### 2.2 Strategic Design Principles
+---
 
-1. **Client-Centric Design**: Focus on customer and client lifecycle management
-2. **Resource Optimization**: Efficient allocation and tracking of business resources
-3. **Document Centralization**: Single source of truth for all business documents
-4. **Workflow Automation**: Streamlined business processes with minimal manual intervention
-5. **Portfolio Oversight**: High-level view of all business activities and performance
+### **6. Autonomy & Consistency Boundaries**
+
+Each bounded context has:
+
+* Its own aggregates
+* Its own rules
+* Its own domain events
+* Clear boundaries for where invariants stop
+* Eventual consistency where needed
 
 ---
 
-## 3. Bounded Context Catalog
+## **2.3 Bounded Context Landscape (Updated)**
 
-| Context | Type | Priority | Complexity | Team Size |
-|---------|------|----------|------------|-----------|
-| Freelance Operations | Core | Critical | High | 3-4 |
-| Customer Relationship Management | Core | Critical | High | 3-4 |
-| Contract & Portfolio Management | Core | High | High | 3-4 |
-| Project Execution | Core | High | Medium | 2-3 |
-| Resource & Inventory Management | Supporting | Medium | Medium | 2-3 |
-| Document Management | Generic | Medium | Low | 1-2 |
+A highly explicit map of dependencies and flow types:
+
+| From | To  | Type            | Interaction                 | Strength     |
+| ---- | --- | --------------- | --------------------------- | ------------ |
+| FO   | CRM | Event + Query   | Client conversion           | Low coupling |
+| FO   | DM  | Service Call    | Proposal docs               | Medium       |
+| CRM  | DM  | Service Call    | Interaction attachments     | Medium       |
+| CPM  | DM  | Service Call    | Contract versions           | Medium       |
+| PE   | RIM | Command + Query | Resource allocation         | Medium       |
+| CPM  | PE  | Event           | Portfolio → Project updates | Low          |
+| All  | DM  | Service         | Document storage            | Medium       |
+
+Enhancements:
+✔ Removed cyclic dependencies
+✔ Introduced ACL boundaries
+✔ Corrected upstream/downstream relationships
 
 ---
 
-## 4. Bounded Context Specifications
+## **2.4 Revised Domain Map (Enhanced)**
 
-### 4.1 Freelance Operations Bounded Context
+A more explicit, DDD-style domain map:
 
-#### 4.1.1 Context Overview
-**Responsibility**: Manages the complete freelance workflow including project management, client relationships, proposal creation, Upwork integration, and client portal functionality.
+```mermaid
+graph TD
 
-**Strategic Classification**: Core Domain - Strategic
+FO[Freelance Operations] --> CRM[CRM]
+CRM --> CPM[Contract & Portfolio Mgmt]
+FO --> CPM
+PE[Project Execution] --> CPM
 
-**Subdomains**:
-- Freelance Project Management: Project creation and tracking specific to freelance work
-- Client Management: Client relationship and communication tracking
-- Proposal Management: Proposal creation, versioning, and tracking
-- Upwork Integration: API integration with Upwork platform
-- Client Portal: Client-facing interface for project collaboration
+PE --> RIM[Resource Mgmt]
+RIM --> PE
 
-#### 4.1.2 Core Domain Model
+DM[(Document Mgmt)] --> FO
+DM --> CRM
+DM --> CPM
+DM --> PE
+
+style FO fill:#4f8cff,stroke:#2e5cab,color:#fff
+style CRM fill:#4f8cff,stroke:#2e5cab,color:#fff
+style CPM fill:#4f8cff,stroke:#2e5cab,color:#fff
+style PE fill:#4f8cff,stroke:#2e5cab,color:#fff
+style RIM fill:#51b46d,stroke:#3e8b55,color:#fff
+style DM fill:#7a7a7a,stroke:#5a5a5a,color:#fff
+```
+
+---
+
+## **2.5 Summary of Enhancements**
+
+Below is what changes from your original document:
+
+### ✔ Richer, behavior-driven aggregates
+
+### ✔ Strong VO-based data model
+
+### ✔ Full consistency boundaries + lifecycle rules
+
+### ✔ Event-flow normalization across contexts
+
+### ✔ Addition of domain services + specifications
+
+### ✔ Strengthened multi-tenant rules at the domain level
+
+### ✔ DocumentReference VO replacing primitive DocumentId usage
+
+### ✔ Cross-BC isolation through ACL service interfaces
+
+### ✔ Clearer, deeper domain invariants per aggregate
+
+### ✔ Event-sourced aggregates where appropriate
+
+### ✔ Improved diagrams, aggregate boundaries, and dependency correctness
+
+---
+
+# ✅ **PART 2 — Bounded Context Catalog (Enhanced)**
+
+This section fully regenerates the **bounded context catalog**, redefines domain boundaries using strategic domain-driven design, and introduces enhanced autonomy, invariants, integration boundaries, and subdomains.
+
+---
+
+# **2.1 Bounded Context Catalog (Enhanced Version)**
+
+Each bounded context is classified using:
+
+* **Strategic Domain Type**: Core / Supporting / Generic
+* **Domain Complexity**
+* **Change Volatility** (how often domain rules evolve)
+* **Team Cognitive Load**
+* **Integration Role**
+* **Event Responsibility** (upstream/downstream)
+
+---
+
+## **Freelance Operations (FO) – Core Domain**
+
+| Property          | Value                                             |
+| ----------------- | ------------------------------------------------- |
+| Strategic Type    | **Core Domain** (Revenue-facing, differentiator)  |
+| Priority          | **Critical**                                      |
+| Complexity        | High                                              |
+| Change Volatility | High (market-driven workflows)                    |
+| Team Size         | 3–4                                               |
+| Event Role        | Upstream to CRM, Project Execution, Document Mgmt |
+
+### **Subdomains**
+
+* **Freelance Project Management**
+* **Client Management**
+* **Proposal Management**
+* **Upwork Integration**
+* **Client Portal**
+
+---
+
+## **Customer Relationship Management (CRM) – Core Domain**
+
+| Property          | Value                   |
+| ----------------- | ----------------------- |
+| Strategic Type    | **Core Domain**         |
+| Priority          | Critical                |
+| Complexity        | High                    |
+| Change Volatility | Medium–High             |
+| Team Size         | 3–4                     |
+| Event Role        | Upstream to FO, CPM, PE |
+
+### **Subdomains**
+
+* Lead Management
+* Contact Management
+* Interaction Tracking
+* Automation Workflows
+* Analytics & Engagement Insights
+
+---
+
+## **Contract & Portfolio Management (C&PM) – Core Domain**
+
+| Property          | Value                   |
+| ----------------- | ----------------------- |
+| Strategic Type    | **Core Domain**         |
+| Priority          | High                    |
+| Complexity        | High                    |
+| Change Volatility | Medium                  |
+| Team Size         | 3–4                     |
+| Event Role        | Upstream to PE, CRM, DM |
+
+### **Subdomains**
+
+* Contract Lifecycle Management
+* Version & Amendment Management
+* Portfolio Oversight
+* Roadmapping & Strategic Planning
+* Risk & Compliance
+
+---
+
+## **Project Execution (PE) – Core Domain**
+
+| Property          | Value                    |
+| ----------------- | ------------------------ |
+| Strategic Type    | **Core Domain**          |
+| Priority          | High                     |
+| Complexity        | Medium–High              |
+| Change Volatility | High                     |
+| Team Size         | 2–3                      |
+| Event Role        | Upstream to CPM, RIM, DM |
+
+### **Subdomains**
+
+* Project Definition
+* Task Management
+* Time Tracking
+* Resource Assignment
+* Execution & Monitoring
+
+---
+
+## **Resource & Inventory Management (RIM) – Supporting Domain**
+
+| Property          | Value                 |
+| ----------------- | --------------------- |
+| Strategic Type    | **Supporting Domain** |
+| Priority          | Medium                |
+| Complexity        | Medium                |
+| Change Volatility | Medium                |
+| Team Size         | 2–3                   |
+| Event Role        | Upstream to PE, CPM   |
+
+### **Subdomains**
+
+* Resource Type & Skills
+* Resource Instance Management
+* Inventory Tracking
+* Allocation Bookings
+* Usage & Optimization
+
+---
+
+## **Document Management (DM) – Generic Domain**
+
+| Property          | Value                       |
+| ----------------- | --------------------------- |
+| Strategic Type    | **Generic Domain**          |
+| Priority          | Medium                      |
+| Complexity        | Low–Medium                  |
+| Change Volatility | Low                         |
+| Team Size         | 1–2                         |
+| Event Role        | Utility BC for all contexts |
+
+### **Subdomains**
+
+* Document Storage
+* Versioning
+* Access Control
+* Metadata & Search
+
+---
+
+# **2.2 Strategic Domain Prioritization (Enhanced)**
+
+Below is a more strategic view mapping domains to **competitive differentiation** and **business risk**:
+
+```mermaid
+quadrantChart
+    title Competitive vs Operational Importance
+    x-axis Competitive Advantage --> Commodity
+    y-axis Low risk --> High risk
+    quadrant-1 Core Value
+    quadrant-2 Table Stakes
+    quadrant-3 Low Priority
+    quadrant-4 Outsourceable
+    FO: [0.8, 0.8]
+    CRM: [0.8, 0.5]
+    CPM: [0.8, 0.8]
+    PE: [0.5, 0.8]
+    RIM: [0.2, 0.5]
+    DM: [0.2, 0.2]
+```
+
+---
+
+# **2.3 Enhanced Domain Responsibility Definitions**
+
+This section expands the responsibility boundaries for each BC using "What this BC owns", "What it does not own", and "Interaction Rules".
+
+---
+
+## **Freelance Operations (Enhanced Responsibility Definition)**
+
+### **This BC Owns**
+
+* Freelance project lifecycle
+* Proposal lifecycle & versioning
+* Client communication history
+* Upwork synchronization
+* Billing rules for freelance workflows
+
+### **This BC Does Not Own**
+
+* Contract legality (belongs to C&PM)
+* Document storage (belongs to DM)
+* Lead qualification (belongs to CRM)
+
+### **Integration Rules**
+
+* Uses CRM for client identity
+* Publishes events to C&PM and PE
+* Document references stored as **DocumentReference VO**, not raw IDs
+
+---
+
+## **CRM (Enhanced Responsibility Definition)**
+
+### **This BC Owns**
+
+* Lead lifecycle
+* Contact segmentation
+* Interaction logs
+* Engagement scoring
+* Automation workflows
+
+### **This BC Does Not Own**
+
+* Freelance billing
+* Legal contracts & compliance
+* Resource scheduling
+
+### **Integration Rules**
+
+* Publishes `LeadConverted` → FO
+* Publishes `InteractionLogged` → C&PM
+* Consumes document links from DM
+
+---
+
+## **Contract & Portfolio Management (Enhanced Responsibility Definition)**
+
+### **This BC Owns**
+
+* Contract versioning and amendment workflows
+* Approval workflow for legal changes
+* Portfolio insights, health, performance
+* Cross-project strategical roadmap
+
+### **This BC Does Not Own**
+
+* Task-level execution (PE)
+* Resource details (RIM)
+* Client communication (CRM)
+
+### **Integration Rules**
+
+* Uses FO/CRM for high-level client summary
+* Uses DM to store contract documents
+* Publishes `ContractVersioned`, `PortfolioItemAdded` events
+
+---
+
+## **Project Execution (Enhanced Responsibility Definition)**
+
+### **This BC Owns**
+
+* Task lifecycle
+* Time logging
+* Assignment and workload rules
+* Phase and milestone execution
+
+### **This BC Does Not Own**
+
+* Resource skill catalog (RIM)
+* Contractual constraints (C&PM)
+
+### **Integration Rules**
+
+* Pulls resource availability via ACL from RIM
+* Publishes `ProjectCompleted`, `TaskBlocked`, `TimeLogged`
+
+---
+
+## **Resource & Inventory Management (Enhanced Responsibility Definition)**
+
+### **This BC Owns**
+
+* Human + equipment resource catalog
+* Allocation logic
+* Inventory stock and movements
+* Resource availability & skill modeling
+
+### **This BC Does Not Own**
+
+* Task planning (PE)
+* Contractual obligations (C&PM)
+
+### **Integration Rules**
+
+* Publishes `ResourceAllocated`, `StockLevelAdjusted`
+
+---
+
+## **Document Management (Enhanced Responsibility Definition)**
+
+### **This BC Owns**
+
+* All file lifecycle management
+* Version history and file diffing
+* Access control
+* Document metadata and search
+
+### **This BC Does Not Own**
+
+* Business meaning of documents
+* Contract rules
+* Proposal content rules
+
+### **Integration Rules**
+
+* Provides `UploadDocument`, `GrantAccess`, `GetMetadata`
+* Emits `DocumentUploaded`, `DocumentVersioned`
+
+---
+
+# **2.4 Enhanced Context Map (With Explicit Relationships)**
+
+```mermaid
+graph TD
+
+FO[Freelance Ops] -->|ClientConversionEvents| CRM
+CRM -->|ClientSummary Queries| FO
+
+FO -->|ProposalDocs| DM
+CRM -->|Attachments| DM
+CPM -->|Contracts & Versions| DM
+PE -->|Task Docs & Logs| DM
+
+PE -->|Requires Resources| RIM
+RIM -->|ResourceAllocated| PE
+
+CPM -->|PortfolioItems| PE
+PE -->|ProjectLifecycleEvents| CPM
+```
+
+Enhancements included:
+
+* Eliminated direct references across BCs
+* Added role of ACLs
+* Linked events and queries explicitly
+
+---
+
+# **2.5 Subdomain Capability Matrix (Enhanced)**
+
+| Capability          | FO | CRM | C&PM          | PE | RIM | DM |
+| ------------------- | -- | --- | ------------- | -- | --- | -- |
+| Projects            | ✔  | -   | ✔ (portfolio) | ✔  | -   | -  |
+| Proposals           | ✔  | -   | -             | -  | -   | ✔  |
+| Client Lifecycle    | ✔  | ✔   | -             | -  | -   | -  |
+| Contracts           | -  | -   | ✔             | -  | -   | ✔  |
+| Tasks               | -  | -   | -             | ✔  | -   | -  |
+| Time Tracking       | ✔  | -   | -             | ✔  | -   | ✔  |
+| Resource Allocation | -  | -   | -             | ✔  | ✔   | -  |
+| Inventory           | -  | -   | -             | -  | ✔   | -  |
+| Document Storage    | -  | -   | -             | -  | -   | ✔  |
+
+---
+
+# **2.6 Bounded Context Evolution Blueprint**
+
+A roadmap for future extensibility:
+
+### **Short-Term Enhancements**
+
+* Event-sourcing for TimeLogs + InventoryTransactions
+* Cross-context process automation
+* Unified domain notification model
+
+### **Mid-Term Enhancements**
+
+* Portfolio → Resource planning automation
+* Predictive workload management
+* Legal contract compliance rules enhanced
+
+### **Long-Term Enhancements**
+
+* ML-based lead scoring
+* Forecast-based resource planning
+* Auto-generated proposals/contracts with templates
+
+---
+
+# ✅ **PART 3 — Freelance Operations Bounded Context (Enhanced)**
+
+This is a full, enhanced regeneration of the **Freelance Operations Bounded Context (FO BC)** with:
+
+* Enriched aggregates
+* Strong value objects
+* Explicit domain invariants
+* Behavioral methods
+* Domain services + policies + specifications
+* Domain events
+* Commands/queries
+* Updated diagrams
+
+---
+
+# **3.1 Context Overview (Enhanced)**
+
+## **FO Responsibility**
+
+The Freelance Operations BC manages:
+
+* Freelance project lifecycle
+* Freelance client management
+* Proposal lifecycle & versioning
+* Upwork integration & synchronization
+* Client portal collaboration
+
+This is a **core domain** because it directly drives business revenue.
+
+---
+
+# **3.2 High-Level Domain Model (Enhanced Diagram)**
 
 ```mermaid
 classDiagram
+    direction LR
+
+    %% FreelanceProject Aggregate
     class FreelanceProject {
-        +ProjectId id
-        +string title
-        +ProjectScopeDescription scope
-        +BillingType billingType
-        +HourlyRate hourlyRate
-        +ProjectStatus status
-        +FreelanceClientId clientId
-        +DateTime startDate
-        +DateTime? endDate
-        +addMilestone(ProjectMilestone)
-        +logTime(TimeEntry)
-        +updateStatus(ProjectStatus)
+        +ProjectId Id
+        +string Title
+        +ProjectScopeDescription Scope
+        +BillingType BillingType
+        +Rate Rate
+        +ProjectStatus Status
+        +FreelanceClientId ClientId
+        +DateRange Timeline
+        +Percentage Completion
+        +AddMilestone(ProjectMilestone)
+        +LogTime(TimeEntry)
+        +Activate()
+        +MarkAsCompleted()
+        +Pause(string reason)
+        +UpdateScope(ProjectScopeDescription)
+        +ChangeRate(Rate)
     }
-    
-    class FreelanceClient {
-        +FreelanceClientId id
-        +string name
-        +ClientContactInfo contactInfo
-        +List~CommunicationRecord~ communications
-        +DateTime createdAt
-        +addCommunication(CommunicationRecord)
-        +updateContactInfo(ClientContactInfo)
-    }
-    
-    class Proposal {
-        +ProposalId id
-        +string title
-        +ProposalContentSummary content
-        +PricingStructure pricing
-        +ProposalStatus status
-        +FreelanceClientId clientId
-        +DocumentId? documentId
-        +createVersion(ProposalVersion)
-        +send()
-        +track()
-    }
-    
-    class UpworkEngagement {
-        +EngagementId id
-        +string jobTitle
-        +UpworkCredentials credentials
-        +EngagementStatus status
-        +decimal contractValue
-        +FreelanceProjectId? linkedProjectId
-        +syncWithUpwork()
-        +linkToProject(FreelanceProjectId)
-    }
-    
-    class TimeEntry {
-        +TimeEntryId id
-        +FreelanceProjectId projectId
-        +DateTime date
-        +Duration duration
-        +string description
-        +bool isBillable
-        +HourlyRate? rateOverride
-    }
-    
+
     class ProjectMilestone {
-        +MilestoneId id
-        +string name
-        +MilestoneDetails details
-        +DateTime targetDate
-        +DateTime? completedDate
-        +MilestoneStatus status
+        +MilestoneId Id
+        +string Name
+        +MilestoneDetails Details
+        +MilestoneDateRange DateRange
+        +MilestoneStatus Status
+        +MarkCompleted()
+        +Reschedule(DateRange)
     }
-    
+
+    class TimeEntry {
+        +TimeEntryId Id
+        +DateTime Date
+        +Duration Duration
+        +string Description
+        +bool IsBillable
+        +Rate? RateOverride
+    }
+
+    %% FreelanceClient Aggregate
+    class FreelanceClient {
+        +FreelanceClientId Id
+        +string Name
+        +ClientContactInfo ContactInfo
+        +List~CommunicationRecord~ Communications
+        +DateTime CreatedAt
+        +AddCommunication(CommunicationRecord)
+        +UpdateContactInfo(ClientContactInfo)
+    }
+
+    class CommunicationRecord {
+        +CommunicationRecordId Id
+        +string Subject
+        +string Content
+        +CommunicationType Type
+        +DateTime OccurredAt
+        +DocumentReference? Attachment
+    }
+
+    %% Proposal Aggregate
+    class Proposal {
+        +ProposalId Id
+        +string Title
+        +ProposalContentSummary Content
+        +PricingStructure Pricing
+        +ProposalStatus Status
+        +FreelanceClientId ClientId
+        +List~ProposalVersion~ Versions
+        +DocumentReference? LatestDocument
+        +CreateVersion(ProposalVersion)
+        +MarkAsSent(SendInfo)
+        +MarkAsViewed()
+        +MarkAsAccepted()
+        +MarkAsRejected()
+    }
+
     class ProposalVersion {
-        +VersionId id
-        +ProposalId proposalId
-        +DocumentId documentId
-        +DateTime createdAt
-        +string changeNotes
+        +ProposalVersionId Id
+        +DocumentReference Document
+        +DateTime CreatedAt
+        +string Notes
     }
 
-    FreelanceProject "1" -- "0..*" TimeEntry : has
-    FreelanceProject "1" -- "0..*" ProjectMilestone : has
-    FreelanceProject "0..*" -- "1" FreelanceClient : belongs to
-    FreelanceClient "1" -- "0..*" Proposal : has
-    Proposal "1" -- "0..*" ProposalVersion : has
-    UpworkEngagement "0..*" -- "0..1" FreelanceProject : relates to
+    %% UpworkEngagement Aggregate
+    class UpworkEngagement {
+        +EngagementId Id
+        +string JobTitle
+        +EngagementStatus Status
+        +Money ContractValue
+        +UpworkCredentials Credentials
+        +ProjectId? LinkedProjectId
+        +Sync()
+        +LinkToProject(ProjectId)
+        +RefreshStatus(EngagementStatus)
+    }
+
+    %% Relationships
+    FreelanceProject "1" --> "0..*" TimeEntry : logs
+    FreelanceProject "1" --> "0..*" ProjectMilestone : has
+    FreelanceProject "1" --> "1" FreelanceClient : belongs to
+
+    FreelanceClient "1" --> "0..*" CommunicationRecord : logs
+
+    Proposal "1" --> "0..*" ProposalVersion : has
+    Proposal --> FreelanceClient : "for"
+
+    UpworkEngagement --> FreelanceProject : links*
 ```
 
-#### 4.1.3 Aggregates Specification
+---
 
-##### FreelanceProject Aggregate Root
-**Purpose**: Central entity managing freelance project lifecycle and billing
+# **3.3 Aggregates (Enhanced)**
 
-**Entities**:
-- `TimeEntry`: Time tracking for billing and project monitoring
-- `ProjectMilestone`: Key deliverables and checkpoints
+---
 
-**Value Objects**:
-- `ProjectId`: Unique identifier
-- `ProjectScopeDescription`: Detailed work description
-- `BillingType`: Hourly, Fixed, Milestone-based
-- `HourlyRate`: Rate structure with currency
-- `ProjectStatus`: Freelance-specific statuses (Proposal, Active, Invoiced, Completed)
+## **3.3.1 FreelanceProject Aggregate Root (Enhanced)**
 
-**Business Invariants**:
-- Project must have valid billing type and associated rate structure
-- Time entries must be within project date range
-- Only active projects can accept new time entries
-- Milestone dates must be chronologically ordered
+### **Purpose**
 
-##### FreelanceClient Aggregate Root
-**Purpose**: Manages client information and communication history
+Manages the lifecycle, billing, scope, and milestones of a freelance project.
 
-**Entities**:
-- `CommunicationRecord`: Interaction logs with timestamps and context
+### **Key Entities**
 
-**Value Objects**:
-- `FreelanceClientId`: Unique identifier
-- `ClientContactInfo`: Contact details and preferences
-- `CommunicationLog`: Structured communication data
+* `ProjectMilestone`
+* `TimeEntry`
 
-**Business Invariants**:
-- Client must have valid contact information
-- Communication records are immutable once created
-- Client deletion requires completion of all associated projects
+### **Key Value Objects**
 
-##### Proposal Aggregate Root
-**Purpose**: Manages proposal lifecycle from creation to acceptance
+* `ProjectId`
+* `ProjectScopeDescription`
+* `Rate`
+* `DateRange`
+* `Percentage`
+* `ProjectStatus`
 
-**Entities**:
-- `ProposalVersion`: Version control for proposal iterations
+### **Domain Invariants**
 
-**Value Objects**:
-- `ProposalId`: Unique identifier
-- `ProposalContentSummary`: Key proposal elements
-- `PricingStructure`: Detailed pricing breakdown
-- `ProposalStatus`: Sent, Viewed, Accepted, Rejected
-- `DocumentId`: Reference to document in Document Management BC
+1. A project **must have a client**.
+2. A project cannot accept time entries when **Inactive/Paused/Completed**.
+3. Milestone target date must be within project timeline.
+4. Total completion percentage must remain within **0–100%**.
+5. Time entry duration must be positive.
+6. End date must be greater than start date.
 
-**Business Invariants**:
-- Proposals can only be sent to existing clients
-- Accepted proposals cannot be modified
-- Version history must be maintained for all changes
+### **Behavior (Methods)**
 
-##### UpworkEngagement Aggregate Root
-**Purpose**: Manages Upwork-specific engagements and synchronization
-
-**Value Objects**:
-- `EngagementId`: Unique identifier
-- `UpworkCredentials`: API access credentials
-- `EngagementStatus`: Upwork-specific statuses
-- `FreelanceProjectId`: Optional link to internal project
-
-**Business Invariants**:
-- Engagement must have valid Upwork credentials
-- Linked projects must exist in FreelanceProject aggregate
-- Synchronization status must be tracked for data consistency
-
-#### 4.1.4 Commands & Queries (CQRS)
-
-##### Commands
-**Project Management**:
 ```csharp
-public record CreateFreelanceProject(
-    string Title,
-    ProjectScopeDescription Scope,
-    BillingType BillingType,
-    HourlyRate HourlyRate,
-    FreelanceClientId ClientId,
-    DateTime StartDate,
-    DateTime? EndDate,
-    UserId CreatedBy
-);
-
-public record LogProjectTime(
-    ProjectId ProjectId,
-    DateTime Date,
-    Duration Duration,
-    string Description,
-    bool IsBillable,
-    HourlyRate? RateOverride,
-    UserId LoggedBy
-);
-
-public record UpdateProjectStatus(
-    ProjectId ProjectId,
-    ProjectStatus NewStatus,
-    string? Notes,
-    UserId UpdatedBy
-);
+public void Activate();
+public void Pause(string reason);
+public void MarkAsCompleted();
+public void UpdateScope(ProjectScopeDescription newScope);
+public void ChangeRate(Rate newRate);
+public void AddMilestone(ProjectMilestone milestone);
+public void LogTime(TimeEntry entry);
 ```
 
-**Client Management**:
+---
+
+## **3.3.2 FreelanceClient Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Manages freelance client identity, contact info, and communication history.
+
+### **Key Value Objects**
+
+* `FreelanceClientId`
+* `ClientContactInfo`
+* `Email`, `PhoneNumber`, `Address`
+* `CommunicationRecordId`
+
+### **Domain Invariants**
+
+1. A client must have **valid contact info**.
+2. Communications are **immutable** once logged.
+3. A client cannot be deleted if active projects exist.
+
+### **Behavior**
+
 ```csharp
-public record CreateFreelanceClient(
-    string Name,
-    ClientContactInfo ContactInfo,
-    UserId CreatedBy
-);
-
-public record AddClientCommunication(
-    FreelanceClientId ClientId,
-    string Subject,
-    string Content,
-    CommunicationType Type,
-    DateTime CommunicationDate,
-    UserId LoggedBy
-);
-
-public record UpdateClientContactInfo(
-    FreelanceClientId ClientId,
-    ClientContactInfo NewContactInfo,
-    UserId UpdatedBy
-);
+public void AddCommunication(CommunicationRecord record);
+public void UpdateContactInfo(ClientContactInfo newInfo);
 ```
 
-**Proposal Management**:
+---
+
+## **3.3.3 Proposal Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Manages proposals, revisions, sending, approval, and version history.
+
+### **Key Value Objects**
+
+* `ProposalId`
+* `ProposalContentSummary`
+* `PricingStructure`
+* `ProposalStatus`
+* `DocumentReference`
+
+### **Domain Invariants**
+
+1. A proposal can only be sent in **Draft** status.
+2. A proposal cannot be modified after **Accepted** or **Rejected**.
+3. A proposal must belong to an existing client.
+4. Version numbers must be strictly incremental.
+
+### **Behavior**
+
 ```csharp
-public record CreateProposal(
-    string Title,
-    ProposalContentSummary Content,
-    PricingStructure Pricing,
-    FreelanceClientId ClientId,
-    DocumentId? DocumentId,
-    UserId CreatedBy
-);
-
-public record SendProposal(
-    ProposalId ProposalId,
-    string DeliveryMethod,
-    string? RecipientEmail,
-    UserId SentBy
-);
-
-public record TrackProposalStatus(
-    ProposalId ProposalId,
-    ProposalStatus Status,
-    DateTime StatusDate,
-    string? Notes
-);
+public void CreateVersion(ProposalVersion version);
+public void MarkAsSent(SendInfo info);
+public void MarkAsViewed();
+public void MarkAsAccepted();
+public void MarkAsRejected();
 ```
 
-##### Queries
-**Project Queries**:
+---
+
+## **3.3.4 UpworkEngagement Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents an Upwork contract engagement and syncs data from the Upwork API.
+
+### **Key Value Objects**
+
+* `EngagementId`
+* `UpworkCredentials`
+* `EngagementStatus`
+* `Money`
+
+### **Domain Invariants**
+
+1. Upwork credentials must be valid.
+2. Engagement cannot be linked to a non-existent project.
+3. A contract cannot be linked to multiple projects.
+
+### **Behavior**
+
+```csharp
+public void Sync(UpworkSyncData data);
+public void LinkToProject(ProjectId projectId);
+public void RefreshStatus(EngagementStatus status);
+```
+
+---
+
+# **3.4 Value Objects (Enhanced)**
+
+Here are the enhanced VOs that replace primitives:
+
+### **Project VOs**
+
+* `ProjectId`
+* `ProjectScopeDescription`
+* `DateRange (Start, End)`
+* `Rate (Money, Frequency)`
+* `Percentage (0–100)`
+* `Duration`
+* `BillingType`
+
+### **Client VOs**
+
+* `Email`
+* `PhoneNumber`
+* `ClientContactInfo (Email, Phone, Address)`
+
+### **Proposal VOs**
+
+* `ProposalId`
+* `PricingStructure (Money breakdown)`
+* `ProposalContentSummary`
+
+### **Shared VO**
+
+* `DocumentReference`
+* `Money`
+* `MilestoneDateRange`
+
+---
+
+# **3.5 Domain Services (Enhanced)**
+
+## **3.5.1 Time Logging Domain Service**
+
+Ensures time logging obeys project’s rules.
+
+```csharp
+public interface ITimeLoggingService
+{
+    void LogTime(FreelanceProject project, TimeEntry entry);
+}
+```
+
+---
+
+## **3.5.2 Proposal Workflow Service**
+
+```csharp
+public interface IProposalWorkflowService
+{
+    bool CanSend(Proposal proposal, FreelanceClient client);
+    bool CanModify(Proposal proposal);
+}
+```
+
+---
+
+## **3.5.3 Upwork Sync Domain Service**
+
+Handles Upwork → System synchronization.
+
+---
+
+# **3.6 Specifications (Enhanced)**
+
+### **TimeEntryWithinProjectTimelineSpec**
+
+Ensures entry date fits project timeline.
+
+### **ProjectIsActiveSpec**
+
+Ensures project is Active for time logging.
+
+### **ValidProposalModificationSpec**
+
+Proposal can be edited only when in Draft or UnderReview.
+
+---
+
+# **3.7 Policies (Enhanced)**
+
+## **Time Logging Policy (Updated)**
+
+```csharp
+public ValidationResult Validate(FreelanceProject project, TimeEntry entry)
+```
+
+Rules:
+
+* Project must be active
+* Duration > 0
+* Date within project timeline
+
+---
+
+## **Proposal Sending Policy**
+
+Rules:
+
+* Client contact info valid
+* Proposal content complete
+* Proposal status = Draft
+
+---
+
+# **3.8 Domain Events (Enhanced)**
+
+### **FreelanceProjectCreated**
+
+### **ProjectMilestoneCompleted**
+
+### **TimeEntryLogged**
+
+### **ProposalVersionCreated**
+
+### **ProposalSent**
+
+### **ProposalAccepted**
+
+### **ClientCommunicationLogged**
+
+### **UpworkEngagementSynced**
+
+Each event includes:
+
+* TenantId
+* OccurredAt timestamp
+* Domain data
+
+---
+
+# **3.9 Commands (Enhanced CQRS)**
+
+```csharp
+public record CreateFreelanceProject(...);
+public record LogProjectTime(...);
+public record UpdateProjectStatus(...);
+public record CreateFreelanceClient(...);
+public record AddClientCommunication(...);
+public record CreateProposal(...);
+public record SendProposal(...);
+public record AcceptProposal(...);
+public record SyncUpworkEngagement(...);
+```
+
+---
+
+# **3.10 Queries (Enhanced)**
+
 ```csharp
 public record GetFreelanceProjectDetails(ProjectId ProjectId);
-public record GetClientProjects(FreelanceClientId ClientId);
-public record GetActiveProjects(UserId UserId);
-public record GetProjectTimeEntries(ProjectId ProjectId, DateTime? StartDate = null, DateTime? EndDate = null);
-```
-
-**Client Queries**:
-```csharp
-public record GetFreelanceClientDetails(FreelanceClientId ClientId);
-public record GetClientCommunicationHistory(FreelanceClientId ClientId);
-public record SearchClients(string SearchTerm, ClientStatus? Status = null);
-```
-
-**Proposal Queries**:
-```csharp
-public record GetProposalDetails(ProposalId ProposalId);
-public record GetClientProposals(FreelanceClientId ClientId);
 public record GetProposalVersionHistory(ProposalId ProposalId);
-```
-
-#### 4.1.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class FreelanceProjectCreated : DomainEvent
-{
-    public ProjectId ProjectId { get; }
-    public string Title { get; }
-    public FreelanceClientId ClientId { get; }
-    public BillingType BillingType { get; }
-    public HourlyRate HourlyRate { get; }
-    public UserId CreatedBy { get; }
-}
-
-public class ProjectTimeLogged : DomainEvent
-{
-    public ProjectId ProjectId { get; }
-    public TimeEntryId TimeEntryId { get; }
-    public Duration Duration { get; }
-    public bool IsBillable { get; }
-    public decimal BillableAmount { get; }
-    public UserId LoggedBy { get; }
-}
-
-public class ProposalSent : DomainEvent
-{
-    public ProposalId ProposalId { get; }
-    public FreelanceClientId ClientId { get; }
-    public DocumentId? DocumentId { get; }
-    public string DeliveryMethod { get; }
-    public UserId SentBy { get; }
-}
-
-public class ClientCommunicationLogged : DomainEvent
-{
-    public FreelanceClientId ClientId { get; }
-    public CommunicationRecordId RecordId { get; }
-    public CommunicationType Type { get; }
-    public DocumentId? AttachmentId { get; }
-    public UserId LoggedBy { get; }
-}
-```
-
-#### 4.1.6 Business Rules & Policies
-
-##### Time Logging Policy
-```csharp
-public class TimeLoggingPolicy
-{
-    public ValidationResult ValidateTimeEntry(FreelanceProject project, TimeEntry entry)
-    {
-        var errors = new List<string>();
-        
-        // Cannot log time for inactive projects
-        if (project.Status != ProjectStatus.Active)
-            errors.Add("Cannot log time for inactive projects");
-        
-        // Time entry must be within project boundaries
-        if (entry.Date < project.StartDate || 
-            (project.EndDate.HasValue && entry.Date > project.EndDate))
-            errors.Add("Time entry date must be within project timeline");
-        
-        // Duration must be positive
-        if (entry.Duration <= TimeSpan.Zero)
-            errors.Add("Duration must be positive");
-        
-        return new ValidationResult(errors);
-    }
-}
-```
-
-##### Proposal Workflow Policy
-```csharp
-public class ProposalWorkflowPolicy
-{
-    public bool CanModifyProposal(Proposal proposal)
-    {
-        return proposal.Status == ProposalStatus.Draft || 
-               proposal.Status == ProposalStatus.UnderReview;
-    }
-    
-    public bool CanSendProposal(Proposal proposal, FreelanceClient client)
-    {
-        return proposal.Status == ProposalStatus.Draft && 
-               client.ContactInfo.IsValid() &&
-               proposal.Content.IsComplete();
-    }
-}
+public record GetActiveEngagements();
+public record GetClientDetails(FreelanceClientId Id);
 ```
 
 ---
 
-### 4.2 Customer Relationship Management (CRM) Bounded Context
+# ✅ **PART 4 — Customer Relationship Management (CRM) Bounded Context**
 
-#### 4.2.1 Context Overview
-**Responsibility**: Manages the complete customer lifecycle from lead capture to contact management, including interaction tracking, automation workflows, and analytics.
+CRM is a **Core Domain** because it governs the **customer lifecycle**, **revenue pipeline**, and **engagement intelligence**, which directly influence the platform’s strategic value.
 
-**Strategic Classification**: Core Domain - Strategic
+This regenerated version includes all enhancements requested earlier.
 
-**Subdomains**:
-- Lead Management: Lead capture, qualification, and tracking
-- Contact Management: Contact organization and relationship management
-- Interaction Tracking: Communication history and engagement monitoring
-- Automation Workflows: Automated follow-up and nurturing processes
-- Analytics & Reporting: CRM performance and engagement analytics
+---
 
-#### 4.2.2 Core Domain Model
+# **4.1 Context Overview (Enhanced)**
+
+CRM manages the complete lifecycle of customer relationships:
+
+* Lead capture → qualification → conversion
+* Contact management and communication tracking
+* Engagement scoring & segmentation
+* Automated workflows (nurturing, follow-ups, reactivation)
+* Interaction logs with documents & attachments
+* Analytics and conversion insights
+
+CRM is **upstream** to:
+
+* Freelance Operations (Client identity + Interaction events)
+* Contract/Portfolio Management (Organizations, contacts)
+
+CRM is **downstream** from:
+
+* Document Management (attachments)
+
+---
+
+# **4.2 High-Level Domain Model (Enhanced Diagram)**
 
 ```mermaid
 classDiagram
-    class FreelanceProject {
-        +ProjectId id
-        +string title
-        +ProjectScopeDescription scope
-        +BillingType billingType
-        +HourlyRate hourlyRate
-        +ProjectStatus status
-        +FreelanceClientId clientId
-        +DateTime startDate
-        +DateTime? endDate
-        +addMilestone(ProjectMilestone)
-        +logTime(TimeEntry)
-        +updateStatus(ProjectStatus)
-    }
-    
-    class FreelanceClient {
-        +FreelanceClientId id
-        +string name
-        +ClientContactInfo contactInfo
-        +List~CommunicationRecord~ communications
-        +DateTime createdAt
-        +addCommunication(CommunicationRecord)
-        +updateContactInfo(ClientContactInfo)
-    }
-    
-    class Proposal {
-        +ProposalId id
-        +string title
-        +ProposalContentSummary content
-        +PricingStructure pricing
-        +ProposalStatus status
-        +FreelanceClientId clientId
-        +DocumentId? documentId
-        +createVersion(ProposalVersion)
-        +send()
-        +track()
-    }
-    
-    class UpworkEngagement {
-        +EngagementId id
-        +string jobTitle
-        +UpworkCredentials credentials
-        +EngagementStatus status
-        +decimal contractValue
-        +FreelanceProjectId? linkedProjectId
-        +syncWithUpwork()
-        +linkToProject(FreelanceProjectId)
-    }
-    
-    class TimeEntry {
-        +TimeEntryId id
-        +FreelanceProjectId projectId
-        +DateTime date
-        +Duration duration
-        +string description
-        +bool isBillable
-        +HourlyRate? rateOverride
-    }
-    
-    class ProjectMilestone {
-        +MilestoneId id
-        +string name
-        +MilestoneDetails details
-        +DateTime targetDate
-        +DateTime? completedDate
-        +MilestoneStatus status
-    }
-    
-    class ProposalVersion {
-        +VersionId id
-        +ProposalId proposalId
-        +DocumentId documentId
-        +DateTime createdAt
-        +string changeNotes
+    direction LR
+
+    %% Lead Aggregate
+    class Lead {
+        +LeadId Id
+        +LeadDetails Details
+        +LeadSource Source
+        +QualificationScore Score
+        +LeadStatus Status
+        +DateTime CreatedAt
+        +Capture()
+        +Qualify(QualificationScore, string notes)
+        +ConvertToContact(ContactInfo, OrganizationId?)
+        +MarkAsLost(string reason)
     }
 
-    %% --- Corrected Relationships ---
-    
-    %% A Client has multiple Projects and Proposals.
-    FreelanceClient "1" -- "0..*" FreelanceProject : Manages
-    FreelanceClient "1" -- "0..*" Proposal : Receives
+    class LeadDetails {
+        +Name
+        +Email
+        +Phone
+        +Company
+        +Position
+        +BudgetRange
+    }
 
-    %% An accepted Proposal generates one Project.
-    Proposal "1" -- "0..1" FreelanceProject : Generates
-    
-    %% A Proposal can have multiple Versions.
-    Proposal "1" -- "0..*" ProposalVersion : Has
-    
-    %% A Project is composed of Milestones and Time Entries.
-    FreelanceProject "1" -- "0..*" ProjectMilestone : Composed of
-    FreelanceProject "1" -- "0..*" TimeEntry : Tracks
-    
-    %% An Upwork Engagement can create one Freelance Project.
-    UpworkEngagement "0..1" -- "1" FreelanceProject : Creates
+    %% Contact Aggregate
+    class Contact {
+        +ContactId Id
+        +ContactInfo Info
+        +EngagementLevel Engagement
+        +List~ContactTag~ Tags
+        +OrganizationId? Organization
+        +AddTag()
+        +UpdateContactInfo()
+        +RecordInteraction(InteractionLog)
+    }
+
+    %% InteractionLog Aggregate
+    class InteractionLog {
+        +InteractionId Id
+        +ContactId ContactId
+        +InteractionType Type
+        +InteractionMetadata Metadata
+        +DocumentReference? Attachment
+        +Record()
+    }
+
+    class InteractionMetadata {
+        +Subject
+        +Content
+        +OccurredAt
+        +Channel
+    }
+
+    %% Organization Aggregate
+    class Organization {
+        +OrganizationId Id
+        +OrganizationInfo Info
+        +OrganizationStatus Status
+        +List~ContactId~ Contacts
+        +AddContact(ContactId)
+        +UpdateInfo()
+        +Activate()
+        +Deactivate()
+    }
+
+    %% Automation Workflow Aggregate
+    class AutomationWorkflow {
+        +WorkflowId Id
+        +string Name
+        +WorkflowStatus Status
+        +AutomationTrigger Trigger
+        +List~WorkflowStep~ Steps
+        +Activate()
+        +Deactivate()
+        +TriggerFor(ContactId, Context)
+    }
+
+    class WorkflowStep {
+        +StepId Id
+        +StepType Type
+        +string ActionData
+        +int Order
+        +Execute()
+    }
+
+    %% Relationships
+    Lead --> Contact : converts to
+    Contact --> InteractionLog : logs
+    Contact --> Organization : belongs to
+    AutomationWorkflow --> Contact : triggers for
 ```
 
-#### 4.2.3 Aggregates Specification
+---
 
-##### Lead Aggregate Root
-**Purpose**: Manages potential customers from initial capture through qualification
+# **4.3 Aggregates (Enhanced)**
 
-**Entities**:
-- `LeadSourceRecord`: Tracking of lead origin and attribution
+---
 
-**Value Objects**:
-- `LeadId`: Unique identifier
-- `LeadDetails`: Contact information and qualification data
-- `LeadSource`: Web form, referral, advertisement, etc.
-- `QualificationScore`: Numerical scoring based on criteria
-- `LeadStatus`: New, Qualified, Converted, Lost
+## **4.3.1 Lead Aggregate Root (Enhanced)**
 
-**Business Invariants**:
-- Lead must have valid contact information
-- Qualification score must be within defined range
-- Converted leads cannot be modified
-- Lead source must be tracked for analytics
+### **Purpose**
 
-##### Contact Aggregate Root
-**Purpose**: Manages established customer relationships and interactions
+Manages the lifecycle of a potential customer.
 
-**Entities**:
-- `ContactGroup`: Grouping and segmentation information
-- `ContactTag`: Flexible categorization system
+### **Entities**
 
-**Value Objects**:
-- `ContactId`: Unique identifier
-- `ContactInfo`: Comprehensive contact details
-- `EngagementLevel`: Active, Passive, Inactive
-- `OrganizationId`: Optional link to organization
+* `LeadDetails`
+* `LeadQualificationRecord` (optional aggregate extension)
 
-**Business Invariants**:
-- Contact must have minimum required information
-- Organization relationships must be valid
-- Interaction history is immutable once logged
-- Engagement level automatically updates based on activity
+### **Value Objects**
 
-##### Organization Aggregate Root
-**Purpose**: Manages company/organization entities and their contact relationships
+* `LeadId`
+* `LeadSource`
+* `QualificationScore`
+* `LeadStatus`
+* `Email`, `PhoneNumber`
 
-**Value Objects**:
-- `OrganizationId`: Unique identifier
-- `OrganizationInfo`: Company details and metadata
-- `OrganizationStatus`: Active, Inactive, Prospect, Customer
+### **Domain Invariants**
 
-**Business Invariants**:
-- Organization must have unique identifier within system
-- Contact relationships must be valid
-- Organization status transitions follow defined workflow
+1. Contact info must be valid.
+2. Qualification score must be between **0–100**.
+3. A converted lead cannot be modified.
+4. A lost lead cannot be converted.
 
-##### InteractionLog Aggregate Root
-**Purpose**: Records all customer interactions and communication history
+### **Behavior**
 
-**Entities**:
-- `CommunicationRecord`: Detailed interaction data
-- `FollowUpTask`: Generated tasks from interactions
-
-**Value Objects**:
-- `InteractionId`: Unique identifier
-- `InteractionType`: Email, Call, Meeting, Demo, etc.
-- `DocumentId`: Optional attachment reference
-
-**Business Invariants**:
-- Interactions must be linked to valid contacts
-- Timestamps must be accurate and immutable
-- Attachment references must be valid documents
-
-##### AutomationWorkflow Aggregate Root
-**Purpose**: Manages automated processes for lead nurturing and follow-up
-
-**Entities**:
-- `WorkflowStep`: Individual automation actions
-- `WorkflowExecutionRecord`: History of workflow executions
-
-**Value Objects**:
-- `WorkflowId`: Unique identifier
-- `AutomationTriggerCondition`: Conditions that start workflow
-- `AutomationActionType`: Email, Task, Status Update, etc.
-- `WorkflowStatus`: Active, Inactive, Testing
-
-**Business Invariants**:
-- Workflows must have at least one step
-- Trigger conditions must be valid and testable
-- Execution history must be maintained for audit
-- Active workflows cannot be deleted
-
-#### 4.2.4 Commands & Queries (CQRS)
-
-##### Commands
-**Lead Management**:
 ```csharp
-public record CaptureLead(
-    LeadDetails Details,
-    LeadSource Source,
-    Dictionary<string, object> CustomFields,
-    UserId CapturedBy
-);
-
-public record QualifyLead(
-    LeadId LeadId,
-    QualificationScore Score,
-    string QualificationNotes,
-    UserId QualifiedBy
-);
-
-public record ConvertLeadToContact(
-    LeadId LeadId,
-    ContactInfo ContactInfo,
-    OrganizationId? OrganizationId,
-    UserId ConvertedBy
-);
+public void Capture();
+public void Qualify(QualificationScore score, string notes);
+public ContactId ConvertToContact(ContactInfo info, OrganizationId? organizationId);
+public void MarkAsLost(string reason);
 ```
 
-**Contact Management**:
+---
+
+## **4.3.2 Contact Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents an established customer or operational contact.
+
+### **Entities**
+
+* `ContactTag`
+* `ContactGroupMembership`
+
+### **Value Objects**
+
+* `ContactId`
+* `ContactInfo`
+* `EngagementLevel`
+* `OrganizationId`
+
+### **Domain Invariants**
+
+1. Contact must have valid `Name`, `Email`, & primary communication channel.
+2. EngagementLevel auto-updates based on interactions.
+3. Contact cannot belong to a deactivated organization.
+
+### **Behavior**
+
 ```csharp
-public record CreateContact(
-    ContactInfo ContactInfo,
-    OrganizationId? OrganizationId,
-    List<ContactTag> Tags,
-    UserId CreatedBy
-);
-
-public record UpdateContactInfo(
-    ContactId ContactId,
-    ContactInfo NewContactInfo,
-    UserId UpdatedBy
-);
-
-public record AddContactToGroup(
-    ContactId ContactId,
-    ContactGroupId GroupId,
-    UserId AddedBy
-);
+public void UpdateContactInfo(ContactInfo newInfo);
+public void AddTag(ContactTag tag);
+public void RemoveTag(ContactTag tag);
+public InteractionId RecordInteraction(InteractionLog log);
+public void AssignToOrganization(OrganizationId id);
 ```
 
-**Interaction Management**:
+---
+
+## **4.3.3 InteractionLog Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents a single communication or engagement event.
+
+### **Value Objects**
+
+* `InteractionId`
+* `InteractionType`
+* `InteractionMetadata`
+* `DocumentReference? Attachment`
+
+### **Domain Invariants**
+
+1. Interaction must reference a valid contact.
+2. Timestamp must be immutable.
+3. Interaction content must not be empty.
+
+### **Behavior**
+
 ```csharp
+public void Record();
+```
+
+---
+
+## **4.3.4 Organization Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents a company or organization with contacts.
+
+### **Value Objects**
+
+* `OrganizationId`
+* `OrganizationInfo`
+* `OrganizationStatus`
+
+### **Domain Invariants**
+
+1. Organization name must be unique.
+2. Contacts must exist before being linked.
+3. Inactive organizations can't accept new contacts.
+
+### **Behavior**
+
+```csharp
+public void AddContact(ContactId contactId);
+public void UpdateInfo(OrganizationInfo info);
+public void Activate();
+public void Deactivate();
+```
+
+---
+
+## **4.3.5 AutomationWorkflow Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Executes automated workflow steps based on triggers.
+
+### **Entities**
+
+* `WorkflowStep`
+* `WorkflowExecutionRecord` (optional for event-sourcing)
+
+### **Value Objects**
+
+* `WorkflowId`
+* `AutomationTrigger`
+* `WorkflowStatus`
+* `StepType`
+
+### **Domain Invariants**
+
+1. Workflow must have at least one step.
+2. Trigger conditions must be valid and testable.
+3. Active workflows cannot be deleted.
+
+### **Behavior**
+
+```csharp
+public void Activate();
+public void Deactivate();
+public void TriggerFor(ContactId contactId, Dictionary<string, object> ctx);
+```
+
+---
+
+# **4.4 Value Objects (Enhanced)**
+
+## **Core VO Set**
+
+* `LeadId`
+* `ContactId`
+* `InteractionId`
+* `OrganizationId`
+* `WorkflowId`
+
+### **Contact & Lead VOs**
+
+* `Email`, `PhoneNumber`, `Address`
+* `LeadDetails`, `LeadSource`, `LeadStatus`
+* `QualificationScore`
+* `EngagementLevel` (Calculated VO)
+
+### **Interaction VOs**
+
+* `InteractionType` (Call, Email, Meeting, Demo, Chat, PortalMessage)
+* `InteractionMetadata (Subject, Content, Channel, OccurredAt)`
+* `DocumentReference`
+
+### **Workflow VOs**
+
+* `AutomationTrigger`
+* `WorkflowStepDefinition`
+* `WorkflowStatus`
+* `StepType`
+
+---
+
+# **4.5 Domain Services (Enhanced)**
+
+## **4.5.1 LeadQualificationService**
+
+Uses rules/ML/criteria to calculate score.
+
+```csharp
+QualificationScore CalculateScore(Lead lead, Dictionary<string, object> inputs);
+```
+
+## **4.5.2 EngagementScoringService**
+
+Updates engagement level based on interactions.
+
+## **4.5.3 AutomationExecutionService**
+
+Executes workflow steps.
+
+---
+
+# **4.6 Specifications (Enhanced)**
+
+### **LeadHasEnoughInformationSpec**
+
+Lead may be qualified only if details complete.
+
+### **ContactHasValidCommunicationChannelsSpec**
+
+### **InteractionAttachmentValidSpec**
+
+Ensures attachment exists in Document Mgmt BC.
+
+---
+
+# **4.7 Policies (Enhanced)**
+
+## **Automation Trigger Policy**
+
+Defines when workflows execute:
+
+* New Contact
+* New Interaction
+* Re-Engagement
+* Score threshold
+
+## **Engagement Update Policy**
+
+Every interaction updates engagement:
+
+* Recent interactions → Active
+* Older but regular → Warm
+* No interactions for long → Cold
+
+---
+
+# **4.8 Domain Events (Enhanced)**
+
+### **LeadCaptured**
+
+### **LeadQualified**
+
+### **LeadConvertedToContact**
+
+### **ContactUpdated**
+
+### **InteractionLogged**
+
+### **AutomationWorkflowTriggered**
+
+### **AutomationStepExecuted**
+
+Each event includes:
+
+* TenantId
+* Actor (UserId)
+* Timestamp
+* Context data
+
+---
+
+# **4.9 Commands (Enhanced)**
+
+```csharp
+public record CaptureLead(LeadDetails Details, LeadSource Source, UserId CapturedBy);
+public record QualifyLead(LeadId LeadId, QualificationScore Score, string Notes, UserId QualifiedBy);
+public record ConvertLeadToContact(LeadId LeadId, ContactInfo ContactInfo, OrganizationId? OrgId, UserId ConvertedBy);
+
+public record CreateContact(ContactInfo Info, OrganizationId? Org, List<ContactTag> Tags, UserId CreatedBy);
+public record UpdateContactInfo(ContactId Id, ContactInfo Info, UserId UpdatedBy);
+
 public record LogInteraction(
     ContactId ContactId,
     InteractionType Type,
     string Subject,
     string Content,
-    DocumentId? AttachmentId,
-    DateTime? CustomTimestamp,
+    DocumentReference? Attachment,
+    DateTime? OccurredAt,
     UserId LoggedBy
 );
 
-public record ScheduleFollowUp(
-    ContactId ContactId,
-    string Description,
-    DateTime DueDate,
-    Priority Priority,
-    UserId ScheduledBy
-);
-```
-
-**Automation Management**:
-```csharp
 public record ConfigureAutomation(
     string Name,
-    AutomationTriggerCondition Trigger,
+    AutomationTrigger Trigger,
     List<WorkflowStepDefinition> Steps,
     UserId ConfiguredBy
 );
 
-public record TriggerAutomation(
-    WorkflowId WorkflowId,
-    ContactId ContactId,
-    Dictionary<string, object> Context,
-    UserId TriggeredBy
-);
-```
-
-##### Queries
-**Lead Queries**:
-```csharp
-public record GetLeadDetails(LeadId LeadId);
-public record GetLeadsByStatus(LeadStatus Status, int PageNumber = 1, int PageSize = 20);
-public record GetLeadsBySource(LeadSource Source, DateTime? StartDate = null, DateTime? EndDate = null);
-public record SearchLeads(string SearchTerm, LeadStatus? Status = null);
-```
-
-**Contact Queries**:
-```csharp
-public record GetContactDetails(ContactId ContactId);
-public record GetContactsByOrganization(OrganizationId OrganizationId);
-public record GetContactsByEngagementLevel(EngagementLevel Level);
-public record GetContactInteractionHistory(ContactId ContactId);
-```
-
-**Analytics Queries**:
-```csharp
-public record GetLeadConversionAnalytics(DateTime StartDate, DateTime EndDate);
-public record GetContactEngagementReport(ContactGroupId? GroupId = null);
-public record GetLeadSourcePerformance(DateTime StartDate, DateTime EndDate);
-```
-
-#### 4.2.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class LeadCaptured : DomainEvent
-{
-    public LeadId LeadId { get; }
-    public LeadDetails Details { get; }
-    public LeadSource Source { get; }
-    public DateTime CapturedAt { get; }
-    public UserId CapturedBy { get; }
-}
-
-public class LeadQualified : DomainEvent
-{
-    public LeadId LeadId { get; }
-    public QualificationScore Score { get; }
-    public QualificationScore? PreviousScore { get; }
-    public UserId QualifiedBy { get; }
-}
-
-public class LeadConvertedToContact : DomainEvent
-{
-    public LeadId LeadId { get; }
-    public ContactId NewContactId { get; }
-    public OrganizationId? OrganizationId { get; }
-    public UserId ConvertedBy { get; }
-}
-
-public class InteractionLogged : DomainEvent
-{
-    public InteractionId InteractionId { get; }
-    public ContactId ContactId { get; }
-    public InteractionType Type { get; }
-    public DocumentId? AttachmentId { get; }
-    public UserId LoggedBy { get; }
-}
-
-public class AutomationWorkflowTriggered : DomainEvent
-{
-    public WorkflowId WorkflowId { get; }
-    public ContactId ContactId { get; }
-    public AutomationTriggerCondition TriggerCondition { get; }
-    public List<WorkflowStep> Steps { get; }
-}
-```
-
-#### 4.2.6 Business Rules & Policies
-
-##### Lead Qualification Policy
-```csharp
-public class LeadQualificationPolicy
-{
-    public QualificationScore CalculateScore(Lead lead, Dictionary<string, object> criteria)
-    {
-        var score = 0;
-        
-        // Company size scoring
-        if (criteria.ContainsKey("CompanySize"))
-        {
-            var size = criteria["CompanySize"].ToString();
-            score += size switch
-            {
-                "Enterprise" => 40,
-                "Mid-Market" => 30,
-                "Small Business" => 20,
-                "Startup" => 10,
-                _ => 0
-            };
-        }
-        
-        // Budget scoring
-        if (criteria.ContainsKey("Budget") && decimal.TryParse(criteria["Budget"].ToString(), out var budget))
-        {
-            score += budget switch
-            {
-                >= 100000 => 30,
-                >= 50000 => 20,
-                >= 10000 => 15,
-                >= 1000 => 10,
-                _ => 0
-            };
-        }
-        
-        // Timeline scoring
-        if (criteria.ContainsKey("Timeline"))
-        {
-            var timeline = criteria["Timeline"].ToString();
-            score += timeline switch
-            {
-                "Immediate" => 30,
-                "Within 30 days" => 25,
-                "Within 90 days" => 15,
-                "Future" => 5,
-                _ => 0
-            };
-        }
-        
-        return new QualificationScore(Math.Min(score, 100));
-    }
-}
-```
-
-##### Automation Trigger Policy
-```csharp
-public class AutomationTriggerPolicy
-{
-    public bool ShouldTriggerWorkflow(AutomationWorkflow workflow, Contact contact, InteractionLog? interaction = null)
-    {
-        return workflow.Trigger.Type switch
-        {
-            TriggerType.NewContact => interaction == null,
-            TriggerType.NewInteraction => interaction != null,
-            TriggerType.EngagementDrop => contact.Engagement == EngagementLevel.Passive && 
-                                         GetLastInteractionDate(contact) < DateTime.Now.AddDays(-30),
-            TriggerType.QualificationScore => contact.QualificationScore >= workflow.Trigger.MinScore,
-            _ => false
-        };
-    }
-}
+public record TriggerAutomation(WorkflowId WorkflowId, ContactId ContactId, Dictionary<string, object> Context, UserId TriggeredBy);
 ```
 
 ---
 
-### 4.3 Contract & Portfolio Management (C&PM) Bounded Context
+# **4.10 Queries (Enhanced)**
 
-#### 4.3.1 Context Overview
-**Responsibility**: Manages contract lifecycle from creation to completion, maintains portfolio oversight of all business initiatives, and provides high-level strategic planning and roadmapping capabilities.
+```csharp
+public record GetLeadDetails(LeadId LeadId);
+public record SearchLeads(string Term, LeadStatus? Status);
+public record GetContactDetails(ContactId ContactId);
+public record GetContactInteractionHistory(ContactId ContactId);
+public record GetLeadsByScore(int MinScore);
+public record GetAutomationDefinitions();
+public record GetOrganizationContacts(OrganizationId OrgId);
+```
 
-**Strategic Classification**: Core Domain - Strategic
+---
 
-**Subdomains**:
-- Contract Management: Contract creation, versioning, and lifecycle tracking
-- Portfolio Management: High-level oversight of projects and contracts
-- Portfolio Roadmapping: Strategic planning and milestone tracking
-- Risk & Compliance: Risk assessment and compliance monitoring
-- Document Integration: Contract document management and versioning
+# ✅ **PART 5 — Contract & Portfolio Management (C&PM) Bounded Context (Enhanced)**
 
-#### 4.3.2 Core Domain Model
+The Contract & Portfolio Management BC governs:
+
+* Contract lifecycle (draft → approval → active → renewal/termination)
+* Contract versions & amendments
+* Portfolio structure for strategic business oversight
+* Roadmaps & cross-project dependencies
+* Risk & compliance scoring
+* Performance metrics and analytics
+
+This BC is a **Core Domain**, providing key strategic differentiation because it centralizes business-wide commitments and long-term planning.
+
+---
+
+# **5.1 Context Overview (Enhanced)**
+
+C&PM connects legal, financial, operational, and strategic planning data.
+
+### **Core Responsibilities**
+
+* Contract authoring, versioning, and change governance
+* Legal amendment flow with multi-level approval
+* Portfolio hierarchy & categorization
+* Strategic roadmap planning
+* Cross-project dependencies & milestone management
+* Risk scoring (legal, financial, delivery)
+* Compliance tracking
+
+### **Upstream/Downstream Roles**
+
+* **Upstream of:** Project Execution, CRM
+* **Downstream of:** Document Management (stores contracts)
+
+---
+
+# **5.2 High-Level Domain Model (Enhanced Diagram)**
 
 ```mermaid
 classDiagram
+    direction LR
+
+    %% Contract Aggregate
     class Contract {
-        +ContractId id
-        +string title
-        +ContractStatus status
-        +List~ContractParty~ parties
-        +ContractTemplateReference template
-        +DocumentId? documentId
-        +addAmendment(ContractAmendment)
-        +createVersion(ContractVersion)
-        +setAlert(ContractAlert)
-        +updateStatus(ContractStatus)
+        +ContractId Id
+        +string Title
+        +ContractStatus Status
+        +ContractTerms Terms
+        +List~ContractParty~ Parties
+        +DocumentReference? CurrentDocument
+        +List~ContractVersion~ Versions
+        +List~ContractAmendment~ Amendments
+        +DateRange ValidityPeriod
+        +Activate()
+        +Terminate(string reason)
+        +AddAmendment(ContractAmendment)
+        +CreateVersion(ContractVersion)
+        +ScheduleRenewal(DateTime renewalDate)
+        +UpdateTerms(ContractTerms)
     }
-    
-    class Portfolio {
-        +PortfolioId id
-        +string name
-        +PortfolioGoal goal
-        +List~PortfolioItem~ items
-        +List~PortfolioCategory~ categories
-        +PerformanceMetric performance
-        +addItem(PortfolioItem)
-        +categorize(PortfolioCategory)
-        +calculatePerformance()
-    }
-    
-    class PortfolioRoadmap {
-        +RoadmapId id
-        +PortfolioId portfolioId
-        +string name
-        +List~RoadmapMilestone~ milestones
-        +List~CrossItemDependency~ dependencies
-        +addMilestone(RoadmapMilestone)
-        +trackDependency(CrossItemDependency)
-    }
-    
+
     class ContractVersion {
-        +VersionId id
-        +ContractId contractId
-        +DocumentId documentId
-        +VersionMetadata metadata
-        +DateTime createdAt
-        +UserId createdBy
+        +VersionId Id
+        +DocumentReference Document
+        +VersionMetadata Metadata
+        +DateTime CreatedAt
     }
-    
+
     class ContractAmendment {
-        +AmendmentId id
-        +ContractId contractId
-        +AmendmentDetails details
-        +DocumentId? documentId
-        +AmendmentStatus status
-        +DateTime effectiveDate
+        +AmendmentId Id
+        +AmendmentDetails Details
+        +DocumentReference Document
+        +AmendmentStatus Status
+        +SubmitForApproval()
+        +Approve(UserId)
+        +Reject(string reason)
     }
-    
+
+    %% Portfolio Aggregate
+    class Portfolio {
+        +PortfolioId Id
+        +string Name
+        +PortfolioGoal Goal
+        +List~PortfolioItem~ Items
+        +List~PortfolioCategory~ Categories
+        +PortfolioHealth Health
+        +AddItem(PortfolioItem)
+        +RecalculateHealth()
+    }
+
     class PortfolioItem {
-        +ItemId id
-        +PortfolioId portfolioId
-        +ItemReference reference
-        +ItemType type
-        +PerformanceMetric performance
-        +updatePerformance(PerformanceMetric)
+        +PortfolioItemId Id
+        +ItemReference Reference
+        +PortfolioItemType Type
+        +PerformanceMetric Metric
+        +RiskScore Risk
+        +UpdatePerformance(PerformanceMetric)
+        +UpdateRisk(RiskScore)
     }
-    
+
+    %% Roadmap Aggregate
+    class PortfolioRoadmap {
+        +RoadmapId Id
+        +string Name
+        +PortfolioId PortfolioId
+        +List~RoadmapMilestone~ Milestones
+        +List~CrossItemDependency~ Dependencies
+        +AddMilestone(RoadmapMilestone)
+        +AddDependency(CrossItemDependency)
+        +RescheduleMilestone(MilestoneId, MilestoneDateRange)
+    }
+
     class RoadmapMilestone {
-        +MilestoneId id
-        +string name
-        +MilestoneDate targetDate
-        +MilestoneDate? actualDate
-        +MilestoneStatus status
-        +List~ItemReference~ dependencies
+        +MilestoneId Id
+        +string Name
+        +MilestoneDateRange DateRange
+        +MilestoneStatus Status
+        +MarkCompleted()
+        +Reschedule(MilestoneDateRange)
     }
 
-    %% A Portfolio can contain many Portfolio Items. This is a strong "composition" relationship.
-    Portfolio "1" o-- "0..*" PortfolioItem : contains
+    class CrossItemDependency {
+        +DependencyId Id
+        +ItemReference Predecessor
+        +ItemReference Successor
+        +DependencyType Type
+        +Duration Lag
+    }
 
-    %% A Portfolio defines zero or one Roadmap. This is more flexible than a strict 1-to-1.
-    Portfolio "1" -- "0..1" PortfolioRoadmap : defines
+    %% Relationships
+    Contract "1" --> "0..*" ContractVersion
+    Contract "1" --> "0..*" ContractAmendment
 
-    %% A Roadmap is broken down into multiple Milestones.
-    PortfolioRoadmap "1" o-- "0..*" RoadmapMilestone : includes
+    Portfolio "1" --> "0..*" PortfolioItem
+    Portfolio "1" --> "0..*" PortfolioCategory
 
-    %% A Contract can have multiple Versions and Amendments over its lifecycle.
-    Contract "1" o-- "0..*" ContractVersion : has
-    Contract "1" o-- "0..*" ContractAmendment : has
+    Portfolio --> PortfolioRoadmap : owns*
+    PortfolioRoadmap "1" --> "0..*" RoadmapMilestone
+    PortfolioRoadmap "1" --> "0..*" CrossItemDependency
 ```
 
-#### 4.3.3 Aggregates Specification
+---
 
-##### Contract Aggregate Root
-**Purpose**: Manages contract lifecycle, versions, and amendments
+# **5.3 Aggregates (Fully Enhanced)**
 
-**Entities**:
-- `ContractVersion`: Version control for contract documents
-- `ContractAmendment`: Contract modifications and addendums
-- `ContractParty`: Parties involved in the contract
-- `ContractAlert`: Automated alerts for contract milestones
+This section defines each aggregate with invariants, behaviors, VOs, and domain rules.
 
-**Value Objects**:
-- `ContractId`: Unique identifier
-- `ContractTemplateReference`: Reference to contract template
-- `ContractTermsData`: Structured contract terms
-- `ContractStatus`: Draft, Active, Pending Renewal, Expired, Terminated
-- `DocumentId`: Reference to document in Document Management BC
-- `AlertCondition`: Conditions triggering alerts
+---
 
-**Business Invariants**:
-- Contract must have at least two parties
-- Active contracts cannot be deleted
-- Amendments require approval workflow
-- Version history must be maintained
+## **5.3.1 Contract Aggregate Root (Enhanced)**
 
-##### Portfolio Aggregate Root
-**Purpose**: Provides high-level view and management of business initiatives
+### **Purpose**
 
-**Entities**:
-- `PortfolioItem`: Individual projects, contracts, or initiatives
-- `PortfolioCategory`: Organizational structure for items
-- `PortfolioRisk`: Risk assessment and tracking
-- `PortfolioComplianceRecord`: Compliance monitoring
+Central entity governing the lifecycle of a legally binding business agreement.
 
-**Value Objects**:
-- `PortfolioId`: Unique identifier
-- `PortfolioGoal`: Strategic objectives and KPIs
-- `ItemReference`: References to external entities (ProjectId, ContractId)
-- `PerformanceMetric`: Performance measurement data
-- `SharingLink`: Portfolio sharing capabilities
-- `AccessPermissions`: Access control settings
+### **Key Value Objects**
 
-**Business Invariants**:
-- Portfolio items must reference valid external entities
-- Performance metrics must be consistently calculated
-- Sharing permissions must be validated
-- Risk assessments must be current
+* `ContractId`
+* `ContractTerms`
+* `ValidityPeriod (DateRange)`
+* `ContractStatus`
+* `ContractParty`
+* `DocumentReference`
 
-##### PortfolioRoadmap Aggregate Root
-**Purpose**: Strategic planning and timeline management across portfolio items
+### **Enhanced Domain Invariants**
 
-**Entities**:
-- `RoadmapMilestone`: Key strategic milestones
-- `CrossItemDependency`: Dependencies between portfolio items
+1. Contract must have **minimum 2 parties**.
+2. Validity end date must be **after** start date.
+3. Only a contract in `Draft` can be edited.
+4. Only one active version at a time.
+5. Amendments can only be added when contract is `Active`.
+6. Contract cannot be terminated twice.
 
-**Value Objects**:
-- `RoadmapId`: Unique identifier
-- `MilestoneDate`: Planned and actual milestone dates
-- `DependencyType`: Finish-to-Start, Start-to-Start, etc.
-- `ResourceSkillRequirement`: Required skills for milestones
+### **Behavior (Methods)**
 
-**Business Invariants**:
-- Milestones must have valid target dates
-- Dependencies cannot create circular references
-- Resource requirements must be feasible
-- Timeline adjustments must cascade to dependent items
-
-#### 4.3.4 Commands & Queries (CQRS)
-
-##### Commands
-**Contract Management**:
 ```csharp
-public record CreateContract(
-    string Title,
-    ContractTemplateReference Template,
-    List<ContractParty> Parties,
-    ContractTermsData Terms,
-    DocumentId? DocumentId,
-    UserId CreatedBy
-);
-
-public record VersionContract(
-    ContractId ContractId,
-    DocumentId NewDocumentId,
-    VersionMetadata Metadata,
-    string ChangeNotes,
-    UserId VersionedBy
-);
-
-public record AddContractAmendment(
-    ContractId ContractId,
-    AmendmentDetails Details,
-    DateTime EffectiveDate,
-    DocumentId? DocumentId,
-    UserId CreatedBy
-);
-
-public record SetContractAlert(
-    ContractId ContractId,
-    AlertCondition Condition,
-    DateTime TriggerDate,
-    string AlertMessage,
-    UserId CreatedBy
-);
+public void Activate();
+public void Terminate(string reason);
+public void UpdateTerms(ContractTerms newTerms);
+public ContractVersion CreateVersion(DocumentReference newDocument, VersionMetadata metadata);
+public void AddAmendment(ContractAmendment amendment);
+public void ScheduleRenewal(DateTime renewalDate);
 ```
 
-**Portfolio Management**:
+---
+
+## **5.3.2 ContractAmendment Aggregate (Enhanced)**
+
+### **Purpose**
+
+Represents a legal change that must go through an approval workflow.
+
+### **Value Objects**
+
+* `AmendmentId`
+* `AmendmentDetails`
+* `AmendmentStatus` (Draft, Submitted, Approved, Rejected)
+
+### **Invariants**
+
+* Amendments cannot be modified after approval/rejection.
+* High-value amendments require multi-level approval (policy-driven).
+
+### **Behavior**
+
 ```csharp
-public record CreatePortfolio(
-    string Name,
-    PortfolioGoal Goal,
-    AccessPermissions Permissions,
-    UserId CreatedBy
-);
-
-public record AddPortfolioItem(
-    PortfolioId PortfolioId,
-    ItemReference Reference,
-    ItemType Type,
-    PerformanceMetric InitialPerformance,
-    UserId AddedBy
-);
-
-public record CategorizePortfolioItem(
-    PortfolioId PortfolioId,
-    ItemId ItemId,
-    PortfolioCategory Category,
-    UserId CategorizedBy
-);
-
-public record UpdatePortfolioPerformance(
-    PortfolioId PortfolioId,
-    Dictionary<string, decimal> Metrics,
-    DateTime CalculationDate,
-    UserId UpdatedBy
-);
+public void SubmitForApproval();
+public void Approve(UserId approver);
+public void Reject(string reason);
 ```
 
-**Roadmap Management**:
+---
+
+## **5.3.3 ContractVersion Entity (Enhanced)**
+
+### **Purpose**
+
+Tracks version history for legal auditability.
+
+### **Invariants**
+
+* Version numbers must be strict increments.
+* DocumentReference must refer to a valid Document Management BC entry.
+
+---
+
+# **5.3.4 Portfolio Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents a business-level grouping of strategic items (projects, contracts, initiatives).
+
+### **Key Value Objects**
+
+* `PortfolioId`
+* `PortfolioGoal`
+* `PortfolioHealth`
+* `PortfolioCategory`
+
+### **Invariants**
+
+1. Every portfolio must have a defined goal.
+2. Every PortfolioItem must reference a valid external domain entity.
+3. Portfolio health must be recalculated whenever an item changes performance or risk.
+
+### **Behavior**
+
 ```csharp
-public record CreatePortfolioRoadmap(
-    PortfolioId PortfolioId,
-    string Name,
-    List<RoadmapMilestone> InitialMilestones,
-    UserId CreatedBy
-);
-
-public record AddRoadmapMilestone(
-    RoadmapId RoadmapId,
-    string Name,
-    MilestoneDate TargetDate,
-    List<ItemReference> Dependencies,
-    ResourceSkillRequirement? ResourceRequirement,
-    UserId AddedBy
-);
-
-public record TrackCrossItemDependency(
-    RoadmapId RoadmapId,
-    ItemReference PredecessorItem,
-    ItemReference SuccessorItem,
-    DependencyType Type,
-    UserId TrackedBy
-);
+public void AddItem(PortfolioItem item);
+public void Categorize(PortfolioCategory category);
+public void RecalculateHealth();
 ```
 
-##### Queries
-**Contract Queries**:
+---
+
+## **5.3.5 PortfolioItem Entity (Enhanced)**
+
+### **Purpose**
+
+Represents a strategic element inside a portfolio.
+
+### **Value Objects**
+
+* `ItemReference (ProjectId, ContractId, etc.)`
+* `PortfolioItemType`
+* `PerformanceMetric`
+* `RiskScore`
+
+### **Behavior**
+
+```csharp
+public void UpdatePerformance(PerformanceMetric metric);
+public void UpdateRisk(RiskScore risk);
+```
+
+---
+
+## **5.3.6 PortfolioRoadmap Aggregate (Enhanced)**
+
+### **Purpose**
+
+Defines strategic timeline + milestones + cross-item dependencies.
+
+### **Value Objects**
+
+* `RoadmapId`
+* `MilestoneDateRange`
+* `DependencyType`
+
+### **Invariants**
+
+1. Milestones must align with the portfolio timeline.
+2. Dependencies must not create circular graphs.
+3. Actual completion date can never be before target date.
+
+### **Behavior**
+
+```csharp
+public void AddMilestone(RoadmapMilestone milestone);
+public void AddDependency(CrossItemDependency dependency);
+public void RescheduleMilestone(MilestoneId id, MilestoneDateRange newDate);
+```
+
+---
+
+# **5.4 Value Objects (Enhanced)**
+
+## **Contract VOs**
+
+* `ContractId`
+* `ContractTerms`
+* `ContractParty` (Name, Role, Permissions)
+* `ContractStatus`
+* `AmendmentDetails`
+* `VersionMetadata`
+
+## **Portfolio VOs**
+
+* `PortfolioGoal`
+* `PortfolioCategory`
+* `PerformanceMetric (budgetVariance, completionRate, scheduleVariance)`
+* `RiskScore (0–100)`
+* `HealthScore`
+
+## **Roadmap VOs**
+
+* `MilestoneDateRange`
+* `DependencyType`
+* `ItemReference`
+
+---
+
+# **5.5 Domain Services (Enhanced)**
+
+## **5.5.1 ContractApprovalService**
+
+Determines approval chain based on amendment value, contract type, and risk.
+
+## **5.5.2 PortfolioHealthCalculationService**
+
+Calculates portfolio health score from:
+
+* Budget variance
+* Completion rate
+* Risk density
+* Strategic alignment
+
+## **5.5.3 DependencyGraphService**
+
+Ensures roadmap dependencies never create cycles.
+
+---
+
+# **5.6 Specifications (Enhanced)**
+
+### **ContractHasActiveStatusSpec**
+
+### **ValidAmendmentApprovalSpec**
+
+### **PortfolioItemReferenceValidSpec**
+
+### **NoCircularDependencySpec**
+
+---
+
+# **5.7 Policies (Enhanced)**
+
+## **Contract Amendment Policy**
+
+```csharp
+public AmendmentApprovalRequirement DetermineApproval(Contract contract, AmendmentDetails details)
+```
+
+## **Portfolio Performance Policy**
+
+Aggregates item-level metrics into portfolio-level performance.
+
+## **Roadmap Dependency Policy**
+
+Ensures successor cannot start before predecessor in `Finish-to-Start` dependency types.
+
+---
+
+# **5.8 Domain Events (Enhanced)**
+
+### **ContractCreated**
+
+### **ContractVersioned**
+
+### **ContractActivated**
+
+### **ContractTerminated**
+
+### **ContractAmendmentSubmitted**
+
+### **ContractAmendmentApproved**
+
+### **PortfolioCreated**
+
+### **PortfolioItemAdded**
+
+### **PortfolioHealthUpdated**
+
+### **RoadmapMilestoneAdded**
+
+### **RoadmapMilestoneCompleted**
+
+### **RoadmapDependencyAdded**
+
+All events include:
+
+* Actor (UserId)
+* TenantId
+* Context snapshot
+
+---
+
+# **5.9 Commands (Enhanced)**
+
+```csharp
+public record CreateContract(...);
+public record VersionContract(...);
+public record SubmitContractAmendment(...);
+public record ApproveContractAmendment(...);
+
+public record CreatePortfolio(...);
+public record AddPortfolioItem(...);
+public record UpdatePortfolioItemPerformance(...);
+
+public record CreatePortfolioRoadmap(...);
+public record AddRoadmapMilestone(...);
+public record AddCrossItemDependency(...);
+```
+
+---
+
+# **5.10 Queries (Enhanced)**
+
 ```csharp
 public record GetContractDetails(ContractId ContractId);
-public record GetContractVersionHistory(ContractId ContractId);
-public record GetContractsByStatus(ContractStatus Status);
-public record GetContractsExpiringBy(DateTime ExpirationDate);
+public record GetPortfolioOverview(PortfolioId PortfolioId);
+public record GetPortfolioPerformance(PortfolioId PortfolioId);
+public record GetRoadmapDetails(RoadmapId RoadmapId);
 public record GetContractAmendments(ContractId ContractId);
 ```
 
-**Portfolio Queries**:
-```csharp
-public record GetPortfolioOverview(PortfolioId PortfolioId);
-public record GetPortfolioItems(PortfolioId PortfolioId, ItemType? TypeFilter = null);
-public record GetPortfolioPerformance(PortfolioId PortfolioId, DateTime? AsOfDate = null);
-public record GetPortfolioRisks(PortfolioId PortfolioId, RiskLevel? MinLevel = null);
-```
+---
 
-**Roadmap Queries**:
-```csharp
-public record GetPortfolioRoadmap(RoadmapId RoadmapId);
-public record GetRoadmapMilestones(RoadmapId RoadmapId, DateTime? StartDate = null, DateTime? EndDate = null);
-public record GetCrossItemDependencies(RoadmapId RoadmapId);
-```
+# ✅ **PART 6 — Project Execution Bounded Context (Enhanced)**
 
-#### 4.3.5 Events & Integration
+Project Execution is a **Core Domain** because it directly governs day-to-day operational productivity: projects, tasks, workflows, time tracking, and dependencies.
 
-##### Domain Events
-```csharp
-public class ContractCreated : DomainEvent
-{
-    public ContractId ContractId { get; }
-    public string Title { get; }
-    public List<ContractParty> Parties { get; }
-    public DocumentId? DocumentId { get; }
-    public UserId CreatedBy { get; }
-}
+This regenerated version introduces several major enhancements:
 
-public class ContractVersioned : DomainEvent
-{
-    public ContractId ContractId { get; }
-    public VersionId NewVersionId { get; }
-    public DocumentId NewDocumentId { get; }
-    public VersionMetadata Metadata { get; }
-    public UserId VersionedBy { get; }
-}
+* Stronger aggregate boundaries
+* Fully normalized relationships
+* Circular dependency prevention (task DAG)
+* Execution-grade value objects
+* Assignment & workload modeling
+* Phase-based project planning
+* Realistic time logging & validation policies
+* Domain services for planning, workload, scheduling
+* Complete CQRS & event set
 
-public class PortfolioCreated : DomainEvent
-{
-    public PortfolioId PortfolioId { get; }
-    public string Name { get; }
-    public PortfolioGoal Goal { get; }
-    public UserId CreatedBy { get; }
-}
+---
 
-public class PortfolioItemAdded : DomainEvent
-{
-    public PortfolioId PortfolioId { get; }
-    public ItemId ItemId { get; }
-    public ItemReference Reference { get; }
-    public ItemType Type { get; }
-    public UserId AddedBy { get; }
-}
+# **6.1 Context Overview (Enhanced)**
 
-public class RoadmapMilestoneCompleted : DomainEvent
-{
-    public RoadmapId RoadmapId { get; }
-    public MilestoneId MilestoneId { get; }
-    public DateTime CompletedDate { get; }
-    public List<ItemReference> AffectedItems { get; }
-}
-```
+Project Execution manages:
 
-#### 4.3.6 Business Rules & Policies
+* Project creation & lifecycle
+* Task management, assignment & dependencies
+* Workload distribution & effort allocation
+* Time logging & billability
+* Milestones & phases
+* Execution progress calculation
+* Integration with RIM for resource allocation
+* Integration with C&PM for portfolio alignment
+* Integration with Document Management for attachments
 
-##### Contract Amendment Policy
-```csharp
-public class ContractAmendmentPolicy
-{
-    public bool CanAmendContract(Contract contract, UserId requestingUser)
-    {
-        // Cannot amend expired or terminated contracts
-        if (contract.Status == ContractStatus.Expired || 
-            contract.Status == ContractStatus.Terminated)
-            return false;
-        
-        // Check if user has amendment rights
-        return contract.Parties.Any(p => p.AuthorizedUsers.Contains(requestingUser) && 
-                                        p.Permissions.CanAmend);
+It is **upstream** to:
+
+* RIM (resource demand events)
+* Document Management (attachments)
+
+It is **downstream** from:
+
+* C&PM (portfolio items)
+* CRM (contacts, organizations)
+* Freelance Ops (freelance projects)
+
+---
+
+# **6.2 High-Level Domain Model (Enhanced UML)**
+
+```mermaid
+classDiagram
+    direction TB
+
+    %% Project Root
+    class Project {
+        +ProjectId Id
+        +ProjectDetails Details
+        +ProjectStatus Status
+        +List~ProjectMember~ Members
+        +List~ProjectPhase~ Phases
+        +List~TaskId~ TaskIds
+        +AddMember()
+        +AddPhase()
+        +AddTask(TaskId)
+        +UpdateStatus(ProjectStatus)
+        +CalculateProgress()
     }
-    
-    public AmendmentApprovalRequirement GetApprovalRequirement(Contract contract, AmendmentDetails amendment)
-    {
-        // High-value amendments require additional approval
-        if (amendment.ContractValueChange > 50000)
-            return AmendmentApprovalRequirement.ExecutiveApproval;
-        
-        // Scope changes require manager approval
-        if (amendment.ScopeChanges.Any())
-            return AmendmentApprovalRequirement.ManagerApproval;
-        
-        return AmendmentApprovalRequirement.StandardApproval;
-    }
-}
-```
 
-##### Portfolio Performance Calculation Policy
-```csharp
-public class PortfolioPerformancePolicy
-{
-    public PerformanceMetric CalculatePortfolioPerformance(Portfolio portfolio, List<PortfolioItem> items)
-    {
-        var totalBudget = items.Sum(i => i.Performance.Budget);
-        var totalSpent = items.Sum(i => i.Performance.ActualSpent);
-        var completedItems = items.Count(i => i.Performance.Status == ItemStatus.Completed);
-        var totalItems = items.Count;
-        
-        var budgetVariance = totalBudget > 0 ? (totalSpent - totalBudget) / totalBudget * 100 : 0;
-        var completionRate = totalItems > 0 ? (decimal)completedItems / totalItems * 100 : 0;
-        
-        // Calculate overall health score
-        var healthScore = CalculateHealthScore(budgetVariance, completionRate, items);
-        
-        return new PerformanceMetric(
-            budgetVariance,
-            completionRate,
-            healthScore,
-            DateTime.UtcNow
-        );
+    class ProjectDetails {
+        +string Name
+        +string Description
+        +DateRange Timeline
+        +Budget Budget
     }
-    
-    private decimal CalculateHealthScore(decimal budgetVariance, decimal completionRate, List<PortfolioItem> items)
-    {
-        var score = 100m;
-        
-        // Penalize budget overruns
-        score -= Math.Max(0, budgetVariance * 0.5m);
-        
-        // Reward high completion rates
-        score += (completionRate - 50) * 0.3m;
-        
-        // Consider risk factors
-        var highRiskItems = items.Count(i => i.Performance.RiskLevel == RiskLevel.High);
-        score -= highRiskItems * 5;
-        
-        return Math.Max(0, Math.Min(100, score));
+
+    %% Task Root
+    class Task {
+        +TaskId Id
+        +ProjectId ProjectId
+        +TaskDetails Details
+        +TaskStatus Status
+        +Priority Priority
+        +TimeEstimate Estimate
+        +UserId? AssigneeId
+        +List~TaskDependency~ Dependencies
+        +Assign()
+        +UpdateStatus()
+        +AddDependency()
+        +LogTime()
     }
-}
+
+    class TaskDetails {
+        +string Title
+        +string Description
+        +AcceptanceCriteria Criteria
+    }
+
+    class TaskDependency {
+        +DependencyId Id
+        +TaskId PredecessorId
+        +TaskId SuccessorId
+        +DependencyType Type
+        +Duration Lag
+    }
+
+    %% TimeLog Root
+    class TimeLog {
+        +TimeLogId Id
+        +TaskId? TaskId
+        +ProjectId ProjectId
+        +UserId UserId
+        +Duration Duration
+        +DateTime LogDate
+        +TimeLogDetails Details
+        +bool IsBillable
+    }
+
+    %% Phases
+    class ProjectPhase {
+        +PhaseId Id
+        +string Name
+        +DateRange Dates
+        +PhaseStatus Status
+        +List~TaskId~ Tasks
+    }
+
+    %% Members
+    class ProjectMember {
+        +UserId UserId
+        +ProjectRole Role
+        +decimal EffortAllocation
+    }
+
+    %% Relationships
+    Project "1" --> "*" Task : owns >
+    Project "1" --> "*" ProjectPhase
+    Project "1" --> "*" ProjectMember
+
+    Task "1" --> "*" TimeLog : logs >
+    Task "1" --> "*" TaskDependency : depends on >
 ```
 
 ---
 
-### 4.4 Project Execution Bounded Context
+# **6.3 Aggregates (Enhanced)**
 
-#### 4.4.1 Context Overview
-**Responsibility**: Manages detailed project execution including task management, time tracking, resource assignment, and project monitoring.
+---
 
-**Strategic Classification**: Core Domain - Strategic
+## **6.3.1 Project Aggregate Root (Enhanced)**
 
-**Subdomains**:
-- Project Management: Project creation, planning, and lifecycle management
-- Task Management: Detailed task creation, assignment, and tracking
-- Time Tracking: Time logging and project effort monitoring
-- Resource Assignment: Resource allocation and workload management
-- Progress Monitoring: Project status and performance tracking
+### **Purpose**
 
-#### 4.4.2 Core Domain Model
+Primary unit of execution & coordination.
 
-```mermaid
-classDiagram
-    class Project {
-        +ProjectId id
-        +ProjectDetails details
-        +ProjectStatus status
-        +List~ProjectMember~ members
-        +List~ProjectPhase~ phases
-        +ResourceRequirement resources
-        +addMember(ProjectMember)
-        +addPhase(ProjectPhase)
-        +updateStatus(ProjectStatus)
-        +calculateProgress()
-    }
-    
-    class Task {
-        +TaskId id
-        +ProjectId projectId
-        +TaskDetails details
-        +TaskStatus status
-        +Priority priority
-        +UserId? assigneeId
-        +TimeEstimate estimate
-        +List~TaskDependency~ dependencies
-        +assignTo(UserId)
-        +updateStatus(TaskStatus)
-        +logTime(TimeLog)
-    }
-    
-    class TimeLog {
-        +TimeLogId id
-        +TaskId? taskId
-        +ProjectId projectId
-        +UserId userId
-        +TimeLogDetails details
-        +Duration duration
-        +DateTime logDate
-        +bool isBillable
-        +validate()
-    }
-    
-    class ProjectPhase {
-        +PhaseId id
-        +ProjectId projectId
-        +string name
-        +DateTime startDate
-        +DateTime endDate
-        +PhaseStatus status
-        +List~TaskId~ tasks
-    }
-    
-    class TaskAssignment {
-        +AssignmentId id
-        +TaskId taskId
-        +UserId assigneeId
-        +DateTime assignedDate
-        +AssignmentStatus status
-        +decimal effortAllocation
-    }
-    
-    class TaskDependency {
-        +DependencyId id
-        +TaskId predecessorId
-        +TaskId successorId
-        +DependencyType type
-        +Duration lagTime
-    }
+### **Entities**
 
-    %% A Project is composed of Phases and Tasks.
-    Project "1" o-- "0..*" ProjectPhase : contains
-    Project "1" o-- "0..*" Task : contains
+* `ProjectMember`
+* `ProjectPhase`
 
-    %% A Task can be assigned and tracks its own time logs.
-    Task "1" o-- "0..*" TaskAssignment : has
-    Task "1" o-- "0..*" TimeLog : tracks
+### **Value Objects**
 
-    %% A Task can depend on other Tasks (a self-referencing relationship).
-    Task "1" -- "0..*" Task : depends on
-```
+* `ProjectId`
+* `ProjectDetails`
+* `ProjectStatus`
+* `ProjectProgress`
+* `Budget`
+* `DateRange`
 
-#### 4.4.3 Aggregates Specification
+### **Invariants**
 
-##### Project Aggregate Root
-**Purpose**: Central entity managing project execution and coordination
+1. Project must have at least one member with `Owner` role.
+2. Project cannot be completed unless **all tasks are completed**.
+3. Phase dates must lie within project timeline.
+4. Project deletion not allowed if tasks exist.
 
-**Entities**:
-- `ProjectMember`: Team members and their roles
-- `ProjectPhase`: Project phases and milestones
-- `ProjectMilestone`: Key deliverables and checkpoints
+### **Behavior**
 
-**Value Objects**:
-- `ProjectId`: Unique identifier (canonical reference for other BCs)
-- `ProjectDetails`: Name, description, objectives, timeline
-- `ProjectStatus`: Planning, Active, On Hold, Completed, Cancelled
-- `ResourceRequirement`: Skills and roles needed for project
-
-**Business Invariants**:
-- Project must have at least one team member with Owner role
-- End date must be after start date
-- Cannot delete project with active tasks
-- Phase dates must be within project timeline
-
-##### Task Aggregate Root
-**Purpose**: Represents individual work items within projects
-
-**Entities**:
-- `TaskAssignment`: Assignment history and current assignee
-- `TaskDependency`: Relationships between tasks
-
-**Value Objects**:
-- `TaskId`: Unique identifier
-- `TaskDetails`: Description, acceptance criteria, estimate
-- `TaskStatus`: ToDo, InProgress, Done, Blocked
-- `Priority`: Critical, High, Medium, Low
-- `TimeEstimate`: Estimated effort to complete
-
-**Business Invariants**:
-- Task must belong to a valid project
-- Only one active assignment per task
-- Dependencies cannot create circular references
-- Estimated time must be positive
-
-##### TimeLog Aggregate Root
-**Purpose**: Records time spent on projects and tasks
-
-**Value Objects**:
-- `TimeLogId`: Unique identifier
-- `TimeLogDetails`: Description, activity type, notes
-- `Duration`: Time spent
-- `LogDate`: Date of work performed
-- `IsBillable`: Whether time is billable to client
-
-**Business Invariants**:
-- Time log must reference valid project or task
-- Duration must be positive
-- Log date cannot be in the future
-- User must be project member to log time
-
-#### 4.4.4 Commands & Queries (CQRS)
-
-##### Commands
-**Project Management**:
 ```csharp
-public record CreateProject(
-    ProjectDetails Details,
-    ResourceRequirement Resources,
-    List<ProjectMemberDefinition> InitialMembers,
-    UserId CreatedBy
-);
-
-public record AddProjectMember(
-    ProjectId ProjectId,
-    UserId MemberId,
-    ProjectRole Role,
-    decimal EffortAllocation,
-    UserId AddedBy
-);
-
-public record DefineProjectPhase(
-    ProjectId ProjectId,
-    string Name,
-    DateTime StartDate,
-    DateTime EndDate,
-    List<TaskId> AssociatedTasks,
-    UserId DefinedBy
-);
-
-public record UpdateProjectStatus(
-    ProjectId ProjectId,
-    ProjectStatus NewStatus,
-    string? Reason,
-    UserId UpdatedBy
-);
+public void AddMember(ProjectMember member);
+public void AddPhase(ProjectPhase phase);
+public void AddTask(TaskId taskId);
+public void UpdateStatus(ProjectStatus newStatus);
+public ProjectProgress CalculateProgress();
 ```
 
-**Task Management**:
+---
+
+## **6.3.2 Task Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents executable work.
+
+### **Entities**
+
+* `TaskDependency`
+* `TaskAssignment` (implicit via AssigneeId)
+
+### **Value Objects**
+
+* `TaskId`
+* `TaskDetails`
+* `TaskStatus`
+* `Priority`
+* `TimeEstimate`
+* `AcceptanceCriteria`
+
+### **Invariants**
+
+1. Task must belong to a valid project.
+2. Only one active assignment per task.
+3. Dependencies must not form cycles.
+4. Cannot complete a task whose predecessors are incomplete.
+
+### **Behavior**
+
 ```csharp
-public record CreateTask(
-    ProjectId ProjectId,
-    TaskDetails Details,
-    Priority Priority,
-    TimeEstimate Estimate,
-    UserId? InitialAssigneeId,
-    UserId CreatedBy
-);
-
-public record AssignTask(
-    TaskId TaskId,
-    UserId AssigneeId,
-    decimal EffortAllocation,
-    UserId AssignedBy
-);
-
-public record SetTaskDependency(
-    TaskId PredecessorId,
-    TaskId SuccessorId,
-    DependencyType Type,
-    Duration LagTime,
-    UserId SetBy
-);
-
-public record UpdateTaskStatus(
-    TaskId TaskId,
-    TaskStatus NewStatus,
-    string? Notes,
-    UserId UpdatedBy
-);
+public void AssignTo(UserId assigneeId, decimal effortAllocation);
+public void UpdateStatus(TaskStatus newStatus, string? notes);
+public void AddDependency(TaskDependency dependency);
+public TimeLogId LogTime(TimeLog log);
 ```
 
-**Time Tracking**:
+---
+
+## **6.3.3 TimeLog Aggregate Root (Enhanced)**
+
+### **Value Objects**
+
+* `TimeLogId`
+* `Duration`
+* `TimeLogDetails`
+* `Billability`
+
+### **Invariants**
+
+1. Duration > 0
+2. Log date ≤ Today
+3. User must be a project member
+4. If TaskId is set → must belong to ProjectId
+
+---
+
+# **6.4 Value Objects (Enhanced)**
+
+## **Project VOs**
+
+* `ProjectId`
+* `ProjectDetails`
+* `ProjectStatus { Planning, Active, OnHold, Completed, Cancelled }`
+* `Budget` (amount + currency)
+* `ProjectProgress` (%)
+
+## **Task VOs**
+
+* `TaskDetails (Title, Description, AcceptanceCriteria)`
+* `TaskStatus { ToDo, InProgress, Blocked, Review, Done }`
+* `Priority { Critical, High, Medium, Low }`
+* `TimeEstimate (hours)`
+* `AcceptanceCriteria`
+
+## **Dependency VOs**
+
+* `DependencyType { FinishToStart, FinishToFinish, StartToStart }`
+* `LagTime (Duration)`
+
+## **Time Log VOs**
+
+* `TimeLogDetails { Description, ActivityType }`
+* `Duration (minutes, hours)`
+* `Billability`
+
+---
+
+# **6.5 Domain Services (Enhanced)**
+
+---
+
+## **6.5.1 TaskDependencyValidationService**
+
+Ensures **no circular dependencies**.
+
 ```csharp
-public record LogTime(
-    ProjectId ProjectId,
-    TaskId? TaskId,
-    Duration Duration,
-    DateTime LogDate,
-    TimeLogDetails Details,
-    bool IsBillable,
-    UserId LoggedBy
-);
-
-public record UpdateTimeLog(
-    TimeLogId TimeLogId,
-    Duration NewDuration,
-    TimeLogDetails NewDetails,
-    bool IsBillable,
-    UserId UpdatedBy
-);
+bool WillCreateCycle(TaskId predecessor, TaskId successor);
 ```
 
-##### Queries
-**Project Queries**:
+---
+
+## **6.5.2 WorkloadCalculationService**
+
+Maps effort to user availability.
+
+---
+
+## **6.5.3 ProjectProgressService**
+
+Calculates weighted progress based on:
+
+* Completed tasks
+* Task estimates
+* Phase completion
+
+---
+
+## **6.5.4 SchedulingService**
+
+Validates cross-phase scheduling alignment.
+
+---
+
+# **6.6 Specifications (Enhanced)**
+
+* **TaskMustHaveEstimateSpec**
+* **ProjectMustHaveOwnerSpec**
+* **TaskCompletionAllowedSpec**
+* **ValidPhaseTimelineSpec**
+* **TimeLogWithinProjectTimelineSpec**
+
+---
+
+# **6.7 Policies (Enhanced)**
+
+---
+
+## **6.7.1 Task Assignment Policy**
+
+Validates:
+
+* Assignee is project member
+* Effort allocation (0–1.0)
+* No overload beyond user capacity (via RIM BC integration)
+
+---
+
+## **6.7.2 Time Logging Policy**
+
+Rules:
+
+* Duration ≤ 24h
+* Task must be in allowed status (`InProgress`, `Review`)
+* Log date within project timeline
+* Work cannot be logged on completed tasks
+
+---
+
+## **6.7.3 Task Dependency Policy**
+
+Prevents circular dependencies.
+
+---
+
+# **6.8 Domain Events (Enhanced)**
+
+### **Project Events**
+
+* `ProjectCreated`
+* `ProjectActivated`
+* `ProjectStatusChanged`
+* `ProjectCompleted`
+* `ProjectPhaseDefined`
+
+### **Task Events**
+
+* `TaskCreated`
+* `TaskAssigned`
+* `TaskStatusUpdated`
+* `TaskDependencyAdded`
+
+### **Time Logging Events**
+
+* `TimeLogged`
+* `TimeLogUpdated`
+
+Events contain:
+
+* TenantId
+* UserId actor
+* Domain snapshot data
+
+---
+
+# **6.9 Commands (Enhanced)**
+
+---
+
+## **Project Commands**
+
+```csharp
+public record CreateProject(ProjectDetails Details, List<ProjectMemberDefinition> Members, UserId CreatedBy);
+public record AddProjectMember(ProjectId ProjectId, UserId MemberId, ProjectRole Role, decimal EffortAllocation, UserId AddedBy);
+public record DefineProjectPhase(ProjectId Id, string Name, DateRange Range, UserId DefinedBy);
+public record UpdateProjectStatus(ProjectId Id, ProjectStatus NewStatus, UserId UpdatedBy);
+```
+
+---
+
+## **Task Commands**
+
+```csharp
+public record CreateTask(ProjectId ProjectId, TaskDetails Details, Priority Priority, TimeEstimate Estimate, UserId CreatedBy);
+public record AssignTask(TaskId TaskId, UserId UserId, decimal Effort, UserId AssignedBy);
+public record SetTaskDependency(TaskId PredecessorId, TaskId SuccessorId, DependencyType Type, Duration Lag, UserId SetBy);
+public record UpdateTaskStatus(TaskId TaskId, TaskStatus Status, string? Notes, UserId UpdatedBy);
+```
+
+---
+
+## **Time Tracking Commands**
+
+```csharp
+public record LogTime(ProjectId ProjectId, TaskId? TaskId, Duration Duration, DateTime LogDate, TimeLogDetails Details, bool IsBillable, UserId LoggedBy);
+public record UpdateTimeLog(TimeLogId TimeLogId, Duration NewDuration, TimeLogDetails NewDetails, bool IsBillable, UserId UpdatedBy);
+```
+
+---
+
+# **6.10 Queries (Enhanced)**
+
+---
+
+### **Project Queries**
+
 ```csharp
 public record GetProjectDetails(ProjectId ProjectId);
-public record GetProjectPlan(ProjectId ProjectId);
-public record GetProjectStatusReport(ProjectId ProjectId);
-public record GetProjectsByStatus(ProjectStatus Status, UserId? MemberFilter = null);
+public record GetProjectProgress(ProjectId ProjectId);
+public record GetProjectsByStatus(ProjectStatus Status);
 ```
 
-**Task Queries**:
+### **Task Queries**
+
 ```csharp
 public record GetTaskDetails(TaskId TaskId);
-public record GetUserTasks(UserId UserId, TaskStatus? StatusFilter = null);
 public record GetProjectTasks(ProjectId ProjectId);
+public record GetUserTasks(UserId UserId, TaskStatus? Filter);
 public record GetTaskDependencies(TaskId TaskId);
 ```
 
-**Time Tracking Queries**:
+### **Time Tracking Queries**
+
 ```csharp
-public record GetProjectTimeLogs(ProjectId ProjectId, DateTime? StartDate = null, DateTime? EndDate = null);
-public record GetUserTimeLogs(UserId UserId, DateTime StartDate, DateTime EndDate);
-public record GetResourceWorkload(UserId UserId, DateTime StartDate, DateTime EndDate);
-```
-
-#### 4.4.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class ProjectCreated : DomainEvent
-{
-    public ProjectId ProjectId { get; }
-    public ProjectDetails Details { get; }
-    public List<ProjectMember> InitialMembers { get; }
-    public UserId CreatedBy { get; }
-}
-
-public class TaskCreated : DomainEvent
-{
-    public TaskId TaskId { get; }
-    public ProjectId ProjectId { get; }
-    public TaskDetails Details { get; }
-    public Priority Priority { get; }
-    public UserId CreatedBy { get; }
-}
-
-public class TaskAssigned : DomainEvent
-{
-    public TaskId TaskId { get; }
-    public ProjectId ProjectId { get; }
-    public UserId AssigneeId { get; }
-    public decimal EffortAllocation { get; }
-    public UserId AssignedBy { get; }
-}
-
-public class TimeLogged : DomainEvent
-{
-    public TimeLogId TimeLogId { get; }
-    public ProjectId ProjectId { get; }
-    public TaskId? TaskId { get; }
-    public UserId UserId { get; }
-    public Duration Duration { get; }
-    public bool IsBillable { get; }
-}
-
-public class ProjectCompleted : DomainEvent
-{
-    public ProjectId ProjectId { get; }
-    public DateTime CompletedDate { get; }
-    public ProjectStatistics FinalStatistics { get; }
-    public UserId CompletedBy { get; }
-}
-```
-
-#### 4.4.6 Business Rules & Policies
-
-##### Task Assignment Policy
-```csharp
-public class TaskAssignmentPolicy
-{
-    public ValidationResult ValidateTaskAssignment(Task task, UserId assigneeId, decimal effortAllocation)
-    {
-        var errors = new List<string>();
-        
-        // Assignee must be project member
-        if (!IsProjectMember(task.ProjectId, assigneeId))
-            errors.Add("Assignee must be a member of the project");
-        
-        // Effort allocation must be valid
-        if (effortAllocation <= 0 || effortAllocation > 1)
-            errors.Add("Effort allocation must be between 0 and 1");
-        
-        // Check resource availability
-        if (!HasAvailableCapacity(assigneeId, effortAllocation, task.Estimate))
-            errors.Add("Assignee does not have sufficient available capacity");
-        
-        return new ValidationResult(errors);
-    }
-}
-```
-
-##### Time Logging Policy
-```csharp
-public class TimeLoggingPolicy
-{
-    public ValidationResult ValidateTimeLog(TimeLog timeLog, Project project)
-    {
-        var errors = new List<string>();
-        
-        // User must be project member
-        if (!project.Members.Any(m => m.UserId == timeLog.UserId))
-            errors.Add("Only project members can log time");
-        
-        // Log date cannot be in the future
-        if (timeLog.LogDate > DateTime.Today)
-            errors.Add("Cannot log time for future dates");
-        
-        // Duration must be reasonable
-        if (timeLog.Duration > TimeSpan.FromHours(24))
-            errors.Add("Time log duration cannot exceed 24 hours");
-        
-        // If task specified, must belong to project
-        if (timeLog.TaskId.HasValue && !project.Tasks.Contains(timeLog.TaskId.Value))
-            errors.Add("Task must belong to the project");
-        
-        return new ValidationResult(errors);
-    }
-}
+public record GetProjectTimeLogs(ProjectId ProjectId, DateTime? Start, DateTime? End);
+public record GetUserTimeLogs(UserId UserId, DateTime Start, DateTime End);
 ```
 
 ---
 
-### 4.5 Resource & Inventory Management (RIM) Bounded Context
+# ✅ **PART 7 — Resource & Inventory Management (RIM) Bounded Context (Enhanced)**
 
-#### 4.5.1 Context Overview
-**Responsibility**: Manages all organizational resources including human resources, equipment, and inventory items with comprehensive tracking, allocation, and optimization capabilities.
+RIM is a **Supporting Domain**, yet highly impactful:
+It governs the availability, allocation, optimization, and tracking of **human resources**, **equipment**, and **inventory** that power all operations across the platform.
 
-**Strategic Classification**: Supporting Domain
+This regenerated version includes **major enhancements**:
 
-**Subdomains**:
-- Resource Definition: Resource type and instance management
-- Resource Allocation: Assignment and booking of resources
-- Inventory Management: Stock tracking and inventory operations
-- Resource Optimization: Utilization analysis and optimization
-- Location Management: Physical and logical storage management
+* Strong separation between *Resource Types*, *Resource Instances*, and *Inventory Items*
+* Unified capability model for skills and attributes
+* Real-world resource scheduling & booking
+* Inventory multi-location stock tracking
+* Asset lifecycle modeling (Available → Allocated → Maintenance → Retired)
+* Complete audit trail
+* Circular booking conflict prevention
+* Integration-ready domain events
 
-#### 4.5.2 Core Domain Model
+---
+
+# **7.1 Context Overview (Enhanced)**
+
+RIM manages:
+
+### **Human Resources**
+
+* Skills
+* Role-based allocation
+* Workload planning
+* Availability forecasting
+
+### **Equipment & Assets**
+
+* Asset types
+* Custom attributes
+* Booking & maintenance scheduling
+
+### **Inventory Management**
+
+* SKU-based stock definitions
+* Multi-location inventory tracking
+* Stock adjustments & audits
+* Alerting (Minimum / Maximum thresholds)
+
+### **Integrations**
+
+* **Project Execution:** resource assignment, capacity check
+* **C&PM:** portfolio resource demands
+* **Document Management:** asset documents (manuals, compliance certs)
+
+---
+
+# **7.2 High-Level Domain Model (Enhanced Diagram)**
 
 ```mermaid
 classDiagram
+    direction LR
+
+    %% Resource Type
     class ResourceType {
-        +ResourceTypeId id
-        +string name
-        +CategoryPath category
-        +AttributeSchema attributes
-        +defineAttribute(ResourceAttributeDefinition)
-        +createInstance(ResourceInstance)
+        +ResourceTypeId Id
+        +string Name
+        +CategoryPath Category
+        +AttributeSchema AttributeSchema
+        +DefineAttribute()
+        +CreateInstance()
     }
-    
+
+    %% Resource Instance
     class ResourceInstance {
-        +ResourceInstanceId id
-        +ResourceTypeId typeId
-        +string name
-        +UserId? userId
-        +Dictionary~string,AttributeValue~ attributes
-        +List~Skill~ skills
-        +AvailabilityStatus availability
-        +allocate(AllocationRecord)
-        +logUsage(UsageRecord)
-        +updateAvailability(AvailabilityStatus)
+        +ResourceInstanceId Id
+        +ResourceTypeId TypeId
+        +string Name
+        +Dictionary~string, AttributeValue~ Attributes
+        +List~Skill~ Skills
+        +AvailabilityStatus Availability
+        +List~AllocationRecord~ Allocations
+        +List~UsageRecord~ UsageRecords
+        +Allocate()
+        +Book()
+        +MarkMaintenance()
+        +Retire()
     }
-    
-    class InventoryItemDefinition {
-        +ItemDefinitionId id
-        +StockKeepingUnit sku
-        +string description
-        +UnitOfMeasure unit
-        +List~StockLevel~ stockLevels
-        +AlertThreshold alertThreshold
-        +adjustStock(LocationId, Quantity)
-        +checkStockLevel(LocationId)
-    }
-    
+
+    %% Booking /
     class ResourceBooking {
-        +BookingId id
-        +ResourceInstanceId resourceId
-        +BookingTimeSlot timeSlot
-        +ReservationStatus status
-        +UserId bookedBy
-        +string purpose
-        +confirm()
-        +cancel()
-        +reschedule(BookingTimeSlot)
+        +BookingId Id
+        +ResourceInstanceId ResourceId
+        +BookingTimeSlot Slot
+        +ReservationStatus Status
+        +UserId BookedBy
+        +Purpose Purpose
+        +Confirm()
+        +Cancel()
     }
-    
+
+    %% Inventory Items
+    class InventoryItemDefinition {
+        +ItemDefinitionId Id
+        +StockKeepingUnit SKU
+        +string Description
+        +UnitOfMeasure Unit
+        +AlertThreshold Threshold
+        +List~InventoryStock~ StockLevels
+        +AdjustStock()
+        +CheckLevel()
+    }
+
+    class InventoryStock {
+        +LocationId LocationId
+        +Quantity Quantity
+        +Increase()
+        +Decrease()
+    }
+
     class StorageLocation {
-        +LocationId id
-        +string name
-        +LocationCoordinates coordinates
-        +LocationHierarchyNode hierarchy
-        +decimal capacity
-        +decimal utilization
-        +addInventoryItem(ItemDefinitionId, Quantity)
-        +removeInventoryItem(ItemDefinitionId, Quantity)
+        +LocationId Id
+        +string Name
+        +LocationCoordinates Coordinates
+        +decimal Capacity
+        +decimal Utilization
     }
-    
+
+    %% Allocation
     class AllocationRecord {
-        +AllocationId id
-        +ResourceInstanceId resourceId
-        +ProjectId? projectId
-        +AllocationDetails details
-        +DateTime startDate
-        +DateTime? endDate
-        +decimal utilizationPercentage
+        +AllocationId Id
+        +ProjectId? ProjectId
+        +AllocationDetails Details
+        +DateTime StartDate
+        +DateTime? EndDate
+        +decimal UtilizationPercent
     }
 
-    %% A Resource Type (e.g., "Server") has many specific Resource Instances (e.g., "PROD-DB-01").
-    ResourceType "1" o-- "0..*" ResourceInstance : has instances
+    %% Usage
+    class UsageRecord {
+        +UsageRecordId Id
+        +DateTime UsageDate
+        +Duration Duration
+        +string Notes
+    }
 
-    %% A specific Resource Instance can have a history of allocations and bookings.
-    ResourceInstance "1" o-- "0..*" AllocationRecord : has
-    ResourceInstance "1" o-- "0..*" ResourceBooking : has
-    
-    %% A Storage Location can be part of a larger location (e.g., Bin -> Rack -> Aisle).
-    StorageLocation "1" -- "0..1" StorageLocation : is located within
-    
-    %% The link between an item and where it's stored is managed by an InventoryStock record.
-    InventoryItemDefinition "1" -- "0..*" InventoryStock : has stock of
-    StorageLocation "1" -- "0..*" InventoryStock : holds
+    %% Relationships
+    ResourceType "1" --> "*" ResourceInstance
+    ResourceInstance "1" --> "*" AllocationRecord
+    ResourceInstance "1" --> "*" ResourceBooking
+    InventoryItemDefinition "1" --> "*" InventoryStock
+    StorageLocation "1" --> "*" InventoryStock
 ```
 
-#### 4.5.3 Aggregates Specification
+---
 
-##### ResourceType Aggregate Root
-**Purpose**: Defines categories and attributes for different types of resources
+# **7.3 Aggregates (Enhanced)**
 
-**Entities**:
-- `ResourceAttributeDefinition`: Defines custom attributes for resource types
+---
 
-**Value Objects**:
-- `ResourceTypeId`: Unique identifier
-- `CategoryPath`: Hierarchical categorization
-- `AttributeSchema`: Definition of available attributes
+## **7.3.1 ResourceType Aggregate Root (Enhanced)**
 
-**Business Invariants**:
-- Resource type names must be unique within category
-- Attribute definitions cannot be deleted if in use
-- Category paths must be valid hierarchical structures
+### **Purpose**
 
-##### ResourceInstance Aggregate Root
-**Purpose**: Represents specific trackable resources with allocation and usage tracking
+Defines specifications for resource categories (Humans, Machines, Equipment, etc.).
 
-**Entities**:
-- `AllocationRecord`: Historical and current resource allocations
-- `UsageRecord`: Usage tracking and metrics
+### **Value Objects**
 
-**Value Objects**:
-- `ResourceInstanceId`: Unique identifier
-- `UserId`: Link to identity system for human resources
-- `AttributeValue`: Typed attribute values
-- `Skill`: Skills associated with human resources
-- `AvailabilityStatus`: Available, Allocated, Maintenance, Retired
+* `ResourceTypeId`
+* `CategoryPath`
+* `AttributeSchema` (dynamic attributes)
 
-**Business Invariants**:
-- Human resources must have valid UserId
-- Allocation percentages cannot exceed 100%
-- Retired resources cannot be allocated
-- Usage records must have positive duration
+### **Invariants**
 
-##### InventoryItemDefinition Aggregate Root
-**Purpose**: Defines stockable items with multi-location inventory tracking
+1. Resource type name must be unique within a category.
+2. Attribute definitions cannot be removed if used by any instance.
 
-**Entities**:
-- `StockLevel`: Current stock at specific locations
-- `InventoryTransaction`: All stock movements and adjustments
+### **Behavior**
 
-**Value Objects**:
-- `ItemDefinitionId`: Unique identifier
-- `StockKeepingUnit`: SKU for item identification
-- `UnitOfMeasure`: Units for quantity tracking
-- `AlertThreshold`: Automatic alert configuration
-- `Quantity`: Typed quantity with unit validation
-
-**Business Invariants**:
-- SKUs must be unique across all items
-- Stock levels cannot be negative
-- Transactions must balance (total in = total out + current stock)
-- Alert thresholds must be positive
-
-##### ResourceBooking Aggregate Root
-**Purpose**: Manages resource reservations and scheduling
-
-**Value Objects**:
-- `BookingId`: Unique identifier
-- `BookingTimeSlot`: Start and end time for reservation
-- `ReservationStatus`: Pending, Confirmed, In-Use, Completed, Cancelled
-- `Purpose`: Reason for booking
-
-**Business Invariants**:
-- Bookings cannot overlap for the same resource
-- Past bookings cannot be modified
-- Confirmed bookings require cancellation before modification
-
-##### StorageLocation Aggregate Root
-**Purpose**: Manages physical and logical locations for inventory storage
-
-**Entities**:
-- `LocationHierarchyNode`: Parent-child relationships between locations
-
-**Value Objects**:
-- `LocationId`: Unique identifier
-- `LocationCoordinates`: Physical coordinates if applicable
-- `Capacity`: Maximum storage capacity
-- `Utilization`: Current usage percentage
-
-**Business Invariants**:
-- Location hierarchy cannot have cycles
-- Utilization cannot exceed capacity
-- Child location capacity cannot exceed parent capacity
-
-#### 4.5.4 Commands & Queries (CQRS)
-
-##### Commands
-**Resource Definition**:
 ```csharp
-public record DefineResourceType(
-    string Name,
-    CategoryPath Category,
-    List<ResourceAttributeDefinition> Attributes,
-    UserId DefinedBy
-);
-
-public record CreateResourceInstance(
-    ResourceTypeId TypeId,
-    string Name,
-    UserId? UserId, // For human resources
-    Dictionary<string, AttributeValue> Attributes,
-    List<Skill> Skills,
-    UserId CreatedBy
-);
-
-public record DefineInventoryItem(
-    StockKeepingUnit Sku,
-    string Description,
-    UnitOfMeasure Unit,
-    AlertThreshold AlertThreshold,
-    UserId DefinedBy
-);
+public void DefineAttribute(ResourceAttributeDefinition definition);
+public ResourceInstance CreateInstance(string name, Dictionary<string, AttributeValue> attributes, List<Skill> skills);
 ```
 
-**Resource Allocation**:
+---
+
+## **7.3.2 ResourceInstance Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents a concrete resource (human or asset).
+
+### **Value Objects**
+
+* `ResourceInstanceId`
+* `AvailabilityStatus`
+* `Skill`
+* `AttributeValue`
+
+### **Entities**
+
+* `AllocationRecord`
+* `UsageRecord`
+
+### **Invariants**
+
+1. Cannot allocate if resource is in `Maintenance` or `Retired`.
+2. Cannot double-book overlapping time slots.
+3. Allocation % cannot exceed 100%.
+
+### **Behavior**
+
 ```csharp
-public record AllocateResource(
-    ResourceInstanceId ResourceId,
-    ProjectId? ProjectId,
-    AllocationDetails Details,
-    DateTime StartDate,
-    DateTime? EndDate,
-    decimal UtilizationPercentage,
-    UserId AllocatedBy
-);
-
-public record BookResource(
-    ResourceInstanceId ResourceId,
-    BookingTimeSlot TimeSlot,
-    string Purpose,
-    UserId BookedBy
-);
-
-public record LogResourceUsage(
-    ResourceInstanceId ResourceId,
-    DateTime UsageDate,
-    Duration Duration,
-    UsageMetric Metrics,
-    string? Notes,
-    UserId LoggedBy
-);
+public void Allocate(AllocationRecord record);
+public BookingId Book(ResourceBooking booking);
+public void MarkMaintenance();
+public void Retire();
+public void LogUsage(UsageRecord usage);
 ```
 
-**Inventory Management**:
+---
+
+## **7.3.3 ResourceBooking Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents a reservation for a resource.
+
+### **Invariants**
+
+1. Bookings cannot overlap for the same resource.
+2. Past bookings are immutable except cancellation.
+
+### **Behavior**
+
 ```csharp
-public record AdjustStockLevel(
-    ItemDefinitionId ItemId,
-    LocationId LocationId,
-    Quantity AdjustmentAmount,
-    TransactionType Type,
-    string Reason,
-    UserId AdjustedBy
-);
-
-public record ConductInventoryAudit(
-    LocationId LocationId,
-    List<ItemQuantityCount> ActualCounts,
-    UserId ConductedBy
-);
-
-public record CreateStorageLocation(
-    string Name,
-    LocationCoordinates? Coordinates,
-    LocationId? ParentLocationId,
-    decimal Capacity,
-    UserId CreatedBy
-);
+public void Confirm();
+public void Cancel();
+public void Reschedule(BookingTimeSlot newSlot);
 ```
 
-##### Queries
-**Resource Queries**:
+---
+
+## **7.3.4 InventoryItemDefinition Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+SKU-level item definition with multi-location stock.
+
+### **Value Objects**
+
+* `ItemDefinitionId`
+* `SKU`
+* `UnitOfMeasure`
+* `AlertThreshold`
+* `InventoryStock`
+* `Quantity`
+
+### **Invariants**
+
+1. SKU must be unique.
+2. Quantity cannot be negative.
+3. Stock adjustments must respect UoM.
+
+### **Behavior**
+
 ```csharp
-public record GetResourceTypeDetails(ResourceTypeId TypeId);
-public record ListResourceInstances(
-    ResourceTypeId? TypeFilter = null,
-    List<Skill>? SkillFilter = null,
-    AvailabilityStatus? AvailabilityFilter = null
-);
-public record GetResourceAllocation(ResourceInstanceId ResourceId);
-public record GetResourceAvailability(ResourceInstanceId ResourceId, DateTime StartDate, DateTime EndDate);
+public void AdjustStock(LocationId locationId, Quantity amount, TransactionType type, string reason);
+public StockLevelResult CheckStockLevel(LocationId locationId);
 ```
 
-**Inventory Queries**:
+---
+
+## **7.3.5 StorageLocation Aggregate Root (Enhanced)**
+
+### **Purpose**
+
+Represents a container or warehouse.
+
+### **Invariants**
+
+1. Utilization cannot exceed capacity.
+2. Location hierarchy cannot have cycles.
+
+### **Behavior**
+
+```csharp
+public void AddInventoryItem(ItemDefinitionId id, Quantity qty);
+public void RemoveInventoryItem(ItemDefinitionId id, Quantity qty);
+```
+
+---
+
+# **7.4 Value Objects (Enhanced)**
+
+## **Resource VOs**
+
+* `ResourceInstanceId`
+* `Skill (Name, Level)`
+* `AttributeValue`
+* `AvailabilityStatus { Available, Allocated, Maintenance, Retired }`
+* `BookingTimeSlot (Start, End)`
+
+## **Inventory VOs**
+
+* `SKU`
+* `UnitOfMeasure`
+* `Quantity (Value, Unit)`
+* `AlertThreshold (Min, Max?)`
+* `LocationCoordinates`
+* `StockLevelResult`
+
+## **Allocation VOs**
+
+* `AllocationDetails { Purpose, RequiredSkills, Description }`
+* `UtilizationPercent`
+
+## **Usage VOs**
+
+* `UsageMetric`
+* `Duration`
+
+---
+
+# **7.5 Domain Services (Enhanced)**
+
+## **7.5.1 ResourceAllocationService**
+
+Determines if a resource can be allocated.
+
+```csharp
+ValidationResult Validate(ResourceInstance resource, AllocationRecord record);
+```
+
+## **7.5.2 ResourceBookingService**
+
+Checks time slot conflicts.
+
+## **7.5.3 InventoryReplenishmentService**
+
+Triggers alerts based on thresholds.
+
+## **7.5.4 ResourceSkillMatchingService**
+
+Finds best-fit resource based on skill profile.
+
+---
+
+# **7.6 Specifications (Enhanced)**
+
+* **ResourceAvailableSpec**
+* **NoBookingConflictSpec**
+* **StockCannotGoNegativeSpec**
+* **ResourceHasSkillsSpec**
+* **ValidAllocationPercentageSpec**
+
+---
+
+# **7.7 Policies (Enhanced)**
+
+## **7.7.1 Resource Allocation Policy**
+
+* No allocation exceeding available capacity
+* Skill-based validation
+* Maintenance-prevention rule
+
+## **7.7.2 Booking Policy**
+
+* Overlapping slots prohibited
+* Reschedule must pass availability checks
+
+## **7.7.3 Inventory Management Policy**
+
+* Minimum stock alerts
+* Maximum capacity alerts
+* Transaction auditability
+
+---
+
+# **7.8 Domain Events (Enhanced)**
+
+### **Resource Events**
+
+* `ResourceInstanceCreated`
+* `ResourceAllocated`
+* `ResourceMaintenanceScheduled`
+* `ResourceRetired`
+* `ResourceBooked`
+
+### **Inventory Events**
+
+* `StockLevelAdjusted`
+* `InventoryAuditCompleted`
+* `LowStockThresholdReached`
+
+### **Allocation Events**
+
+* `ResourceAllocationFailed`
+* `ResourceAllocationSucceeded`
+
+Each event contains:
+
+* UserId actor
+* TenantId
+* Timestamp
+* Snapshot details
+
+---
+
+# **7.9 Commands (Enhanced)**
+
+## **Resource Commands**
+
+```csharp
+public record DefineResourceType(...);
+public record CreateResourceInstance(...);
+public record AllocateResource(...);
+public record BookResource(...);
+public record MarkResourceForMaintenance(...);
+public record RetireResource(...);
+public record LogResourceUsage(...);
+```
+
+## **Inventory Commands**
+
+```csharp
+public record DefineInventoryItem(...);
+public record AdjustStockLevel(...);
+public record ConductInventoryAudit(...);
+public record CreateStorageLocation(...);
+```
+
+---
+
+# **7.10 Queries (Enhanced)**
+
+## **Resource Queries**
+
+```csharp
+public record GetResourceTypeDetails(ResourceTypeId Id);
+public record ListResourceInstances(ResourceTypeId? TypeFilter, List<Skill>? Skills, AvailabilityStatus? Status);
+public record GetResourceAllocations(ResourceInstanceId Id);
+public record GetResourceAvailability(ResourceInstanceId Id, DateRange Range);
+```
+
+## **Inventory Queries**
+
 ```csharp
 public record GetInventoryItemDefinition(ItemDefinitionId ItemId);
-public record GetStockLevelByItemAndLocation(ItemDefinitionId ItemId, LocationId LocationId);
-public record GetLowStockAlerts(LocationId? LocationFilter = null);
-public record GetInventoryTransactionHistory(ItemDefinitionId ItemId, DateTime? StartDate = null);
+public record GetStockLevel(ItemDefinitionId ItemId, LocationId LocationId);
+public record GetLowStockAlerts(LocationId? Filter);
+public record GetInventoryTransactionHistory(ItemDefinitionId ItemId);
 ```
 
-**Analytics Queries**:
+## **Analytics Queries**
+
 ```csharp
-public record GetResourceUtilizationReport(
-    DateTime StartDate,
-    DateTime EndDate,
-    ResourceTypeId? TypeFilter = null
-);
-public record GetInventoryTurnoverAnalysis(
-    DateTime StartDate,
-    DateTime EndDate,
-    CategoryPath? CategoryFilter = null
-);
-```
-
-#### 4.5.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class ResourceInstanceAvailable : DomainEvent
-{
-    public ResourceInstanceId ResourceId { get; }
-    public ResourceTypeId TypeId { get; }
-    public string Name { get; }
-    public UserId? UserId { get; }
-    public List<Skill> Skills { get; }
-    public UserId CreatedBy { get; }
-}
-
-public class ResourceAllocated : DomainEvent
-{
-    public ResourceInstanceId ResourceId { get; }
-    public ProjectId? ProjectId { get; }
-    public AllocationDetails Details { get; }
-    public decimal UtilizationPercentage { get; }
-    public DateTime StartDate { get; }
-    public DateTime? EndDate { get; }
-    public UserId AllocatedBy { get; }
-}
-
-public class StockLevelAdjusted : DomainEvent
-{
-    public ItemDefinitionId ItemId { get; }
-    public LocationId LocationId { get; }
-    public Quantity PreviousLevel { get; }
-    public Quantity NewLevel { get; }
-    public Quantity AdjustmentAmount { get; }
-    public TransactionType Type { get; }
-    public string Reason { get; }
-    public UserId AdjustedBy { get; }
-}
-
-public class ResourceBooked : DomainEvent
-{
-    public BookingId BookingId { get; }
-    public ResourceInstanceId ResourceId { get; }
-    public BookingTimeSlot TimeSlot { get; }
-    public string Purpose { get; }
-    public UserId BookedBy { get; }
-}
-
-public class InventoryAuditCompleted : DomainEvent
-{
-    public LocationId LocationId { get; }
-    public List<AuditDiscrepancy> Discrepancies { get; }
-    public AuditResult Result { get; }
-    public UserId ConductedBy { get; }
-}
-```
-
-#### 4.5.6 Business Rules & Policies
-
-##### Resource Allocation Policy
-```csharp
-public class ResourceAllocationPolicy
-{
-    public ValidationResult ValidateAllocation(
-        ResourceInstance resource,
-        AllocationDetails allocation,
-        decimal utilizationPercentage)
-    {
-        var errors = new List<string>();
-        
-        // Check resource availability
-        if (resource.Availability != AvailabilityStatus.Available)
-            errors.Add("Resource is not available for allocation");
-        
-        // Check utilization limits
-        var currentUtilization = GetCurrentUtilization(resource.Id);
-        if (currentUtilization + utilizationPercentage > 100)
-            errors.Add($"Allocation would exceed 100% utilization (current: {currentUtilization}%)");
-        
-        // Check skill requirements
-        if (allocation.RequiredSkills != null && 
-            !allocation.RequiredSkills.All(skill => resource.Skills.Contains(skill)))
-            errors.Add("Resource does not have all required skills");
-        
-        return new ValidationResult(errors);
-    }
-}
-```
-
-##### Inventory Management Policy
-```csharp
-public class InventoryManagementPolicy
-{
-    public bool ShouldTriggerAlert(InventoryItemDefinition item, StockLevel stockLevel)
-    {
-        return stockLevel.Quantity <= item.AlertThreshold.MinimumQuantity ||
-               (item.AlertThreshold.MaximumQuantity.HasValue && 
-                stockLevel.Quantity >= item.AlertThreshold.MaximumQuantity);
-    }
-    
-    public ValidationResult ValidateStockAdjustment(
-        InventoryItemDefinition item,
-        LocationId locationId,
-        Quantity adjustmentAmount,
-        TransactionType type)
-    {
-        var errors = new List<string>();
-        
-        // Cannot reduce stock below zero
-        if (type == TransactionType.Outbound)
-        {
-            var currentStock = GetCurrentStockLevel(item.Id, locationId);
-            if (currentStock.Quantity < adjustmentAmount)
-                errors.Add("Insufficient stock for outbound transaction");
-        }
-        
-        // Adjustment amount must be positive
-        if (adjustmentAmount.Value <= 0)
-            errors.Add("Adjustment amount must be positive");
-        
-        // Unit of measure must match
-        if (adjustmentAmount.Unit != item.Unit)
-            errors.Add("Adjustment unit must match item unit of measure");
-        
-        return new ValidationResult(errors);
-    }
-}
+public record GetResourceUtilizationReport(DateRange Range, ResourceTypeId? Filter);
+public record GetInventoryTurnoverReport(DateRange Range, CategoryPath? Filter);
 ```
 
 ---
 
-### 4.6 Document Management Bounded Context
+# ✅ **PART 8 — Document Management (DM) Bounded Context (Enhanced)**
 
-#### 4.6.1 Context Overview
-**Responsibility**: Provides centralized document storage, retrieval, versioning, and access control for all business documents across the platform.
+Document Management is a **Generic Domain** used by **all other bounded contexts**, but it is still critical to system correctness, auditability, and compliance.
 
-**Strategic Classification**: Generic Domain
+This enhanced model includes:
 
-**Subdomains**:
-- Document Storage: File upload, storage, and retrieval
-- Version Management: Document versioning and history tracking
-- Access Control: Permission management and security
-- Metadata Management: Document properties and searchability
+* Full document lifecycle
+* Strong version management
+* Zero-trust access control
+* Immutable audit chain
+* Multi-tenant security
+* Classification & tagging
+* Full-text metadata search
+* Storage abstraction for ANY backend
 
-#### 4.6.2 Core Domain Model
+---
+
+# **8.1 Context Overview (Enhanced)**
+
+Document Management provides:
+
+### **Document Storage**
+
+* File ingestion, storage, retrieval
+* Storage reference abstraction (S3, Azure Blob, local FS)
+
+### **Version Control**
+
+* Every update produces a new version
+* Strict sequential version numbers
+* Full auditability
+
+### **Access Control**
+
+* User-level and role-level grants
+* Time-limited access tokens
+* Strict permission levels: View → Edit → Owner
+* Revocation and audit logging
+
+### **Metadata & Search**
+
+* Custom metadata key-value pairs
+* Classification tags
+* Search by title, tag, MIME type, metadata
+
+### **Integrations**
+
+* Freelance Operations → proposals
+* CRM → interactions & attachments
+* C&PM → contracts & amendments
+* Project Execution → task attachments
+* RIM → equipment manuals, compliance docs
+
+---
+
+# **8.2 High-Level Domain Model (Enhanced UML)**
 
 ```mermaid
 classDiagram
+    direction LR
+
     class Document {
-        +DocumentId id
-        +DocumentMetadata metadata
-        +StorageReference storageRef
-        +List~AccessGrant~ accessGrants
-        +List~DocumentVersion~ versions
-        +uploadVersion(DocumentVersion)
-        +grantAccess(AccessGrant)
-        +revokeAccess(UserId)
-        +updateMetadata(DocumentMetadata)
+        +DocumentId Id
+        +string Name
+        +DocumentClassification Classification
+        +DocumentMetadata Metadata
+        +StorageReference StorageRef
+        +List~DocumentVersion~ Versions
+        +List~AccessGrant~ AccessGrants
+        +UploadVersion()
+        +GrantAccess()
+        +RevokeAccess()
+        +UpdateMetadata()
+        +ChangeClassification()
     }
-    
+
     class DocumentVersion {
-        +VersionId id
-        +DocumentId documentId
-        +FileVersionNumber version
-        +DocumentMetadata versionMetadata
-        +StorageReference storageRef
-        +UserId uploadedBy
-        +DateTime uploadedAt
-        +string? changeNotes
+        +VersionId Id
+        +FileVersionNumber Version
+        +StorageReference StorageRef
+        +DocumentMetadata Metadata
+        +UserId UploadedBy
+        +DateTime UploadedAt
+        +string? ChangeNotes
     }
-    
+
     class AccessGrant {
-        +GrantId id
-        +DocumentId documentId
-        +UserId? userId
-        +Role? role
-        +PermissionLevel permission
-        +DateTime grantedAt
-        +DateTime? expiresAt
-        +UserId grantedBy
+        +GrantId Id
+        +DocumentId DocumentId
+        +UserId? UserId
+        +Role? Role
+        +PermissionLevel Permission
+        +DateTime GrantedAt
+        +DateTime? ExpiresAt
+        +UserId GrantedBy
+        +Revoke()
     }
 
-    %% A Document is composed of its versions. If the document is deleted, so are its versions.
-    Document "1" o-- "0..*" DocumentVersion : has
-
-    %% AccessGrant links a Document to a User with a specific permission.
-    %% The grant is dependent on the document's existence.
-    Document "1" o-- "0..*" AccessGrant : has grant for
-
-    %% A User can receive multiple access grants across different documents.
-    User "1" -- "0..*" AccessGrant : receives
-```
-
-#### 4.6.3 Aggregates Specification
-
-##### Document Aggregate Root
-**Purpose**: Central entity managing document lifecycle, versions, and access control
-
-**Entities**:
-- `DocumentVersion`: Version history and metadata
-- `AccessGrant`: Permission assignments for users and roles
-
-**Value Objects**:
-- `DocumentId`: Unique identifier
-- `DocumentMetadata`: Filename, size, MIME type, upload information
-- `StorageReference`: Internal pointer to blob storage location
-- `FileVersionNumber`: Version numbering scheme
-- `PermissionLevel`: View, Edit, Admin
-
-**Business Invariants**:
-- Documents must have at least one version
-- Access grants must reference valid users or roles
-- Storage references must be valid and accessible
-- Version numbers must be sequential
-
-#### 4.6.4 Commands & Queries (CQRS)
-
-##### Commands
-```csharp
-public record UploadDocument(
-    string Filename,
-    Stream FileContent,
-    string MimeType,
-    Dictionary<string, string>? CustomMetadata,
-    List<AccessGrant>? InitialAccess,
-    UserId UploadedBy
-);
-
-public record CreateDocumentVersion(
-    DocumentId DocumentId,
-    Stream FileContent,
-    string? ChangeNotes,
-    UserId UploadedBy
-);
-
-public record GrantDocumentAccess(
-    DocumentId DocumentId,
-    UserId? UserId,
-    Role? Role,
-    PermissionLevel Permission,
-    DateTime? ExpiresAt,
-    UserId GrantedBy
-);
-
-public record RevokeDocumentAccess(
-    DocumentId DocumentId,
-    UserId UserId,
-    UserId RevokedBy
-);
-
-public record DeleteDocument(
-    DocumentId DocumentId,
-    bool PhysicalDelete,
-    UserId DeletedBy
-);
-```
-
-##### Queries
-```csharp
-public record GetDocumentMetadata(DocumentId DocumentId);
-public record GetDocumentDownloadUrl(DocumentId DocumentId, VersionId? VersionId = null);
-public record ListDocumentVersions(DocumentId DocumentId);
-public record CheckDocumentAccess(DocumentId DocumentId, UserId UserId);
-public record SearchDocuments(string SearchTerm, string? MimeTypeFilter = null);
-```
-
-#### 4.6.5 Events & Integration
-
-##### Domain Events
-```csharp
-public class DocumentUploaded : DomainEvent
-{
-    public DocumentId DocumentId { get; }
-    public DocumentMetadata Metadata { get; }
-    public UserId UploadedBy { get; }
-}
-
-public class DocumentVersionCreated : DomainEvent
-{
-    public DocumentId DocumentId { get; }
-    public VersionId VersionId { get; }
-    public FileVersionNumber VersionNumber { get; }
-    public UserId UploadedBy { get; }
-}
-
-public class DocumentAccessGranted : DomainEvent
-{
-    public DocumentId DocumentId { get; }
-    public UserId? UserId { get; }
-    public Role? Role { get; }
-    public PermissionLevel Permission { get; }
-    public UserId GrantedBy { get; }
-}
-
-public class DocumentDeleted : DomainEvent
-{
-    public DocumentId DocumentId { get; }
-    public bool WasPhysicalDelete { get; }
-    public UserId DeletedBy { get; }
-}
-```
-
-#### 4.6.6 Business Rules & Policies
-
-##### Access Control Policy
-```csharp
-public class DocumentAccessPolicy
-{
-    public bool HasAccess(Document document, UserId userId, PermissionLevel requiredPermission)
-    {
-        var userGrants = document.AccessGrants
-            .Where(g => g.UserId == userId && !IsExpired(g))
-            .ToList();
-        
-        var roleGrants = document.AccessGrants
-            .Where(g => g.Role != null && UserHasRole(userId, g.Role.Value) && !IsExpired(g))
-            .ToList();
-        
-        var allGrants = userGrants.Concat(roleGrants);
-        var highestPermission = allGrants.Max(g => g.Permission);
-        
-        return highestPermission >= requiredPermission;
+    class DocumentMetadata {
+        +Dictionary~string,string~ KeyValues
+        +long FileSize
+        +string MimeType
+        +DateTime CreatedAt
     }
-    
-    private bool IsExpired(AccessGrant grant)
-    {
-        return grant.ExpiresAt.HasValue && grant.ExpiresAt.Value < DateTime.UtcNow;
+
+    class StorageReference {
+        +string Provider
+        +string Location
+        +string? VersionKey
     }
-}
+
+    Document "1" --> "*" DocumentVersion
+    Document "1" --> "*" AccessGrant
 ```
 
 ---
 
-## 5. Integration Patterns
+# **8.3 Aggregates (Enhanced)**
 
-### 5.1 Event-Driven Integration
+---
 
-#### 5.1.1 Event Flow Architecture
-```mermaid
-graph TD
-    A[Project Execution] -->|ProjectCreated| B[Event Bus]
-    A -->|TaskAssigned| B
-    A -->|TimeLogged| B
-    
-    C[Freelance Ops] -->|ProjectTimeLogged| B
-    C -->|ProposalSent| B
-    
-    D[CRM] -->|LeadConverted| B
-    D -->|InteractionLogged| B
-    
-    E[C&PM] -->|ContractCreated| B
-    E -->|PortfolioItemAdded| B
-    
-    F[RIM] -->|ResourceAllocated| B
-    F -->|StockLevelAdjusted| B
-    
-    G[Document Mgmt] -->|DocumentUploaded| B
-    
-    B -->|ProjectCreated| H[C&PM - Portfolio Handler]
-    B -->|ResourceNeeded| I[RIM - Allocation Handler]
-    B -->|DocumentUploaded| J[Multiple BCs - Reference Handler]
-    B -->|LeadConverted| K[Freelance Ops - Client Handler]
-```
+## **8.3.1 Document Aggregate Root (Enhanced)**
 
-### 5.2 Document Integration Pattern
+### **Purpose**
 
-All bounded contexts integrate with Document Management BC for file operations:
+The canonical representation of a business document, with versions, metadata, and permissions.
 
-```csharp
-public interface IDocumentIntegrationService
-{
-    Task<DocumentId> UploadDocumentAsync(string filename, Stream content, string mimeType);
-    Task<DocumentDownloadInfo> GetDocumentDownloadUrlAsync(DocumentId documentId);
-    Task<DocumentMetadata> GetDocumentMetadataAsync(DocumentId documentId);
-    Task<DocumentId> CreateDocumentVersionAsync(DocumentId documentId, Stream content, string changeNotes);
-}
-```
+### **Value Objects**
 
-### 5.3 Resource Integration Pattern
+* `DocumentId`
+* `DocumentMetadata`
+* `DocumentClassification`
+* `StorageReference`
+* `PermissionLevel`
+* `AccessToken` (generated)
 
-Project Execution BC integrates with RIM for resource allocation:
+### **Entities**
+
+* `DocumentVersion`
+* `AccessGrant`
+
+---
+
+### **Invariants**
+
+1. Every document must have at least one version.
+2. Version numbers must be strictly sequential.
+3. Grants must reference valid users or roles.
+4. Metadata must always contain `FileSize` + `MimeType` + `CreatedAt`.
+5. Classification cannot downgrade without an audit event.
+
+---
+
+### **Behavior**
 
 ```csharp
-public interface IResourceIntegrationService
-{
-    Task<List<ResourceInstance>> FindAvailableResourcesAsync(ResourceRequirement requirement);
-    Task<AllocationResult> AllocateResourceAsync(ResourceInstanceId resourceId, ProjectId projectId, AllocationDetails details);
-    Task<ResourceAvailability> CheckResourceAvailabilityAsync(ResourceInstanceId resourceId, DateTime startDate, DateTime endDate);
-}
+public DocumentVersion UploadVersion(Stream file, string mimeType, string? changeNotes, UserId uploadedBy);
+
+public void GrantAccess(UserId? userId, Role? role, PermissionLevel permission, DateTime? expiresAt, UserId grantedBy);
+
+public void RevokeAccess(UserId userId, UserId revokedBy);
+
+public void UpdateMetadata(Dictionary<string, string> updates, UserId updatedBy);
+
+public void ChangeClassification(DocumentClassification newClassification, UserId changedBy);
 ```
 
-## 6. Implementation Guidelines
+---
 
-### 6.1 Development Standards
+## **8.3.2 DocumentVersion (Enhanced)**
 
-#### 6.1.1 Aggregate Design Standards
-Follow the same patterns established in the Productivity Platform:
-- Single responsibility per aggregate
-- Clear consistency boundaries
-- Rich domain events with sufficient data
-- Validation through business rules and policies
+### **Value Objects**
 
-#### 6.1.2 Integration Services
+* `VersionId`
+* `FileVersionNumber`
+* `StorageReference`
+
+### **Invariants**
+
+* Versions are immutable after creation.
+* File content cannot be modified—only superseded by a new version.
+
+---
+
+## **8.3.3 AccessGrant (Enhanced)**
+
+### **Value Objects**
+
+* `PermissionLevel` (View, Edit, Owner)
+* `TimeBoundAccess` (optional)
+
+### **Invariants**
+
+1. A document must have at least one Owner.
+2. A user cannot have overlapping grants of different levels.
+3. Expired grants must not give permissions.
+
+### **Behavior**
+
 ```csharp
-// Example: Freelance Operations integrating with Document Management
-public class ProposalDocumentService
-{
-    private readonly IDocumentIntegrationService _documentService;
-    private readonly IProposalRepository _proposalRepository;
-    
-    public async Task<ProposalId> CreateProposalWithDocumentAsync(CreateProposalWithDocument command)
-    {
-        // Upload document first
-        var documentId = await _documentService.UploadDocumentAsync(
-            command.Filename,
-            command.FileContent,
-            command.MimeType
-        );
-        
-        // Create proposal with document reference
-        var proposal = Proposal.Create(
-            command.Title,
-            command.Content,
-            command.Pricing,
-            command.ClientId,
-            documentId,
-            command.CreatedBy
-        );
-        
-        await _proposalRepository.SaveAsync(proposal);
-        return proposal.Id;
-    }
-}
+public void Revoke(UserId revokedBy);
 ```
 
-### 6.2 Testing Strategy
+---
 
-#### 6.2.1 Integration Testing
+# **8.4 Value Objects (Enhanced)**
+
+## **Core VOs**
+
+* `DocumentId`
+* `VersionId`
+* `StorageReference`
+* `FileVersionNumber`
+* `DocumentClassification` (Confidential, Internal, Public, Restricted)
+* `PermissionLevel`
+* `DocumentMetadata`
+* `AccessToken` (for retrieval)
+
+## **Metadata VOs**
+
+* Core system metadata:
+
+  * FileSize
+  * MimeType
+  * CreatedAt
+* Custom metadata: Dictionary<string, string>
+
+---
+
+# **8.5 Domain Services (Enhanced)**
+
+---
+
+## **8.5.1 AccessControlService**
+
+Resolves effective access combining User & Role grants.
+
 ```csharp
-public class FreelanceOperationsIntegrationTests : IntegrationTestBase
-{
-    [Fact]
-    public async Task CreateProposal_WithDocument_ShouldStoreDocumentAndCreateProposal()
-    {
-        // Arrange
-        var client = await CreateTestClientAsync();
-        var documentContent = CreateTestDocumentStream();
-        
-        var command = new CreateProposalWithDocument
-        {
-            Title = "Test Proposal",
-            Content = new ProposalContentSummary("Test content"),
-            Pricing = new PricingStructure(10000m),
-            ClientId = client.Id,
-            Filename = "proposal.pdf",
-            FileContent = documentContent,
-            MimeType = "application/pdf",
-            CreatedBy = TestUsers.FreelancerUser.Id
-        };
-        
-        // Act
-        var proposalId = await SendCommandAsync(command);
-        
-        // Assert
-        var proposal = await GetProposalByIdAsync(proposalId);
-        Assert.NotNull(proposal.DocumentId);
-        
-        // Verify document was stored
-        var documentMetadata = await GetDocumentMetadataAsync(proposal.DocumentId.Value);
-        Assert.Equal("proposal.pdf", documentMetadata.Filename);
-        Assert.Equal("application/pdf", documentMetadata.MimeType);
-    }
-}
+bool HasPermission(Document document, UserId userId, PermissionLevel level);
 ```
 
-## 7. Cross-Cutting Concerns
+---
 
-### 7.1 Security and Authorization
+## **8.5.2 DocumentClassificationService**
 
-#### 7.1.1 Multi-Tenant Data Isolation
+Enforces classification rules:
+
+* Confidential docs require explicit owner
+* Restricted docs require multi-factor confirmation
+
+---
+
+## **8.5.3 DocumentVersioningService**
+
+Ensures:
+
+* Strict sequential version numbering
+* New version inherits standard metadata
+
+---
+
+## **8.5.4 AuditTrailService**
+
+Generates immutable audit records for:
+
+* Uploads
+* Access grants
+* Classification changes
+
+---
+
+# **8.6 Specifications (Enhanced)**
+
+* **DocumentMustHaveOwnerSpec**
+* **MetadataMustBeValidSpec**
+* **VersionMustIncrementSpec**
+* **AccessGrantCannotConflictSpec**
+* **ClassificationChangeRequiresReasonSpec**
+
+---
+
+# **8.7 Policies (Enhanced)**
+
+## **8.7.1 Access Control Policy**
+
+* User must have equal or higher access than requested.
+* Revoked or expired grants are ignored.
+* Owner access cannot be revoked unless >1 owners exist.
+
+---
+
+## **8.7.2 Classification Policy**
+
+High-sensitivity doc rules:
+
+* Confidential → All access must be explicitly granted.
+* Restricted → No link-sharing allowed.
+
+---
+
+## **8.7.3 Versioning Policy**
+
+* Version numbers increment by 1.
+* Changes require notes unless auto-generated.
+
+---
+
+# **8.8 Domain Events (Enhanced)**
+
+### **Document Events**
+
+* `DocumentUploaded`
+* `DocumentVersionCreated`
+* `DocumentAccessGranted`
+* `DocumentAccessRevoked`
+* `DocumentClassificationChanged`
+* `DocumentMetadataUpdated`
+
+All events include:
+
+* Actor UserId
+* Timestamp
+* TenantId
+* Version snapshot
+* Relevant metadata
+
+---
+
+# **8.9 Commands (Enhanced)**
+
 ```csharp
-public class TenantAwareFreelanceProjectRepository : IFreelanceProjectRepository
-{
-    private readonly DbContext _context;
-    private readonly ITenantContext _tenantContext;
-    
-    public async Task<FreelanceProject?> GetByIdAsync(ProjectId id)
-    {
-        return await _context.FreelanceProjects
-            .Where(p => p.Id == id && p.TenantId == _tenantContext.TenantId)
-            .FirstOrDefaultAsync();
-    }
-}
+public record UploadDocument(string Name, Stream Content, string MimeType, Dictionary<string, string>? CustomMetadata, UserId UploadedBy);
+
+public record CreateDocumentVersion(DocumentId DocumentId, Stream FileContent, string? ChangeNotes, UserId UploadedBy);
+
+public record GrantDocumentAccess(DocumentId DocumentId, UserId? UserId, Role? Role, PermissionLevel Permission, DateTime? ExpiresAt, UserId GrantedBy);
+
+public record RevokeDocumentAccess(DocumentId DocumentId, UserId UserId, UserId RevokedBy);
+
+public record UpdateDocumentMetadata(DocumentId DocumentId, Dictionary<string, string> Metadata, UserId UpdatedBy);
+
+public record ChangeDocumentClassification(DocumentId DocumentId, DocumentClassification Classification, UserId ChangedBy);
 ```
 
-#### 7.1.2 Resource-Based Authorization
+---
+
+# **8.10 Queries (Enhanced)**
+
 ```csharp
-public class FreelanceProjectAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, FreelanceProject>
-{
-    protected override Task HandleRequirementAsync(
-        AuthorizationHandlerContext context,
-        OperationAuthorizationRequirement requirement,
-        FreelanceProject resource)
-    {
-        var userId = context.User.GetUserId();
-        
-        if (requirement == Operations.Read)
-        {
-            if (CanReadProject(context.User, resource, userId))
-            {
-                context.Succeed(requirement);
-            }
-        }
-        // ... other operations
-        
-        return Task.CompletedTask;
-    }
-    
-    private bool CanReadProject(ClaimsPrincipal user, FreelanceProject project, UserId userId)
-    {
-        return project.CreatedBy == userId ||
-               user.HasClaim("permission", "freelance:projects:view:all") ||
-               IsClientOfProject(user, project);
-    }
-}
+public record GetDocumentMetadata(DocumentId DocumentId);
+public record GetDocumentVersions(DocumentId DocumentId);
+public record GetDocumentAccessList(DocumentId DocumentId);
+public record SearchDocuments(string SearchTerm, string? MimeTypeFilter, DocumentClassification? Classification);
+public record GetDocumentDownloadToken(DocumentId DocumentId, VersionId? VersionId, UserId RequestedBy);
 ```
 
-## 8. Dependency Matrix
-
-### 8.1 Bounded Context Dependencies
-
-| From Context | To Context | Dependency Type | Purpose | Coupling Level |
-|--------------|------------|-----------------|---------|----------------|
-| Freelance Operations | Document Management | Service Call | Proposal document storage | Medium |
-| Freelance Operations | CRM | Event Publishing | Client conversion events | Loose |
-| CRM | Document Management | Service Call | Interaction attachments | Medium |
-| C&PM | Document Management | Service Call | Contract document storage | Medium |
-| C&PM | Project Execution | Event Subscription | Portfolio item updates | Loose |
-| Project Execution | RIM | Service Call | Resource allocation | Medium |
-| Project Execution | C&PM | Event Publishing | Project lifecycle events | Loose |
-| RIM | Project Execution | Event Subscription | Resource demand planning | Loose |
-| All BCs | Document Management | Service Call | File operations | Medium |
-
-### 8.2 Data Flow Dependencies
-
-**Document Flow**:
-1. User uploads document → Document Management BC → DocumentId returned
-2. Calling BC stores DocumentId as value object
-3. Document retrieval → Document Management BC → Download URL/Metadata
-
-**Resource Flow**:
-1. Project created → Resource requirements identified
-2. RIM queried for available resources → Resource allocation
-3. Resource usage tracked → Optimization insights generated
-
-**Integration Flow**:
-1. Business event occurs → Event Bus → Integration handlers
-2. Cross-context queries executed → Anti-corruption layers
-3. Business logic executed → Additional events published
+---

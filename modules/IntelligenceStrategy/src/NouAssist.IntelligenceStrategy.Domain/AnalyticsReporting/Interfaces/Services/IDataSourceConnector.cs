@@ -1,16 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using NouAssist.Analytics.Aggregates;
-using NouAssist.Analytics.Entities;
-using NouAssist.Analytics.Enums;
-using NouAssist.Analytics.ValueObjects;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Aggregates;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.Analytics.Interfaces.Services
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services
 {
     /// <summary>
     /// Service interface for data source connection and transformation operations

@@ -1,4 +1,4 @@
-namespace NouAssist.DecisionSupport.Enums
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Enums
 {
     /// <summary>
     /// Frameworks used for prioritization of tasks, options, or ideas

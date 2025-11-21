@@ -1,13 +1,12 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.DecisionSupport.Interfaces.Services;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DecisionSupport.Data
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Data
 {
     /// <summary>
     /// Seeds initial data for the Decision Support module

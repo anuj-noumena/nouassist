@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Settings;
 
-namespace NouAssist.DecisionSupport.Settings
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Settings
 {
     /// <summary>
     /// Options class for Decision Support module settings

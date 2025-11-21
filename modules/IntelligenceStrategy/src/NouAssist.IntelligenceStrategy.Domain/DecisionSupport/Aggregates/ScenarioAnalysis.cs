@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DecisionSupport.Entities;
-using NouAssist.DecisionSupport.Enums;
-using NouAssist.DecisionSupport.ValueObjects;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Entities;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
-namespace NouAssist.DecisionSupport.Aggregates
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates
 {
     /// <summary>
     /// Represents a scenario analysis that explores different possible futures

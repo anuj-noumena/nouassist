@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using NouAssist.DecisionSupport.Enums;
-using NouAssist.DecisionSupport.ValueObjects;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DecisionSupport.Entities
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Entities
 {
     /// <summary>
     /// Represents a qualitative analysis (SWOT, Risk) for a decision model

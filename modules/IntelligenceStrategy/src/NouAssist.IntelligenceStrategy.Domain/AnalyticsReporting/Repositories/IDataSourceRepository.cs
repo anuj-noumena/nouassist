@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Aggregates;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
@@ -31,5 +32,7 @@ namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories
         /// Gets data sources that need refreshing
         /// </summary>
         Task<List<DataSource>> GetDataSourcesForRefreshAsync(int maxResultCount = 10);
+
+        Task<DataSource> FirstOrDefaultAsync(Expression<Func<DataSource, bool>> predicate);
     }
 }

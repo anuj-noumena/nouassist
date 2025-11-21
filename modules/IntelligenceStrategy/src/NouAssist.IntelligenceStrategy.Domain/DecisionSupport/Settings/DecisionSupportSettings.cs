@@ -1,4 +1,4 @@
-namespace NouAssist.DecisionSupport.Settings
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Settings
 {
     /// <summary>
     /// Constants for setting names in the Decision Support module

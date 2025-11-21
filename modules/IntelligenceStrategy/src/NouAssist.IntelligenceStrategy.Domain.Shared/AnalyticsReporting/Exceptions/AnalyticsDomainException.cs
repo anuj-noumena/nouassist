@@ -1,6 +1,6 @@
 using Volo.Abp;
 
-namespace NouAssist.Analytics.Exceptions
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Exceptions
 {
     /// <summary>
     /// Base exception for Analytics domain

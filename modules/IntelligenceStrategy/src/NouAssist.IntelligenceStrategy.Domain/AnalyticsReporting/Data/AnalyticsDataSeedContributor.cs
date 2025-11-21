@@ -1,20 +1,14 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.Analytics.Aggregates;
-using NouAssist.Analytics.Entities;
-using NouAssist.Analytics.Enums;
-using NouAssist.Analytics.Interfaces.Services;
-using NouAssist.Analytics.ValueObjects;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Guids;
 
-namespace NouAssist.Analytics.Data
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Data
 {
     /// <summary>
     /// Seeds initial data for the Analytics module

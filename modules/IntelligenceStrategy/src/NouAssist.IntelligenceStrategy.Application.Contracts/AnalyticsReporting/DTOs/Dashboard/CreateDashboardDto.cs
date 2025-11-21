@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using NouAssist.Analytics.Constants;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Constants;
 
 namespace NouAssist.Analytics.DTOs.Dashboard
 {

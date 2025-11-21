@@ -1,6 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using NouAssist.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 
 namespace NouAssist.DecisionSupport.Dtos.ScenarioModel
 {

@@ -1,8 +1,8 @@
 using System;
-using NouAssist.Analytics.Events.Base;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Events.Base;
 using Volo.Abp.EventBus;
 
-namespace NouAssist.Analytics.Events
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Events
 {
     /// <summary>
     /// Internal event raised when an external event has been processed and stored

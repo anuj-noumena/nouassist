@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+using Volo.Abp.Specifications;
 
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Specifications
 {

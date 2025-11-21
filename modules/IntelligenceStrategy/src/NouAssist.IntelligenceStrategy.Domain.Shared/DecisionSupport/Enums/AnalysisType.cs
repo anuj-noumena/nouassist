@@ -1,4 +1,4 @@
-namespace NouAssist.DecisionSupport.Enums
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Enums
 {
     /// <summary>
     /// Types of analysis that can be performed in decision making

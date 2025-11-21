@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NouAssist.Analytics.Aggregates;
-using NouAssist.Analytics.Constants;
 using NouAssist.Analytics.Entities;
 using System;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.Analytics.EntityFrameworkCore.EntityConfigurations

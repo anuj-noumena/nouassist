@@ -1,4 +1,4 @@
-namespace NouAssist.DecisionSupport.Enums
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Enums
 {
     /// <summary>
     /// Likelihood of a scenario occurring

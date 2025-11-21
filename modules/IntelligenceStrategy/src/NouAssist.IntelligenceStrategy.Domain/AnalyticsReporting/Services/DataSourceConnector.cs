@@ -1,21 +1,21 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Analytics.Aggregates;
-using NouAssist.Analytics.Entities;
-using NouAssist.Analytics.Enums;
-using NouAssist.Analytics.Exceptions;
-using NouAssist.Analytics.Interfaces.Services;
-using NouAssist.Analytics.Repositories;
-using NouAssist.Analytics.ValueObjects;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Exceptions;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Localization;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Localization;
+using Microsoft.Extensions.Localization;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Aggregates;
+using Volo.Abp.Guids;
 
-namespace NouAssist.Analytics.Services
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Services
 {
     /// <summary>
     /// Implementation of data source connection and transformation operations
@@ -43,7 +43,7 @@ namespace NouAssist.Analytics.Services
         {
             try
             {
-                var existingDataSource = await _dataSourceRepository.FindByNameAsync(name, tenantId);
+                var existingDataSource = await _dataSourceRepository.FirstOrDefaultAsync(d => d.Name == name && d.TenantId == tenantId);
                 if (existingDataSource != null)
                 {
                     throw new AnalyticsDomainException("Analytics:ErrorMessage:DuplicateName")
@@ -51,13 +51,18 @@ namespace NouAssist.Analytics.Services
                         .WithData("name", name);
                 }
                 
-                var dataSource = new DataSource(
+                var dataSource = DataSource.Create(
                     GuidGenerator.Create(),
                     name,
                     description,
                     type,
+                    new RefreshInterval(0, "none"),
+                    null,
                     connectionString,
                     credentials,
+                    null,
+                    true,
+                    null,
                     tenantId
                 );
                 
@@ -84,7 +89,7 @@ namespace NouAssist.Analytics.Services
                 // Check name uniqueness if it's being changed
                 if (dataSource.Name != name)
                 {
-                    var existingDataSource = await _dataSourceRepository.FindByNameAsync(name, dataSource.TenantId);
+                    var existingDataSource = await _dataSourceRepository.FirstOrDefaultAsync(d => d.Name == name && d.TenantId == dataSource.TenantId);
                     if (existingDataSource != null && existingDataSource.Id != dataSourceId)
                     {
                         throw new AnalyticsDomainException("Analytics:ErrorMessage:DuplicateName")
@@ -287,9 +292,6 @@ namespace NouAssist.Analytics.Services
             }
         }
         
-        private string L(string name)
-        {
-            return LocalizationResource.GetString(Analytics.Localization.AnalyticsResource.ResourceName, name);
-        }
+        private IStringLocalizer<AnalyticsResource> L => LazyServiceProvider.LazyGetRequiredService<IStringLocalizer<AnalyticsResource>>();
     }
 }

@@ -1,10 +1,9 @@
 using System;
 using System.Threading.Tasks;
-using NouAssist.DecisionSupport.Aggregates;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
 using Volo.Abp.Domain.Repositories;
 
-namespace NouAssist.DecisionSupport.Interfaces.Repositories
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Repositories
 {
     /// <summary>
     /// Repository interface for decision models

@@ -58,4 +58,7 @@ namespace NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Entiti
 
         /// <summary>
         /// Gets the estimation accuracy
-        ///
+        /// </summary>
+        public double EstimationAccuracy => Math.Abs(EstimatedDuration - ActualDuration) / (double)EstimatedDuration;
+    }
+}

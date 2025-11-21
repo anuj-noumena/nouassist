@@ -1,9 +1,8 @@
-using NouAssist.DecisionSupport.Localization;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Localization;
 using Volo.Abp.Localization;
 using Volo.Abp.Settings;
 
-namespace NouAssist.DecisionSupport.Settings
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Settings
 {
     /// <summary>
     /// Defines settings for the Decision Support module

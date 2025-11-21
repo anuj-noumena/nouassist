@@ -1,6 +1,6 @@
 using Volo.Abp.Localization;
 
-namespace NouAssist.Analytics.Localization
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Localization
 {
     /// <summary>
     /// Defines a localization resource for Analytics module

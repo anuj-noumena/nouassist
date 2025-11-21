@@ -1,4 +1,4 @@
-using NouAssist.Analytics.Localization;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
 

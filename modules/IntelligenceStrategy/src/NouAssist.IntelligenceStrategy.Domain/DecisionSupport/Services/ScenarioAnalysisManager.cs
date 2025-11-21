@@ -1,14 +1,14 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.DecisionSupport.Aggregates;
-using NouAssist.DecisionSupport.Enums;
-using NouAssist.DecisionSupport.Interfaces.Repositories;
-using NouAssist.DecisionSupport.Interfaces.Services;
-using NouAssist.DecisionSupport.ValueObjects;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Repositories;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Services;
 
-namespace NouAssist.DecisionSupport.Services
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Services
 {
     /// <summary>
     /// Domain service for managing scenario analyses

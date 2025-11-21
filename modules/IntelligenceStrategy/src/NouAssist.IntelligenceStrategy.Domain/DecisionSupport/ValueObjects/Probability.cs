@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Volo.Abp;
 using Volo.Abp.Domain.Values;
 
-namespace NouAssist.DecisionSupport.ValueObjects
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects
 {
     /// <summary>
     /// Represents a probability value for risk assessment

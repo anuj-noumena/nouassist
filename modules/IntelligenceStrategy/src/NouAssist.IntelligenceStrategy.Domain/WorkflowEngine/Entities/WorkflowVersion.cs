@@ -48,7 +48,7 @@ namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Entities
         /// <summary>
         /// The activities defined in this workflow version
         /// </summary>
-        public IReadOnlyCollection<ActivityDefinition> Activities => _activities.AsReadOnly();
+        public List<ActivityDefinition> Activities => _activities;
         
         private readonly List<ConditionDefinition> _conditions;
         

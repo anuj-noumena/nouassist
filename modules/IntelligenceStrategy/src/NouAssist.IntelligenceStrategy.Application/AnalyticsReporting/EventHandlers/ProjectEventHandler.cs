@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using NouAssist.Analytics.Events;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Events;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EventBus.Distributed;
 using Volo.Abp.Uow;

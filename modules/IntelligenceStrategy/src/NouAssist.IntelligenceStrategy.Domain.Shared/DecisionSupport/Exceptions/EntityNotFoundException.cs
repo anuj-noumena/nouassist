@@ -1,7 +1,6 @@
 using System;
-using NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions;
 
-namespace NouAssist.DecisionSupport.Exceptions
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions
 {
     /// <summary>
     /// Exception thrown when an entity is not found

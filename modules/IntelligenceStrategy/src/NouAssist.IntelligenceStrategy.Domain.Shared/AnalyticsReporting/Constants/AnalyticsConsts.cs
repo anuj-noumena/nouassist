@@ -1,4 +1,4 @@
-namespace NouAssist.Analytics.Constants
+namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Constants
 {
     /// <summary>
     /// Contains constants for the Analytics module

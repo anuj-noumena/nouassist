@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using NouAssist.Analytics.Aggregates;
 using NouAssist.Analytics.Entities;
 using NouAssist.Analytics.EntityFrameworkCore.EntityConfigurations;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;

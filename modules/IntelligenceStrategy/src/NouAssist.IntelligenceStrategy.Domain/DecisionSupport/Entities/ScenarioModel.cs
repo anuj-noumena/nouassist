@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NouAssist.DecisionSupport.ValueObjects;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Entities;
 
-namespace NouAssist.DecisionSupport.Entities
+namespace NouAssist.IntelligenceStrategy.DecisionSupport.Entities
 {
     /// <summary>
     /// Represents a specific scenario model within a scenario analysis

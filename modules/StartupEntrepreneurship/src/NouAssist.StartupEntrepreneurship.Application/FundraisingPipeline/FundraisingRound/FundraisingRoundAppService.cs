@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Managers;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Enums;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Exceptions;
@@ -30,17 +31,20 @@ namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.FundraisingRound
     public class FundraisingRoundAppService : ApplicationService, IFundraisingRoundAppService
     {
         private readonly IFundraisingRoundRepository _fundraisingRoundRepository;
+        private readonly FundraisingRoundManager _fundraisingRoundManager;
         private readonly IProspectRepository _prospectRepository;
         private readonly IGuidGenerator _guidGenerator;
         private readonly IClock _clock;
 
         public FundraisingRoundAppService(
             IFundraisingRoundRepository fundraisingRoundRepository,
+            FundraisingRoundManager fundraisingRoundManager,
             IProspectRepository prospectRepository,
             IGuidGenerator guidGenerator,
             IClock clock)
         {
             _fundraisingRoundRepository = fundraisingRoundRepository;
+            _fundraisingRoundManager = fundraisingRoundManager;
             _prospectRepository = prospectRepository;
             _guidGenerator = guidGenerator;
             _clock = clock;
@@ -143,15 +147,14 @@ namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.FundraisingRound
         {
             try
             {
-                var round = Aggregates.FundraisingRound.Create(
-                    _guidGenerator.Create(),
+                // Use the new FundraisingRoundManager for creation with validation
+                var round = await _fundraisingRoundManager.CreateAsync(
                     input.Name,
                     input.Type,
                     input.TargetAmount,
                     input.StartDate,
                     input.TargetCloseDate,
-                    input.Description,
-                    CurrentTenant.Id
+                    input.Description
                 );
 
                 await _fundraisingRoundRepository.InsertAsync(round, autoSave: true);

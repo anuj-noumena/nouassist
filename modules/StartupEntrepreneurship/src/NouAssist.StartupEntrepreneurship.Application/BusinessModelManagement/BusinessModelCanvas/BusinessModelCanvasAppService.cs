@@ -9,6 +9,7 @@ using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Aggregates;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.BusinessModelCanvas.Dtos;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Localization;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Managers;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Permissions;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Repositories;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Services.Interfaces;
@@ -27,6 +28,7 @@ namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.BusinessMode
     public class BusinessModelCanvasAppService : ApplicationService, IBusinessModelCanvasAppService
     {
         private readonly IBusinessModelCanvasRepository _canvasRepository;
+        private readonly BusinessModelCanvasManager _canvasManager;
         private readonly ICanvasEditorService _canvasEditorService;
         private readonly IHypothesisTrackingService _hypothesisTrackingService;
         private readonly ICurrentUser _currentUser;
@@ -35,6 +37,7 @@ namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.BusinessMode
 
         public BusinessModelCanvasAppService(
             IBusinessModelCanvasRepository canvasRepository,
+            BusinessModelCanvasManager canvasManager,
             ICanvasEditorService canvasEditorService,
             IHypothesisTrackingService hypothesisTrackingService,
             ICurrentUser currentUser,
@@ -42,6 +45,7 @@ namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.BusinessMode
             IGuidGenerator guidGenerator)
         {
             _canvasRepository = canvasRepository;
+            _canvasManager = canvasManager;
             _canvasEditorService = canvasEditorService;
             _hypothesisTrackingService = hypothesisTrackingService;
             _currentUser = currentUser;
@@ -127,13 +131,15 @@ namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.BusinessMode
         {
             try
             {
-                var canvas = await _canvasEditorService.CreateCanvasAsync(
+                // Use the new BusinessModelCanvasManager for creation with validation
+                var canvas = await _canvasManager.CreateAsync(
                     input.Title,
                     input.Description,
-                    _currentUser.GetId(),
-                    CurrentTenant.Id,
-                    _clock.Now
+                    _currentUser.GetId()
                 );
+
+                // Persist the canvas
+                await _canvasRepository.InsertAsync(canvas, autoSave: true);
 
                 return await MapCanvasToDtoAsync(canvas);
             }
@@ -157,10 +163,8 @@ namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.BusinessMode
                 var canvas = await _canvasRepository.GetAsync(id);
                 await CheckCanvasAccessAsync(canvas);
 
-                canvas.UpdateTitle(input.Title);
-                canvas.UpdateDescription(input.Description);
-
-                await _canvasRepository.UpdateAsync(canvas);
+                // Use the manager for update with validation
+                await _canvasManager.UpdateAsync(id, input.Title, input.Description);
 
                 return await MapCanvasToDtoAsync(canvas);
             }
@@ -184,7 +188,8 @@ namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.BusinessMode
                 var canvas = await _canvasRepository.GetAsync(id);
                 await CheckCanvasAccessAsync(canvas);
 
-                await _canvasRepository.DeleteAsync(canvas);
+                // Use the manager for delete with business rules validation
+                await _canvasManager.DeleteAsync(id, hardDelete: false);
             }
             catch (Exception ex)
             {

@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Constants;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Entities;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Events;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions;
+using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates
 {
     /// <summary>

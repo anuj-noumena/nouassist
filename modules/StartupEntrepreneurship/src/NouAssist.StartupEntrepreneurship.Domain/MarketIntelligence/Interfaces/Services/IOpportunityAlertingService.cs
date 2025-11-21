@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Services;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Interfaces.Services
 {
     /// <summary>

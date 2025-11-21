@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Events
 {
     /// <summary>

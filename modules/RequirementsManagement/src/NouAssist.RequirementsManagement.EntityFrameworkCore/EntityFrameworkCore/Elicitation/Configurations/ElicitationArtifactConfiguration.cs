@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.RequirementsManagement.Elicitation.Aggregates;

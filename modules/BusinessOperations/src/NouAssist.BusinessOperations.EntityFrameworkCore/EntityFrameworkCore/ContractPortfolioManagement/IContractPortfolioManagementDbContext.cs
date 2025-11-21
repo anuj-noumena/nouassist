@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Contract;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
 using NouAssist.ContractPortfolioManagement.Aggregates.Contract;
 using NouAssist.ContractPortfolioManagement.Aggregates.Portfolio;
 using Volo.Abp.Data;

@@ -1,3 +1,5 @@
+using Volo.Abp.Localization;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Localization
 {
     /// <summary>

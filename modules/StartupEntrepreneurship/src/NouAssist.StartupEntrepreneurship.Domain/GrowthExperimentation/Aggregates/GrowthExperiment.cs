@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Constants;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Entities;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Enums;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Events;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Exceptions;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Aggregates
 {
     /// <summary>
@@ -71,7 +84,7 @@ namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Aggregates
         /// <summary>
         /// Learnings from the experiment
         /// </summary>
-        public ExperimentLearnings Learnings { get; private set; }
+        public ExperimentLearnings Learnings { get; internal set; }
         
         protected GrowthExperiment()
         {

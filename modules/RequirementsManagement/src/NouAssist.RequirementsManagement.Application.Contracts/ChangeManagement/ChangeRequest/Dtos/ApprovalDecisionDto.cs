@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.RequirementsManagement.ChangeManagement.Constants;
 using NouAssist.RequirementsManagement.ChangeManagement.Enums;

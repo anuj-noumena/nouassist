@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Exceptions
 {
     /// <summary>

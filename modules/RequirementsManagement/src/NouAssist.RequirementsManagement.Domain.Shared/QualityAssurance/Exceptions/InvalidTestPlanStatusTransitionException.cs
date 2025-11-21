@@ -1,3 +1,5 @@
+using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Exceptions
 {
     /// <summary>

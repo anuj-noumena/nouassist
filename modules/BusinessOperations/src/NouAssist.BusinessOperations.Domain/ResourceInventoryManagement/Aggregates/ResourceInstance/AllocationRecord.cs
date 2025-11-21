@@ -1,4 +1,5 @@
 using System;
+using NouAssist.BusinessOperations.ResourceInventoryManagement.Exceptions;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 

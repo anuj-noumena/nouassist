@@ -1,3 +1,7 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.Traceability.Aggregates;
+using NouAssist.RequirementsManagement.Traceability.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.RequirementsManagement.Traceability.Specifications

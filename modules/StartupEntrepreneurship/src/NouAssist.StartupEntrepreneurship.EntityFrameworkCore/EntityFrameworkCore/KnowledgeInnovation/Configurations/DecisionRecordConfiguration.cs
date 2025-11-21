@@ -1,6 +1,9 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Aggregates;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 

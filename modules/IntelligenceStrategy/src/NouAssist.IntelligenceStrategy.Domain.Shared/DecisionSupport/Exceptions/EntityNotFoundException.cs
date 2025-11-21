@@ -1,4 +1,5 @@
 using System;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions;
 
 namespace NouAssist.DecisionSupport.Exceptions
 {

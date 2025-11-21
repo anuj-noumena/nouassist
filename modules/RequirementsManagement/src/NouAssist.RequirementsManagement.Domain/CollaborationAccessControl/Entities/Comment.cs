@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp.Auditing;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Entities
 {
     /// <summary>

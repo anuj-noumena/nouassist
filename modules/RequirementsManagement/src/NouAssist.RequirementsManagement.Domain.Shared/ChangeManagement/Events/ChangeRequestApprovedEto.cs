@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.ChangeManagement.Events.Base;
+using NouAssist.RequirementsManagement.ChangeManagement.ValueObjects;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.RequirementsManagement.ChangeManagement.Events
 {
     /// <summary>

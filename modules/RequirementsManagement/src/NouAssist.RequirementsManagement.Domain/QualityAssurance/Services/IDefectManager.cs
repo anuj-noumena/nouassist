@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.QualityAssurance.Aggregates;
+using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Services
 {
     /// <summary>

@@ -106,7 +106,7 @@ namespace NouAssist.BusinessOperations.ProjectExecution.Projects.Dtos
         /// <summary>
         /// Status of the project
         /// </summary>
-        public ProjectStatus Status { get; set; }
+        public FreelanceOperations.Enums.ProjectStatus Status { get; set; }
         
         /// <summary>
         /// String representation of the project status

@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Events.Base
 {
     /// <summary>

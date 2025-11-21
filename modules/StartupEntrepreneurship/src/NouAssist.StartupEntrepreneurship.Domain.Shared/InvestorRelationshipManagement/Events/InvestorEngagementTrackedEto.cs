@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Events
 {
     /// <summary>

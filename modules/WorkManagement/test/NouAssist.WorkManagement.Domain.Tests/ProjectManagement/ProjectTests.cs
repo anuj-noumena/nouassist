@@ -15,6 +15,7 @@ namespace NouAssist.WorkManagement.ProjectManagement
             // Arrange
             var ownerId = Guid.NewGuid();
             var title = "Test Project";
+            var tenantId = Guid.NewGuid();
             var startDate = DateTime.Now;
             var endDate = DateTime.Now.AddDays(30);
 
@@ -23,14 +24,18 @@ namespace NouAssist.WorkManagement.ProjectManagement
                 Guid.NewGuid(),
                 ownerId,
                 title,
-                startDate,
-                endDate);
+                tenantId,
+                areaId: null,
+                description: null,
+                expectedOutcome: null,
+                startDate: startDate,
+                dueDate: endDate);
 
             // Assert
             project.ShouldNotBeNull();
             project.OwnerId.ShouldBe(ownerId);
             project.Title.ShouldBe(title);
-            project.Status.ShouldBe(ProjectStatus.Planning);
+            project.Status.ShouldBe(ProjectStatus.Planned);
         }
 
         [Fact]
@@ -41,8 +46,9 @@ namespace NouAssist.WorkManagement.ProjectManagement
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 "Test Project",
-                DateTime.Now,
-                DateTime.Now.AddDays(30));
+                tenantId: null,
+                startDate: DateTime.Now,
+                dueDate: DateTime.Now.AddDays(30));
 
             // Act
             project.Start();
@@ -60,12 +66,13 @@ namespace NouAssist.WorkManagement.ProjectManagement
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 "Test Project",
-                DateTime.Now,
-                DateTime.Now.AddDays(30));
+                tenantId: null,
+                startDate: DateTime.Now,
+                dueDate: DateTime.Now.AddDays(30));
             project.Start();
 
             // Act
-            project.Complete();
+            project.Complete("Test User");
 
             // Assert
             project.Status.ShouldBe(ProjectStatus.Completed);
@@ -73,19 +80,20 @@ namespace NouAssist.WorkManagement.ProjectManagement
         }
 
         [Fact]
-        public void PutOnHold_Should_ChangeStatusToOnHold()
+        public void Pause_Should_ChangeStatusToOnHold()
         {
             // Arrange
             var project = new Project(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 "Test Project",
-                DateTime.Now,
-                DateTime.Now.AddDays(30));
+                tenantId: null,
+                startDate: DateTime.Now,
+                dueDate: DateTime.Now.AddDays(30));
             project.Start();
 
             // Act
-            project.PutOnHold("Waiting for resources");
+            project.Pause();
 
             // Assert
             project.Status.ShouldBe(ProjectStatus.OnHold);
@@ -100,8 +108,10 @@ namespace NouAssist.WorkManagement.ProjectManagement
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 "Test Project",
-                DateTime.Now,
-                DateTime.Now.AddDays(30));
+                tenantId: null,
+                startDate: DateTime.Now,
+                dueDate: DateTime.Now.AddDays(30));
+            project.Complete("Test User");
 
             // Act
             project.Archive();
@@ -119,8 +129,9 @@ namespace NouAssist.WorkManagement.ProjectManagement
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 "Test Project",
-                DateTime.Now,
-                DateTime.Now.AddDays(30));
+                tenantId: null,
+                startDate: DateTime.Now,
+                dueDate: DateTime.Now.AddDays(30));
 
             // Act
             project.UpdateProgress(50.0);
@@ -133,16 +144,15 @@ namespace NouAssist.WorkManagement.ProjectManagement
         public void SetAreaId_Should_UpdateAreaId()
         {
             // Arrange
+            var areaId = Guid.NewGuid();
             var project = new Project(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
                 "Test Project",
-                DateTime.Now,
-                DateTime.Now.AddDays(30));
-            var areaId = Guid.NewGuid();
-
-            // Act
-            project.AreaId = areaId;
+                tenantId: null,
+                areaId: areaId,
+                startDate: DateTime.Now,
+                dueDate: DateTime.Now.AddDays(30));
 
             // Assert
             project.AreaId.ShouldBe(areaId);

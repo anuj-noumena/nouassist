@@ -1,3 +1,7 @@
+using System;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Events
 {
     /// <summary>

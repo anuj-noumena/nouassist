@@ -1,3 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Repositories;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.ValueObjects;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Services
 {
     /// <summary>

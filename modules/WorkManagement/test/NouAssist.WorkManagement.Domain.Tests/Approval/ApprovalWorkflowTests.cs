@@ -1,5 +1,6 @@
 using System;
 using NouAssist.WorkManagement.Approval.Aggregates;
+using NouAssist.WorkManagement.Approval.Enums;
 using Shouldly;
 using Xunit;
 
@@ -14,7 +15,12 @@ namespace NouAssist.WorkManagement.Approval
             var name = "Standard Approval Workflow";
 
             // Act
-            var workflow = new ApprovalWorkflow(Guid.NewGuid(), name);
+            var workflow = new ApprovalWorkflow(
+                Guid.NewGuid(),
+                name,
+                ApprovalWorkflowType.TaskApproval,
+                ApprovalStrategy.Sequential,
+                null);
 
             // Assert
             workflow.ShouldNotBeNull();

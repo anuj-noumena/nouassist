@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Events.Base
 {
     /// <summary>

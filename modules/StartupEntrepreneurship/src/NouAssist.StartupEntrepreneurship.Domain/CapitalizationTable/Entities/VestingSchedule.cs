@@ -1,7 +1,9 @@
+using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.Enums;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.ValueObjects;
+using Volo.Abp.MultiTenancy;
 
 namespace NouAssist.StartupEntrepreneurship.CapitalizationTable.Entities
 {

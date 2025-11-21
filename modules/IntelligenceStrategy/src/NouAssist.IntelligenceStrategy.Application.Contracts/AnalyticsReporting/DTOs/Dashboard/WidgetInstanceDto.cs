@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NouAssist.Analytics.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 
 namespace NouAssist.Analytics.DTOs.Dashboard
 {

@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Integration
 {
     /// <summary>

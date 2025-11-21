@@ -14,7 +14,7 @@ namespace NouAssist.WorkManagement.Workflow
             var name = "Default Workflow Scheme";
 
             // Act
-            var scheme = new WorkflowScheme(Guid.NewGuid(), name);
+            var scheme = new WorkflowScheme(Guid.NewGuid(), name, Guid.NewGuid());
 
             // Assert
             scheme.ShouldNotBeNull();

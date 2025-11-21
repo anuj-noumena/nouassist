@@ -1,3 +1,9 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Specification.Enums;
+using NouAssist.RequirementsManagement.Specification.ValueObjects;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.RequirementsManagement.Specification.Interfaces.Services
 {
     /// <summary>

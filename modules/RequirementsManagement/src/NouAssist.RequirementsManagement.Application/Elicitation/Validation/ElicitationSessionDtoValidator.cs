@@ -1,3 +1,4 @@
+using System;
 using FluentValidation;
 using NouAssist.RequirementsManagement.Elicitation.Constants;
 using NouAssist.RequirementsManagement.Elicitation.ElicitationSessions.Dtos;

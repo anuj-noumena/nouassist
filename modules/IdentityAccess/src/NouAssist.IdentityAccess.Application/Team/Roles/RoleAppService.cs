@@ -6,18 +6,20 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.IdentityAccess.Team.Aggregates;
 using NouAssist.IdentityAccess.Team.Data;
 using NouAssist.IdentityAccess.Team.Entities;
-using NouAssist.IdentityAccess.Team.Permissions;
+using NouAssist.IdentityAccess.Permissions;
 using NouAssist.IdentityAccess.Team.Roles.Dtos;
 using NouAssist.IdentityAccess.Team.Services;
 using NouAssist.IdentityAccess.Team.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.IdentityAccess.Team.Roles
 {
-    [Authorize(TeamPermissions.Roles.Default)]
+    [Authorize(IdentityAccessPermissions.Team.Roles.Default)]
     public class RoleAppService : ApplicationService, IRoleAppService
     {
         private readonly IRoleRepository _roleRepository;
@@ -45,7 +47,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             var spec = CreateListSpecification(input);
 
             var roles = await _roleRepository.GetListAsync(spec);
-            var totalCount = await _roleRepository.CountAsync(spec);
+            var totalCount = await _roleRepository.LongCountAsync(spec.ToExpression());
 
             var dtos = new List<RoleDto>();
             foreach (var role in roles)
@@ -82,7 +84,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return dtos;
         }
 
-        [Authorize(TeamPermissions.Roles.Create)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.Create)]
         public async Task<RoleDto> CreateAsync(CreateRoleDto input)
         {
             var role = new Role(
@@ -106,7 +108,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return await MapToDto(role);
         }
 
-        [Authorize(TeamPermissions.Roles.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.Update)]
         public async Task<RoleDto> UpdateAsync(Guid id, UpdateRoleDto input)
         {
             var role = await _roleRepository.GetAsync(id);
@@ -142,7 +144,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return await MapToDto(role);
         }
 
-        [Authorize(TeamPermissions.Roles.Delete)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var role = await _roleRepository.GetAsync(id);
@@ -155,7 +157,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             await _roleRepository.DeleteAsync(id);
         }
 
-        [Authorize(TeamPermissions.Roles.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.Update)]
         public async Task<RoleDto> ActivateAsync(Guid id)
         {
             var role = await _roleRepository.GetAsync(id);
@@ -165,7 +167,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return await MapToDto(role);
         }
 
-        [Authorize(TeamPermissions.Roles.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.Update)]
         public async Task<RoleDto> DeactivateAsync(Guid id)
         {
             var role = await _roleRepository.GetAsync(id);
@@ -175,7 +177,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return await MapToDto(role);
         }
 
-        [Authorize(TeamPermissions.Roles.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.Update)]
         public async Task<RoleDto> AddPermissionAsync(Guid id, string permission)
         {
             var role = await _roleRepository.GetAsync(id);
@@ -185,7 +187,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return await MapToDto(role);
         }
 
-        [Authorize(TeamPermissions.Roles.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.Update)]
         public async Task<RoleDto> RemovePermissionAsync(Guid id, string permission)
         {
             var role = await _roleRepository.GetAsync(id);
@@ -195,7 +197,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return await MapToDto(role);
         }
 
-        [Authorize(TeamPermissions.Roles.AssignToUsers)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.AssignToUsers)]
         public async Task<UserRoleDto> AssignRoleToUserAsync(AssignRoleToUserDto input)
         {
             var role = await _roleRepository.GetAsync(input.RoleId);
@@ -218,7 +220,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
             return dto;
         }
 
-        [Authorize(TeamPermissions.Roles.AssignToUsers)]
+        [Authorize(IdentityAccessPermissions.Team.Roles.AssignToUsers)]
         public async Task RevokeRoleFromUserAsync(Guid userId, Guid roleId)
         {
             var userRoles = await _userRoleRepository.GetUserRolesAsync(userId);
@@ -286,7 +288,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
 
         private ISpecification<Role> CreateListSpecification(GetRoleListDto input)
         {
-            var spec = Specification.None<Role>();
+            ISpecification<Role> spec = new BaseSpecification<Role>();
 
             if (input.IsActive.HasValue)
             {
@@ -296,7 +298,7 @@ namespace NouAssist.IdentityAccess.Team.Roles
                 }
                 else
                 {
-                    spec = spec.And(new Specification<Role>(r => !r.IsActive));
+                    spec = spec.And(new BaseSpecification<Role>(r => !r.IsActive));
                 }
             }
 
@@ -314,8 +316,8 @@ namespace NouAssist.IdentityAccess.Team.Roles
 
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
-                spec = spec.And(new Specification<Role>(
-                    r => r.Name.Contains(input.Filter) || 
+                spec = spec.And(new BaseSpecification<Role>(
+                    r => r.Name.Contains(input.Filter) ||
                          (r.Description != null && r.Description.Contains(input.Filter))));
             }
 

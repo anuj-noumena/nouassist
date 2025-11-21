@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Aggregates;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Entities;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.ValueObjects;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Repositories
 {
     /// <summary>

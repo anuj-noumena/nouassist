@@ -1,5 +1,7 @@
+using System;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities

@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.QualityAssurance.Constants;
+using NouAssist.RequirementsManagement.QualityAssurance.Entities;
+using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+using NouAssist.RequirementsManagement.QualityAssurance.Events;
+using NouAssist.RequirementsManagement.QualityAssurance.Exceptions;
+using NouAssist.RequirementsManagement.QualityAssurance.Specifications;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Aggregates
 {
     /// <summary>

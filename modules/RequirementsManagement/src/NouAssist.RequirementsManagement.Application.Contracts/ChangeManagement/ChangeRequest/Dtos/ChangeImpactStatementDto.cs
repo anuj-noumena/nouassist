@@ -1,3 +1,6 @@
+using System;
+using Volo.Abp.Application.Dtos;
+
 namespace NouAssist.RequirementsManagement.ChangeManagement.ChangeRequest.Dtos
 {
     /// <summary>

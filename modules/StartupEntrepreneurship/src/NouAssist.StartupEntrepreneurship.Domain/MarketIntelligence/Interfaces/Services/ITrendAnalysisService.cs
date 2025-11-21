@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Services;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.ValueObjects;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Interfaces.Services
 {
     /// <summary>

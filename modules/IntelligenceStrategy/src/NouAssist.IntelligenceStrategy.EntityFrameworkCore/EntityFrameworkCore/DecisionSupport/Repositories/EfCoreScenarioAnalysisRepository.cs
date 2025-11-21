@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using NouAssist.DecisionSupport.Aggregates;
 using NouAssist.DecisionSupport.EntityFrameworkCore;
 using NouAssist.DecisionSupport.Interfaces.Repositories;
+using NouAssist.IntelligenceStrategy.DecisionSupport.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

@@ -1,3 +1,10 @@
+using NouAssist.BusinessOperations.ProjectExecution.Enums;
+using NouAssist.BusinessOperations.ProjectExecution.Repositories;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.Timing;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.Data
 {
     /// <summary>

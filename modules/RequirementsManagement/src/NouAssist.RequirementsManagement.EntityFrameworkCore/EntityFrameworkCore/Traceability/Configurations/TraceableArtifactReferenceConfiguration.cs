@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.RequirementsManagement.Traceability.Aggregates;
 using NouAssist.RequirementsManagement.Traceability.Constants;
 using NouAssist.RequirementsManagement.Traceability.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;

@@ -1,3 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Aggregates;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Data
 {
     /// <summary>

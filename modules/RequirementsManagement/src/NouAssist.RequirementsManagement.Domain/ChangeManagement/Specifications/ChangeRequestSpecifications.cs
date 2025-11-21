@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 using NouAssist.RequirementsManagement.ChangeManagement.Aggregates;
 using NouAssist.RequirementsManagement.ChangeManagement.Enums;
 using Volo.Abp.Specifications;

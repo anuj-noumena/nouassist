@@ -1,16 +1,18 @@
+using Volo.Abp.Users;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using NouAssist.PersonalDevelopment.Habits.Data;
-using NouAssist.PersonalDevelopment.Habits.Permissions;
+using NouAssist.PersonalDevelopment.Permissions;
 using NouAssist.PersonalDevelopment.Habits.Services;
 using NouAssist.PersonalDevelopment.Habits.Tracking.Dtos;
+using NouAssist.PersonalDevelopment.Habits.ValueObjects;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.PersonalDevelopment.Habits.Tracking
 {
-    [Authorize(HabitsPermissions.Tracking.ViewOwn)]
+    [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ViewOwn)]
     public class TrackingAppService : ApplicationService, ITrackingAppService
     {
         private readonly IHealthTrackingRepository _healthRepository;
@@ -47,7 +49,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Tracking
             return ObjectMapper.Map<HealthTrackingEntry, HealthTrackingDto>(entry);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<HealthTrackingDto> UpdateHealthTrackingAsync(UpdateHealthTrackingDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -92,7 +94,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Tracking
             return ObjectMapper.Map<HealthTrackingEntry, HealthTrackingDto>(entry);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<HealthTrackingDto> LogHealthActionAsync(LogHealthActionDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -153,7 +155,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Tracking
             return ObjectMapper.Map<EnergyTrackingEntry, EnergyTrackingDto>(entry);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<EnergyTrackingDto> UpdateEnergyTrackingAsync(UpdateEnergyTrackingDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -204,7 +206,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Tracking
             return ObjectMapper.Map<MoodTrackingEntry, MoodTrackingDto>(entry);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<MoodTrackingDto> UpdateMoodTrackingAsync(UpdateMoodTrackingDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -263,7 +265,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Tracking
             return ObjectMapper.Map<FocusSession, FocusSessionDto>(session);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<FocusSessionDto> CompletePomodoroAsync(CompletePomodoroDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -294,7 +296,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Tracking
             return ObjectMapper.Map<FocusSession, FocusSessionDto>(session);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<FocusSessionDto> UpdateFocusSessionAsync(UpdateFocusSessionDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -336,7 +338,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Tracking
         }
 
         // Wellness Report
-        [Authorize(HabitsPermissions.Analytics.ViewOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Analytics.ViewOwn)]
         public async Task<WellnessReportDto> GetWellnessReportAsync(GetWellnessReportDto input)
         {
             var ownerId = CurrentUser.GetId();

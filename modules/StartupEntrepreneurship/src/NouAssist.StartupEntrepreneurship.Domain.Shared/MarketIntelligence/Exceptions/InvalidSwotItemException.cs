@@ -1,3 +1,5 @@
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Exceptions
 {
     /// <summary>

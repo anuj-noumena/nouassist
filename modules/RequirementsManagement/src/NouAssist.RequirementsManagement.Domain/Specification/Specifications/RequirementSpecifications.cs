@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.Specification.Enums;
+
 namespace NouAssist.RequirementsManagement.Specification.Specifications
 {
     /// <summary>

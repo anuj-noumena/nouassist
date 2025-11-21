@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using NouAssist.BusinessOperations.ResourceInventoryManagement.Events.Location;
+using NouAssist.BusinessOperations.ResourceInventoryManagement.Exceptions;
 using NouAssist.BusinessOperations.ResourceInventoryManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;

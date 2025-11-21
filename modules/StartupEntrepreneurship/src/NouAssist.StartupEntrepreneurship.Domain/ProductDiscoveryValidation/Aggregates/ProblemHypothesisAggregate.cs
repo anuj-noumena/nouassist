@@ -1,3 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Entities;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Events;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates
 {
     /// <summary>

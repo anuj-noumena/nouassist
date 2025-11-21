@@ -1,3 +1,12 @@
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.Specification.Enums;
+using NouAssist.RequirementsManagement.Specification.Repositories;
+using NouAssist.RequirementsManagement.Specification.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+
 namespace NouAssist.RequirementsManagement.Specification.Data
 {
     /// <summary>

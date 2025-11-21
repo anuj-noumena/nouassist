@@ -7,12 +7,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.PrioritizationActivities.Dtos;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.Aggregates;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Localization;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.Permissions;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.Repositories;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.Services;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Users;
 
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.PrioritizationActivities
 {

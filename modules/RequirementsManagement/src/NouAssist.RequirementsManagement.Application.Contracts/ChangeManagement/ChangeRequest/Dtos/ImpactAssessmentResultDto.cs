@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace NouAssist.RequirementsManagement.ChangeManagement.ChangeRequest.Dtos
 {
     /// <summary>

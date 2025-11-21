@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.ValueObjects;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Models
 {
     /// <summary>

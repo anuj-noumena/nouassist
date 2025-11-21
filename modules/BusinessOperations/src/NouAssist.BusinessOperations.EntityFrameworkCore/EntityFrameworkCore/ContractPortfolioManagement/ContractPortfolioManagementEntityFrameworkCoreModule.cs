@@ -1,5 +1,7 @@
 using System;
 using Microsoft.Extensions.DependencyInjection;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Contract;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
 using NouAssist.ContractPortfolioManagement.Aggregates.Contract;
 using NouAssist.ContractPortfolioManagement.Aggregates.Portfolio;
 using NouAssist.ContractPortfolioManagement.Infrastructure.EntityFrameworkCore.Repositories;

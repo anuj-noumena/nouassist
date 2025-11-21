@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Elicitation.Enums;
 using NouAssist.RequirementsManagement.Elicitation.StakeholderProfiles.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;

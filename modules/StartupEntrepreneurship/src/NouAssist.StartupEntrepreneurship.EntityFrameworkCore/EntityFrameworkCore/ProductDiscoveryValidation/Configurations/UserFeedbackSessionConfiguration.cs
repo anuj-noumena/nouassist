@@ -1,3 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Constants;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Entities;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.EntityFrameworkCore.Configurations
 {
     /// <summary>

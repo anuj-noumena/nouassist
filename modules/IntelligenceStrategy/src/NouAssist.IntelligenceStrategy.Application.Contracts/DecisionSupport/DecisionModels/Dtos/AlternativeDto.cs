@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.DecisionModels.Dtos
 {

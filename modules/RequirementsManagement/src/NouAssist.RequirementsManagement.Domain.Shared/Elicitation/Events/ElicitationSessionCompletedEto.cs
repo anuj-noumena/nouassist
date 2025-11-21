@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.Elicitation.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Events
 {
     /// <summary>

@@ -1,3 +1,5 @@
+using Volo.Abp.Localization;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Localization
 {
     /// <summary>

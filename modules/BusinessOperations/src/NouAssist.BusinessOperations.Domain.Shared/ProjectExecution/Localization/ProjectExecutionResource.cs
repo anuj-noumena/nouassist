@@ -1,3 +1,5 @@
+using Volo.Abp.Localization;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.Localization
 {
     /// <summary>

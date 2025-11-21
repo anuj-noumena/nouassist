@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowTemplate
 {
     /// <summary>

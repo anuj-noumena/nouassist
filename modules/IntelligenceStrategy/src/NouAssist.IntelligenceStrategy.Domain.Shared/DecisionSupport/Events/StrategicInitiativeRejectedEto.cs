@@ -1,3 +1,7 @@
+using System;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Events
 {
     /// <summary>

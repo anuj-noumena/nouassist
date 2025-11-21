@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.Traceability.Constants;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.RequirementsManagement.Traceability.ValueObjects
 {
     /// <summary>

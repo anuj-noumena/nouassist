@@ -1,3 +1,9 @@
+using System;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Constants;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Contract
 {
     /// <summary>

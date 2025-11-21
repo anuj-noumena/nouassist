@@ -1,3 +1,8 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.QualityAssurance.Aggregates;
+using NouAssist.RequirementsManagement.QualityAssurance.ValueObjects;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Services
 {
     /// <summary>

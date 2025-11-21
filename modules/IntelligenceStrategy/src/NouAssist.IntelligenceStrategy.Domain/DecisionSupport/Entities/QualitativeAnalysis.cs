@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using NouAssist.DecisionSupport.Enums;
 using NouAssist.DecisionSupport.ValueObjects;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Values;
 
 namespace NouAssist.DecisionSupport.Entities
 {

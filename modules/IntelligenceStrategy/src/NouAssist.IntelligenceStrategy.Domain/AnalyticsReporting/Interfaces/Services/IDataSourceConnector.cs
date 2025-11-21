@@ -5,6 +5,9 @@ using NouAssist.Analytics.Aggregates;
 using NouAssist.Analytics.Entities;
 using NouAssist.Analytics.Enums;
 using NouAssist.Analytics.ValueObjects;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp.Domain.Services;
 
 namespace NouAssist.Analytics.Interfaces.Services

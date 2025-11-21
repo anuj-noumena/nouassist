@@ -10,6 +10,7 @@ using NouAssist.BusinessOperations.DocumentManagement.Entities;
 using NouAssist.BusinessOperations.DocumentManagement.Enums;
 using NouAssist.BusinessOperations.DocumentManagement.Exceptions;
 using NouAssist.BusinessOperations.DocumentManagement.Interfaces.Services;
+using NouAssist.BusinessOperations.DocumentManagement.Localization;
 using NouAssist.BusinessOperations.DocumentManagement.Permissions;
 using NouAssist.BusinessOperations.DocumentManagement.Repositories;
 using NouAssist.BusinessOperations.DocumentManagement.Specifications;

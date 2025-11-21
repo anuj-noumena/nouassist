@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.ValueObjects
 {
     /// <summary>

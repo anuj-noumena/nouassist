@@ -1,3 +1,8 @@
+using System;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Enums;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Events
 {
     /// <summary>

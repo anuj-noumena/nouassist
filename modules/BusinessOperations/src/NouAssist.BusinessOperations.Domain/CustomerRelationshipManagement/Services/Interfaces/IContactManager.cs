@@ -1,3 +1,8 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.ValueObjects;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Services.Interfaces
 {
     /// <summary>

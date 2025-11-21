@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities;

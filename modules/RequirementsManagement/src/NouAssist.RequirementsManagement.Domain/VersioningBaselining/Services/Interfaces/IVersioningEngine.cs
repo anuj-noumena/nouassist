@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.VersioningBaselining.Aggregates;
+using NouAssist.RequirementsManagement.VersioningBaselining.Entities;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Services.Interfaces
 {
     /// <summary>

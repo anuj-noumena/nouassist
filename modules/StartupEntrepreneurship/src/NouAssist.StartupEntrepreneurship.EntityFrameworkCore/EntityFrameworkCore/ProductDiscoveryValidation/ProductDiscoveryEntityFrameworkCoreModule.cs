@@ -1,3 +1,8 @@
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.EntityFrameworkCore.Repositories;
+using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.Modularity;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.EntityFrameworkCore
 {
     /// <summary>

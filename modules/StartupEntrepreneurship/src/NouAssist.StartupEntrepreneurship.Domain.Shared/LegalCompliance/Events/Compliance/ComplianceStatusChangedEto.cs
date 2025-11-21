@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.Events.Compliance
 {
     /// <summary>

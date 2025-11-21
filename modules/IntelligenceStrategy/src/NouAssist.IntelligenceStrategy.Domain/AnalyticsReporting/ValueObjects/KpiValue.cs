@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp.Domain.Values;

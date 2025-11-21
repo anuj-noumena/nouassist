@@ -1,3 +1,5 @@
+using NouAssist.RequirementsManagement.ValidationVerification.Constants;
+
 namespace NouAssist.RequirementsManagement.ValidationVerification.EntityFrameworkCore
 {
     public static class ValidationVerificationDbProperties

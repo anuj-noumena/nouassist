@@ -1,6 +1,8 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.RequirementsManagement.ValidationVerification.Aggregates;
+using NouAssist.RequirementsManagement.ValidationVerification.Constants;
 using NouAssist.RequirementsManagement.ValidationVerification.Entities;
 using NouAssist.RequirementsManagement.ValidationVerification.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;

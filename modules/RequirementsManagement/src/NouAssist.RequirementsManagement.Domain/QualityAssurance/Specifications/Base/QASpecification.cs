@@ -1,3 +1,6 @@
+using System;
+using System.Linq.Expressions;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Specifications.Base
 {
     /// <summary>

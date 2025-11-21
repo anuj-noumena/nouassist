@@ -1,3 +1,5 @@
+using Volo.Abp.Localization;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Localization
 {
     /// <summary>

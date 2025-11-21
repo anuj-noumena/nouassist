@@ -11,12 +11,14 @@ using NouAssist.StartupEntrepreneurship.MarketIntelligence.CustomerSegment.Dtos;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Dashboard.Dtos;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Interfaces.Services;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Localization;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.MarketTrend;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.MarketTrend.Dtos;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Permissions;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.SwotAnalysis;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.SwotAnalysis.Dtos;
+using Volo.Abp;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Dashboard

@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Constants;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Contract;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Enums;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Events;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Exceptions;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Contract
 {
     /// <summary>

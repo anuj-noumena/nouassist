@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Repositories
 {
     /// <summary>

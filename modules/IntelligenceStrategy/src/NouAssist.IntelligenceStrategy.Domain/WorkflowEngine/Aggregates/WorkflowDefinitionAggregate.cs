@@ -1,3 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Constants;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Entities;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Events;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Exceptions;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates
 {
     /// <summary>

@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Events.Base
 {
     /// <summary>

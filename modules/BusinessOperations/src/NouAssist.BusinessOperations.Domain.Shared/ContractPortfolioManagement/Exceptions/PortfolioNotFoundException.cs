@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Exceptions
 {
     /// <summary>

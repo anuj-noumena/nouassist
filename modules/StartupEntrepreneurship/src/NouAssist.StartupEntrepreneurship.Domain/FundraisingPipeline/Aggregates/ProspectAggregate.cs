@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Constants;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Enums;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Events;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
 {
     /// <summary>
@@ -140,7 +151,7 @@ namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
             string notes = null)
         {
             var interaction = new InteractionLog(
-                GuidGenerator.Create(),
+                new (),
                 Id,
                 type,
                 summary,

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using NouAssist.BusinessOperations.ProjectExecution.Enums;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.Specifications
 {
     /// <summary>

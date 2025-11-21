@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Repositories
 {
     /// <summary>

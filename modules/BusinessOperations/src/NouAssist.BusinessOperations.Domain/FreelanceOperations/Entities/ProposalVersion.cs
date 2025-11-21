@@ -1,3 +1,9 @@
+using System;
+using NouAssist.BusinessOperations.FreelanceOperations.Constants;
+using NouAssist.BusinessOperations.FreelanceOperations.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Entities
 {
     /// <summary>

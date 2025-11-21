@@ -1,9 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.RequirementsManagement.QualityAssurance.Aggregates;
 using NouAssist.RequirementsManagement.QualityAssurance.Enums;
 using NouAssist.RequirementsManagement.QualityAssurance.Repositories;
 using NouAssist.RequirementsManagement.QualityAssurance.Specifications.Base;
 using System.Linq.Dynamic.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -98,8 +103,7 @@ namespace NouAssist.RequirementsManagement.QualityAssurance.EntityFrameworkCore.
         {
             var query = await GetQueryableAsync();
             
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .ToListAsync(cancellationToken);
         }
 

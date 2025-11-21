@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.QualityAssurance.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.ValueObjects
 {
     /// <summary>

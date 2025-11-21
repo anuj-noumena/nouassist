@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
 using Volo.Abp.Application.Dtos;
 

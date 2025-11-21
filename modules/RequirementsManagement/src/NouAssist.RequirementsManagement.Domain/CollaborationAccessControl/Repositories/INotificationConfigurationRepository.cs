@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Aggregates;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Repositories
 {
     /// <summary>

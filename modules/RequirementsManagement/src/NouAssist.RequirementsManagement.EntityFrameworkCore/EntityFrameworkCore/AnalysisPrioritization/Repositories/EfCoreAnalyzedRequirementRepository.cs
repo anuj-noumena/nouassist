@@ -9,6 +9,7 @@ using NouAssist.RequirementsManagement.AnalysisPrioritization.Aggregates;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.Repositories;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.Enums;
 using NouAssist.RequirementsManagement.AnalysisPrioritization.Specifications;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;

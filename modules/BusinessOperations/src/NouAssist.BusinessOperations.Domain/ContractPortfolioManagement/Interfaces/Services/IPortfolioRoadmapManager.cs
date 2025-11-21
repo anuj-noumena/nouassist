@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Portfolio;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Interfaces.Services
 {
     /// <summary>

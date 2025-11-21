@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Entities
 {
     /// <summary>

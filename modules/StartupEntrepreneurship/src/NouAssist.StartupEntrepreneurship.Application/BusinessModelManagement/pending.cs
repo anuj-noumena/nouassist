@@ -1,4 +1,14 @@
 // Update in BusinessModelManagementApplicationModule.cs
+
+using Microsoft.Extensions.DependencyInjection;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.BackgroundServices;
+using Volo.Abp;
+using Volo.Abp.Application;
+using Volo.Abp.BackgroundWorkers;
+using Volo.Abp.EventBus.Distributed;
+using Volo.Abp.Modularity;
+using Volo.Abp.Uow;
+
 [DependsOn(
     typeof(BusinessModelManagementDomainModule),
     typeof(BusinessModelManagementApplicationContractsModule),

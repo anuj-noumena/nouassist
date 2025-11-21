@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Services
 {
     /// <summary>

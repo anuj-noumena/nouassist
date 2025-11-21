@@ -1,3 +1,4 @@
+using System;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.Events.Base;
 using Volo.Abp.EventBus;
 

@@ -1,3 +1,8 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Notifications.Dtos;
+using Volo.Abp.Application.Services;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Notifications
 {
     public interface INotificationConfigurationAppService : IApplicationService

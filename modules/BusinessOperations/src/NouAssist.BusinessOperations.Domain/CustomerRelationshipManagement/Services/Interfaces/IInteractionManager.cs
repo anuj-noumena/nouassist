@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Entities;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Services.Interfaces
 {
     /// <summary>

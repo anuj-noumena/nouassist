@@ -1,3 +1,8 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Entities;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Specifications
 {
     /// <summary>

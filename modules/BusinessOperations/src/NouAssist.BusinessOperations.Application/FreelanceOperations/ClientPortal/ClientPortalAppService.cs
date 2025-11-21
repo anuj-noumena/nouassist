@@ -8,6 +8,8 @@ using NouAssist.BusinessOperations.FreelanceOperations.Aggregates;
 using NouAssist.BusinessOperations.FreelanceOperations.ClientPortal.Dtos;
 using NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Repositories;
 using NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Services;
+using NouAssist.BusinessOperations.FreelanceOperations.Localization;
+using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Users;

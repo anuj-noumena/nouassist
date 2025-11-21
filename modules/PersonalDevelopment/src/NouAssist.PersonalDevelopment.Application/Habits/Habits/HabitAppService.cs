@@ -1,3 +1,4 @@
+using Volo.Abp.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,11 @@ using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using NouAssist.PersonalDevelopment.Habits.Data;
 using NouAssist.PersonalDevelopment.Habits.Entities;
 using NouAssist.PersonalDevelopment.Habits.Habits.Dtos;
-using NouAssist.PersonalDevelopment.Habits.Permissions;
+using NouAssist.PersonalDevelopment.Permissions;
 using NouAssist.PersonalDevelopment.Habits.Services;
 using NouAssist.PersonalDevelopment.Habits.Specifications;
+using NouAssist.PersonalDevelopment.Habits.ValueObjects;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -17,7 +20,7 @@ using Volo.Abp.Specifications;
 
 namespace NouAssist.PersonalDevelopment.Habits.Habits
 {
-    [Authorize(HabitsPermissions.Habits.Default)]
+    [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Default)]
     public class HabitAppService : ApplicationService, IHabitAppService
     {
         private readonly IHabitRepository _habitRepository;
@@ -74,7 +77,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return new PagedResultDto<HabitDto>(totalCount, habitDtos);
         }
 
-        [Authorize(HabitsPermissions.Habits.Create)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Create)]
         public async Task<HabitDto> CreateAsync(CreateHabitDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -97,7 +100,8 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
 
             if (input.ScheduledDays?.Any() == true)
             {
-                habit.UpdateSchedule(input.ScheduledDays);
+                var customDays = input.ScheduledDays.Select(d => ConvertDayOfWeek(d)).ToList();
+                habit.UpdateSchedule(customDays);
             }
 
             await _habitRepository.InsertAsync(habit);
@@ -105,7 +109,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> UpdateAsync(Guid id, UpdateHabitDto input)
         {
             var habit = await _habitRepository.GetAsync(id);
@@ -123,7 +127,8 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
 
             if (input.ScheduledDays != null)
             {
-                habit.UpdateSchedule(input.ScheduledDays);
+                var customDays = input.ScheduledDays.Select(d => ConvertDayOfWeek(d)).ToList();
+                habit.UpdateSchedule(customDays);
             }
 
             await _habitRepository.UpdateAsync(habit);
@@ -131,7 +136,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Delete)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var habit = await _habitRepository.GetAsync(id);
@@ -144,7 +149,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             await _habitRepository.DeleteAsync(id);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> ActivateAsync(Guid id)
         {
             var habit = await _habitRepository.GetAsync(id);
@@ -160,7 +165,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> DeactivateAsync(Guid id)
         {
             var habit = await _habitRepository.GetAsync(id);
@@ -176,7 +181,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> AddCueAsync(Guid id, AddHabitCueDto input)
         {
             var habit = await _habitRepository.GetWithDetailsAsync(id);
@@ -192,7 +197,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> AddResponseAsync(Guid id, AddHabitResponseDto input)
         {
             var habit = await _habitRepository.GetWithDetailsAsync(id);
@@ -208,7 +213,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> AddRewardAsync(Guid id, AddHabitRewardDto input)
         {
             var habit = await _habitRepository.GetWithDetailsAsync(id);
@@ -224,7 +229,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> AddStrategyAsync(Guid id, AddHabitStrategyDto input)
         {
             var habit = await _habitRepository.GetWithDetailsAsync(id);
@@ -240,7 +245,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Edit)]
         public async Task<HabitDto> RemoveCueAsync(Guid habitId, Guid cueId)
         {
             var habit = await _habitRepository.GetWithDetailsAsync(habitId);
@@ -256,7 +261,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return await MapToGetOutputDtoAsync(habit);
         }
 
-        [Authorize(HabitsPermissions.Habits.Track)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Track)]
         public async Task<HabitTrackingDto> CompleteHabitAsync(Guid habitId, CompleteHabitDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -271,7 +276,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return ObjectMapper.Map<HabitTrackingEntry, HabitTrackingDto>(entry);
         }
 
-        [Authorize(HabitsPermissions.Habits.Track)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Habits.Track)]
         public async Task<HabitTrackingDto> UncompleteHabitAsync(Guid habitId, DateTime logDate)
         {
             var ownerId = CurrentUser.GetId();
@@ -288,7 +293,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
             return ObjectMapper.Map<HabitTrackingEntry, HabitTrackingDto>(entry);
         }
 
-        [Authorize(HabitsPermissions.Analytics.ViewOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Analytics.ViewOwn)]
         public async Task<HabitMetricsDto> GetMetricsAsync(Guid habitId)
         {
             var habit = await _habitRepository.GetAsync(habitId);
@@ -340,9 +345,9 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
 
         private ISpecification<Habit> CreateListSpecification(GetHabitListDto input, Guid ownerId)
         {
-            var spec = Specification<Habit>.True;
+            ISpecification<Habit> spec = new BaseSpecification<Habit>();
 
-            spec = spec.And(new Specification<Habit>(h => h.OwnerId == ownerId));
+            spec = spec.And(new BaseSpecification<Habit>(h => h.OwnerId == ownerId));
 
             if (input.HabitType.HasValue)
             {
@@ -357,7 +362,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
                 }
                 else
                 {
-                    spec = spec.And(new Specification<Habit>(h => !h.IsActive));
+                    spec = spec.And(new BaseSpecification<Habit>(h => !h.IsActive));
                 }
             }
 
@@ -368,7 +373,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
 
             if (input.ContextId.HasValue)
             {
-                spec = spec.And(new Specification<Habit>(h => h.ContextId == input.ContextId.Value));
+                spec = spec.And(new BaseSpecification<Habit>(h => h.ContextId == input.ContextId.Value));
             }
 
             if (input.ScheduledForDate.HasValue)
@@ -386,6 +391,21 @@ namespace NouAssist.PersonalDevelopment.Habits.Habits
                 "title" => h => h.Title,
                 "createdat" => h => h.CreationTime,
                 _ => h => h.Title
+            };
+        }
+
+        private static NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek ConvertDayOfWeek(System.DayOfWeek day)
+        {
+            return day switch
+            {
+                System.DayOfWeek.Sunday => NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek.Sunday,
+                System.DayOfWeek.Monday => NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek.Monday,
+                System.DayOfWeek.Tuesday => NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek.Tuesday,
+                System.DayOfWeek.Wednesday => NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek.Wednesday,
+                System.DayOfWeek.Thursday => NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek.Thursday,
+                System.DayOfWeek.Friday => NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek.Friday,
+                System.DayOfWeek.Saturday => NouAssist.PersonalDevelopment.Habits.Enums.DayOfWeek.Saturday,
+                _ => throw new ArgumentException($"Invalid day of week: {day}")
             };
         }
     }

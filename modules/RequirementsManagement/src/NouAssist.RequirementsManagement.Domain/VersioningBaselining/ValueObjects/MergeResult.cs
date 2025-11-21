@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.VersioningBaselining.Enums;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.ValueObjects
 {
     /// <summary>

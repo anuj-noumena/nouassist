@@ -1,3 +1,5 @@
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Enums;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Exceptions
 {
     /// <summary>

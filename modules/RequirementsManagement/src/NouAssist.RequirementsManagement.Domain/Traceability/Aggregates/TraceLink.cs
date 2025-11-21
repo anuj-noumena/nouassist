@@ -1,3 +1,14 @@
+using System;
+using NouAssist.RequirementsManagement.Traceability.Constants;
+using NouAssist.RequirementsManagement.Traceability.Entities;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+using NouAssist.RequirementsManagement.Traceability.Events;
+using NouAssist.RequirementsManagement.Traceability.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
+
 namespace NouAssist.RequirementsManagement.Traceability.Aggregates
 {
     /// <summary>

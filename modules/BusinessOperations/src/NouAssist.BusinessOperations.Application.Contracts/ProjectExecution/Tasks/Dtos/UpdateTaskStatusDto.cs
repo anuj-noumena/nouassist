@@ -31,6 +31,6 @@ namespace NouAssist.BusinessOperations.ProjectExecution.Tasks.Dtos
         /// New status for the task
         /// </summary>
         [Required]
-        public TaskStatus Status { get; set; }
+        public System.Threading.Tasks.TaskStatus Status { get; set; }
     }
 }

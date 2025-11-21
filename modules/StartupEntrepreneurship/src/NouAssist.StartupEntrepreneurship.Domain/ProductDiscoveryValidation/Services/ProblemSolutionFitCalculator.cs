@@ -1,3 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Enums;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Interfaces.Services;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Repositories;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.ValueObjects;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Services
 {
     /// <summary>
@@ -550,8 +562,8 @@ namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Services
 
             var projectedScore = trend switch
             {
-                "Improving" => Math.Min(100, lastPoint.Score + 15),
-                "Declining" => Math.Max(0, lastPoint.Score - 15),
+                "Improving" => Math.Min(100, (int)(lastPoint.Score + 15)),
+                "Declining" => Math.Max(0, (int)(lastPoint.Score - 15)),
                 _ => lastPoint.Score
             };
 
@@ -570,9 +582,9 @@ namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Services
                 },
                 Scenarios = new List<string>
                 {
-                    $"Best case: {Math.Min(100, projectedScore + 10)}%",
+                    $"Best case: {Math.Min(100, (int)(projectedScore + 10))}%",
                     $"Most likely: {projectedScore}%",
-                    $"Worst case: {Math.Max(0, projectedScore - 10)}%"
+                    $"Worst case: {Math.Max(0, (int)(projectedScore - 10))}%"
                 }
             };
         }

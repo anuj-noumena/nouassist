@@ -1,3 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.Elicitation.Constants;
+using NouAssist.RequirementsManagement.Elicitation.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.RequirementsManagement.Elicitation.ValueObjects
 {
     /// <summary>

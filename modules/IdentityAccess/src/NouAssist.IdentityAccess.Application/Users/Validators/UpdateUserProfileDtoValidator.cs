@@ -1,3 +1,4 @@
+using FluentValidation;
 using NouAssist.IdentityAccess.Users.Users.Dtos;
 
 namespace NouAssist.IdentityAccess.Users.Validators

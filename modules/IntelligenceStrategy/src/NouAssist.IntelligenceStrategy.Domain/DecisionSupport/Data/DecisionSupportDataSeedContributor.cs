@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using NouAssist.DecisionSupport.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Guids;

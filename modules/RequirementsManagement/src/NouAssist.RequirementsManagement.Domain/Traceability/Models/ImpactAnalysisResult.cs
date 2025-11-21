@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+
 namespace NouAssist.RequirementsManagement.Traceability.Models
 {
     /// <summary>

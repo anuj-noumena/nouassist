@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -9,7 +10,10 @@ using NouAssist.IntelligenceStrategy.AnalyticsReporting.DataSources.Dtos;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Exceptions;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Localization;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Permissions;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Services;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp;

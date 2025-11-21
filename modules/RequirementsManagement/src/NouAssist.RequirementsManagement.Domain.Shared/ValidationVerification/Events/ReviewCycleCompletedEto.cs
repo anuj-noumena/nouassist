@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.ValidationVerification.Enums;
+using NouAssist.RequirementsManagement.ValidationVerification.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.RequirementsManagement.ValidationVerification.Events
 {
     /// <summary>

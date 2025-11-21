@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Contract;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Contract;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Portfolio;
 using NouAssist.ContractPortfolioManagement.Aggregates.Contract;
 using NouAssist.ContractPortfolioManagement.Aggregates.Portfolio;
 using NouAssist.ContractPortfolioManagement.Entities.Contract;

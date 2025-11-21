@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.BusinessOperations.ResourceInventoryManagement.Aggregates.ResourceInstance;

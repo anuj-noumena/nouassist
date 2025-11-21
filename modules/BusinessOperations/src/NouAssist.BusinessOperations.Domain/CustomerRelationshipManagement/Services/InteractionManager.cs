@@ -1,3 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Entities;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Repositories;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Services.Interfaces;
+using Volo.Abp.Domain.Services;
+using Volo.Abp.Guids;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Services
 {
     /// <summary>

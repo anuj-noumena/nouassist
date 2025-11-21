@@ -1,3 +1,7 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.BusinessOperations.FreelanceOperations.Aggregates;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Specifications
 {
     /// <summary>

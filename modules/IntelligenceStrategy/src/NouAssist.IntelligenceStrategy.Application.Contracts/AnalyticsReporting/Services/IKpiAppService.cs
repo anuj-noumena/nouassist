@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NouAssist.Analytics.DTOs.KPI;
 using NouAssist.Analytics.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Entities;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Repositories
 {
     /// <summary>

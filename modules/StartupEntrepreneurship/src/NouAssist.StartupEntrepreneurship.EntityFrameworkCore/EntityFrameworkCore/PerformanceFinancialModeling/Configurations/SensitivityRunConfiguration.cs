@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Constants;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Entities;
 
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.EntityFrameworkCore.Configurations

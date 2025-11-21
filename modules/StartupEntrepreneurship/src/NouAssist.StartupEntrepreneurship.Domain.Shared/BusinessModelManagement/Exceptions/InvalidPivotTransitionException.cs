@@ -1,3 +1,5 @@
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Exceptions
 {
     /// <summary>

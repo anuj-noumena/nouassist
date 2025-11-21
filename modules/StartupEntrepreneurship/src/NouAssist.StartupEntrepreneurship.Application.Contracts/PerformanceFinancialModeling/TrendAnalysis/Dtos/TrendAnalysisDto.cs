@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Dtos.Base;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.TrendAnalysis.Dtos
 {
     /// <summary>

@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Entities
 {
     /// <summary>

@@ -1,3 +1,5 @@
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Exceptions
 {
     /// <summary>

@@ -1,3 +1,5 @@
+using Volo.Abp.Specifications;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Specifications.Base
 {
     /// <summary>

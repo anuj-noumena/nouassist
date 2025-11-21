@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.ValueObjects;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Services
 {
     /// <summary>

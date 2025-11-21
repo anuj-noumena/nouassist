@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Constants;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Entities
 {
     /// <summary>

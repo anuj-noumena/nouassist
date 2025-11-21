@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Constants;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowDefinition
 {
     /// <summary>

@@ -1,3 +1,5 @@
+using Volo.Abp.Localization;
+
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Localization
 {
     /// <summary>

@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Aggregates;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.Interfaces.Services
 {
     /// <summary>

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Branching.Dtos

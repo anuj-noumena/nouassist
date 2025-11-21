@@ -1,3 +1,13 @@
+using System;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Constants;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Exceptions;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.Aggregates
 {
     /// <summary>

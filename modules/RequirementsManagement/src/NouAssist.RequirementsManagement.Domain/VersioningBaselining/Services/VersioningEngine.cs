@@ -1,3 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.VersioningBaselining.Aggregates;
+using NouAssist.RequirementsManagement.VersioningBaselining.Entities;
+using NouAssist.RequirementsManagement.VersioningBaselining.Exceptions;
+using NouAssist.RequirementsManagement.VersioningBaselining.Repositories;
+using NouAssist.RequirementsManagement.VersioningBaselining.Services.Interfaces;
+using NouAssist.RequirementsManagement.VersioningBaselining.ValueObjects;
+using Volo.Abp.Domain.Services;
+using Volo.Abp.Guids;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Services
 {
     /// <summary>

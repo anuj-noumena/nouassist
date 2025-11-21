@@ -1,6 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Aggregates;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -82,15 +88,13 @@ namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.EntityFrameworkCo
             }
             
             // Filter by demographics (which are in a ValueObject)
-            query = query
-                .WhereIf(
-                    !string.IsNullOrEmpty(ageRange),
-                    s => EF.Property<string>(s, "Demographics_AgeRange").Contains(ageRange))
-                .WhereIf(
-                    !string.IsNullOrEmpty(income),
-                    s => EF.Property<string>(s, "Demographics_Income").Contains(income))
-                .WhereIf(
-                    !string.IsNullOrEmpty(location),
+            query = AbpEnumerableExtensions.WhereIf(query
+                        .WhereIf(
+                            !string.IsNullOrEmpty(ageRange),
+                            s => EF.Property<string>(s, "Demographics_AgeRange").Contains(ageRange))
+                        .WhereIf(
+                            !string.IsNullOrEmpty(income),
+                            s => EF.Property<string>(s, "Demographics_Income").Contains(income)), !string.IsNullOrEmpty(location),
                     s => EF.Property<string>(s, "Demographics_Location").Contains(location));
             
             return await query.ToListAsync(cancellationToken);
@@ -108,8 +112,7 @@ namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.EntityFrameworkCo
                 query = query.Include(s => s.Characteristics);
             }
             
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .ToListAsync(cancellationToken);
         }
 

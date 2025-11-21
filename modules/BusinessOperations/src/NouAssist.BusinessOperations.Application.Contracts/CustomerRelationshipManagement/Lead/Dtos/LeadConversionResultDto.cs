@@ -1,3 +1,5 @@
+using System;
+
 /// <summary>
     /// Data transfer object for lead conversion result
     /// </summary>

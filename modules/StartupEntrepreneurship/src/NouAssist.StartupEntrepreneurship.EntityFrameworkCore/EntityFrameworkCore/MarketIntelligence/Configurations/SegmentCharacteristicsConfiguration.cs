@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Constants;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 

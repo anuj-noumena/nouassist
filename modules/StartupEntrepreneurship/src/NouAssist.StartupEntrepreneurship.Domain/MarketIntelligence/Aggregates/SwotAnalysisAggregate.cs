@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Constants;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Entities;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Events;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Aggregates
 {
     /// <summary>

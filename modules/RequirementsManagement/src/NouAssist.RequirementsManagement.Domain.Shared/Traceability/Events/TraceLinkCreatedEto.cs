@@ -1,3 +1,7 @@
+using System;
+using NouAssist.RequirementsManagement.Traceability.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.RequirementsManagement.Traceability.Events
 {
     /// <summary>

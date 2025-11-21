@@ -1,3 +1,4 @@
+using System;
 using System.Linq.Expressions;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.Aggregates;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.Enums;

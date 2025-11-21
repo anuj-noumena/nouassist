@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Portfolio;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Exceptions;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Interfaces.Services;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Repositories;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Services
 {
     /// <summary>

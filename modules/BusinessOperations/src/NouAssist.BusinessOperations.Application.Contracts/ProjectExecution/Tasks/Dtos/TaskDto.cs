@@ -126,7 +126,7 @@ namespace NouAssist.BusinessOperations.ProjectExecution.Tasks.Dtos
         /// <summary>
         /// Status of the task
         /// </summary>
-        public TaskStatus Status { get; set; }
+        public System.Threading.Tasks.TaskStatus Status { get; set; }
         
         /// <summary>
         /// String representation of the task status

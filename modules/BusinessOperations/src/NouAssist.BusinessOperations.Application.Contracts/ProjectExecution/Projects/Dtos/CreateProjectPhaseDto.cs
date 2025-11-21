@@ -68,7 +68,7 @@ namespace NouAssist.BusinessOperations.ProjectExecution.Projects.Dtos
         /// Order of the phase within the project
         /// </summary>
         [Required]
-        [Range(1, int.MaxValue)]
+        [System.ComponentModel.DataAnnotations.Range(1, int.MaxValue)]
         public int Order { get; set; }
     }
 }

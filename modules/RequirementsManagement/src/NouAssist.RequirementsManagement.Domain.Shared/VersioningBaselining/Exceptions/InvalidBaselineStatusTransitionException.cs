@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.VersioningBaselining.Enums;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Exceptions
 {
     /// <summary>

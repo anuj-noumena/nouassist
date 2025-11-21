@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.RequirementsManagement.ValidationVerification.Constants;
 using NouAssist.RequirementsManagement.ValidationVerification.Enums;
 
 namespace NouAssist.RequirementsManagement.ValidationVerification.TestCases.Dtos

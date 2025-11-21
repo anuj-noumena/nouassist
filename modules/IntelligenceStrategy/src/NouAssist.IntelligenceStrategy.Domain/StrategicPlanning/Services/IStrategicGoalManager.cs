@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Aggregates;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Enums;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Services
 {
     /// <summary>

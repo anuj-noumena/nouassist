@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Constants;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;

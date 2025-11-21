@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Analytics.Dtos;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.DueDiligenceDataRooms.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;

@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.ValidationVerification.Enums;
+
 namespace NouAssist.RequirementsManagement.ValidationVerification.Exceptions
 {
     /// <summary>

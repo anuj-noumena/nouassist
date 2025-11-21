@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+
 namespace NouAssist.RequirementsManagement.Traceability.Events.Base
 {
     /// <summary>

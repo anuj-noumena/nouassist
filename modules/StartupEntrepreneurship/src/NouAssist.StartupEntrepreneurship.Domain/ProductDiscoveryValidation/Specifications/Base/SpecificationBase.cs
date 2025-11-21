@@ -1,3 +1,6 @@
+using System;
+using System.Linq.Expressions;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Specifications.Base
 {
     /// <summary>

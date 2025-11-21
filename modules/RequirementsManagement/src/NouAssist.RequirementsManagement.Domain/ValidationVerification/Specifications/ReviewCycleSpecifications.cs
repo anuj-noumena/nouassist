@@ -1,3 +1,6 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.ValidationVerification.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.RequirementsManagement.ValidationVerification.Specifications

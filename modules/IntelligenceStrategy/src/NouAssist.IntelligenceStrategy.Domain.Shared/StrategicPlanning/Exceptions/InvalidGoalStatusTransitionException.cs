@@ -1,3 +1,5 @@
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Enums;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Exceptions
 {
     /// <summary>

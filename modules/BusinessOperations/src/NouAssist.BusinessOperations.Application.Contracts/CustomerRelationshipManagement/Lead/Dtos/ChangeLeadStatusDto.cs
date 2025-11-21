@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+
 /// <summary>
     /// Data transfer object for changing lead status
     /// </summary>

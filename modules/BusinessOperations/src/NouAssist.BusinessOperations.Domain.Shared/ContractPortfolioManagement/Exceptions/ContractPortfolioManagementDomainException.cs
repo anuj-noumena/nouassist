@@ -1,3 +1,5 @@
+using Volo.Abp;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Exceptions
 {
     /// <summary>

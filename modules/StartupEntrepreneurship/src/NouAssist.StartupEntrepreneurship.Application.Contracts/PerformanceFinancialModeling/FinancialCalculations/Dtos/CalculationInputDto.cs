@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Constants;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.FinancialCalculations.Dtos
 {
     /// <summary>

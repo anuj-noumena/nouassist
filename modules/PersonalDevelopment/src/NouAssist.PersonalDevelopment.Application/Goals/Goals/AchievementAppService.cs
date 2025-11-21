@@ -1,3 +1,4 @@
+using Volo.Abp.Users;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,13 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using NouAssist.PersonalDevelopment.Goals.Data;
 using NouAssist.PersonalDevelopment.Goals.Dtos;
-using NouAssist.PersonalDevelopment.Goals.Permissions;
+using NouAssist.PersonalDevelopment.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.PersonalDevelopment.Goals.Goals
 {
-    [Authorize(GoalsPermissions.Achievements.Default)]
+    [Authorize(PersonalDevelopmentPermissions.Goal.Achievements.Default)]
     public class AchievementAppService : ApplicationService, IAchievementAppService
     {
         private readonly IAchievementRepository _achievementRepository;
@@ -25,7 +26,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             _userAchievementRepository = userAchievementRepository;
         }
 
-        [Authorize(GoalsPermissions.Achievements.View)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Achievements.View)]
         public async Task<ListResultDto<AchievementDto>> GetActiveAchievementsAsync()
         {
             var achievements = await _achievementRepository.GetActiveAchievementsAsync();
@@ -37,10 +38,10 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
         {
             var userId = CurrentUser.GetId();
             var userAchievements = await _userAchievementRepository.GetByUserAsync(userId);
-            
+
             // Load achievement details
             var achievementIds = userAchievements.Select(ua => ua.AchievementId).ToList();
-            var achievements = await _achievementRepository.GetListAsync(achievementIds);
+            var achievements = await _achievementRepository.GetListAsync(a => achievementIds.Contains(a.Id));
             
             var dtos = userAchievements.Select(ua =>
             {

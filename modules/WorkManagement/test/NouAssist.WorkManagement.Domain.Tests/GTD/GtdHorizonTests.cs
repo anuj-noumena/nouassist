@@ -14,7 +14,7 @@ namespace NouAssist.WorkManagement.GTD
             // Arrange
             var ownerId = Guid.NewGuid();
             var title = "Life Purpose";
-            var horizonLevel = GtdHorizonLevel.Horizon5_Purpose;
+            var horizonLevel = GtdHorizonLevel.Horizon5Purpose;
 
             // Act
             var horizon = new GtdHorizon(
@@ -39,7 +39,7 @@ namespace NouAssist.WorkManagement.GTD
             var horizon = new GtdHorizon(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
-                GtdHorizonLevel.Horizon5_Purpose,
+                GtdHorizonLevel.Horizon5Purpose,
                 "Life Purpose");
 
             // Act
@@ -56,11 +56,11 @@ namespace NouAssist.WorkManagement.GTD
             var horizon = new GtdHorizon(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
-                GtdHorizonLevel.Horizon5_Purpose,
+                GtdHorizonLevel.Horizon5Purpose,
                 "Life Purpose");
 
             // Act
-            horizon.Deactivate();
+            horizon.IsActive = false;
 
             // Assert
             horizon.IsActive.ShouldBeFalse();
@@ -73,7 +73,7 @@ namespace NouAssist.WorkManagement.GTD
             var horizon = new GtdHorizon(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
-                GtdHorizonLevel.Horizon5_Purpose,
+                GtdHorizonLevel.Horizon5Purpose,
                 "Life Purpose");
 
             // Act
@@ -91,12 +91,12 @@ namespace NouAssist.WorkManagement.GTD
             var horizon = new GtdHorizon(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
-                GtdHorizonLevel.Horizon5_Purpose,
+                GtdHorizonLevel.Horizon5Purpose,
                 "Life Purpose");
             horizon.AddCoreValue("Integrity");
 
             // Act
-            horizon.RemoveCoreValue("Integrity");
+            horizon.CoreValues.Remove("Integrity");
 
             // Assert
             horizon.CoreValues.Count.ShouldBe(0);
@@ -109,12 +109,12 @@ namespace NouAssist.WorkManagement.GTD
             var horizon = new GtdHorizon(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
-                GtdHorizonLevel.Horizon5_Purpose,
+                GtdHorizonLevel.Horizon5Purpose,
                 "Life Purpose");
             var initialReviewCount = horizon.ReviewCount;
 
             // Act
-            horizon.MarkReviewed();
+            horizon.MarkAsReviewed();
 
             // Assert
             horizon.LastReviewedAt.ShouldNotBeNull();
@@ -128,14 +128,14 @@ namespace NouAssist.WorkManagement.GTD
             var horizon = new GtdHorizon(
                 Guid.NewGuid(),
                 Guid.NewGuid(),
-                GtdHorizonLevel.Horizon5_Purpose,
+                GtdHorizonLevel.Horizon5Purpose,
                 "Life Purpose");
 
             // Act
-            horizon.SetReviewFrequency(HorizonReviewFrequency.Yearly);
+            horizon.UpdateReviewFrequency(HorizonReviewFrequency.Annually);
 
             // Assert
-            horizon.ReviewFrequency.ShouldBe(HorizonReviewFrequency.Yearly);
+            horizon.ReviewFrequency.ShouldBe(HorizonReviewFrequency.Annually);
         }
     }
 }

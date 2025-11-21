@@ -9,8 +9,12 @@ using NouAssist.Analytics.Entities;
 using NouAssist.Analytics.Interfaces.Services;
 using NouAssist.Analytics.Permissions;
 using NouAssist.Analytics.Repositories;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.Analytics.Services
 {

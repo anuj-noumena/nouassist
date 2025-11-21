@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Services;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.Reports.Dtos;

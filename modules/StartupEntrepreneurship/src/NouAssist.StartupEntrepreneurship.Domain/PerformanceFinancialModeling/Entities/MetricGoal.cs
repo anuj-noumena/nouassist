@@ -1,3 +1,9 @@
+using System;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Constants;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Entities
 {
     /// <summary>

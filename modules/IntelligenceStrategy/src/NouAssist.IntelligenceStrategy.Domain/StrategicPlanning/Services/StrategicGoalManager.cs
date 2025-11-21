@@ -1,3 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Aggregates;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Enums;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Exceptions;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Repositories;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Specifications;
+using Volo.Abp;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Services
 {
     /// <summary>

@@ -1,4 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.RequirementsManagement.ChangeManagement.Aggregates;
 using NouAssist.RequirementsManagement.ChangeManagement.Enums;
@@ -28,8 +33,7 @@ namespace NouAssist.RequirementsManagement.ChangeManagement.EntityFrameworkCore.
             CancellationToken cancellationToken = default)
         {
             var query = await GetQueryableAsync();
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .ToListAsync(cancellationToken);
         }
 
@@ -38,8 +42,7 @@ namespace NouAssist.RequirementsManagement.ChangeManagement.EntityFrameworkCore.
             CancellationToken cancellationToken = default)
         {
             var query = await GetQueryableAsync();
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .CountAsync(cancellationToken);
         }
 
@@ -48,8 +51,7 @@ namespace NouAssist.RequirementsManagement.ChangeManagement.EntityFrameworkCore.
             CancellationToken cancellationToken = default)
         {
             var query = await GetQueryableAsync();
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .AnyAsync(cancellationToken);
         }
 

@@ -1,3 +1,8 @@
+using System;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Entities
 {
     /// <summary>

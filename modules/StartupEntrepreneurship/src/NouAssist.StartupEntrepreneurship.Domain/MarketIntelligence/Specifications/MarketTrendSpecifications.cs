@@ -1,4 +1,6 @@
+using System;
 using System.Linq.Expressions;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Specifications

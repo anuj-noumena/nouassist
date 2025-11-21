@@ -1,3 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.Elicitation.Aggregates;
+using NouAssist.RequirementsManagement.Elicitation.Enums;
+using NouAssist.RequirementsManagement.Elicitation.Exceptions;
+using NouAssist.RequirementsManagement.Elicitation.Specifications;
+using NouAssist.RequirementsManagement.Elicitation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Services
 {
     /// <summary>

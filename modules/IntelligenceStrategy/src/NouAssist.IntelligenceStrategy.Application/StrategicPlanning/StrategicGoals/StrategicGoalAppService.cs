@@ -4,13 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Aggregates;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Localization;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Permissions;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Repositories;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Services;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.Specifications;
 using NouAssist.IntelligenceStrategy.StrategicPlanning.StrategicGoals.Dtos;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Authorization;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Users;
 

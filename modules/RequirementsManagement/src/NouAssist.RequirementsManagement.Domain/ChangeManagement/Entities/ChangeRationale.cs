@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.ChangeManagement.Constants;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.RequirementsManagement.ChangeManagement.Entities

@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.InvestorProfiles.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;

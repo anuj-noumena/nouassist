@@ -1,4 +1,5 @@
 using FluentValidation;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Constants;
 using NouAssist.IntelligenceStrategy.DecisionSupport.DecisionModels.Dtos;
 
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Validation

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Volo.Abp.Domain.Values;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Exceptions;
 

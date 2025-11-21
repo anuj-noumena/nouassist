@@ -1,11 +1,12 @@
 using System;
 using Volo.Abp;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
 namespace NouAssist.IdentityAccess.Team.Entities
 {
-    public class UserRole : FullAuditedEntity<Guid>, IMultiTenant
+    public class UserRole : FullAuditedEntity<Guid>, IMultiTenant, IHasConcurrencyStamp
     {
         public Guid UserId { get; private set; }
         public Guid RoleId { get; private set; }
@@ -86,5 +87,7 @@ namespace NouAssist.IdentityAccess.Team.Entities
 
             return true;
         }
+
+        public string ConcurrencyStamp { get; set; }
     }
 }

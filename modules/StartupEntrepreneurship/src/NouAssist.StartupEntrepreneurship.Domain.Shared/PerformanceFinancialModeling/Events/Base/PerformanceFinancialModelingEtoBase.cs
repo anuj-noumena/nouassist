@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Events.Base
 {
     /// <summary>

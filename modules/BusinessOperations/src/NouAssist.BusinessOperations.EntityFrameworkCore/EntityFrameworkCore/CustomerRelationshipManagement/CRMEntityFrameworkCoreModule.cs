@@ -1,4 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Entities;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Repositories;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Modularity;

@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Specifications;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories
 {
     /// <summary>

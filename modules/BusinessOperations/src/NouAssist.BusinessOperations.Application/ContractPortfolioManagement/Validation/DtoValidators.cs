@@ -1,5 +1,6 @@
 using System;
 using FluentValidation;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Constants;
 using NouAssist.ContractPortfolioManagement.Constants;
 using NouAssist.ContractPortfolioManagement.Contracts.Dtos;
 using NouAssist.ContractPortfolioManagement.Portfolios.Dtos;

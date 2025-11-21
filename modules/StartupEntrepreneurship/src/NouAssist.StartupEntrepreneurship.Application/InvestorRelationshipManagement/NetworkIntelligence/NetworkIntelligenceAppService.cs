@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Localization;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.NetworkIntelligence.Dtos;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Permissions;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Repositories;

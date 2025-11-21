@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Repositories;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Data
 {
     /// <summary>

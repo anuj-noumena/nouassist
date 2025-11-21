@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Enums;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Repositories;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Data
 {
     /// <summary>

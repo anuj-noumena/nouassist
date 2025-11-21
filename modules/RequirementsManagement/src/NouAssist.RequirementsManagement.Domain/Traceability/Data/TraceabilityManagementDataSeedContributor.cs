@@ -1,3 +1,14 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Traceability.Aggregates;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+using NouAssist.RequirementsManagement.Traceability.Repositories;
+using NouAssist.RequirementsManagement.Traceability.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.Traceability.Data
 {
     /// <summary>

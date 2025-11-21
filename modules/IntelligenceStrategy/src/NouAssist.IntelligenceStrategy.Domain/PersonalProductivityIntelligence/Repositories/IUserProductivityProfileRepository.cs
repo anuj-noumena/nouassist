@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Aggregates;
+using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Enums;
 using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Repositories

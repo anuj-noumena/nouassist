@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Services.Interfaces;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;

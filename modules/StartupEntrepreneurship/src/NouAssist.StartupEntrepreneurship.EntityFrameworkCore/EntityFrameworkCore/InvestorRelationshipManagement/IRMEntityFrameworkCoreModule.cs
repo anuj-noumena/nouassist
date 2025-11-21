@@ -4,6 +4,7 @@ using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Entities;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Repositories;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.EntityFrameworkCore.Repositories;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;
 

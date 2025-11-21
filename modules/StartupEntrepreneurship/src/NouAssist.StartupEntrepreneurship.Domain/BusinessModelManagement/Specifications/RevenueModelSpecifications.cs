@@ -1,3 +1,10 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Aggregates;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Specifications.Base;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Specifications
 {
     /// <summary>

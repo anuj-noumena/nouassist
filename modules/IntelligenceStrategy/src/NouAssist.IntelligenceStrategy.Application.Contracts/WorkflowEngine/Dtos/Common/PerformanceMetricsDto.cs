@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.Common
 {
     /// <summary>

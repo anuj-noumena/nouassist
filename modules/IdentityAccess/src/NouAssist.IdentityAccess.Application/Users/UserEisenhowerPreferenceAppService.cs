@@ -1,8 +1,9 @@
+using Volo.Abp.Users;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.IdentityAccess.Users.Aggregates;
 using NouAssist.IdentityAccess.Users.Data;
-using NouAssist.IdentityAccess.Users.Permissions;
+using NouAssist.IdentityAccess.Permissions;
 using NouAssist.IdentityAccess.Users.Users;
 using NouAssist.IdentityAccess.Users.Users.Dtos;
 using Volo.Abp;
@@ -10,7 +11,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.IdentityAccess.Users
 {
-    [Authorize(UsersPermissions.Users.ManageSettings)]
+    [Authorize(IdentityAccessPermissions.Users.UserManagement.ManageSettings)]
     public class UserEisenhowerPreferenceAppService : ApplicationService, IUserEisenhowerPreferenceAppService
     {
         private readonly IUserEisenhowerPreferenceRepository _preferenceRepository;

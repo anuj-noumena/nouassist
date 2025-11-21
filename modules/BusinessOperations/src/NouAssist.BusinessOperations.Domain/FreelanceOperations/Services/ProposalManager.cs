@@ -1,3 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.BusinessOperations.FreelanceOperations.Entities;
+using NouAssist.BusinessOperations.FreelanceOperations.Exceptions;
+using NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Repositories;
+using NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Services;
+using NouAssist.BusinessOperations.FreelanceOperations.Specifications;
+using NouAssist.BusinessOperations.FreelanceOperations.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Services;
+using Volo.Abp.Guids;
+using Volo.Abp.Users;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Services
 {
     /// <summary>

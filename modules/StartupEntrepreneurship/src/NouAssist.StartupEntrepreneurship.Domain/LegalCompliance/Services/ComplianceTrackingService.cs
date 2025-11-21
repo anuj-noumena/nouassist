@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Aggregates;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Interfaces.Repositories;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Interfaces.Services;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.ValueObjects;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.Services
 {
     /// <summary>

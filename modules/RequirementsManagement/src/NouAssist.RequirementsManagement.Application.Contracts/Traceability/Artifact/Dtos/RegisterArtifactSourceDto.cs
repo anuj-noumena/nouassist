@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.RequirementsManagement.Traceability.Enums;
 using NouAssist.RequirementsManagement.Traceability.Constants;

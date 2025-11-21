@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Enums;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Exceptions;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.ValueObjects
 {
     /// <summary>

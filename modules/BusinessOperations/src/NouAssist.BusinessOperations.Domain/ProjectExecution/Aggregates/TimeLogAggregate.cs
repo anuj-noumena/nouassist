@@ -1,3 +1,9 @@
+using System;
+using NouAssist.BusinessOperations.ProjectExecution.Events;
+using NouAssist.BusinessOperations.ProjectExecution.ValueObjects;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.Aggregates
 {
     /// <summary>

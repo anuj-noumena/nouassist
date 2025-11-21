@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Constants;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.StrategicInitiatives.Dtos

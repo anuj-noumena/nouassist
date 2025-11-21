@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.ValueObjects
 {
     /// <summary>

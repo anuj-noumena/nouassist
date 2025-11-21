@@ -1,3 +1,7 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.FreelanceOperations.ValueObjects;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Repositories
 {
     /// <summary>

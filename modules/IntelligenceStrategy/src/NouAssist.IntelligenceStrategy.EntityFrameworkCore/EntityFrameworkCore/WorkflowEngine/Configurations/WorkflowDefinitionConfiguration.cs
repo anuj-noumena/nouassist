@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Constants;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.EntityFrameworkCore.Configurations

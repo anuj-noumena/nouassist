@@ -1,3 +1,9 @@
+using System;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Constants;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Entities
 {
     /// <summary>

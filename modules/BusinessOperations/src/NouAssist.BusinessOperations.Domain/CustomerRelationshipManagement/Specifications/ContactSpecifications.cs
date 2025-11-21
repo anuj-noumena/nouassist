@@ -1,3 +1,8 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Specifications
 {
     /// <summary>

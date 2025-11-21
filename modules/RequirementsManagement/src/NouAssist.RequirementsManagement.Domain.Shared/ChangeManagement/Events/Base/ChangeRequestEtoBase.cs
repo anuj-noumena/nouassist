@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.ChangeManagement.Enums;
+
 namespace NouAssist.RequirementsManagement.ChangeManagement.Events.Base
 {
     /// <summary>

@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.Traceability.Models;
+using NouAssist.RequirementsManagement.Traceability.Services.Interfaces;
+using Volo.Abp.Domain.Services;
+using Volo.Abp.Timing;
+
 namespace NouAssist.RequirementsManagement.Traceability.Services
 {
     /// <summary>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.BusinessOperations.ResourceInventoryManagement.Constants;
 using NouAssist.BusinessOperations.ResourceInventoryManagement.Enums;

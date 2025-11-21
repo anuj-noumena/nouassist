@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.FreelanceOperations.Aggregates;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Repositories
 {
     /// <summary>

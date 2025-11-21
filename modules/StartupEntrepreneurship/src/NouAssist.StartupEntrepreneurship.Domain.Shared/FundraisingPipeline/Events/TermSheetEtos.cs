@@ -1,3 +1,7 @@
+using System;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Events
 {
     /// <summary>

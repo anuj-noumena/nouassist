@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+
 namespace NouAssist.RequirementsManagement.Specification.Specifications.Base
 {
     /// <summary>

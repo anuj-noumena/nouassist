@@ -1,6 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Aggregates;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -120,8 +126,7 @@ namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.EntityFrameworkCo
                 query = query.Include(t => t.DataSources);
             }
             
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .ToListAsync(cancellationToken);
         }
 

@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Constants;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Entities;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Exceptions;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Aggregates
 {
     /// <summary>

@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.Elicitation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Entities
 {
     /// <summary>

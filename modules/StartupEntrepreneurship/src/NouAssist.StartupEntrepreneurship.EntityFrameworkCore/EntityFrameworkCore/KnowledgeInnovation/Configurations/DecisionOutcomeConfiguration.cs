@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities;

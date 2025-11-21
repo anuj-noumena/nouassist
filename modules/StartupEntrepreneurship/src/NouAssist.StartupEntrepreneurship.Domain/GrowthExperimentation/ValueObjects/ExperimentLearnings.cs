@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.ValueObjects
 {
     /// <summary>

@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+using NouAssist.RequirementsManagement.QualityAssurance.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Events
 {
     /// <summary>

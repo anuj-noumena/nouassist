@@ -25,6 +25,7 @@ namespace NouAssist.WorkManagement.Approval
                 entityType,
                 entityId,
                 requestedBy,
+                null,
                 title);
 
             // Assert
@@ -38,7 +39,7 @@ namespace NouAssist.WorkManagement.Approval
         }
 
         [Fact]
-        public void Submit_Should_ChangeStatusToInProgress()
+        public void MoveToStep_Should_ChangeStatusToInProgress()
         {
             // Arrange
             var approvalRequest = new ApprovalRequest(
@@ -47,14 +48,15 @@ namespace NouAssist.WorkManagement.Approval
                 "Task",
                 Guid.NewGuid(),
                 Guid.NewGuid(),
+                null,
                 "Test Request");
 
             // Act
-            approvalRequest.Submit();
+            approvalRequest.MoveToStep(Guid.NewGuid());
 
             // Assert
             approvalRequest.Status.ShouldBe(ApprovalStatus.InProgress);
-            approvalRequest.SubmittedAt.ShouldNotBeNull();
+            approvalRequest.SubmittedAt.ShouldBeGreaterThan(DateTime.MinValue);
         }
 
         [Fact]
@@ -67,8 +69,9 @@ namespace NouAssist.WorkManagement.Approval
                 "Task",
                 Guid.NewGuid(),
                 Guid.NewGuid(),
+                null,
                 "Test Request");
-            approvalRequest.Submit();
+            approvalRequest.MoveToStep(Guid.NewGuid());
 
             // Act
             approvalRequest.Approve(Guid.NewGuid());
@@ -88,11 +91,12 @@ namespace NouAssist.WorkManagement.Approval
                 "Task",
                 Guid.NewGuid(),
                 Guid.NewGuid(),
+                null,
                 "Test Request");
-            approvalRequest.Submit();
+            approvalRequest.MoveToStep(Guid.NewGuid());
 
             // Act
-            approvalRequest.Reject(Guid.NewGuid(), "Does not meet requirements");
+            approvalRequest.Reject(Guid.NewGuid());
 
             // Assert
             approvalRequest.Status.ShouldBe(ApprovalStatus.Rejected);
@@ -109,6 +113,7 @@ namespace NouAssist.WorkManagement.Approval
                 "Task",
                 Guid.NewGuid(),
                 Guid.NewGuid(),
+                null,
                 "Test Request");
             var cancelledBy = Guid.NewGuid();
 
@@ -122,7 +127,7 @@ namespace NouAssist.WorkManagement.Approval
         }
 
         [Fact]
-        public void SetCurrentStep_Should_UpdateCurrentStepId()
+        public void MoveToStep_Should_UpdateCurrentStepId()
         {
             // Arrange
             var approvalRequest = new ApprovalRequest(
@@ -131,11 +136,12 @@ namespace NouAssist.WorkManagement.Approval
                 "Task",
                 Guid.NewGuid(),
                 Guid.NewGuid(),
+                null,
                 "Test Request");
             var stepId = Guid.NewGuid();
 
             // Act
-            approvalRequest.SetCurrentStep(stepId);
+            approvalRequest.MoveToStep(stepId);
 
             // Assert
             approvalRequest.CurrentStepId.ShouldBe(stepId);

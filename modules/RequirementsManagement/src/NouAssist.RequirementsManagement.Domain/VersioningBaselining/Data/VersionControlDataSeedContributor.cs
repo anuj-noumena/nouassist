@@ -1,3 +1,13 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.VersioningBaselining.Aggregates;
+using NouAssist.RequirementsManagement.VersioningBaselining.Repositories;
+using NouAssist.RequirementsManagement.VersioningBaselining.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Data
 {
     /// <summary>

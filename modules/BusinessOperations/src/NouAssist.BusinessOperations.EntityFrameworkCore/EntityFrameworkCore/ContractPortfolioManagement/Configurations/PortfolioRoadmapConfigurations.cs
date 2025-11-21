@@ -1,6 +1,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Constants;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Portfolio;
 using NouAssist.ContractPortfolioManagement.Aggregates.Portfolio;
 using NouAssist.ContractPortfolioManagement.Constants;
 using NouAssist.ContractPortfolioManagement.Entities.Portfolio;

@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.BusinessOperations.FreelanceOperations.Constants;
+using NouAssist.BusinessOperations.FreelanceOperations.Enums;
+using NouAssist.BusinessOperations.FreelanceOperations.Events;
+using NouAssist.BusinessOperations.FreelanceOperations.Exceptions;
+using NouAssist.BusinessOperations.FreelanceOperations.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Aggregates
 {
     /// <summary>

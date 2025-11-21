@@ -1,3 +1,5 @@
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Exceptions
 {
     /// <summary>

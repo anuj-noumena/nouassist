@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.Traceability.Aggregates;
 using NouAssist.RequirementsManagement.Traceability.Enums;
 using NouAssist.RequirementsManagement.Traceability.Exceptions;
+using NouAssist.RequirementsManagement.Traceability.Localization;
 using NouAssist.RequirementsManagement.Traceability.Permissions;
 using NouAssist.RequirementsManagement.Traceability.Repositories;
 using NouAssist.RequirementsManagement.Traceability.Services.Interfaces;
@@ -16,7 +17,10 @@ using NouAssist.RequirementsManagement.Traceability.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Guids;
+using Volo.Abp.Timing;
 
 namespace NouAssist.RequirementsManagement.Traceability.TraceLink
 {

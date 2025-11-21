@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Constants;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Entities;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Events;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Exceptions;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Aggregates
 {
     /// <summary>

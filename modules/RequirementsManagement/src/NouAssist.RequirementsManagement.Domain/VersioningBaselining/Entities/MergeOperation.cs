@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.VersioningBaselining.Enums;
+using NouAssist.RequirementsManagement.VersioningBaselining.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Entities
 {
     /// <summary>

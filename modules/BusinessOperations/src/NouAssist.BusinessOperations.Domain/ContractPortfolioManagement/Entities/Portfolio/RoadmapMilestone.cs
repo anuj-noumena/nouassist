@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Portfolio
 {
     /// <summary>

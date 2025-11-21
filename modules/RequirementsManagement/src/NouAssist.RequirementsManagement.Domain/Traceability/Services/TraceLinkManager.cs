@@ -1,3 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.Traceability.Aggregates;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+using NouAssist.RequirementsManagement.Traceability.Events;
+using NouAssist.RequirementsManagement.Traceability.Exceptions;
+using NouAssist.RequirementsManagement.Traceability.Repositories;
+using NouAssist.RequirementsManagement.Traceability.Services.Interfaces;
+using NouAssist.RequirementsManagement.Traceability.ValueObjects;
+using Volo.Abp.Domain.Services;
+using Volo.Abp.Guids;
+using Volo.Abp.Timing;
+
 namespace NouAssist.RequirementsManagement.Traceability.Services
 {
     /// <summary>

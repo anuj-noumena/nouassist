@@ -1,3 +1,5 @@
+using Volo.Abp;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Exceptions
 {
     /// <summary>

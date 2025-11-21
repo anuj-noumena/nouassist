@@ -1,3 +1,4 @@
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Localization;
 using NouAssist.ContractPortfolioManagement.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;

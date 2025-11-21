@@ -1,3 +1,4 @@
+using System;
 using FluentValidation;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Constants;
 using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Prospect.Dtos;

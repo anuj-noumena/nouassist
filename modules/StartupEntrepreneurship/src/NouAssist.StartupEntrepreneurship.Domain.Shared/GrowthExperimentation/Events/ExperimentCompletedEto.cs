@@ -1,3 +1,7 @@
+using System;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Events
 {
     /// <summary>

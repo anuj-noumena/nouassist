@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Enums;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Specifications;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Repositories
 {
     /// <summary>

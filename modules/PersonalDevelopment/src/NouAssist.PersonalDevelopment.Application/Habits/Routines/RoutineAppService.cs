@@ -1,3 +1,4 @@
+using Volo.Abp.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,16 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using NouAssist.PersonalDevelopment.Habits.Data;
-using NouAssist.PersonalDevelopment.Habits.Permissions;
+using NouAssist.PersonalDevelopment.Permissions;
 using NouAssist.PersonalDevelopment.Habits.Routines.Dtos;
 using NouAssist.PersonalDevelopment.Habits.Services;
+using NouAssist.SharedKernel.Specifications;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.PersonalDevelopment.Habits.Routines
 {
-    [Authorize(HabitsPermissions.Routines.Default)]
+    [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Default)]
     public class RoutineAppService : ApplicationService, IRoutineAppService
     {
         private readonly IRoutineRepository _routineRepository;
@@ -88,7 +90,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return new PagedResultDto<RoutineDto>(totalCount, routineDtos);
         }
 
-        [Authorize(HabitsPermissions.Routines.Create)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Create)]
         public async Task<RoutineDto> CreateAsync(CreateRoutineDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -114,7 +116,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return await MapToGetOutputDtoAsync(routine);
         }
 
-        [Authorize(HabitsPermissions.Routines.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Edit)]
         public async Task<RoutineDto> UpdateAsync(Guid id, UpdateRoutineDto input)
         {
             var routine = await _routineRepository.GetAsync(id);
@@ -139,7 +141,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return await MapToGetOutputDtoAsync(routine);
         }
 
-        [Authorize(HabitsPermissions.Routines.Delete)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var routine = await _routineRepository.GetAsync(id);
@@ -152,7 +154,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             await _routineRepository.DeleteAsync(id);
         }
 
-        [Authorize(HabitsPermissions.Routines.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Edit)]
         public async Task<RoutineDto> ActivateAsync(Guid id)
         {
             var routine = await _routineRepository.GetAsync(id);
@@ -168,7 +170,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return await MapToGetOutputDtoAsync(routine);
         }
 
-        [Authorize(HabitsPermissions.Routines.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Edit)]
         public async Task<RoutineDto> DeactivateAsync(Guid id)
         {
             var routine = await _routineRepository.GetAsync(id);
@@ -184,7 +186,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return await MapToGetOutputDtoAsync(routine);
         }
 
-        [Authorize(HabitsPermissions.Routines.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Edit)]
         public async Task<RoutineDto> AddStepAsync(
             Guid id,
             Guid? habitId,
@@ -213,7 +215,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return await MapToGetOutputDtoAsync(routine);
         }
 
-        [Authorize(HabitsPermissions.Routines.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Edit)]
         public async Task<RoutineDto> RemoveStepAsync(Guid routineId, Guid stepId)
         {
             var routine = await _routineRepository.GetWithStepsAsync(routineId);
@@ -229,7 +231,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return await MapToGetOutputDtoAsync(routine);
         }
 
-        [Authorize(HabitsPermissions.Routines.Edit)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Edit)]
         public async Task<RoutineDto> ReorderStepsAsync(Guid id, Dictionary<Guid, int> newOrder)
         {
             var routine = await _routineRepository.GetWithStepsAsync(id);
@@ -245,7 +247,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return await MapToGetOutputDtoAsync(routine);
         }
 
-        [Authorize(HabitsPermissions.Routines.Complete)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Routines.Complete)]
         public async Task<RoutineCompletionDto> CompleteRoutineAsync(Guid routineId, CompleteRoutineDto input)
         {
             var routine = await _routineRepository.GetWithStepsAsync(routineId);
@@ -318,7 +320,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             return ObjectMapper.Map<RoutineCompletion, RoutineCompletionDto>(completion);
         }
 
-        [Authorize(HabitsPermissions.Analytics.ViewOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Analytics.ViewOwn)]
         public async Task<double> GetCompletionRateAsync(Guid routineId, DateTime startDate, DateTime endDate)
         {
             var routine = await _routineRepository.GetAsync(routineId);
@@ -341,7 +343,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Routines
             var habitIds = routine.Steps.Where(s => s.HabitId.HasValue).Select(s => s.HabitId.Value).ToList();
             if (habitIds.Any())
             {
-                var habits = await _habitRepository.GetListAsync(new Specification<Habit>(h => habitIds.Contains(h.Id)));
+                var habits = await _habitRepository.GetListAsync(new BaseSpecification<Habit>(h => habitIds.Contains(h.Id)));
                 var habitDict = habits.ToDictionary(h => h.Id, h => h.Title);
 
                 foreach (var step in dto.Steps.Where(s => s.HabitId.HasValue))

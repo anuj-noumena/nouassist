@@ -1,3 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Constants;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Events;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Exceptions;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Aggregates
 {
     /// <summary>

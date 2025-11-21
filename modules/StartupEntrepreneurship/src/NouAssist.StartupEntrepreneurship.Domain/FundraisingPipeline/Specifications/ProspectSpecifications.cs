@@ -1,3 +1,8 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Specifications

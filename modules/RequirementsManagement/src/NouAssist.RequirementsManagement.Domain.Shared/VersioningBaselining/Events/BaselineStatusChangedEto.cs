@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.VersioningBaselining.Enums;
+using NouAssist.RequirementsManagement.VersioningBaselining.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Events
 {
     /// <summary>

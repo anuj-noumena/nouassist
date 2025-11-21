@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Aggregates;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Constants;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 

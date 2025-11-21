@@ -1,3 +1,5 @@
+using NouAssist.RequirementsManagement.Traceability.Enums;
+
 namespace NouAssist.RequirementsManagement.Traceability.Exceptions
 {
     /// <summary>

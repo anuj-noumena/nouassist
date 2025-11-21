@@ -1,0 +1,51 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.IdentityAccess.Users.Aggregates;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+
+namespace NouAssist.IdentityAccess.EntityFrameworkCore.Users.Configurations
+{
+    public class UserAggregateConfiguration : IEntityTypeConfiguration<User>
+    {
+        public void Configure(EntityTypeBuilder<User> builder)
+        {
+            builder.ConfigureByConvention();
+
+            builder.ToTable(IdentityAccessDbProperties.DbTablePrefix + "Users",
+                IdentityAccessDbProperties.DbSchema);
+
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.FirstName)
+                .HasMaxLength(100);
+
+            builder.Property(x => x.LastName)
+                .HasMaxLength(100);
+
+            builder.Property(x => x.Bio)
+                .HasMaxLength(500);
+
+            builder.Property(x => x.Avatar)
+                .HasMaxLength(500);
+
+            builder.Property(x => x.Email)
+                .HasMaxLength(256);
+
+            builder.Property(x => x.Timezone)
+                .HasMaxLength(50);
+
+            builder.Property(x => x.Locale)
+                .HasMaxLength(10);
+
+            builder.Property(x => x.IsActive)
+                .IsRequired();
+
+            builder.Property(x => x.LastLoginAt);
+
+            builder.HasIndex(x => x.Email);
+            builder.HasIndex(x => x.IsActive);
+
+            builder.ApplyObjectExtensionMappings();
+        }
+    }
+}

@@ -5,18 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.IdentityAccess.Team.Data;
 using NouAssist.IdentityAccess.Team.Enums;
-using NouAssist.IdentityAccess.Team.Permissions;
+using NouAssist.IdentityAccess.Permissions;
 using NouAssist.IdentityAccess.Team.Services;
 using NouAssist.IdentityAccess.Team.Specifications;
+using NouAssist.SharedKernel.Specifications;
 using NouAssist.IdentityAccess.Team.Teams.Dtos;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.IdentityAccess.Team.Teams
 {
-    [Authorize(TeamPermissions.Teams.Default)]
+    [Authorize(IdentityAccessPermissions.Team.Teams.Default)]
     public class TeamAppService : ApplicationService, ITeamAppService
     {
         private readonly ITeamRepository _teamRepository;
@@ -41,7 +43,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             var spec = CreateListSpecification(input);
 
             var teams = await _teamRepository.GetListAsync(spec);
-            var totalCount = await _teamRepository.CountAsync(spec);
+            var totalCount = await _teamRepository.LongCountAsync(spec.ToExpression());
 
             var dtos = new List<TeamDto>();
             foreach (var team in teams)
@@ -78,7 +80,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             return dtos;
         }
 
-        [Authorize(TeamPermissions.Teams.Create)]
+        [Authorize(IdentityAccessPermissions.Team.Teams.Create)]
         public async Task<TeamDto> CreateAsync(CreateTeamDto input)
         {
             var team = new Team.Aggregates.Team(
@@ -116,7 +118,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             return await MapToDto(team);
         }
 
-        [Authorize(TeamPermissions.Teams.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Teams.Update)]
         public async Task<TeamDto> UpdateAsync(Guid id, UpdateTeamDto input)
         {
             var team = await _teamRepository.GetAsync(id);
@@ -164,7 +166,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             return await MapToDto(team);
         }
 
-        [Authorize(TeamPermissions.Teams.Delete)]
+        [Authorize(IdentityAccessPermissions.Team.Teams.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var team = await _teamRepository.GetAsync(id);
@@ -177,7 +179,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             await _teamRepository.DeleteAsync(id);
         }
 
-        [Authorize(TeamPermissions.Teams.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Teams.Update)]
         public async Task<TeamDto> ActivateAsync(Guid id)
         {
             var team = await _teamRepository.GetAsync(id);
@@ -187,7 +189,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             return await MapToDto(team);
         }
 
-        [Authorize(TeamPermissions.Teams.Update)]
+        [Authorize(IdentityAccessPermissions.Team.Teams.Update)]
         public async Task<TeamDto> DeactivateAsync(Guid id)
         {
             var team = await _teamRepository.GetAsync(id);
@@ -197,7 +199,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             return await MapToDto(team);
         }
 
-        [Authorize(TeamPermissions.Teams.ManageMembers)]
+        [Authorize(IdentityAccessPermissions.Team.Teams.ManageMembers)]
         public async Task<TeamMemberDto> AddMemberAsync(Guid teamId, AddTeamMemberDto input)
         {
             var team = await _teamRepository.GetWithMembersAsync(teamId);
@@ -222,7 +224,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             return dto;
         }
 
-        [Authorize(TeamPermissions.Teams.ManageMembers)]
+        [Authorize(IdentityAccessPermissions.Team.Teams.ManageMembers)]
         public async Task RemoveMemberAsync(Guid teamId, Guid userId, string reason)
         {
             var team = await _teamRepository.GetWithMembersAsync(teamId);
@@ -242,7 +244,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
             await _teamRepository.UpdateAsync(team);
         }
 
-        [Authorize(TeamPermissions.Members.UpdateRole)]
+        [Authorize(IdentityAccessPermissions.Team.Members.UpdateRole)]
         public async Task<TeamMemberDto> UpdateMemberRoleAsync(
             Guid teamId, 
             Guid userId, 
@@ -301,7 +303,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
 
         private ISpecification<Team.Aggregates.Team> CreateListSpecification(GetTeamListDto input)
         {
-            var spec = Specification.None<Team.Aggregates.Team>();
+            ISpecification<Team.Aggregates.Team> spec = new BaseSpecification<Team.Aggregates.Team>();
 
             if (input.TeamType.HasValue)
             {
@@ -316,7 +318,7 @@ namespace NouAssist.IdentityAccess.Team.Teams
                 }
                 else
                 {
-                    spec = spec.And(new Specification<Team.Aggregates.Team>(t => !t.IsActive));
+                    spec = spec.And(new BaseSpecification<Team.Aggregates.Team>(t => !t.IsActive));
                 }
             }
 
@@ -327,8 +329,8 @@ namespace NouAssist.IdentityAccess.Team.Teams
 
             if (!string.IsNullOrWhiteSpace(input.Filter))
             {
-                spec = spec.And(new Specification<Team.Aggregates.Team>(
-                    t => t.Name.Contains(input.Filter) || 
+                spec = spec.And(new BaseSpecification<Team.Aggregates.Team>(
+                    t => t.Name.Contains(input.Filter) ||
                          (t.Description != null && t.Description.Contains(input.Filter))));
             }
 

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Events
 {
     /// <summary>

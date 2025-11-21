@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.Specification.Aggregates;
 using NouAssist.RequirementsManagement.Specification.Interfaces.Services;
+using NouAssist.RequirementsManagement.Specification.Localization;
 using NouAssist.RequirementsManagement.Specification.Permissions;
 using NouAssist.RequirementsManagement.Specification.Repositories;
 using NouAssist.RequirementsManagement.Specification.SpecificationStructures.Dtos;

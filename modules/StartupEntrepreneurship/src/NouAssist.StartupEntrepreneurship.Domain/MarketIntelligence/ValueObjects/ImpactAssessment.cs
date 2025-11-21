@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Constants;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.ValueObjects
 {
     /// <summary>

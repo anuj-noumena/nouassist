@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.BusinessOperations.ProjectExecution.Repositories;
+using NouAssist.BusinessOperations.ProjectExecution.Services.Interfaces;
+using Volo.Abp;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.Services
 {
     /// <summary>

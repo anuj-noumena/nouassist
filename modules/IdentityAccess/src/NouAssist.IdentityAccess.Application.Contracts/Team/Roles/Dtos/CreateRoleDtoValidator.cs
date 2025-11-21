@@ -1,3 +1,5 @@
+using FluentValidation;
+
 namespace NouAssist.IdentityAccess.Team.Roles.Dtos
 {
     public class CreateRoleDtoValidator : AbstractValidator<CreateRoleDto>

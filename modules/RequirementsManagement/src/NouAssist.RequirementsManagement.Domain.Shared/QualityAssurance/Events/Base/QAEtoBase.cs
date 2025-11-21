@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Events.Base
 {
     /// <summary>

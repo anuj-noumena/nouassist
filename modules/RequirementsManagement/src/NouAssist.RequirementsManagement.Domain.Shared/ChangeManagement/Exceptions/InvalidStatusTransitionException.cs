@@ -1,3 +1,5 @@
+using NouAssist.RequirementsManagement.ChangeManagement.Enums;
+
 namespace NouAssist.RequirementsManagement.ChangeManagement.Exceptions
 {
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Samples;
 using Volo.Abp;
 
 namespace NouAssist.IntelligenceStrategy.Samples;

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Aggregates;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Exceptions;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Localization;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Permissions;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Repositories;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.UserProfiles.Dtos;

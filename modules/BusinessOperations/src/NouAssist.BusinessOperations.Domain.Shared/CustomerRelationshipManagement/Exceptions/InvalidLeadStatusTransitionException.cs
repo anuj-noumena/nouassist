@@ -1,3 +1,5 @@
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Exceptions
 {
     /// <summary>

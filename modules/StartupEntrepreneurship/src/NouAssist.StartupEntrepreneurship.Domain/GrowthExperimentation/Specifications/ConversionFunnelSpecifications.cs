@@ -1,3 +1,8 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Aggregates;
+using Volo.Abp.Specifications;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Specifications
 {
     /// <summary>

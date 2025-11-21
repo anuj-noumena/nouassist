@@ -1,5 +1,18 @@
 using FluentValidation;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.FinancialCalculations.Dtos;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.FinancialModels.Dtos;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.MetricCategories.Dtos;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.MetricDefinitions.Dtos;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.TrackedMetrics.Dtos;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.TrendAnalysis.Dtos;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.FinancialCalculation;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.FinancialModel;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.MetricCategory;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.MetricDefinition;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.TrackedMetric;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.TrendAnalysis;
+using Volo.Abp.Application;
+using Volo.Abp.Modularity;
 
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.TrendAnalysis
 {

@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Specification.Enums;
+using NouAssist.RequirementsManagement.Specification.Specifications;
+using NouAssist.RequirementsManagement.Specification.ValueObjects;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.RequirementsManagement.Specification.Repositories
 {
     /// <summary>

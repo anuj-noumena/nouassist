@@ -1,3 +1,7 @@
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+using NouAssist.RequirementsManagement.Traceability.Models;
+
 namespace NouAssist.RequirementsManagement.Traceability.Services.Interfaces
 {
     /// <summary>

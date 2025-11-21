@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,9 @@ using NouAssist.DecisionSupport.Dtos.StrategicInitiative;
 using NouAssist.DecisionSupport.Interfaces.Repositories;
 using NouAssist.DecisionSupport.Interfaces.Services;
 using NouAssist.DecisionSupport.Permissions;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

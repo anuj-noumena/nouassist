@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Repositories;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.ValueObjects;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Services
 {
     /// <summary>

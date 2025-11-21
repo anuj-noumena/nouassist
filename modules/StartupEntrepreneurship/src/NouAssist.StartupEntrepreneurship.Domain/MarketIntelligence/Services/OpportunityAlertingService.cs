@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Events;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Interfaces.Services;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Specifications;
+using Volo.Abp.Domain.Services;
+using Volo.Abp.EventBus.Distributed;
+using Volo.Abp.Specifications;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Services
 {
     /// <summary>

@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Traceability.Aggregates;
+using NouAssist.RequirementsManagement.Traceability.Enums;
+using NouAssist.RequirementsManagement.Traceability.ValueObjects;
+
 namespace NouAssist.RequirementsManagement.Traceability.Services.Interfaces
 {
     /// <summary>

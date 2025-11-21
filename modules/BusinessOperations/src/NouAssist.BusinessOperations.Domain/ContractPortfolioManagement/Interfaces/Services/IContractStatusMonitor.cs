@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Contract;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Entities.Contract;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Interfaces.Services
 {
     /// <summary>

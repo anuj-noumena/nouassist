@@ -1,3 +1,9 @@
+using System;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Entities
 {
     /// <summary>

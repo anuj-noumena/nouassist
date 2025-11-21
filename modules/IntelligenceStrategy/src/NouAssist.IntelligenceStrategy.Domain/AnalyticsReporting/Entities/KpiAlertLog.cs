@@ -1,3 +1,4 @@
+using System;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp.Domain.Entities;
 

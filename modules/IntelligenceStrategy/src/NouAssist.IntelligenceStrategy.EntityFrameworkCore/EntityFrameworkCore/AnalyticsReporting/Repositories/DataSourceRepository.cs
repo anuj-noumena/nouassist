@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using NouAssist.Analytics.Aggregates;
 using NouAssist.Analytics.EntityFrameworkCore;
 using NouAssist.Analytics.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

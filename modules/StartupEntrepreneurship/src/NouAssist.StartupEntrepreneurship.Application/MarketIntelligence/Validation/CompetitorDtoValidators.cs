@@ -1,5 +1,6 @@
 using FluentValidation;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Competitor.Dtos;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Constants;
 
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Validation
 {

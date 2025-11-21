@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Constants;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowDefinition
 {
     /// <summary>

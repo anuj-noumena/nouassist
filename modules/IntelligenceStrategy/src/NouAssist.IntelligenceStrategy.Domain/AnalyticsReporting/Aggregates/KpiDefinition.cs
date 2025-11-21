@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Constants;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Events;

@@ -1,3 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Constants;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
 {
     /// <summary>
@@ -77,7 +87,7 @@ namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
             var versionNumber = _versions.Count + 1;
             
             var version = new PitchVersion(
-                GuidGenerator.Create(),
+                new Guid(),
                 Id,
                 versionName,
                 versionNumber,
@@ -124,7 +134,7 @@ namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
             }
             
             var presentation = new PitchPresentation(
-                GuidGenerator.Create(),
+                new Guid(),
                 Id,
                 versionId,
                 prospectId,
@@ -178,7 +188,7 @@ namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
             }
             
             var feedbackRecord = new FeedbackRecord(
-                GuidGenerator.Create(),
+                new Guid(),
                 Id,
                 presentationId,
                 feedback,

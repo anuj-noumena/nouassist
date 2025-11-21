@@ -1,3 +1,8 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.VersioningBaselining.Aggregates;
+using NouAssist.RequirementsManagement.VersioningBaselining.Enums;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Specifications
 {
     /// <summary>

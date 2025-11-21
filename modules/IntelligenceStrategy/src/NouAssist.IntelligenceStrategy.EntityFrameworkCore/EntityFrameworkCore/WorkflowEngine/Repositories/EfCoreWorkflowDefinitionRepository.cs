@@ -1,7 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Repositories;
 using System.Linq.Dynamic.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
@@ -41,8 +46,7 @@ namespace NouAssist.IntelligenceStrategy.WorkflowEngine.EntityFrameworkCore.Repo
                              .ThenInclude(v => v.Conditions);
             }
 
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .ToListAsync(cancellationToken);
         }
 
@@ -53,8 +57,7 @@ namespace NouAssist.IntelligenceStrategy.WorkflowEngine.EntityFrameworkCore.Repo
         {
             var query = await GetQueryableAsync();
 
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .CountAsync(cancellationToken);
         }
 
@@ -86,8 +89,7 @@ namespace NouAssist.IntelligenceStrategy.WorkflowEngine.EntityFrameworkCore.Repo
         {
             var query = await GetQueryableAsync();
 
-            return await query
-                .WhereIf(excludingId.HasValue, w => w.Id != excludingId)
+            return await AbpEnumerableExtensions.WhereIf(query, excludingId.HasValue, w => w.Id != excludingId)
                 .AnyAsync(w => w.Name == name, cancellationToken);
         }
 

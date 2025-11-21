@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;

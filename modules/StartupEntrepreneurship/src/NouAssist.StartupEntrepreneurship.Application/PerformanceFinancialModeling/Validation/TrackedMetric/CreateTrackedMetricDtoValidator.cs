@@ -1,4 +1,5 @@
 using FluentValidation;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Constants;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.TrackedMetrics.Dtos;
 
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Validation.TrackedMetric

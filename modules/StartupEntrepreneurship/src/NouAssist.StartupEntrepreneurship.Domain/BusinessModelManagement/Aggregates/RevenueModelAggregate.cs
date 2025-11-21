@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Constants;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Entities;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Events;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Exceptions;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Aggregates
 {
     /// <summary>
@@ -17,7 +30,7 @@ namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Aggregates
         public IReadOnlyCollection<PricingModel> PricingModels => _pricingModels.AsReadOnly();
 
         private readonly List<RevenueScenario> _scenarios;
-        public IReadOnlyCollection<RevenueScenarios> Scenarios => _scenarios.AsReadOnly();
+        public IReadOnlyCollection<RevenueScenario> Scenarios => _scenarios.AsReadOnly();
 
         private readonly List<GoToMarketStrategy> _gtmStrategies;
         public IReadOnlyCollection<GoToMarketStrategy> GtmStrategies => _gtmStrategies.AsReadOnly();

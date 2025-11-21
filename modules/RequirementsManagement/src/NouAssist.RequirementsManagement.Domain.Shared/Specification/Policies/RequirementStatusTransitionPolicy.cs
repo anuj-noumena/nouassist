@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.Specification.Enums;
+
 namespace NouAssist.RequirementsManagement.Specification.Policies
 {
     /// <summary>

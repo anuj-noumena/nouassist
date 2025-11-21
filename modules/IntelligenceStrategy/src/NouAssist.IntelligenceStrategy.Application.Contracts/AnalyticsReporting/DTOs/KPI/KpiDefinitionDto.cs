@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using NouAssist.Analytics.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.Analytics.DTOs.KPI

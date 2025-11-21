@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates
 {
     /// <summary>

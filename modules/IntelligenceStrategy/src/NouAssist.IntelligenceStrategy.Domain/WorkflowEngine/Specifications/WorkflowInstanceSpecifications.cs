@@ -1,3 +1,8 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Specifications
 {
     /// <summary>

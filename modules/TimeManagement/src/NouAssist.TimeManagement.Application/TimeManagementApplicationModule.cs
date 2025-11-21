@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
 
@@ -9,16 +9,12 @@ namespace NouAssist.TimeManagement;
     typeof(TimeManagementDomainModule),
     typeof(TimeManagementApplicationContractsModule),
     typeof(AbpDddApplicationModule),
-    typeof(AbpAutoMapperModule)
+    typeof(AbpMapperlyModule)
     )]
 public class TimeManagementApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddAutoMapperObjectMapper<TimeManagementApplicationModule>();
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<TimeManagementApplicationModule>(validate: true);
-        });
+        context.Services.AddMapperlyObjectMapper<TimeManagementApplicationModule>();
     }
 }

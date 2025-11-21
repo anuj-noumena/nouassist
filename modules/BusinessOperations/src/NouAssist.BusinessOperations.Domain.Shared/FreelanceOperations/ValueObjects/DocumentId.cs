@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using Volo.Abp;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.ValueObjects
 {
     /// <summary>

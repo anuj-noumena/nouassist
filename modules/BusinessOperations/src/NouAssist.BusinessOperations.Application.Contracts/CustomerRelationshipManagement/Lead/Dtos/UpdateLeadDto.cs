@@ -1,3 +1,7 @@
+using System.ComponentModel.DataAnnotations;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+
 /// <summary>
     /// Data transfer object for updating a lead
     /// </summary>

@@ -1,3 +1,6 @@
+using System;
+using NouAssist.BusinessOperations.FreelanceOperations.Enums;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Events.Base
 {
     /// <summary>

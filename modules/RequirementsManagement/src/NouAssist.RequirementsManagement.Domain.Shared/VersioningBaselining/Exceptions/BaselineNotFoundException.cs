@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Exceptions
 {
     /// <summary>

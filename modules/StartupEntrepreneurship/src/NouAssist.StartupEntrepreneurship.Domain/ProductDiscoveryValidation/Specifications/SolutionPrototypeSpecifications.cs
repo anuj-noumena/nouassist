@@ -1,3 +1,8 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Specifications
 {
     /// <summary>

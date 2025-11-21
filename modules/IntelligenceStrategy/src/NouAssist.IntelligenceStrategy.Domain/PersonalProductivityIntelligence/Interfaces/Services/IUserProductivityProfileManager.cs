@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Aggregates;
+using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Enums;
 using NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.ValueObjects;
 
 namespace NouAssist.IntelligenceStrategy.PersonalProductivityIntelligence.Interfaces.Services

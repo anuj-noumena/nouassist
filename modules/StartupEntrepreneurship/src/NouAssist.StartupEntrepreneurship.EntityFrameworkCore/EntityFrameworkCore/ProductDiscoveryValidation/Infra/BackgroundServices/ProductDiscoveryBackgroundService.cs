@@ -1,3 +1,12 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Enums;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Repositories;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.BackgroundServices
 {
     /// <summary>

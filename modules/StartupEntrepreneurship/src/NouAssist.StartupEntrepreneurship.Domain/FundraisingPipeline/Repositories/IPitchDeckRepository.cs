@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Repositories
 {
     /// <summary>

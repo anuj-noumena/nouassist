@@ -1,3 +1,13 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Constants;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Entities;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.ValueObjects;
+using Volo.Abp.EntityFrameworkCore.Modeling;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.EntityFrameworkCore.Configurations
 {
     /// <summary>

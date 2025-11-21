@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NouAssist.Analytics.Interfaces.Services;
 using NouAssist.Analytics.Repositories;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Timing;

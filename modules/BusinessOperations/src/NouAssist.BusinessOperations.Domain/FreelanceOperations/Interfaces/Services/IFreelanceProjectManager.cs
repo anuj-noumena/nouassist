@@ -1,3 +1,8 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.FreelanceOperations.Aggregates;
+using NouAssist.BusinessOperations.FreelanceOperations.ValueObjects;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Services
 {
     /// <summary>

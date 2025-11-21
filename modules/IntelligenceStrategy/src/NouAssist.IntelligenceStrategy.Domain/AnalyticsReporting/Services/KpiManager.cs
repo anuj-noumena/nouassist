@@ -2,11 +2,16 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Aggregates;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Exceptions;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Localization;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Localization;
 
 namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Services
 {

@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Entities;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using Newtonsoft.Json;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Constants;
 
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.EntityFrameworkCore.Configurations
 {

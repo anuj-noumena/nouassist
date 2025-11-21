@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Entities;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.InvestorGroups.Dtos;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Localization;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Permissions;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Repositories;
 using Volo.Abp;

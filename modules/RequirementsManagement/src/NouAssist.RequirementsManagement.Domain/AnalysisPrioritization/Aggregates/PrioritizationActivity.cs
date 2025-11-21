@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Constants;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Entities;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Enums;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Events;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Exceptions;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.Aggregates
 {
     /// <summary>

@@ -5,6 +5,8 @@ using NouAssist.Analytics.Constants;
 using NouAssist.Analytics.Entities;
 using NouAssist.Analytics.Enums;
 using NouAssist.Analytics.Exceptions;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;

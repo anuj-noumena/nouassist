@@ -1,3 +1,8 @@
+using System;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Events
 {
     /// <summary>

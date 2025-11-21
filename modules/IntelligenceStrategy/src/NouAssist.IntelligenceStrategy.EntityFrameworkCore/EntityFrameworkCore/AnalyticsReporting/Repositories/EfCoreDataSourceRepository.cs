@@ -9,6 +9,7 @@ using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using System.Threading;
 
 namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.EntityFrameworkCore.Repositories
 {

@@ -1,4 +1,6 @@
+using System;
 using FluentValidation;
+using NouAssist.BusinessOperations.ProjectExecution.Constants;
 using NouAssist.BusinessOperations.ProjectExecution.TimeLogs.Dtos;
 
 namespace NouAssist.BusinessOperations.ProjectExecution.TimeLogs.Validators

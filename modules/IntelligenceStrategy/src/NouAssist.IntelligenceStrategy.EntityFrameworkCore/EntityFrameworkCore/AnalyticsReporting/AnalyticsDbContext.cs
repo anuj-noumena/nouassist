@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using NouAssist.Analytics.Aggregates;
 using NouAssist.Analytics.Entities;
 using NouAssist.Analytics.EntityFrameworkCore.EntityConfigurations;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.EntityFrameworkCore.Configurations;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 

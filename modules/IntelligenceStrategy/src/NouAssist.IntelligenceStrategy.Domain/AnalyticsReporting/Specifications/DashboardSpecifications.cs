@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using NouAssist.IntelligenceStrategy.AnalyticsReporting.Aggregates;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.IntelligenceStrategy.AnalyticsReporting.Specifications

@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.ValueObjects
 {
     /// <summary>

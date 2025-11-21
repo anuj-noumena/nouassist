@@ -1,3 +1,4 @@
+using Volo.Abp.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.IdentityAccess.Contacts.Aggregates;
 using NouAssist.IdentityAccess.Contacts.Contacts.Dtos;
 using NouAssist.IdentityAccess.Contacts.Data;
-using NouAssist.IdentityAccess.Contacts.Permissions;
+using NouAssist.IdentityAccess.Permissions;
 using NouAssist.IdentityAccess.Contacts.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -14,7 +15,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.IdentityAccess.Contacts.Contacts
 {
-    [Authorize(ContactsPermissions.Contacts.Default)]
+    [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Default)]
     public class ContactAppService : ApplicationService, IContactAppService
     {
         private readonly IContactRepository _contactRepository;
@@ -86,13 +87,10 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
 
             var totalCount = queryable.Count();
 
-            // Apply sorting
-            queryable = !string.IsNullOrWhiteSpace(input.Sorting)
-                ? queryable.OrderBy(input.Sorting)
-                : queryable.OrderBy(c => c.DisplayName);
-
-            // Apply paging
+            // Apply sorting and paging
+            var sorting = GetSorting(input.Sorting);
             var contacts = queryable
+                .OrderBy(sorting)
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount)
                 .ToList();
@@ -106,7 +104,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return new PagedResultDto<ContactDto>(totalCount, contactDtos);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Create)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Create)]
         public async Task<ContactDto> CreateAsync(CreateContactDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -145,7 +143,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> UpdateAsync(Guid id, UpdateContactDto input)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -193,7 +191,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Delete)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -206,7 +204,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             await _contactRepository.DeleteAsync(id);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Archive)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Archive)]
         public async Task<ContactDto> ArchiveAsync(Guid id)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -222,7 +220,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Archive)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Archive)]
         public async Task<ContactDto> UnarchiveAsync(Guid id)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -238,7 +236,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> RecordContactAsync(Guid id)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -254,7 +252,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> RecordMeetingAsync(Guid id)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -270,7 +268,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> ScheduleFollowupAsync(Guid id, DateTime date)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -286,7 +284,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> AddTagAsync(Guid id, string tag)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -302,7 +300,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> RemoveTagAsync(Guid id, string tag)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -318,7 +316,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> AddSocialProfileAsync(Guid id, SocialProfileDto profileDto)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -335,7 +333,7 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             return await MapToGetOutputDtoAsync(contact);
         }
 
-        [Authorize(ContactsPermissions.Contacts.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.ContactManagement.Edit)]
         public async Task<ContactDto> RemoveSocialProfileAsync(Guid id, SocialProfileDto profileDto)
         {
             var contact = await _contactRepository.GetAsync(id);
@@ -357,6 +355,17 @@ namespace NouAssist.IdentityAccess.Contacts.Contacts
             var dto = ObjectMapper.Map<Contact, ContactDto>(contact);
             // TODO: Load client name if ClientId is set
             return dto;
+        }
+
+        private static Func<Contact, object> GetSorting(string sorting)
+        {
+            return sorting?.ToLowerInvariant() switch
+            {
+                "displayname" => c => c.DisplayName,
+                "createdat" => c => c.CreationTime,
+                "lastcontact" => c => c.LastContactedAt ?? DateTime.MinValue,
+                _ => c => c.DisplayName
+            };
         }
     }
 }

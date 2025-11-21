@@ -1,0 +1,1 @@
+fix compilation errors of NouAssist.IdentityAccess.EntityFrameworkCore

@@ -1,3 +1,8 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Aggregates.Portfolio;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Enums;
+
 namespace NouAssist.BusinessOperations.ContractPortfolioManagement.Specifications
 {
     /// <summary>

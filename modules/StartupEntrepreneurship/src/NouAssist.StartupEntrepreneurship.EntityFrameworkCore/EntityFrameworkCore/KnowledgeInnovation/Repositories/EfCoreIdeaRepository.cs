@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Aggregates;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;

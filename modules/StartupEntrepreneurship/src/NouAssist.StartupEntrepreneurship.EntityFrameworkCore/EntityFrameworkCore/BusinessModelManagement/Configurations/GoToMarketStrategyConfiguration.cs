@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Constants;
@@ -5,6 +8,7 @@ using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Entities;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 using System.Text.Json;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
 
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.EntityFrameworkCore.Configurations
 {

@@ -1,3 +1,6 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.TrendAnalysis.Dtos
 {
     /// <summary>

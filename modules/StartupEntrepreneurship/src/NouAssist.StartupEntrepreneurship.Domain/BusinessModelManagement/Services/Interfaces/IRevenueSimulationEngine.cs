@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Entities;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Services.Interfaces
 {
     /// <summary>

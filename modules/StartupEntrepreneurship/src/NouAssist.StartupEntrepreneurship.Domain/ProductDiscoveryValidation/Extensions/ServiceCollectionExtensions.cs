@@ -1,3 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Interfaces.Services;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Services;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Specifications;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Extensions
 {
     /// <summary>

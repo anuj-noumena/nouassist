@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.KnowledgeAssets.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;

@@ -1,4 +1,6 @@
+using System;
 using NouAssist.RequirementsManagement.ChangeManagement.Enums;
+using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.RequirementsManagement.ChangeManagement.ChangeRequest.Dtos
 {

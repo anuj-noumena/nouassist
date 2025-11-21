@@ -1,3 +1,7 @@
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Localization;
+using Volo.Abp.Authorization.Permissions;
+using Volo.Abp.Localization;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Permissions
 {
     /// <summary>

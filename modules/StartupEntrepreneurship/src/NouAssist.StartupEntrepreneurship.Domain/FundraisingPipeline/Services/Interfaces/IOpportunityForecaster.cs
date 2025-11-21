@@ -1,3 +1,7 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.ValueObjects;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Services.Interfaces
 {
     /// <summary>

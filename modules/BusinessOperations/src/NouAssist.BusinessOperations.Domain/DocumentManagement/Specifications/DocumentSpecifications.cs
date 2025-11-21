@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Linq.Expressions;
 using NouAssist.BusinessOperations.DocumentManagement.Aggregates;
 using NouAssist.BusinessOperations.DocumentManagement.Enums;

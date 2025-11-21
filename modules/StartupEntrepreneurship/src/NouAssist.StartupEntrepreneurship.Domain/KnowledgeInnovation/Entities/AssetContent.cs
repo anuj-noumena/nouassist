@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities
 {
     /// <summary>

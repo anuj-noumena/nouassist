@@ -1,3 +1,5 @@
+using Volo.Abp.Application.Dtos;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowTemplate
 {
     /// <summary>

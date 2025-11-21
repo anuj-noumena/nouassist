@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Constants;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;

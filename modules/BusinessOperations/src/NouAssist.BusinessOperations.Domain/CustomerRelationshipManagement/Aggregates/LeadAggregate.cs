@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Entities;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Events;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Exceptions;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates
 {
     /// <summary>

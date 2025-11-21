@@ -1,6 +1,12 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Aggregates;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -41,9 +47,9 @@ namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.EntityFrameworkCo
         {
             var query = await GetQueryableAsync();
             
-            return await query
-                .Where(c => c.Name == name)
-                .WhereIf(excludeId.HasValue, c => c.Id != excludeId.Value)
+            return await AbpEnumerableExtensions
+                .WhereIf<>(query
+                    .Where(c => c.Name == name), excludeId.HasValue, c => c.Id != excludeId.Value)
                 .AnyAsync(cancellationToken);
         }
 
@@ -55,9 +61,9 @@ namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.EntityFrameworkCo
             var query = await GetQueryableAsync();
             
             // Since Website is in a ValueObject, we need to use EF.Property
-            return await query
-                .Where(c => EF.Property<string>(c, "CompetitorInfo_Website") == website)
-                .WhereIf(excludeId.HasValue, c => c.Id != excludeId.Value)
+            return await AbpEnumerableExtensions
+                .WhereIf<>(query
+                    .Where(c => EF.Property<string>(c, "CompetitorInfo_Website") == website), excludeId.HasValue, c => c.Id != excludeId.Value)
                 .AnyAsync(cancellationToken);
         }
 
@@ -127,8 +133,7 @@ namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.EntityFrameworkCo
                 query = query.Include(c => c.UpdateLogs);
             }
             
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .ToListAsync(cancellationToken);
         }
 

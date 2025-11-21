@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Aggregates;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.Interfaces.Repositories
 {
     /// <summary>

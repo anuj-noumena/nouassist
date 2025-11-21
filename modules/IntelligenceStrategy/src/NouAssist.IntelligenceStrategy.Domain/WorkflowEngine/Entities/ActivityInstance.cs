@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Exceptions;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Entities
 {
     /// <summary>

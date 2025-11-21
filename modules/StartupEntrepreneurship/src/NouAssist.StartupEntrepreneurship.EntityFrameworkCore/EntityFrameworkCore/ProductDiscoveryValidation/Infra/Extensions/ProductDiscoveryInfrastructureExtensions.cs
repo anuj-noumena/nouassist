@@ -1,3 +1,10 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.EntityFrameworkCore;
+using Volo.Abp.Data;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Extensions
 {
     /// <summary>

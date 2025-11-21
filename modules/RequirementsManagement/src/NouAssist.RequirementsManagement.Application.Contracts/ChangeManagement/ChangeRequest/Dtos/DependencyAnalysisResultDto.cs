@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.RequirementsManagement.ChangeManagement.ChangeRequest.Dtos
 {
     /// <summary>

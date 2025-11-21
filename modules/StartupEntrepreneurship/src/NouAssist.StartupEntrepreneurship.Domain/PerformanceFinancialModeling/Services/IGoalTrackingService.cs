@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Aggregates;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Services
 {
     /// <summary>

@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Events.Base
 {
     /// <summary>

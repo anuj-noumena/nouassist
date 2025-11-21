@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
 
@@ -9,16 +9,12 @@ namespace NouAssist.SharedKernel;
     typeof(SharedKernelDomainModule),
     typeof(SharedKernelApplicationContractsModule),
     typeof(AbpDddApplicationModule),
-    typeof(AbpAutoMapperModule)
+    typeof(AbpMapperlyModule)
     )]
 public class SharedKernelApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddAutoMapperObjectMapper<SharedKernelApplicationModule>();
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<SharedKernelApplicationModule>(validate: true);
-        });
+        context.Services.AddMapperlyObjectMapper<SharedKernelApplicationModule>();
     }
 }

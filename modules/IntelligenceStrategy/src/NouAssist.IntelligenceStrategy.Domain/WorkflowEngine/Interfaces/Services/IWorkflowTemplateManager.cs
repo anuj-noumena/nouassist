@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Interfaces.Services
 {
     /// <summary>

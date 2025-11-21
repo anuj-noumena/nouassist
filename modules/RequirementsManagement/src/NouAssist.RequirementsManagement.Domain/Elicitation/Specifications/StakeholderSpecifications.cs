@@ -1,3 +1,8 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.Elicitation.Aggregates;
+using NouAssist.RequirementsManagement.Elicitation.Enums;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Specifications
 {
     /// <summary>

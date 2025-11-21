@@ -1,3 +1,7 @@
+using System;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Events
 {
     /// <summary>

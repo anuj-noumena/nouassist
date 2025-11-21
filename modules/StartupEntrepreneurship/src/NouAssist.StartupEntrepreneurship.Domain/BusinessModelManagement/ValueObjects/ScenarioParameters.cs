@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Exceptions;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects
 {
     /// <summary>

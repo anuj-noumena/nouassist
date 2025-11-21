@@ -1,3 +1,4 @@
+using System;
 using FluentValidation;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.CapTables.Dtos;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.Constants;

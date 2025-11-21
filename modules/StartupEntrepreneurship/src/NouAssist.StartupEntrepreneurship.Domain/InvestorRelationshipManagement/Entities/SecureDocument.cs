@@ -1,3 +1,12 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Constants;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Entities
 {
     /// <summary>

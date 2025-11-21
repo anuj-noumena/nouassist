@@ -1,3 +1,10 @@
+using System;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Constants;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Enums;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Entities
 {
     /// <summary>

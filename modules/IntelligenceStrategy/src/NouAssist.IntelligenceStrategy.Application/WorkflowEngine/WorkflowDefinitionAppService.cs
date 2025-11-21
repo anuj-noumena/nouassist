@@ -1,3 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowDefinition;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Entities;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Exceptions;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Localization;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Permissions;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Repositories;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Specifications;
+using Volo.Abp;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+using Volo.Abp.Guids;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine
 {
     /// <summary>

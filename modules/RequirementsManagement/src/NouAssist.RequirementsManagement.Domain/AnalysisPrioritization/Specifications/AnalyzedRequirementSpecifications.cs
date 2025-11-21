@@ -1,3 +1,10 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Aggregates;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Enums;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.ValueObjects;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.Specifications
 {
     /// <summary>

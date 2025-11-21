@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Constants;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.ValueObjects
 {
     /// <summary>

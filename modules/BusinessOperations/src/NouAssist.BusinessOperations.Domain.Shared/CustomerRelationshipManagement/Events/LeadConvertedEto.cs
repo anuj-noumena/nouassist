@@ -1,3 +1,7 @@
+using System;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Events
 {
     /// <summary>

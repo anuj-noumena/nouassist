@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using Volo.Abp.Application.Dtos;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Notifications.Dtos
 {
     public class NotificationConfigurationDto : FullAuditedEntityDto<Guid>

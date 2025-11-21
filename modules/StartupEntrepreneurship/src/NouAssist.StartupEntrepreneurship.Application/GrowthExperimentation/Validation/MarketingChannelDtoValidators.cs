@@ -1,3 +1,4 @@
+using System;
 using FluentValidation;
 using NouAssist.StartupEntrepreneurship.GrowthExperimentation.MarketingChannels.Dtos;
 

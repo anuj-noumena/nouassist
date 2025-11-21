@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.Common;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowDefinition
 {
     /// <summary>

@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using Volo.Abp.Data;
+using Volo.Abp.EntityFrameworkCore;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.EntityFrameworkCore
 {
     /// <summary>

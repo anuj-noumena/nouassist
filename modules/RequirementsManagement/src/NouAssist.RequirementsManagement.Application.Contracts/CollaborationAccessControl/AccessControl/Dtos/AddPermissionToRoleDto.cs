@@ -1,3 +1,5 @@
+using System;
+using System.ComponentModel.DataAnnotations;
 using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
 
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.AccessControl.Dtos

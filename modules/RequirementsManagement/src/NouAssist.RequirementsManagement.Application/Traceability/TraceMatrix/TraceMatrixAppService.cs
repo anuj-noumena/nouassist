@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.Traceability.Localization;
 using NouAssist.RequirementsManagement.Traceability.Models;
 using NouAssist.RequirementsManagement.Traceability.Permissions;
 using NouAssist.RequirementsManagement.Traceability.Services.Interfaces;

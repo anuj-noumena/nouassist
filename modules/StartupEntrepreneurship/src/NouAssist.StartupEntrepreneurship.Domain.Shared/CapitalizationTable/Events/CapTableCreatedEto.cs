@@ -10,6 +10,6 @@ namespace NouAssist.StartupEntrepreneurship.CapitalizationTable.Events
     public class CapTableCreatedEto : CapTableEtoBase
     {
         public string CompanyName { get; set; }
-        public long TotalShares { get; set; }
+        public decimal TotalShares { get; set; }
     }
 }

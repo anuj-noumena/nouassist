@@ -1,3 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Entities;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Enums;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Aggregates
 {
     /// <summary>

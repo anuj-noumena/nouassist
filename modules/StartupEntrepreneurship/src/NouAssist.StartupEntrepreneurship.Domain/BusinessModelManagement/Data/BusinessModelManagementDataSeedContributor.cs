@@ -1,3 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Aggregates;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Repositories;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Domain.Repositories;
+using Volo.Abp.MultiTenancy;
+using System.Linq.Dynamic.Core;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Data
 {
     /// <summary>

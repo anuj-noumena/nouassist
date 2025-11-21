@@ -1,10 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.ChangeManagement.Aggregates;
 using NouAssist.RequirementsManagement.ChangeManagement.ChangeRequest.Dtos;
+using NouAssist.RequirementsManagement.ChangeManagement.Constants;
 using NouAssist.RequirementsManagement.ChangeManagement.Enums;
 using NouAssist.RequirementsManagement.ChangeManagement.Exceptions;
+using NouAssist.RequirementsManagement.ChangeManagement.Localization;
 using NouAssist.RequirementsManagement.ChangeManagement.Permissions;
 using NouAssist.RequirementsManagement.ChangeManagement.Repositories;
 using NouAssist.RequirementsManagement.ChangeManagement.Services;
@@ -13,6 +19,8 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Guids;
+using Volo.Abp.Timing;
 using Volo.Abp.Users;
 
 namespace NouAssist.RequirementsManagement.ChangeManagement.ChangeRequest

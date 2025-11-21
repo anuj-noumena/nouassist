@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using NouAssist.BusinessOperations.ProjectExecution.Enums;
 using NouAssist.BusinessOperations.ProjectExecution.Projects.Dtos;
+using NouAssist.BusinessOperations.ProjectExecution.Tasks.Dtos;
+using NouAssist.BusinessOperations.ProjectExecution.TimeLogs.Dtos;
 using Volo.Abp.Application.Dtos;
 
 namespace NouAssist.BusinessOperations.ProjectExecution.Reports.Dtos

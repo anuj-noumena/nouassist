@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Constants;
 
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.SwotAnalysis.Dtos
 {

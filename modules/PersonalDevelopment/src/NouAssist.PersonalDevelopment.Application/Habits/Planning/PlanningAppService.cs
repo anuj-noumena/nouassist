@@ -1,10 +1,11 @@
+using Volo.Abp.Users;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.PersonalDevelopment.Habits.Aggregates;
 using NouAssist.PersonalDevelopment.Habits.Data;
 using NouAssist.PersonalDevelopment.Habits.Habits.Dtos;
-using NouAssist.PersonalDevelopment.Habits.Permissions;
+using NouAssist.PersonalDevelopment.Permissions;
 using NouAssist.PersonalDevelopment.Habits.Planning.Dtos;
 using NouAssist.PersonalDevelopment.Habits.Routines.Dtos;
 using NouAssist.PersonalDevelopment.Habits.Services;
@@ -12,7 +13,7 @@ using Volo.Abp.Application.Services;
 
 namespace NouAssist.PersonalDevelopment.Habits.Planning
 {
-    [Authorize(HabitsPermissions.Tracking.ViewOwn)]
+    [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ViewOwn)]
     public class PlanningAppService : ApplicationService, IPlanningAppService
     {
         private readonly IDailyReflectionRepository _reflectionRepository;
@@ -67,7 +68,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Planning
             return ObjectMapper.Map<DailyReflection, DailyReflectionDto>(reflection);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<DailyReflectionDto> UpdateReflectionAsync(UpdateDailyReflectionDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -125,7 +126,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Planning
             return ObjectMapper.Map<DailyIntention, DailyIntentionDto>(intention);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<DailyIntentionDto> UpdateIntentionAsync(UpdateDailyIntentionDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -180,7 +181,7 @@ namespace NouAssist.PersonalDevelopment.Habits.Planning
             return ObjectMapper.Map<DailyQuote, DailyQuoteDto>(quote);
         }
 
-        [Authorize(HabitsPermissions.Tracking.ManageOwn)]
+        [Authorize(PersonalDevelopmentPermissions.Habit.Tracking.ManageOwn)]
         public async Task<DailyQuoteDto> MarkQuoteAsViewedAsync(Guid id)
         {
             var quote = await _quoteRepository.GetAsync(id);

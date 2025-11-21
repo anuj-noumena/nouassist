@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Enums;
 
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Dtos.Base

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Repositories;
 using Volo.Abp.BackgroundWorkers;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Threading;
 
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.BackgroundWorkers

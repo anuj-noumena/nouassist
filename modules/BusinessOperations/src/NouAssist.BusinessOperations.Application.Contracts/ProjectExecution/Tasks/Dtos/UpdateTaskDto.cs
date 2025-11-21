@@ -87,7 +87,7 @@ namespace NouAssist.BusinessOperations.ProjectExecution.Tasks.Dtos
         /// Estimated hours for task completion
         /// </summary>
         [Required]
-        [Range(0.1, 1000)]
+        [System.ComponentModel.DataAnnotations.Range(0.1, 1000)]
         public double EstimatedHours { get; set; }
         
         /// <summary>

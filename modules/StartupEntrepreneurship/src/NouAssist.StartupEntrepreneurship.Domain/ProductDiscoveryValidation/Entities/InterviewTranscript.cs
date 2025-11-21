@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Entities
 {
     /// <summary>

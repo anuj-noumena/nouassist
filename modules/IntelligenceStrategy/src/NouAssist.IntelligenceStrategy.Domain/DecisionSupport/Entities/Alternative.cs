@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Entities
 {
     /// <summary>

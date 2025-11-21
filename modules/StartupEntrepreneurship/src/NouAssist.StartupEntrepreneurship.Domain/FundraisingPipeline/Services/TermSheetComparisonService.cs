@@ -1,3 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Enums;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Repositories;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Services.Interfaces;
+using Volo.Abp;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Services
 {
     /// <summary>

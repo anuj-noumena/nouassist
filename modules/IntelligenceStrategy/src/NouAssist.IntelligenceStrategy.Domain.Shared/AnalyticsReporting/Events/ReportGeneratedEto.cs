@@ -1,6 +1,7 @@
 using System;
 using NouAssist.Analytics.Enums;
 using NouAssist.Analytics.Events.Base;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp.EventBus;
 
 namespace NouAssist.Analytics.Events

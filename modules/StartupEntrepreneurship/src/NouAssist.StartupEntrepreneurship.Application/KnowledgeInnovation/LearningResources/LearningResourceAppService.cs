@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Aggregates;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Exceptions;
 using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.LearningResources.Dtos;

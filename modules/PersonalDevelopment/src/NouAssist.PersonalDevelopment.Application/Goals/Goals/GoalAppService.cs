@@ -1,3 +1,4 @@
+using Volo.Abp.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,17 +8,20 @@ using NouAssist.PersonalDevelopment.Goals.Aggregates;
 using NouAssist.PersonalDevelopment.Goals.Data;
 using NouAssist.PersonalDevelopment.Goals.Dtos;
 using NouAssist.PersonalDevelopment.Goals.Entities;
-using NouAssist.PersonalDevelopment.Goals.Permissions;
+using NouAssist.PersonalDevelopment.Permissions;
 using NouAssist.PersonalDevelopment.Goals.Services;
 using NouAssist.PersonalDevelopment.Goals.Specifications;
+using NouAssist.SharedKernel.Specifications;
+using NouAssist.SharedKernel.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.PersonalDevelopment.Goals.Goals
 {
-    [Authorize(GoalsPermissions.Goals.Default)]
+    [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Default)]
     public class GoalAppService : ApplicationService, IGoalAppService
     {
         private readonly IGoalRepository _goalRepository;
@@ -43,7 +47,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             var spec = CreateListSpecification(userId, input);
 
             var goals = await _goalRepository.GetListAsync(spec);
-            var totalCount = await _goalRepository.LongCountAsync(spec);
+            var totalCount = await _goalRepository.LongCountAsync(spec.ToExpression());
 
             var goalDtos = ObjectMapper.Map<List<Goal>, List<GoalDto>>(goals);
 
@@ -53,7 +57,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             );
         }
 
-        [Authorize(GoalsPermissions.Goals.Create)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Create)]
         public async Task<GoalDto> CreateAsync(CreateGoalDto input)
         {
             var userId = CurrentUser.GetId();
@@ -104,7 +108,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Update)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Update)]
         public async Task<GoalDto> UpdateAsync(Guid id, UpdateGoalDto input)
         {
             var goal = await _goalRepository.GetAsync(id);
@@ -148,13 +152,13 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Delete)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             await _goalRepository.DeleteAsync(id);
         }
 
-        [Authorize(GoalsPermissions.Goals.UpdateProgress)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.UpdateProgress)]
         public async Task<GoalDto> UpdateProgressAsync(Guid id, UpdateGoalProgressDto input)
         {
             var goal = await _goalRepository.GetAsync(id);
@@ -163,7 +167,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Achieve)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Achieve)]
         public async Task<GoalDto> AchieveAsync(Guid id, AchieveGoalDto input)
         {
             var goal = await _goalRepository.GetAsync(id);
@@ -172,7 +176,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Update)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Update)]
         public async Task<GoalDto> PauseAsync(Guid id)
         {
             var goal = await _goalRepository.GetAsync(id);
@@ -181,7 +185,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Update)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Update)]
         public async Task<GoalDto> ResumeAsync(Guid id)
         {
             var goal = await _goalRepository.GetAsync(id);
@@ -190,7 +194,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Archive)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Archive)]
         public async Task<GoalDto> ArchiveAsync(Guid id, ArchiveGoalDto input)
         {
             var goal = await _goalRepository.GetAsync(id);
@@ -199,7 +203,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Update)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Update)]
         public async Task<GoalDto> AddMilestoneAsync(Guid goalId, AddGoalMilestoneDto input)
         {
             var goal = await _goalRepository.GetWithMilestonesAsync(goalId);
@@ -227,7 +231,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             return ObjectMapper.Map<Goal, GoalDto>(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Update)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Update)]
         public async Task RemoveMilestoneAsync(Guid goalId, Guid milestoneId)
         {
             var goal = await _goalRepository.GetWithMilestonesAsync(goalId);
@@ -235,7 +239,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
             await _goalRepository.UpdateAsync(goal);
         }
 
-        [Authorize(GoalsPermissions.Goals.Update)]
+        [Authorize(PersonalDevelopmentPermissions.Goal.Goals.Update)]
         public async Task<GoalDto> CompleteMilestoneAsync(Guid goalId, Guid milestoneId)
         {
             var goal = await _goalRepository.GetWithMilestonesAsync(goalId);
@@ -280,7 +284,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
 
         private ISpecification<Goal> CreateListSpecification(Guid userId, GetGoalListDto input)
         {
-            var spec = Specification.Create<Goal>(g => g.OwnerId == userId);
+            ISpecification<Goal> spec = new BaseSpecification<Goal>(g => g.OwnerId == userId);
 
             if (input.AreaId.HasValue)
             {
@@ -289,7 +293,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
 
             if (input.Status.HasValue)
             {
-                spec = spec.And(Specification.Create<Goal>(g => g.Status == input.Status.Value));
+                spec = spec.And(new BaseSpecification<Goal>(g => g.Status == input.Status.Value));
             }
 
             if (input.IsOverdue == true)
@@ -299,13 +303,13 @@ namespace NouAssist.PersonalDevelopment.Goals.Goals
 
             if (input.FromDate.HasValue)
             {
-                spec = spec.And(Specification.Create<Goal>(
+                spec = spec.And(new BaseSpecification<Goal>(
                     g => g.TargetDate.HasValue && g.TargetDate.Value >= input.FromDate.Value));
             }
 
             if (input.ToDate.HasValue)
             {
-                spec = spec.And(Specification.Create<Goal>(
+                spec = spec.And(new BaseSpecification<Goal>(
                     g => g.TargetDate.HasValue && g.TargetDate.Value <= input.ToDate.Value));
             }
 

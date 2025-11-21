@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
 
@@ -9,16 +9,12 @@ namespace NouAssist.Infrastructure;
     typeof(InfrastructureDomainModule),
     typeof(InfrastructureApplicationContractsModule),
     typeof(AbpDddApplicationModule),
-    typeof(AbpAutoMapperModule)
+    typeof(AbpMapperlyModule)
     )]
 public class InfrastructureApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddAutoMapperObjectMapper<InfrastructureApplicationModule>();
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<InfrastructureApplicationModule>(validate: true);
-        });
+        context.Services.AddMapperlyObjectMapper<InfrastructureApplicationModule>();
     }
 }

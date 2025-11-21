@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Constants;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.ValueObjects
 {
     /// <summary>

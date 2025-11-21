@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.Traceability.Artifact.Dtos;
+using NouAssist.RequirementsManagement.Traceability.Exceptions;
+using NouAssist.RequirementsManagement.Traceability.Localization;
 using NouAssist.RequirementsManagement.Traceability.Models;
 using NouAssist.RequirementsManagement.Traceability.Permissions;
 using NouAssist.RequirementsManagement.Traceability.Services.Interfaces;

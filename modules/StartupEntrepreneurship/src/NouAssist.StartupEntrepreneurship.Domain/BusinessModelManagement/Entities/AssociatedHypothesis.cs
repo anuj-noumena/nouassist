@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.Entities
 {
     /// <summary>

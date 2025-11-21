@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Events.Base
 {
     /// <summary>

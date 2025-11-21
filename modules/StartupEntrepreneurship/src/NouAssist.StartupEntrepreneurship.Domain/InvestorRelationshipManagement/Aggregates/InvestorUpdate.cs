@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Constants;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Entities;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Events;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Exceptions;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Aggregates
 {
     /// <summary>

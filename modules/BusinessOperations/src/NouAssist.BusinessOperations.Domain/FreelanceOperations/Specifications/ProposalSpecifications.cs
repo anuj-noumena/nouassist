@@ -1,3 +1,7 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.BusinessOperations.FreelanceOperations.Enums;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Specifications
 {
     /// <summary>

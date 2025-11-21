@@ -1,3 +1,9 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowDefinition;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine
 {
     /// <summary>

@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects
 {
     /// <summary>

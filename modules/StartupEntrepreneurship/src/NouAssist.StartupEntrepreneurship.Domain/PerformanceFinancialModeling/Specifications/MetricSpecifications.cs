@@ -1,3 +1,9 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Aggregates;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Specifications
 {
     /// <summary>

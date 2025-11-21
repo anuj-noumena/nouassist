@@ -1,3 +1,9 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.QualityAssurance.Aggregates;
+using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+using NouAssist.RequirementsManagement.QualityAssurance.Specifications.Base;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Specifications
 {
     /// <summary>

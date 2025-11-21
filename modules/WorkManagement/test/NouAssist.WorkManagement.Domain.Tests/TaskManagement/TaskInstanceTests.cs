@@ -25,7 +25,9 @@ namespace NouAssist.WorkManagement.TaskManagement
                 ownerId,
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
 
             // Assert
             taskInstance.ShouldNotBeNull();
@@ -47,11 +49,13 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
             var assigneeId = Guid.NewGuid();
 
             // Act
-            taskInstance.AssignTo(assigneeId);
+            taskInstance.Assign(assigneeId);
 
             // Assert
             taskInstance.AssigneeId.ShouldBe(assigneeId);
@@ -69,7 +73,9 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
             var newStatusId = Guid.NewGuid();
 
             // Act
@@ -91,7 +97,9 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
 
             // Act
             taskInstance.Block("Waiting for dependencies");
@@ -112,7 +120,9 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
             taskInstance.Block("Blocked");
 
             // Act
@@ -134,7 +144,9 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
 
             // Act
             taskInstance.Flag("Needs attention");
@@ -155,7 +167,9 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
             taskInstance.Flag("Flagged");
 
             // Act
@@ -177,10 +191,12 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
 
             // Act
-            taskInstance.Resolve("Done", "Completed successfully");
+            taskInstance.Complete("Done", "Completed successfully");
 
             // Assert
             taskInstance.IsResolved.ShouldBeTrue();
@@ -198,11 +214,13 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
             var areaId = Guid.NewGuid();
 
             // Act
-            taskInstance.SetAreaId(areaId);
+            taskInstance.AssignToArea(areaId);
 
             // Assert
             taskInstance.AreaId.ShouldBe(areaId);
@@ -220,11 +238,13 @@ namespace NouAssist.WorkManagement.TaskManagement
                 Guid.NewGuid(),
                 null,
                 null,
-                null);
+                null,
+                1.0,
+                1.0);
             var contextId = Guid.NewGuid();
 
             // Act
-            taskInstance.SetContextId(contextId);
+            taskInstance.AssignToContext(contextId);
 
             // Assert
             taskInstance.ContextId.ShouldBe(contextId);

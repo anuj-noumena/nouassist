@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Entities
 {
     /// <summary>

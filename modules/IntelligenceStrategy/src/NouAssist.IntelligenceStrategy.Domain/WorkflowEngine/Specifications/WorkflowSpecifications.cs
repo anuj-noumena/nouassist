@@ -1,3 +1,7 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Specifications
 {
     /// <summary>

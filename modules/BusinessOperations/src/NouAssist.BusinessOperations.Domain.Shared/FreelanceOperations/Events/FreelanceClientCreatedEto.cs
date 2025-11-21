@@ -1,3 +1,6 @@
+using NouAssist.BusinessOperations.FreelanceOperations.Events.Base;
+using Volo.Abp.EventBus;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Events
 {
     /// <summary>

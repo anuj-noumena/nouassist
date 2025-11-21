@@ -1,3 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.ValidationVerification.Constants;
+using NouAssist.RequirementsManagement.ValidationVerification.Entities;
+using NouAssist.RequirementsManagement.ValidationVerification.Enums;
+using NouAssist.RequirementsManagement.ValidationVerification.Events;
+using NouAssist.RequirementsManagement.ValidationVerification.Exceptions;
+using NouAssist.RequirementsManagement.ValidationVerification.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 

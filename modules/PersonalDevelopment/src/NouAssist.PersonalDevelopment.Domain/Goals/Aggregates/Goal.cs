@@ -18,7 +18,7 @@ namespace NouAssist.PersonalDevelopment.Goals.Aggregates
     {
         public Guid OwnerId { get; private set; }
         public Guid? TenantId { get; private set; }
-        public string Title { get; private set; }
+        public string Title { get; internal set; }
         public string? Description { get; set; }
         public Guid? AreaId { get; set; }
         public Guid? ParentGoalId { get; set; }

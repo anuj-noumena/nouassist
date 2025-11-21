@@ -7,13 +7,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Aggregates;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Enums;
+using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Localization;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Permissions;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Repositories;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.Services.Interfaces;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.StrategicPivot.Dtos;
 using NouAssist.StartupEntrepreneurship.BusinessModelManagement.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Guids;
+using Volo.Abp.Timing;
 using Volo.Abp.Users;
 
 namespace NouAssist.StartupEntrepreneurship.BusinessModelManagement.StrategicPivot

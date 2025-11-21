@@ -1,3 +1,13 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.QualityAssurance.Aggregates;
+using NouAssist.RequirementsManagement.QualityAssurance.Entities;
+using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+using NouAssist.RequirementsManagement.QualityAssurance.Repositories;
+using Volo.Abp.Domain.Services;
+using Volo.Abp.Users;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Services
 {
     /// <summary>

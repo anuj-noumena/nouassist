@@ -1,3 +1,5 @@
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Constants;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.EntityFrameworkCore
 {
     public static class MarketIntelligenceDbProperties

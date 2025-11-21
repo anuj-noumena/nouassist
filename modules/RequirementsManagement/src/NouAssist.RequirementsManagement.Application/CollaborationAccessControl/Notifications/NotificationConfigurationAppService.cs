@@ -1,3 +1,21 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Aggregates;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Entities;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Exceptions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Integration;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Notifications.Dtos;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Permissions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Repositories;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Users;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Notifications
 {
     [Authorize(CollaborationPermissions.Notifications.Default)]

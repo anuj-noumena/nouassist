@@ -1,3 +1,8 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
+
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Specifications
 {
     /// <summary>

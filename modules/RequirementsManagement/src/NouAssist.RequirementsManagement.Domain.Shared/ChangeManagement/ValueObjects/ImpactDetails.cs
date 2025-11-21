@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.ChangeManagement.Enums;
 using Volo.Abp.Domain.Values;
 
 namespace NouAssist.RequirementsManagement.ChangeManagement.ValueObjects

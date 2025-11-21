@@ -1,3 +1,6 @@
+using System;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.Exceptions
 {
     /// <summary>

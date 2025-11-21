@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using Volo.Abp.Application.Dtos;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowInstance
 {
     /// <summary>

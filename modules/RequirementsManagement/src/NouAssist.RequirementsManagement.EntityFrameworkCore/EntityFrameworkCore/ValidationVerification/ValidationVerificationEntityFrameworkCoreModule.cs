@@ -5,6 +5,7 @@ using NouAssist.RequirementsManagement.ValidationVerification.EntityFrameworkCor
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.PostgreSQL;
 using Volo.Abp.Modularity;
+using Volo.Abp.Threading;
 
 namespace NouAssist.RequirementsManagement.ValidationVerification.EntityFrameworkCore
 {

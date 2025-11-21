@@ -1,3 +1,7 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Specifications
 {
     /// <summary>

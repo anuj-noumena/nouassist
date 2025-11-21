@@ -9,6 +9,7 @@ using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Exceptions;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Interfaces.Services;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Localization;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Permissions;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Repositories;
 using NouAssist.IntelligenceStrategy.DecisionSupport.StrategicInitiatives.Dtos;

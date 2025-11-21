@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.Specification.Enums;
+using NouAssist.RequirementsManagement.Specification.Localization;
 using NouAssist.RequirementsManagement.Specification.Permissions;
 using NouAssist.RequirementsManagement.Specification.Repositories;
 using NouAssist.RequirementsManagement.Specification.Specifications;

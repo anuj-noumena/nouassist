@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Lead.Dtos;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Localization;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Permissions;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Repositories;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Services.Interfaces;
@@ -14,6 +17,7 @@ using NouAssist.BusinessOperations.CustomerRelationshipManagement.ValueObjects;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Timing;
 

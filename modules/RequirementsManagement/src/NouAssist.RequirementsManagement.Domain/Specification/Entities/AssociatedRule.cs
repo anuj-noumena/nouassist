@@ -1,3 +1,7 @@
+using System;
+using NouAssist.RequirementsManagement.Specification.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.Specification.Entities
 {
     /// <summary>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using NouAssist.RequirementsManagement.ValidationVerification.Aggregates;
 using NouAssist.RequirementsManagement.ValidationVerification.Repositories;
 using NouAssist.RequirementsManagement.ValidationVerification.Enums;
+using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 

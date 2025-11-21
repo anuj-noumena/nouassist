@@ -1,16 +1,17 @@
+using Volo.Abp.Users;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using NouAssist.IdentityAccess.Users.Aggregates;
 using NouAssist.IdentityAccess.Users.Data;
-using NouAssist.IdentityAccess.Users.Permissions;
+using NouAssist.IdentityAccess.Permissions;
 using NouAssist.IdentityAccess.Users.Users;
 using NouAssist.IdentityAccess.Users.Users.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.IdentityAccess.Users
 {
-    [Authorize(UsersPermissions.Users.Default)]
+    [Authorize(IdentityAccessPermissions.Users.UserManagement.Default)]
     public class UserAppService : ApplicationService, IUserAppService
     {
         private readonly IUserRepository _userRepository;
@@ -20,7 +21,7 @@ namespace NouAssist.IdentityAccess.Users
             _userRepository = userRepository;
         }
 
-        [Authorize(UsersPermissions.Users.View)]
+        [Authorize(IdentityAccessPermissions.Users.UserManagement.View)]
         public async Task<UserDto> GetAsync(Guid id)
         {
             var user = await _userRepository.GetAsync(id);
@@ -34,7 +35,7 @@ namespace NouAssist.IdentityAccess.Users
             return ObjectMapper.Map<User, UserDto>(user);
         }
 
-        [Authorize(UsersPermissions.Users.UpdateProfile)]
+        [Authorize(IdentityAccessPermissions.Users.UserManagement.UpdateProfile)]
         public async Task<UserDto> UpdateProfileAsync(UpdateUserProfileDto input)
         {
             var userId = CurrentUser.GetId();
@@ -60,7 +61,7 @@ namespace NouAssist.IdentityAccess.Users
             await _userRepository.UpdateAsync(user);
         }
 
-        [Authorize(UsersPermissions.Users.Update)]
+        [Authorize(IdentityAccessPermissions.Users.UserManagement.Update)]
         public async Task ActivateAsync(Guid id)
         {
             var user = await _userRepository.GetAsync(id);
@@ -68,7 +69,7 @@ namespace NouAssist.IdentityAccess.Users
             await _userRepository.UpdateAsync(user);
         }
 
-        [Authorize(UsersPermissions.Users.Update)]
+        [Authorize(IdentityAccessPermissions.Users.UserManagement.Update)]
         public async Task DeactivateAsync(Guid id)
         {
             var user = await _userRepository.GetAsync(id);

@@ -4,6 +4,7 @@ using NouAssist.Analytics.Aggregates;
 using NouAssist.Analytics.Constants;
 using NouAssist.Analytics.Entities;
 using System;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace NouAssist.Analytics.EntityFrameworkCore.EntityConfigurations

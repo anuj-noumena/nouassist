@@ -1,3 +1,7 @@
+using System;
+using NouAssist.RequirementsManagement.QualityAssurance.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Entities
 {
     /// <summary>

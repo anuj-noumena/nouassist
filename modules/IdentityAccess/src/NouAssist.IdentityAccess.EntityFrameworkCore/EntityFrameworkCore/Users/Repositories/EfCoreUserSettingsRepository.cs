@@ -1,0 +1,27 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NouAssist.IdentityAccess.Users.Aggregates;
+using NouAssist.IdentityAccess.Users.Data;
+using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore;
+
+namespace NouAssist.IdentityAccess.EntityFrameworkCore.Users.Repositories
+{
+    public class EfCoreUserSettingsRepository 
+        : EfCoreRepository<IdentityAccessDbContext, UserSettings, Guid>, IUserSettingsRepository
+    {
+        public EfCoreUserSettingsRepository(
+            IDbContextProvider<IdentityAccessDbContext> dbContextProvider)
+            : base(dbContextProvider)
+        {
+        }
+
+        public async Task<UserSettings?> FindByUserIdAsync(Guid userId)
+        {
+            var dbSet = await GetDbSetAsync();
+            return await dbSet
+                .FirstOrDefaultAsync(s => s.UserId == userId);
+        }
+    }
+}

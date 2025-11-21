@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using NouAssist.BusinessOperations.ProjectExecution.Constants;
+using NouAssist.BusinessOperations.ProjectExecution.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.ValueObjects
 {
     /// <summary>

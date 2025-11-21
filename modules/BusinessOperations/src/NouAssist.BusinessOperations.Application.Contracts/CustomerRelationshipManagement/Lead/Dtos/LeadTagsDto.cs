@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 /// <summary>
     /// Data transfer object for managing lead tags
     /// </summary>

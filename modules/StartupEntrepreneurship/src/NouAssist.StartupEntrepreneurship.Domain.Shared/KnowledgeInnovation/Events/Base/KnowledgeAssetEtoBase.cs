@@ -1,3 +1,6 @@
+using System;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Events.Base
 {
     /// <summary>

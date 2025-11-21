@@ -1,3 +1,7 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Integration
 {
     /// <summary>

@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.VersioningBaselining.Aggregates;
+using NouAssist.RequirementsManagement.VersioningBaselining.Enums;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Repositories
 {
     /// <summary>

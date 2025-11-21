@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NouAssist.Analytics.Jobs;
 using NouAssist.Analytics.Repositories;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Threading;

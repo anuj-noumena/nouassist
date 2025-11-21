@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Aggregates;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Repositories
 {
     /// <summary>

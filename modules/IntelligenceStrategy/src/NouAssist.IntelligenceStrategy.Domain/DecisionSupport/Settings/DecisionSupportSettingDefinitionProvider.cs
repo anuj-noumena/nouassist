@@ -1,4 +1,5 @@
 using NouAssist.DecisionSupport.Localization;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Localization;
 using Volo.Abp.Localization;
 using Volo.Abp.Settings;
 

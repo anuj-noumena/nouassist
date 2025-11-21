@@ -1,11 +1,22 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Dtos.Base;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Entities;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Localization;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.MetricDefinitions.Dtos;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Permissions;
 using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
 
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.MetricDefinitions
 {
@@ -69,10 +80,10 @@ namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.MetricD
                 query = query.WhereIf(!input.Filter.IsNullOrWhiteSpace(),
                     x => x.Name.Contains(input.Filter) || x.Description.Contains(input.Filter));
 
-                query = query.WhereIf(input.Type.HasValue, x => x.Type == input.Type.Value);
+                query = AbpQueryableExtensions.WhereIf(query, input.Type.HasValue, x => x.Type == input.Type.Value);
                 query = query.WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive.Value);
-                query = query.WhereIf(input.CategoryId.HasValue, x => x.CategoryId == input.CategoryId.Value);
-                query = query.WhereIf(input.IsAutomated.HasValue, x => x.CalculationRule.IsAutomated == input.IsAutomated.Value);
+                query = AbpQueryableExtensions.WhereIf(query, input.CategoryId.HasValue, x => x.CategoryId == input.CategoryId.Value);
+                query = AbpQueryableExtensions.WhereIf(query, input.IsAutomated.HasValue, x => x.CalculationRule.IsAutomated == input.IsAutomated.Value);
 
                 // Apply sorting
                 if (!input.Sorting.IsNullOrWhiteSpace())

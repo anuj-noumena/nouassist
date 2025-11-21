@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.ValueObjects;
 using NouAssist.ContractPortfolioManagement.EntityFrameworkCore.Converters;
 using NouAssist.ContractPortfolioManagement.ValueObjects;
 

@@ -1,3 +1,7 @@
+using System;
+using System.Linq.Expressions;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Aggregates;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.Specifications
 {
     /// <summary>

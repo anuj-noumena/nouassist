@@ -1,4 +1,7 @@
+using System;
+using NouAssist.RequirementsManagement.ChangeManagement.Constants;
 using NouAssist.RequirementsManagement.ChangeManagement.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace NouAssist.RequirementsManagement.ChangeManagement.Entities

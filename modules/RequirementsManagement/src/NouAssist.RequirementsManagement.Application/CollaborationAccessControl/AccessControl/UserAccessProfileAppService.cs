@@ -1,3 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.AccessControl.Dtos;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Aggregates;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Entities;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Exceptions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Integration;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Permissions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Repositories;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.AccessControl
 {
     [Authorize(CollaborationPermissions.AccessControl.Default)]

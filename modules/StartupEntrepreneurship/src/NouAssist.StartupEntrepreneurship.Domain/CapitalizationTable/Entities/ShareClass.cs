@@ -1,3 +1,4 @@
+using System;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 using NouAssist.StartupEntrepreneurship.CapitalizationTable.Enums;

@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Enums;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.Exceptions
 {
     /// <summary>

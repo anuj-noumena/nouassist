@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Aggregates;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Interfaces.Services
 {
     /// <summary>

@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using NouAssist.BusinessOperations.ProjectExecution.Constants;
 
 namespace NouAssist.BusinessOperations.ProjectExecution.Projects.Dtos
 {

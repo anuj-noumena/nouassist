@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.RequirementsManagement.ChangeManagement.Aggregates;
+using NouAssist.RequirementsManagement.ChangeManagement.Constants;
 using NouAssist.RequirementsManagement.ChangeManagement.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 

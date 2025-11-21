@@ -1,3 +1,9 @@
+using System;
+using NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.KnowledgeInnovation.Entities
 {
     /// <summary>

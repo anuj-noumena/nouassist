@@ -1,4 +1,6 @@
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Events.Base;
+using Volo.Abp.EventBus;
 
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Events
 {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NouAssist.BusinessOperations.ContractPortfolioManagement.Enums;
 using NouAssist.ContractPortfolioManagement.Enums;
 using Volo.Abp.Application.Dtos;
 

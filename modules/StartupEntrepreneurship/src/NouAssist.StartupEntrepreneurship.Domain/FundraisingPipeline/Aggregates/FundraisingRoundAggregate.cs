@@ -1,3 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Constants;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Enums;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Events;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Exceptions;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
 {
     /// <summary>
@@ -139,7 +151,7 @@ namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Aggregates
             }
             
             var stage = new PipelineStage(
-                GuidGenerator.Create(),
+                Guid.CreateVersion7(),
                 Id,
                 name,
                 order,

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Constants;
 using NouAssist.IntelligenceStrategy.DecisionSupport.Enums;
 using NouAssist.IntelligenceStrategy.DecisionSupport.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;

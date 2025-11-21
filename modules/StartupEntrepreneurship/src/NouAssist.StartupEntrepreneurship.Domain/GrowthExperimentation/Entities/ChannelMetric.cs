@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Entities
 {
     /// <summary>

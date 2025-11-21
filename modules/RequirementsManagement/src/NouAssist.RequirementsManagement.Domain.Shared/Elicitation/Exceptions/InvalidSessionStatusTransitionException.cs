@@ -1,3 +1,5 @@
+using NouAssist.RequirementsManagement.Elicitation.Enums;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Exceptions
 {
     /// <summary>

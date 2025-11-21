@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+
 /// <summary>
     /// Data transfer object for creating a lead
     /// </summary>

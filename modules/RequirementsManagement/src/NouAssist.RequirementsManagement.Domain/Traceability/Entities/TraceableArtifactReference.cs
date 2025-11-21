@@ -1,3 +1,7 @@
+using System;
+using NouAssist.RequirementsManagement.Traceability.ValueObjects;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.Traceability.Entities
 {
     /// <summary>

@@ -1,4 +1,5 @@
 using FluentValidation;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
 using NouAssist.BusinessOperations.CustomerRelationshipManagement.Organization.Dtos;
 
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Validation

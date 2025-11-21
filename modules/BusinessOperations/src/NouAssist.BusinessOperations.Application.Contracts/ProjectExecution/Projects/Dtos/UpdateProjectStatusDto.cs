@@ -36,7 +36,7 @@ namespace NouAssist.BusinessOperations.ProjectExecution.Projects.Dtos
         /// New status for the project
         /// </summary>
         [Required]
-        public ProjectStatus Status { get; set; }
+        public FreelanceOperations.Enums.ProjectStatus Status { get; set; }
         
         /// <summary>
         /// Actual end date when completing a project

@@ -1,3 +1,14 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.BusinessOperations.FreelanceOperations.Aggregates;
+using NouAssist.BusinessOperations.FreelanceOperations.Enums;
+using NouAssist.BusinessOperations.FreelanceOperations.Interfaces.Repositories;
+using NouAssist.BusinessOperations.FreelanceOperations.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Data
 {
     /// <summary>

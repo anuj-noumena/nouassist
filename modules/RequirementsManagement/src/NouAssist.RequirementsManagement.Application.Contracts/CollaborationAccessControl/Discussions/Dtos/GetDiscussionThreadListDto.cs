@@ -1,3 +1,6 @@
+using System;
+using Volo.Abp.Application.Dtos;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Discussions.Dtos
 {
     public class GetDiscussionThreadListDto : PagedAndSortedResultRequestDto

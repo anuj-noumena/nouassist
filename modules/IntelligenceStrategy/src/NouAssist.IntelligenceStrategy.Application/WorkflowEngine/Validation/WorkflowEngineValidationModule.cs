@@ -1,3 +1,5 @@
+using Volo.Abp.Modularity;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Validation
 {
     /// <summary>

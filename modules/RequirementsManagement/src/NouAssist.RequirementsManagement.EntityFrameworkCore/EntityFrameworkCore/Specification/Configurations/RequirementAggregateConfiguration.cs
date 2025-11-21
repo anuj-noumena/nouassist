@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NouAssist.RequirementsManagement.Specification.Aggregates;
 using NouAssist.RequirementsManagement.Specification.Constants;
+using NouAssist.RequirementsManagement.Specification.Entities;
 using NouAssist.RequirementsManagement.Specification.Enums;
 using NouAssist.RequirementsManagement.Specification.ValueObjects;
 using Volo.Abp.EntityFrameworkCore.Modeling;

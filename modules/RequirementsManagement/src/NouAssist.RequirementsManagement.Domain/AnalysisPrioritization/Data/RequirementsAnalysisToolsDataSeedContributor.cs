@@ -1,3 +1,12 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Aggregates;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Repositories;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.Data
 {
     /// <summary>

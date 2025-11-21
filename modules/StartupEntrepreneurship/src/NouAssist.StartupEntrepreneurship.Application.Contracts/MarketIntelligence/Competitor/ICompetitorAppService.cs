@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Competitor.Dtos;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

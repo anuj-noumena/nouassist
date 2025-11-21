@@ -1,3 +1,9 @@
+using System;
+using NouAssist.BusinessOperations.FreelanceOperations.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.BusinessOperations.FreelanceOperations.Aggregates
 {
     /// <summary>

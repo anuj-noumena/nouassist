@@ -1,3 +1,4 @@
+using Volo.Abp.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +7,14 @@ using Microsoft.AspNetCore.Authorization;
 using NouAssist.IdentityAccess.Contacts.Aggregates;
 using NouAssist.IdentityAccess.Contacts.Clients.Dtos;
 using NouAssist.IdentityAccess.Contacts.Data;
-using NouAssist.IdentityAccess.Contacts.Permissions;
+using NouAssist.IdentityAccess.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 
 namespace NouAssist.IdentityAccess.Contacts.Clients
 {
-    [Authorize(ContactsPermissions.Clients.Default)]
+    [Authorize(IdentityAccessPermissions.Contacts.Clients.Default)]
     public class ClientAppService : ApplicationService, IClientAppService
     {
         private readonly IClientRepository _clientRepository;
@@ -79,13 +80,10 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
 
             var totalCount = queryable.Count();
 
-            // Apply sorting
-            queryable = !string.IsNullOrWhiteSpace(input.Sorting)
-                ? queryable.OrderBy(input.Sorting)
-                : queryable.OrderBy(c => c.Name);
-
-            // Apply paging
+            // Apply sorting and paging
+            var sorting = GetSorting(input.Sorting);
             var clients = queryable
+                .OrderBy(sorting)
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount)
                 .ToList();
@@ -99,7 +97,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return new PagedResultDto<ClientDto>(totalCount, clientDtos);
         }
 
-        [Authorize(ContactsPermissions.Clients.Create)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.Create)]
         public async Task<ClientDto> CreateAsync(CreateClientDto input)
         {
             var ownerId = CurrentUser.GetId();
@@ -123,7 +121,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.Edit)]
         public async Task<ClientDto> UpdateAsync(Guid id, UpdateClientDto input)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -147,7 +145,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.Delete)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.Delete)]
         public async Task DeleteAsync(Guid id)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -160,7 +158,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             await _clientRepository.DeleteAsync(id);
         }
 
-        [Authorize(ContactsPermissions.Clients.ManageStatus)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.ManageStatus)]
         public async Task<ClientDto> ActivateAsync(Guid id)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -176,7 +174,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.ManageStatus)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.ManageStatus)]
         public async Task<ClientDto> DeactivateAsync(Guid id, string reason = null)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -192,7 +190,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.ManageStatus)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.ManageStatus)]
         public async Task<ClientDto> PutOnHoldAsync(Guid id, string reason = null)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -208,7 +206,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.ManageStatus)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.ManageStatus)]
         public async Task<ClientDto> MarkAsLostAsync(Guid id, string reason = null)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -224,7 +222,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.ManageStatus)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.ManageStatus)]
         public async Task<ClientDto> ConvertToPayingAsync(Guid id)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -240,7 +238,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.Edit)]
         public async Task<ClientDto> RecordContactAsync(Guid id)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -256,7 +254,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.Edit)]
         public async Task<ClientDto> UpdateBalanceAsync(Guid id, decimal amount)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -272,7 +270,7 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             return await MapToGetOutputDtoAsync(client);
         }
 
-        [Authorize(ContactsPermissions.Clients.Edit)]
+        [Authorize(IdentityAccessPermissions.Contacts.Clients.Edit)]
         public async Task<ClientDto> AddTagAsync(Guid id, string tag)
         {
             var client = await _clientRepository.GetAsync(id);
@@ -294,6 +292,17 @@ namespace NouAssist.IdentityAccess.Contacts.Clients
             var dto = ObjectMapper.Map<Client, ClientDto>(client);
             // TODO: Load primary contact name if PrimaryContactId is set
             return dto;
+        }
+
+        private static Func<Client, object> GetSorting(string sorting)
+        {
+            return sorting?.ToLowerInvariant() switch
+            {
+                "name" => c => c.Name,
+                "createdat" => c => c.CreationTime,
+                "lastcontact" => c => c.LastContactedAt ?? DateTime.MinValue,
+                _ => c => c.Name
+            };
         }
     }
 }

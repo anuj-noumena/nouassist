@@ -1,3 +1,5 @@
+using Volo.Abp;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Exceptions
 {
     /// <summary>

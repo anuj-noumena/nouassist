@@ -1,3 +1,8 @@
+using System;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.Entities
 {
     /// <summary>

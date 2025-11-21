@@ -1,3 +1,9 @@
+using System;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Constants;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.Entities
 {
     /// <summary>

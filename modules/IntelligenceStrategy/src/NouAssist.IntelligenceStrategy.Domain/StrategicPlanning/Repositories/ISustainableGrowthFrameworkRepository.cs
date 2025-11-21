@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Aggregates;
+using Volo.Abp.Domain.Repositories;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Repositories
 {
     /// <summary>

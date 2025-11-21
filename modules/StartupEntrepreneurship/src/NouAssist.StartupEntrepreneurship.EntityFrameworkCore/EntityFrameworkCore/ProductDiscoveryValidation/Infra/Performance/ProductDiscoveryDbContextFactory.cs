@@ -1,3 +1,8 @@
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.EntityFrameworkCore;
+
 namespace NouAssist.StartupEntrepreneurship.ProductDiscoveryValidation.Performance
 {
     /// <summary>

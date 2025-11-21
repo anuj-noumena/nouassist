@@ -1,12 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Aggregates;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Entities;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
 using NouAssist.IntelligenceStrategy.WorkflowEngine.Repositories;
 using System.Linq.Dynamic.Core;
+using System.Threading;
+using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.Specifications;
+using TaskStatus = NouAssist.IntelligenceStrategy.WorkflowEngine.Enums.TaskStatus;
 
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.EntityFrameworkCore.Repositories
 {
@@ -41,8 +47,7 @@ namespace NouAssist.IntelligenceStrategy.WorkflowEngine.EntityFrameworkCore.Repo
                              .Include(i => i.ExecutionLogs);
             }
 
-            return await query
-                .Where(specification.ToExpression())
+            return await DynamicQueryableExtensions.Where(query, specification.ToExpression())
                 .ToListAsync(cancellationToken);
         }
 

@@ -1,3 +1,12 @@
+using System;
+using NouAssist.RequirementsManagement.Elicitation.Constants;
+using NouAssist.RequirementsManagement.Elicitation.Enums;
+using NouAssist.RequirementsManagement.Elicitation.Events;
+using NouAssist.RequirementsManagement.Elicitation.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Aggregates
 {
     /// <summary>

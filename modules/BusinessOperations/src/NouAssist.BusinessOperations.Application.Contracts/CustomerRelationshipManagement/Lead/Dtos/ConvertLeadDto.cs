@@ -1,3 +1,5 @@
+using System;
+
 /// <summary>
     /// Data transfer object for converting a lead to a contact
     /// </summary>

@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.AnalysisPrioritization.Enums;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.RequirementsManagement.AnalysisPrioritization.ValueObjects
 {
     /// <summary>

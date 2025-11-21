@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.RequirementsManagement.ValidationVerification.Events.Base
 {
     /// <summary>

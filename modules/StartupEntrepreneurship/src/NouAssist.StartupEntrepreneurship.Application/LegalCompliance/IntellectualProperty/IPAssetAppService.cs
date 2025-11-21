@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
@@ -11,6 +12,7 @@ using NouAssist.StartupEntrepreneurship.LegalCompliance.Exceptions;
 using NouAssist.StartupEntrepreneurship.LegalCompliance.Interfaces.Repositories;
 using NouAssist.StartupEntrepreneurship.LegalCompliance.Interfaces.Services;
 using NouAssist.StartupEntrepreneurship.LegalCompliance.IntellectualProperty.Dtos;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Localization;
 using NouAssist.StartupEntrepreneurship.LegalCompliance.Permissions;
 using NouAssist.StartupEntrepreneurship.LegalCompliance.ValueObjects;
 using Volo.Abp;

@@ -1,3 +1,5 @@
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Exceptions
 {
     /// <summary>

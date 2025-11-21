@@ -1,3 +1,6 @@
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Constants;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.WorkflowDefinition;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Validation
 {
     /// <summary>

@@ -1,3 +1,15 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Aggregates;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Constants;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Repositories;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Data
 {
     /// <summary>

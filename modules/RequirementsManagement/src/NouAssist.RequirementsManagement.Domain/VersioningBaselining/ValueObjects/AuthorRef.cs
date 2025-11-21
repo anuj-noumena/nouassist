@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.RequirementsManagement.VersioningBaselining.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.ValueObjects
 {
     /// <summary>

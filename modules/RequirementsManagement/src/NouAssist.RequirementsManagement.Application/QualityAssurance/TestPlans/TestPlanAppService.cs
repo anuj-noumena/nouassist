@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.QualityAssurance.Aggregates;
+using NouAssist.RequirementsManagement.QualityAssurance.Localization;
 using NouAssist.RequirementsManagement.QualityAssurance.Permissions;
 using NouAssist.RequirementsManagement.QualityAssurance.Repositories;
 using NouAssist.RequirementsManagement.QualityAssurance.Services;

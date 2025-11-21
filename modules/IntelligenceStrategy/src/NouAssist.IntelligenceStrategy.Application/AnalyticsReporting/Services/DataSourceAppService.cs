@@ -10,8 +10,12 @@ using NouAssist.Analytics.Interfaces.Services;
 using NouAssist.Analytics.Permissions;
 using NouAssist.Analytics.Repositories;
 using NouAssist.Analytics.ValueObjects;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.Analytics.Services
 {

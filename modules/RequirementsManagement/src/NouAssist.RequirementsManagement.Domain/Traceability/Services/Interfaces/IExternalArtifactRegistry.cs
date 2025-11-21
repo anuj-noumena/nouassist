@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Traceability.Models;
+
 namespace NouAssist.RequirementsManagement.Traceability.Services.Interfaces
 {
     /// <summary>

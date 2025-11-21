@@ -1,3 +1,10 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.AccessControl.Dtos;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using Volo.Abp.Application.Dtos;
+using Volo.Abp.Application.Services;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.AccessControl
 {
     public interface IUserAccessProfileAppService : IApplicationService

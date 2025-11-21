@@ -1,3 +1,10 @@
+using System;
+using System.Collections.Generic;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.Enums;
+using NouAssist.IntelligenceStrategy.StrategicPlanning.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.IntelligenceStrategy.StrategicPlanning.Entities
 {
     /// <summary>

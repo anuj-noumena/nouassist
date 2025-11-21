@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.Application;
 
@@ -9,16 +9,12 @@ namespace NouAssist.IdentityAccess;
     typeof(IdentityAccessDomainModule),
     typeof(IdentityAccessApplicationContractsModule),
     typeof(AbpDddApplicationModule),
-    typeof(AbpAutoMapperModule)
+    typeof(AbpMapperlyModule)
     )]
 public class IdentityAccessApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        context.Services.AddAutoMapperObjectMapper<IdentityAccessApplicationModule>();
-        Configure<AbpAutoMapperOptions>(options =>
-        {
-            options.AddMaps<IdentityAccessApplicationModule>(validate: true);
-        });
+        context.Services.AddMapperlyObjectMapper<IdentityAccessApplicationModule>();
     }
 }

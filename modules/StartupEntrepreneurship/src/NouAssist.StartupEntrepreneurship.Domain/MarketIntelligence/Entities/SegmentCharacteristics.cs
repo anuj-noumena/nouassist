@@ -1,3 +1,8 @@
+using System;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Entities
 {
     /// <summary>

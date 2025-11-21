@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.Specification.Enums;
+
 namespace NouAssist.RequirementsManagement.Specification.Exceptions
 {
     /// <summary>

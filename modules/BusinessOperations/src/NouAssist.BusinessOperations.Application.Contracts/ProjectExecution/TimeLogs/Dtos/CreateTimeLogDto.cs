@@ -70,7 +70,7 @@ namespace NouAssist.BusinessOperations.ProjectExecution.TimeLogs.Dtos
         /// Duration of time logged in hours
         /// </summary>
         [Required]
-        [Range(0.1, 24)]
+        [System.ComponentModel.DataAnnotations.Range(0.1, 24)]
         public double Hours { get; set; }
         
         /// <summary>

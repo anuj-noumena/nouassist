@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Enums;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Interfaces.Services;
+using NouAssist.StartupEntrepreneurship.MarketIntelligence.Localization;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.MarketTrend.Dtos;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Permissions;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.Repositories;
 using NouAssist.StartupEntrepreneurship.MarketIntelligence.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

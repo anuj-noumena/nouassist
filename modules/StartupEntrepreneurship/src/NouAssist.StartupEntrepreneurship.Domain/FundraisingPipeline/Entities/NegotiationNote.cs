@@ -1,3 +1,7 @@
+using System;
+using Volo.Abp.Auditing;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities
 {
     /// <summary>

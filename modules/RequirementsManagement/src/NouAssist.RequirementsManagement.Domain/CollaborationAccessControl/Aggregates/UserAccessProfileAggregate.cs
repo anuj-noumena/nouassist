@@ -1,3 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Entities;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Events;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Exceptions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
+using Volo.Abp.Users;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Aggregates
 {
     /// <summary>

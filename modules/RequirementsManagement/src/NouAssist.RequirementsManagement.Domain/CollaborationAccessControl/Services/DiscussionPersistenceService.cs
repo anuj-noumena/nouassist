@@ -1,3 +1,15 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Aggregates;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Entities;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Enums;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Exceptions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Repositories;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Services
 {
     /// <summary>

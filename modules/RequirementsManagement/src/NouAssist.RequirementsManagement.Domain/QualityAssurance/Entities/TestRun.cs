@@ -1,3 +1,11 @@
+using System;
+using NouAssist.RequirementsManagement.QualityAssurance.Constants;
+using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+using NouAssist.RequirementsManagement.QualityAssurance.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Auditing;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Entities
 {
     /// <summary>

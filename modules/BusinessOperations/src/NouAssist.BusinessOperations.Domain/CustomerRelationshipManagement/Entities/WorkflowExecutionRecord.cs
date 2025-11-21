@@ -1,3 +1,7 @@
+using System;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.Timing;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.Entities
 {
     /// <summary>

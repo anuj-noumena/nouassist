@@ -1,3 +1,9 @@
+using System;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.Constants;
+using NouAssist.StartupEntrepreneurship.FundraisingPipeline.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.StartupEntrepreneurship.FundraisingPipeline.Entities
 {
     /// <summary>

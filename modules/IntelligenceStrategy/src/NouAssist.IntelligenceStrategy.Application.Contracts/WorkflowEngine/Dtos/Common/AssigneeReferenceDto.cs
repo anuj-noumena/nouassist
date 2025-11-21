@@ -1,3 +1,6 @@
+using System;
+using NouAssist.IntelligenceStrategy.WorkflowEngine.Enums;
+
 namespace NouAssist.IntelligenceStrategy.WorkflowEngine.Dtos.Common
 {
     /// <summary>

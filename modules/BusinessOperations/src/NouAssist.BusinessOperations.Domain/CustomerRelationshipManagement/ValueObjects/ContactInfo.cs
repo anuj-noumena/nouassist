@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.BusinessOperations.CustomerRelationshipManagement.ValueObjects
 {
     /// <summary>

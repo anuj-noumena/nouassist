@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.Exceptions;
+using NouAssist.RequirementsManagement.CollaborationAccessControl.ValueObjects;
+using Volo.Abp.Domain.Entities;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.CollaborationAccessControl.Entities
 {
     /// <summary>

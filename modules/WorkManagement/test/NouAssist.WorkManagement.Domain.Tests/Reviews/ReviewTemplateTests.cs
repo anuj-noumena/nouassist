@@ -12,19 +12,19 @@ namespace NouAssist.WorkManagement.Reviews
         public void Constructor_WithValidParameters_Should_CreateReviewTemplate()
         {
             // Arrange
-            var name = "Weekly Review Template";
+            var title = "Weekly Review Template";
             var reviewType = ReviewType.Weekly;
 
             // Act
             var template = new ReviewTemplate(
                 Guid.NewGuid(),
-                Guid.NewGuid(),
-                name,
-                reviewType);
+                reviewType,
+                title,
+                ownerId: Guid.NewGuid());
 
             // Assert
             template.ShouldNotBeNull();
-            template.Name.ShouldBe(name);
+            template.Title.ShouldBe(title);
             template.ReviewType.ShouldBe(reviewType);
         }
     }

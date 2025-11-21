@@ -1,3 +1,5 @@
+using System;
+
 namespace NouAssist.StartupEntrepreneurship.MarketIntelligence.Exceptions
 {
     /// <summary>

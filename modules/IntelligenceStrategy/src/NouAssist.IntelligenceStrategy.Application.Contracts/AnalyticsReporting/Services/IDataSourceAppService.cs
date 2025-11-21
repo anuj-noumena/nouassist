@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using NouAssist.Analytics.DTOs.DataSource;
 using NouAssist.Analytics.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

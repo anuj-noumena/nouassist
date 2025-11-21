@@ -1,3 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Enums;
+using Volo.Abp.Domain.Values;
+
 namespace NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.ValueObjects
 {
     /// <summary>

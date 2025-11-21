@@ -1,3 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.Elicitation.Aggregates;
+using NouAssist.RequirementsManagement.Elicitation.Enums;
+using NouAssist.RequirementsManagement.Elicitation.ValueObjects;
+using Volo.Abp.Domain.Services;
+
 namespace NouAssist.RequirementsManagement.Elicitation.Services
 {
     /// <summary>

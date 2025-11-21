@@ -1,3 +1,13 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.RequirementsManagement.QualityAssurance.Repositories;
+using NouAssist.RequirementsManagement.QualityAssurance.Services;
+using NouAssist.RequirementsManagement.QualityAssurance.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.QualityAssurance.Data
 {
     /// <summary>

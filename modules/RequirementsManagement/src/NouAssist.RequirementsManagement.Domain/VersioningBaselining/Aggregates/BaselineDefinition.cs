@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.RequirementsManagement.VersioningBaselining.Constants;
+using NouAssist.RequirementsManagement.VersioningBaselining.Entities;
+using NouAssist.RequirementsManagement.VersioningBaselining.Enums;
+using NouAssist.RequirementsManagement.VersioningBaselining.Events;
+using NouAssist.RequirementsManagement.VersioningBaselining.Exceptions;
+using NouAssist.RequirementsManagement.VersioningBaselining.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.RequirementsManagement.VersioningBaselining.Aggregates
 {
     /// <summary>

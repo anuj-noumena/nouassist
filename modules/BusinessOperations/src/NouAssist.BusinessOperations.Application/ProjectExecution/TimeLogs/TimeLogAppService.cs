@@ -10,6 +10,7 @@ using NouAssist.BusinessOperations.ProjectExecution.Services.Interfaces;
 using NouAssist.BusinessOperations.ProjectExecution.TimeLogs.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Authorization;
 using Volo.Abp.Domain.Repositories;
 
 namespace NouAssist.BusinessOperations.ProjectExecution.TimeLogs

@@ -1,3 +1,7 @@
+using System;
+using NouAssist.BusinessOperations.CustomerRelationshipManagement.Enums;
+using Volo.Abp.Application.Dtos;
+
 /// <summary>
     /// Data transfer object for lead list filtering and pagination
     /// </summary>

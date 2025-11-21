@@ -1,3 +1,16 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.BusinessOperations.ProjectExecution.Entities;
+using NouAssist.BusinessOperations.ProjectExecution.Enums;
+using NouAssist.BusinessOperations.ProjectExecution.Events;
+using NouAssist.BusinessOperations.ProjectExecution.Exceptions;
+using NouAssist.BusinessOperations.ProjectExecution.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+using Volo.Abp.Timing;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.Aggregates
 {
     /// <summary>

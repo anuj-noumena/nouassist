@@ -1,3 +1,14 @@
+using System;
+using System.Threading.Tasks;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Aggregates;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Enums;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.Interfaces.Repositories;
+using NouAssist.StartupEntrepreneurship.LegalCompliance.ValueObjects;
+using Volo.Abp.Data;
+using Volo.Abp.DependencyInjection;
+using Volo.Abp.Guids;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.LegalCompliance.Data
 {
     /// <summary>

@@ -1,3 +1,8 @@
+using System;
+using NouAssist.BusinessOperations.ProjectExecution.Constants;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.BusinessOperations.ProjectExecution.Entities
 {
     /// <summary>

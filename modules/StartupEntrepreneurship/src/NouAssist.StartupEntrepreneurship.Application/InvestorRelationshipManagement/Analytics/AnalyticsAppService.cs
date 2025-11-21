@@ -10,6 +10,7 @@ using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Permissio
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Repositories;
 using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Services;
 using System.Text.Json;
+using NouAssist.StartupEntrepreneurship.InvestorRelationshipManagement.Localization;
 using Volo.Abp;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Authorization;

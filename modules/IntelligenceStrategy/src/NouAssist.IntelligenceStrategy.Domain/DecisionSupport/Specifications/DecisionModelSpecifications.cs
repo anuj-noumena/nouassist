@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using NouAssist.DecisionSupport.Aggregates;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Aggregates;
 using Volo.Abp.Specifications;
 
 namespace NouAssist.DecisionSupport.Specifications

@@ -8,7 +8,12 @@ using NouAssist.Analytics.Exceptions;
 using NouAssist.Analytics.Interfaces.Services;
 using NouAssist.Analytics.Repositories;
 using NouAssist.Analytics.ValueObjects;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Entities;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Repositories;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.ValueObjects;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Localization;
 
 namespace NouAssist.Analytics.Services
 {

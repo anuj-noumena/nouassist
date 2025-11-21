@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using NouAssist.RequirementsManagement.QualityAssurance.Entities;
 using NouAssist.RequirementsManagement.QualityAssurance.Enums;
+using NouAssist.RequirementsManagement.QualityAssurance.Localization;
 using NouAssist.RequirementsManagement.QualityAssurance.Permissions;
 using NouAssist.RequirementsManagement.QualityAssurance.QualityMetrics.Dtos;
 using NouAssist.RequirementsManagement.QualityAssurance.Repositories;

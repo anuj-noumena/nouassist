@@ -59,7 +59,7 @@ namespace NouAssist.BusinessOperations.ProjectExecution.Tasks.Dtos
         /// <summary>
         /// Type of dependency
         /// </summary>
-        public DependencyType DependencyType { get; set; }
+        public ContractPortfolioManagement.Enums.DependencyType DependencyType { get; set; }
         
         /// <summary>
         /// String representation of the dependency type

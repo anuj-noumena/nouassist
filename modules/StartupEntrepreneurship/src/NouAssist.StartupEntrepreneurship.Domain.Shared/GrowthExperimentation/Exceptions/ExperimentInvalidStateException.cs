@@ -1,3 +1,6 @@
+using System;
+using NouAssist.StartupEntrepreneurship.GrowthExperimentation.Enums;
+
 namespace NouAssist.StartupEntrepreneurship.GrowthExperimentation.Exceptions
 {
     /// <summary>

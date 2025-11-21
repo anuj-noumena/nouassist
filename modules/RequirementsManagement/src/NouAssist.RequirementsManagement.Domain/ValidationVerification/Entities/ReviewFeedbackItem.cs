@@ -1,3 +1,6 @@
+using System;
+using NouAssist.RequirementsManagement.ValidationVerification.ValueObjects;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
 namespace NouAssist.RequirementsManagement.ValidationVerification.Entities

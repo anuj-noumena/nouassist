@@ -1,3 +1,6 @@
+using System;
+using Volo.Abp.Domain.Entities;
+
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.Entities
 {
     /// <summary>

@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using NouAssist.IntelligenceStrategy.DecisionSupport.Constants;
 
 namespace NouAssist.IntelligenceStrategy.DecisionSupport.DecisionModels.Dtos
 {

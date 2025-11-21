@@ -1,3 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Constants;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Entities;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Enums;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Events;
+using NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.ValueObjects;
+using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
+using Volo.Abp.MultiTenancy;
+
 namespace NouAssist.StartupEntrepreneurship.PerformanceFinancialModeling.Aggregates
 {
     /// <summary>

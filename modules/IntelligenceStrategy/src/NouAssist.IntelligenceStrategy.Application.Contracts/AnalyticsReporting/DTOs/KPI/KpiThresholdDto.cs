@@ -1,5 +1,6 @@
 using System;
 using NouAssist.Analytics.Enums;
+using NouAssist.IntelligenceStrategy.AnalyticsReporting.Enums;
 
 namespace NouAssist.Analytics.DTOs.KPI
 {

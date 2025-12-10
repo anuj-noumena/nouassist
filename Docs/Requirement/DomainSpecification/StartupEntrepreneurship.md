@@ -1,11 +1,3 @@
-# 📘 **Startup Lifecycle Management & Growth Platform**
-
-## **Domain-Driven Architecture Specification — Enhanced Edition (v2.0)**
-
-### **PART 1 — Executive Summary + Global Enhancements**
-
----
-
 # **1. Executive Summary**
 
 ## 1.1 Purpose

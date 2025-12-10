@@ -1,41 +1,41 @@
 # ABP Framework Domain Layer Development Guide
 
-This guide provides comprehensive, production-quality instructions and code for generating a domain layer following Domain-Driven Design (DDD) principles within the ABP Framework v9+ ecosystem. All code is fully defined, documented, and organized in a modular structure with complete file paths specified.
+This guide provides comprehensive, production-quality instructions and code for generating a domain layer following Domain-Driven Design (DDD) principles within the ABP Framework v10+ ecosystem. All code is fully defined, documented, and organized in a modular structure with complete file paths specified.
 
 ## Project Context & Technical Stack
 
--   **Framework:** ABP Framework v9+
--   **.NET Version:** .NET 9.0
--   **Architecture:** Domain-Driven Design with modular organization
--   **Multi-tenancy:** Enabled
--   **Core Dependencies:**
+  - **Framework:** ABP Framework v10+
+  - **.NET Version:** .NET 10.0
+  - **Architecture:** Domain-Driven Design with modular organization
+  - **Multi-tenancy:** Enabled
+  - **Core Dependencies:**
     ```xml
     <ItemGroup>
-      <PackageReference Include="Volo.Abp.Ddd.Domain" Version="9.1.0" />
-      <PackageReference Include="Volo.Abp.Domain" Version="9.1.0" />
-      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.2" />
+      <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
+      <PackageReference Include="Volo.Abp.Domain" Version="10.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
     </ItemGroup>
     ```
 
 ## Implementation Checklist
 
--   [x] Use smaller, focused aggregates (3-5 entities max)
--   [x] Identify true invariants that require transactional consistency
--   [x] Implement specifications to encapsulate complex query logic (without executing queries)
--   [x] Use domain services for business logic coordination - NO direct repository access
--   [x] Reference other aggregates by ID only, not direct object reference
--   [x] Use domain events for eventual consistency between aggregates
--   [x] Implement proper encapsulation of entity state
--   [x] Use NSubstitute for mocking and Shouldly for assertions in tests
--   [x] Include English localization files for all domain exceptions and messages
+  - [x] Use smaller, focused aggregates (3-5 entities max)
+  - [x] Identify true invariants that require transactional consistency
+  - [x] Implement specifications to encapsulate complex query logic (without executing queries)
+  - [x] Use domain services for business logic coordination - NO direct repository access
+  - [x] Reference other aggregates by ID only, not direct object reference
+  - [x] Use domain events for eventual consistency between aggregates
+  - [x] Implement proper encapsulation of entity state
+  - [x] Use NSubstitute for mocking and Shouldly for assertions in tests
+  - [x] Include English localization files for all domain exceptions and messages
 
----
+-----
 
 ## Core Domain Model Implementation
 
 This section contains the full implementation of the core domain objects, including Enums, Aggregates, Entities, and Value Objects.
 
-### 1. Domain Shared Enums and Events
+### 1\. Domain Shared Enums and Events
 
 These are simple data structures shared between the `.Domain` and `.Application.Contracts` projects.
 
@@ -94,11 +94,12 @@ namespace NouAssist.Orders.Domain.Shared.Events
 }
 ```
 
-### 2. Aggregates
+### 2\. Aggregates
 
 Aggregates are the root of our consistency boundaries. They encapsulate their state and expose methods to manipulate it.
 
 **Order Aggregate**
+
 ```csharp
 // src/NouAssist.Orders.Domain/Aggregates/Order.cs
 using System;
@@ -168,6 +169,7 @@ namespace NouAssist.Orders.Aggregates
 ```
 
 **Product Aggregate**
+
 ```csharp
 // src/NouAssist.Products.Domain/Aggregates/Product.cs
 using System;
@@ -223,7 +225,7 @@ namespace NouAssist.Products.Aggregates
 }
 ```
 
-### 3. Entities
+### 3\. Entities
 
 Entities are objects with identity but are owned by an Aggregate Root.
 
@@ -295,7 +297,7 @@ namespace NouAssist.Products.Entities
 }
 ```
 
-### 4. Value Objects
+### 4\. Value Objects
 
 Value Objects are immutable objects defined by their attributes rather than a unique ID.
 
@@ -338,7 +340,7 @@ namespace NouAssist.Orders.ValueObjects
 }
 ```
 
----
+-----
 
 ## Domain Contracts: Repository Interfaces
 
@@ -376,13 +378,14 @@ namespace NouAssist.Products.Data
 }
 ```
 
----
+-----
 
 ## Domain Service Patterns
 
 Domain services contain business logic that doesn't naturally fit within a single aggregate. They are stateless and do not access repositories.
 
-### 1. Coordination Service: `OrderProcessingService`
+### 1\. Coordination Service: `OrderProcessingService`
+
 This service coordinates the complex process of validating, pricing, and finalizing an order.
 
 ```csharp
@@ -464,7 +467,7 @@ namespace NouAssist.Orders.Services
 }
 ```
 
----
+-----
 
 ## Specification Patterns
 
@@ -507,7 +510,8 @@ namespace NouAssist.Orders.Specifications
 }
 ```
 
----
+-----
+
 ## Testing Domain Services
 
 Unit tests for domain services should be simple, as they work with in-memory objects and have no external dependencies like databases or APIs.
@@ -610,13 +614,14 @@ namespace NouAssist.Orders.Tests.Services
 }
 ```
 
----
+-----
 
 ## Localization
 
 Domain exceptions and messages must be localized. This is handled in the `.Domain.Shared` project.
 
 **Resource Class (`.cs`)**
+
 ```csharp
 // src/NouAssist.Orders.Domain.Shared/Localization/OrdersResource.cs
 using Volo.Abp.Localization;
@@ -629,6 +634,7 @@ namespace NouAssist.Orders.Localization
 ```
 
 **Resource File (`.json`)**
+
 ```json
 // src/NouAssist.Orders.Domain.Shared/Localization/en.json
 {

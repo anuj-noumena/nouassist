@@ -1,41 +1,40 @@
-# ABP Framework v9+ Application Layer Development Guide (Fully Integrated)
+# ABP Framework v10 Application Layer Development Guide (Fully Integrated)
 
-This guide provides production-ready code and patterns for developing the Application Layer within an ABP Framework v9+ module. It focuses on the application service's role as an orchestrator for data access, domain logic, and other application concerns like validation and authorization.
+This guide provides production-ready code and patterns for developing the Application Layer within an ABP Framework v10 module. It focuses on the application service's role as an orchestrator for data access, domain logic, and other application concerns like validation and authorization.
 
 ## Key Architectural Principles
 
-* **Data Access Orchestration:** Application Services are the primary orchestrators of data access. They use repositories with specifications for querying, load all necessary data upfront, pass it to domain services for business logic execution, and finally persist the results.
-* **Domain Service Integration:** Application Services coordinate the interaction between the outside world and the domain. They do not contain business logic themselves but delegate it to domain services, passing already-loaded data as parameters.
-* **Separation of Concerns:** The Application Layer is responsible for Application Use Cases, Authorization, Validation, DTO Mapping, and Unit of Work management. It is kept thin by moving all core business rules into the Domain Layer.
+  * **Data Access Orchestration:** Application Services are the primary orchestrators of data access. They use repositories with specifications for querying, load all necessary data upfront, pass it to domain services for business logic execution, and finally persist the results.
+  * **Domain Service Integration:** Application Services coordinate the interaction between the outside world and the domain. They do not contain business logic themselves but delegate it to domain services, passing already-loaded data as parameters.
+  * **Separation of Concerns:** The Application Layer is responsible for Application Use Cases, Authorization, Validation, DTO Mapping, and Unit of Work management. It is kept thin by moving all core business rules into the Domain Layer.
 
 ## Technical Context
 
-* **Framework & Platform:** ABP Framework v9+ (e.g., v9.1.1), .NET 9.0, Multi-tenancy enabled.
-* **Core NuGet Packages:**
-    * **.Application.Contracts Project:**
+  * **Framework & Platform:** ABP Framework v10 (e.g., v10.0.0), .NET 10.0, Multi-tenancy enabled.
+  * **Core NuGet Packages:**
+      * **.Application.Contracts Project:**
         ```xml
         <ItemGroup>
-          <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="9.1.1" />
-          <PackageReference Include="Volo.Abp.Authorization" Version="9.1.1" />
-          <PackageReference Include="Volo.Abp.Validation" Version="9.1.1" />
+          <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="10.0.0" />
+          <PackageReference Include="Volo.Abp.Authorization" Version="10.0.0" />
+          <PackageReference Include="Volo.Abp.Validation" Version="10.0.0" />
         </ItemGroup>
         ```
-    * **.Application Project:**
+      * **.Application Project:**
         ```xml
         <ItemGroup>
-          <PackageReference Include="Volo.Abp.Ddd.Application" Version="9.1.1" />
-          <PackageReference Include="Volo.Abp.AutoMapper" Version="9.1.1" />
-          <PackageReference Include="Volo.Abp.FluentValidation" Version="9.1.1" />
+          <PackageReference Include="Volo.Abp.Ddd.Application" Version="10.0.0" />
+          <PackageReference Include="Volo.Abp.Mapperly" Version="10.0.0" /> <PackageReference Include="Volo.Abp.FluentValidation" Version="10.0.0" />
         </ItemGroup>
         ```
 
----
+-----
 
 ## I. Application Contracts Layer (`.Application.Contracts`)
 
 This layer defines the contract between the client and the server, containing DTOs, service interfaces, and permissions.
 
-### 1. Permissions Definition
+### 1\. Permissions Definition
 
 Permissions are defined centrally and used by the `[Authorize]` attribute to secure application service methods.
 
@@ -59,7 +58,7 @@ namespace NouAssist.Orders.Permissions
 }
 ```
 
-### 2. DTOs (Data Transfer Objects)
+### 2\. DTOs (Data Transfer Objects)
 
 DTOs are used to transfer data. They are tailored to the needs of the UI or client applications.
 
@@ -87,7 +86,7 @@ namespace NouAssist.Orders.Dtos
 }
 ```
 
-### 3. Application Service Interface
+### 3\. Application Service Interface
 
 The interface defines the public methods of the application service.
 
@@ -112,39 +111,55 @@ namespace NouAssist.Orders.Orders
 }
 ```
 
----
+-----
 
 ## II. Application Layer (`.Application`)
 
 This layer contains the implementation of the application services.
 
-### 1. AutoMapper Profile
+### 1\. Mapperly Configuration
 
-AutoMapper is used to map Domain Objects to DTOs.
+In ABP v10, **Mapperly** is the default object mapper. It uses source generation to create mapping code at compile time, improving performance and type safety. Instead of a `Profile` class, you define a partial class with the `[Mapper]` attribute.
+
+Note that ABP's `Volo.Abp.Mapperly` package integrates these mappers into the standard `IObjectMapper` system, so you can still use `ObjectMapper.Map` in your services if preferred, or inject this specific mapper class directly for maximum performance.
 
 ```csharp
-// src/NouAssist.Orders.Application/OrdersApplicationAutoMapperProfile.cs
-using AutoMapper;
+// src/NouAssist.Orders.Application/Orders/OrdersApplicationMapper.cs
+using Riok.Mapperly.Abstractions;
 using NouAssist.Orders.Aggregates;
 using NouAssist.Orders.Dtos;
 using NouAssist.Orders.Entities;
+using Volo.Abp.Mapperly;
 
-namespace NouAssist.Orders
+namespace NouAssist.Orders.Orders
 {
-    public class OrdersApplicationAutoMapperProfile : Profile
+    // 1. Inherit from MapperBase to hook into ABP's IObjectMapper system automatically
+    [Mapper]
+    public partial class OrdersApplicationMapper : MapperBase<Order, OrderDto>
     {
-        public OrdersApplicationAutoMapperProfile()
+        // 2. Define specific mapping rules using partial methods
+        // Mapperly automatically implements this based on property names
+        public override partial OrderDto Map(Order source);
+
+        // 3. Custom mapping logic (replacing AutoMapper's ForMember/MapFrom)
+        // We use a custom mapping method for the Order -> OrderDto conversion to handle the TotalAmount
+        [UserMapping(Default = true)]
+        public OrderDto MapToDto(Order source)
         {
-            CreateMap<Order, OrderDto>()
-                .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => src.GetTotalAmount()));
-            
-            CreateMap<OrderLine, OrderLineDto>();
+            var dto = Map(source); // Call the generated Map method first
+            dto.TotalAmount = source.GetTotalAmount(); // Manually map the custom method
+            return dto;
         }
+
+        // 4. Define other mappings in the same file or separate partials
+        public partial OrderLineDto Map(OrderLine source);
+        
+        public partial List<OrderDto> MapList(List<Order> source);
     }
 }
 ```
 
-### 2. Input Validation
+### 2\. Input Validation
 
 ABP integrates with standard validation mechanisms. Here are two common approaches.
 
@@ -203,9 +218,9 @@ namespace NouAssist.Orders.Dtos
 }
 ```
 
-### 3. Application Service Implementation
+### 3\. Application Service Implementation
 
-This is the core of the application layer, orchestrating data and domain logic.
+This is the core of the application layer. By inheriting `OrdersApplicationMapper` from `MapperBase`, the standard `ObjectMapper` is automatically wired up to use the generated Mapperly code.
 
 ```csharp
 // src/NouAssist.Orders.Application/Orders/OrderAppService.cs
@@ -254,7 +269,8 @@ namespace NouAssist.Orders.Orders
         public async Task<OrderDto> GetAsync(Guid id)
         {
             var order = await _orderRepository.GetAsync(id);
-            return ObjectMapper.Map<Order, OrderDto>(order);
+            // Uses the Mapperly generated code via the abstraction
+            return ObjectMapper.Map<Order, OrderDto>(order); 
         }
 
         public async Task<PagedResultDto<OrderDto>> GetListAsync(GetOrderListDto input)
@@ -341,7 +357,7 @@ namespace NouAssist.Orders.Orders
 }
 ```
 
----
+-----
 
 ## III. Testing Strategy
 
@@ -349,7 +365,7 @@ Robust testing is crucial. Integration tests validate the service from end-to-en
 
 ### Integration Tests (`.Application.Tests`)
 
-These tests use a real (in-memory or test) database and validate the entire flow.
+Ensure your test module also depends on `AbpMapperlyModule` so the mappings are registered during tests.
 
 ```csharp
 // src/NouAssist.Orders.Application.Tests/Orders/OrderAppService_Tests.cs

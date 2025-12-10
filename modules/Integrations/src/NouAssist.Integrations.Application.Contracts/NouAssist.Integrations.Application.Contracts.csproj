@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="10.0.0" />
-    <PackageReference Include="Volo.Abp.Authorization" Version="10.0.0" />
+    <PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.Authorization" Version="10.0.1" />
     <ProjectReference Include="..\NouAssist.Integrations.Domain.Shared\NouAssist.Integrations.Domain.Shared.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageReference Update="Fody" Version="6.9.3">

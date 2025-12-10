@@ -12,7 +12,7 @@
     <InternalsVisibleTo Include="NouAssist.SharedKernel.Application" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.1" />
     <ProjectReference Include="..\NouAssist.SharedKernel.Domain.Shared\NouAssist.SharedKernel.Domain.Shared.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
     <PackageReference Update="Fody" Version="6.9.3">

@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.0" />
+    <PackageReference Include="Volo.Abp.Ddd.Domain" Version="10.0.1" />
     <ProjectReference Include="..\..\..\SharedKernel\src\NouAssist.SharedKernel.Domain.Shared\NouAssist.SharedKernel.Domain.Shared.csproj" />
     <ProjectReference Include="..\NouAssist.FinancialManagement.Domain.Shared\NouAssist.FinancialManagement.Domain.Shared.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />

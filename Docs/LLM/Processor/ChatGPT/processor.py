@@ -41,12 +41,11 @@ def process_data(data):
     text_content = []
     out = data["mapping"].items()
     for _, (i, message) in enumerate(data["mapping"].items()):
-        print(message)
         if (
                 message["message"] and message["message"]["author"]["role"] == "assistant"
                 and message["message"]["content"]["content_type"] == "text"
         ):
-            text_content.append("\n".join(message["message"]["content"]["parts"]))
+            text_content.append("".join(message["message"]["content"]["parts"]))
 
     return "\n".join(text_content)
 

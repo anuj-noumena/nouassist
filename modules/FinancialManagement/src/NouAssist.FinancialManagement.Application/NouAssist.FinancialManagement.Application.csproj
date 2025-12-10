@@ -10,9 +10,9 @@
 
   <ItemGroup>
     <PackageReference Include="Riok.Mapperly" Version="4.3.0" />
-    <PackageReference Include="Volo.Abp.Mapperly" Version="10.0.0" />
-    <PackageReference Include="Volo.Abp.Ddd.Application" Version="10.0.0" />
-    <PackageReference Include="Volo.Abp.FluentValidation" Version="10.0.0" />
+    <PackageReference Include="Volo.Abp.Mapperly" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.Ddd.Application" Version="10.0.1" />
+    <PackageReference Include="Volo.Abp.FluentValidation" Version="10.0.1" />
     <ProjectReference Include="..\NouAssist.FinancialManagement.Application.Contracts\NouAssist.FinancialManagement.Application.Contracts.csproj" />
     <ProjectReference Include="..\NouAssist.FinancialManagement.Domain\NouAssist.FinancialManagement.Domain.csproj" />
     <PackageReference Update="ConfigureAwait.Fody" Version="3.3.2" />
